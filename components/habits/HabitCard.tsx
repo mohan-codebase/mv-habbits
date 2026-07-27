@@ -406,65 +406,83 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
           </div>
 
           {/* Stats Indicators (Streak & Rate) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            {/* Streak */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            {/* Streak Pill */}
             <div
               title="Current streak"
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 4,
-                fontSize: 12.5,
-                color: 'rgba(255, 255, 255, 0.85)',
-                fontWeight: 700,
+                gap: 5,
+                padding: '4px 10px',
+                borderRadius: 9999,
+                background: isBad ? 'rgba(239, 68, 68, 0.2)' : 'rgba(245, 158, 11, 0.22)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                border: `1px solid ${isBad ? 'rgba(239, 68, 68, 0.4)' : 'rgba(245, 158, 11, 0.4)'}`,
+                fontSize: 12,
+                color: isBad ? '#fca5a5' : '#fbbf24',
+                fontWeight: 800,
+                boxShadow: 'none',
               }}
             >
               {isBad ? (
-                <Shield size={14} color="#8e8e8e" style={{ filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0,0.3))' }} />
+                <Shield size={13} color="#fca5a5" />
               ) : (
-                <Flame size={14} color="#a6a6a6" style={{ filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0,0.3))' }} />
+                <Flame size={13} color="#fbbf24" />
               )}
-              <span>{streak}</span>
+              <span>{streak}d streak</span>
             </div>
 
-            {/* Rate */}
+            {/* Rate Pill */}
             <div
               title="Completion rate"
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 4,
-                fontSize: 12.5,
-                color: 'rgba(255, 255, 255, 0.85)',
-                fontWeight: 700,
+                gap: 5,
+                padding: '4px 10px',
+                borderRadius: 9999,
+                background: 'rgba(255, 255, 255, 0.18)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.25)',
+                fontSize: 12,
+                color: '#ffffff',
+                fontWeight: 800,
+                boxShadow: 'none',
               }}
             >
-              <Target size={14} color="rgba(255, 255, 255, 0.6)" />
+              <Target size={13} color="#ffffff" />
               <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-                {habit.completionRate ?? 0}
+                {habit.completionRate ?? 0}%
               </span>
             </div>
           </div>
 
           {/* Action Button (Centered Pill) */}
-          <button
+          <motion.button
             type="button"
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.97 }}
             onClick={handleToggle}
             style={{
               width: '100%',
-              height: 42,
-              borderRadius: 21,
+              height: 44,
+              borderRadius: 22,
               border: 'none',
-              background: completed ? color : '#ffffff',
-              color: completed ? '#ffffff' : '#000000',
-              fontSize: 13.5,
+              background: completed
+                ? `linear-gradient(135deg, ${color} 0%, color-mix(in srgb, ${color} 75%, black) 100%)`
+                : 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)',
+              color: completed ? '#ffffff' : '#0f172a',
+              fontSize: 14,
               fontWeight: 800,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 4,
-              boxShadow: completed ? `0 4px 14px ${hexToRgba(color, 0.45)}` : '0 4px 14px rgba(0, 0, 0, 0.25)',
+              gap: 6,
+              boxShadow: 'none',
               transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
             }}
             className="habit-pill-btn"
@@ -472,9 +490,9 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
             {completed ? (
               <>Completed ✓</>
             ) : (
-              <>Done +</>
+              <>Mark Done +</>
             )}
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

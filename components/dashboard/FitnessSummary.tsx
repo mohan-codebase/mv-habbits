@@ -39,7 +39,7 @@ const PURPLE_MID = 'var(--surface-tint-mid)';
 const TEXT_DARK = 'var(--text-primary)';
 const TEXT_MUTED = 'var(--text-muted)';
 // Raw hex needed only for SVG attributes and rgba() calls
-const BLUE_HEX = '#0071e3';
+const BLUE_HEX = '#8B5CF6';
 
 // Bad-habit theming — red accents, kept consistent with HabitCard/HabitList
 const RED = '#F87171';
@@ -81,108 +81,98 @@ function CircularProgress({
   const size = (RADIUS + STROKE) * 2;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: 0.35 }}
-      style={{
-        marginTop: 0,
-        padding: '20px',
-        borderRadius: 20,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 0,
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-default)',
-      }}
+    <DashCard
+      title="Today's Progress"
+      action={
+        <div style={{
+          padding: '4px 12px',
+          borderRadius: 9999,
+          background: `color-mix(in srgb, ${accentHex} 14%, transparent)`,
+          border: `1px solid color-mix(in srgb, ${accentHex} 30%, transparent)`,
+        }}>
+          <span style={{ fontSize: 13, fontWeight: 800, color: accentHex }}>{pct}%</span>
+        </div>
+      }
     >
-      {/* Header row */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', width: '100%', marginBottom: 24 }}>
-        <div>
-          <p style={{ margin: 0, fontSize: 10, fontWeight: 800, color: TEXT_MUTED, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-            Today&apos;s Progress
-          </p>
-          <p style={{ margin: '5px 0 0', fontSize: 20, fontWeight: 800, color: TEXT_DARK, letterSpacing: '-0.03em' }}>
-            {completed} of {total} done
-          </p>
-        </div>
-        <div style={{
-          padding: '6px 14px',
-          borderRadius: 20,
-          background: 'var(--surface-tint)',
-        }}>
-          <span style={{ fontSize: 13, fontWeight: 700, color: TEXT_DARK }}>{pct}%</span>
-        </div>
-      </div>
-
-      {/* Ring */}
-      <div style={{ position: 'relative', width: size, height: size }}>
-        <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
-          {/* Track */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={RADIUS}
-            fill="none"
-            style={{ stroke: `color-mix(in srgb, ${accentHex} 22%, transparent)` }}
-            strokeWidth={STROKE}
-          />
-          {/* Progress arc */}
-          <motion.circle
-            cx={size / 2}
-            cy={size / 2}
-            r={RADIUS}
-            fill="none"
-            stroke={accentHex}
-            strokeWidth={STROKE}
-            strokeLinecap="round"
-            strokeDasharray={CIRCUMFERENCE}
-            initial={{ strokeDashoffset: CIRCUMFERENCE }}
-            animate={{ strokeDashoffset: offset }}
-            transition={{ duration: 1, delay: 0.5, ease: 'easeOut' }}
-          />
-        </svg>
-        {/* Centre label */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 3,
-        }}>
-          <span style={{ fontSize: 36, fontWeight: 800, color: TEXT_DARK, letterSpacing: '-0.04em', lineHeight: 1 }}>
-            {pct}%
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 16, width: '100%' }}>
+          <span style={{ fontSize: 24, fontWeight: 850, color: TEXT_DARK, letterSpacing: '-0.03em', fontFamily: "'Outfit', sans-serif" }}>
+            {completed} of {total}
           </span>
-          <span style={{ fontSize: 12, fontWeight: 500, color: TEXT_MUTED, letterSpacing: '0.03em' }}>
-            complete
+          <span style={{ fontSize: 14, fontWeight: 600, color: TEXT_MUTED }}>
+            habits completed
           </span>
         </div>
-      </div>
 
-      {/* Per-habit dots */}
-      {total > 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', width: '100%', marginTop: 28 }}>
-          {Array.from({ length: total }, (_, i) => (
-            <motion.div
-              key={i}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.2, delay: 0.6 + i * 0.05 }}
-              style={{
-                width: 12,
-                height: 12,
-                borderRadius: '50%',
-                background: i < completed ? accentHex : 'transparent',
-                border: `2px solid ${i < completed ? accentHex : `color-mix(in srgb, ${accentHex} 30%, transparent)`}`,
-              }}
+        {/* Ring */}
+        <div style={{ position: 'relative', width: size, height: size, margin: '8px 0 16px' }}>
+          <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+            {/* Track */}
+            <circle
+              cx={size / 2}
+              cy={size / 2}
+              r={RADIUS}
+              fill="none"
+              style={{ stroke: `color-mix(in srgb, ${accentHex} 16%, transparent)` }}
+              strokeWidth={STROKE}
             />
-          ))}
+            {/* Progress arc */}
+            <motion.circle
+              cx={size / 2}
+              cy={size / 2}
+              r={RADIUS}
+              fill="none"
+              stroke={accentHex}
+              strokeWidth={STROKE}
+              strokeLinecap="round"
+              strokeDasharray={CIRCUMFERENCE}
+              initial={{ strokeDashoffset: CIRCUMFERENCE }}
+              animate={{ strokeDashoffset: offset }}
+              transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+            />
+          </svg>
+          {/* Centre label */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 2,
+          }}>
+            <span style={{ fontSize: 38, fontWeight: 850, color: TEXT_DARK, letterSpacing: '-0.04em', lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>
+              {pct}%
+            </span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: TEXT_MUTED, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+              complete
+            </span>
+          </div>
         </div>
-      )}
-    </motion.div>
+
+        {/* Per-habit dots */}
+        {total > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', width: '100%', marginTop: 12 }}>
+            {Array.from({ length: total }, (_, i) => (
+              <motion.div
+                key={i}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.2, delay: 0.3 + i * 0.04 }}
+                style={{
+                  width: 11,
+                  height: 11,
+                  borderRadius: '50%',
+                  background: i < completed ? accentHex : 'transparent',
+                  border: `2px solid ${i < completed ? accentHex : `color-mix(in srgb, ${accentHex} 35%, transparent)`}`,
+                  boxShadow: 'none',
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </DashCard>
   );
 }
 
@@ -209,14 +199,13 @@ function HabitRow({
 }) {
   const done = habit.todayEntry?.is_completed ?? false;
   const icon = habit.icon ?? (bad ? 'ban' : 'circle-check');
+  const streak = habit.current_streak ?? 0;
 
-  // For bad habits, checking the row off means the user *avoided* it today.
-  // All regular habits use the system theme accent — no per-habit color.
   const accent = bad ? RED : PURPLE;
-  const accentLight = bad ? RED_LIGHT : `color-mix(in srgb, ${accent} 14%, transparent)`;
+  const accentLight = bad ? RED_LIGHT : `color-mix(in srgb, ${accent} 15%, transparent)`;
 
   const subtitle = bad
-    ? (done ? 'Avoided today' : 'Avoid this')
+    ? (done ? 'Avoided today' : 'Avoid this habit')
     : habit.description
       ? habit.description.slice(0, 36) + (habit.description.length > 36 ? '…' : '')
       : habit.frequency?.type === 'daily'
@@ -225,119 +214,225 @@ function HabitRow({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.28, delay: index * 0.06 }}
+      whileHover={{ y: -1, transition: { duration: 0.15 } }}
+      whileTap={{ scale: 0.985 }}
+      transition={{ duration: 0.22, delay: index * 0.03 }}
       style={{
+        position: 'relative',
         display: 'flex',
         alignItems: 'center',
         gap: 14,
-        padding: '14px 16px',
-        ...(done && !bad ? GLASS_PURPLE : GLASS_SM),
-        ...(bad ? { border: `1px solid ${done ? 'rgba(248, 113, 113, 0.35)' : 'rgba(248, 113, 113, 0.18)'}` } : null),
-        borderRadius: 18,
+        padding: '12px 18px',
+        background: done
+          ? (bad
+              ? 'rgba(248, 113, 113, 0.08)'
+              : 'color-mix(in srgb, var(--accent-primary) 10%, var(--bg-card))')
+          : 'var(--bg-card)',
+        border: `1px solid ${
+          done
+            ? (bad ? 'rgba(248, 113, 113, 0.35)' : 'color-mix(in srgb, var(--accent-primary) 35%, transparent)')
+            : 'var(--border-default)'
+        }`,
+        borderRadius: 9999,
         cursor: 'pointer',
         width: '100%',
         minWidth: 0,
         boxSizing: 'border-box',
-        position: 'relative',
         overflow: 'hidden',
+        transition: 'all 0.2s ease',
+        boxShadow: 'none',
       }}
       onClick={() => onOpen(habit.id)}
     >
-      {/* Icon */}
-      <div style={{
-        width: 44,
-        height: 44,
-        borderRadius: 14,
-        background: accentLight,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-        flexGrow: 0,
-        overflow: 'hidden',
-      }}>
-        <DynamicIcon name={icon} size={22} color={accent} />
-      </div>
+      {/* Clean Bottom Accent Bar for Completed items */}
+      {done && (
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ duration: 0.25 }}
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 2.5,
+            background: accent,
+            borderRadius: 9999,
+            transformOrigin: 'left',
+          }}
+        />
+      )}
 
-      {/* Text */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{
-          margin: 0,
-          fontSize: 15,
-          fontWeight: 700,
-          color: TEXT_DARK,
-          letterSpacing: '-0.01em',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-        }}>
-          {habit.name}
-        </p>
-        <p style={{
-          margin: '2px 0 0',
-          fontSize: 12,
-          color: TEXT_MUTED,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-        }}>
-          {subtitle}
-        </p>
-      </div>
-
-      {/* Checkbox — stopPropagation so it only toggles, doesn't open detail */}
-      <div
-        onClick={(e) => { e.stopPropagation(); onToggle(habit.id, done); }}
+      {/* Icon Circle */}
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         style={{
-          width: 30,
-          height: 30,
-          borderRadius: '50%',
-          background: done ? accent : 'transparent',
-          border: `2px solid ${done ? accent : `color-mix(in srgb, ${accent} 45%, transparent)`}`,
+          width: 42,
+          height: 42,
+          borderRadius: 9999,
+          background: done ? accent : accentLight,
+          color: done ? '#FFFFFF' : accent,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
           transition: 'all 0.2s ease',
+          boxShadow: 'none',
         }}
       >
-        {done && <CheckIcon />}
+        <DynamicIcon
+          name={icon}
+          size={20}
+          color={done ? '#FFFFFF' : accent}
+        />
+      </motion.div>
+
+      {/* Text & Badges */}
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'nowrap' }}>
+          <p
+            style={{
+              margin: 0,
+              fontSize: 15,
+              fontWeight: 700,
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.01em',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              textDecoration: done && !bad ? 'line-through' : 'none',
+              opacity: done && !bad ? 0.8 : 1,
+            }}
+          >
+            {habit.name}
+          </p>
+
+          {/* Streak Badge */}
+          {streak > 0 && (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 3,
+                fontSize: 11,
+                fontWeight: 750,
+                padding: '2px 7px',
+                borderRadius: 9999,
+                background: 'rgba(245, 158, 11, 0.12)',
+                border: '1px solid rgba(245, 158, 11, 0.3)',
+                color: '#f59e0b',
+                lineHeight: 1,
+                flexShrink: 0,
+              }}
+            >
+              🔥 {streak}d
+            </span>
+          )}
+        </div>
+
+        <p
+          style={{
+            margin: 0,
+            fontSize: 12,
+            fontWeight: 500,
+            color: done ? 'var(--text-secondary)' : 'var(--text-muted)',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {subtitle}
+        </p>
       </div>
 
-      {/* Animated progress bar — fills with the habit's color on completion.
-         Lives in the shared row, so every habit (incl. brand-new ones) gets it. */}
-      <div style={{
-        position: 'absolute', left: 0, right: 0, bottom: 0, height: 4,
-        background: 'rgba(127, 127, 127,0.10)',
-      }}>
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: done ? '100%' : '0%' }}
-          transition={{ duration: 0.55, delay: 0.1 + index * 0.05, ease: [0.22, 1, 0.36, 1] }}
-          style={{ height: '100%', background: accent, borderRadius: '0 2px 2px 0' }}
-        />
-      </div>
+      {/* Interactive Checkbox */}
+      <motion.div
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.92 }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggle(habit.id, done);
+        }}
+        style={{
+          position: 'relative',
+          width: 32,
+          height: 32,
+          borderRadius: '50%',
+          background: done ? accent : 'transparent',
+          border: `2px solid ${done ? accent : `color-mix(in srgb, ${accent} 40%, transparent)`}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+          cursor: 'pointer',
+          transition: 'all 0.2s ease',
+          boxShadow: 'none',
+        }}
+      >
+        <AnimatePresence mode="wait">
+          {done && (
+            <motion.div
+              key="check-icon"
+              initial={{ scale: 0, rotate: -30 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0, rotate: 30 }}
+              transition={{ type: 'spring', stiffness: 450, damping: 25 }}
+            >
+              <CheckIcon />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </motion.div>
   );
 }
 
 function StatPill({ label, value, accent, color }: { label: string; value: string; accent?: boolean; color?: string }) {
   const c = color || PURPLE;
+  let IconComp = Flame;
+  if (label.toLowerCase().includes('longest')) IconComp = Trophy;
+  else if (label.toLowerCase().includes('rate')) IconComp = Target;
+  else if (label.toLowerCase().includes('total')) IconComp = CheckCircle2;
+
   return (
-    <div style={{
-      ...(accent ? { ...GLASS_NESTED_PURPLE, background: `color-mix(in srgb, ${c} 14%, transparent)` } : GLASS_NESTED),
-      borderRadius: 14,
-      padding: '14px 16px',
-    }}>
-      <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: TEXT_MUTED, letterSpacing: '0.07em', textTransform: 'uppercase' }}>
-        {label}
-      </p>
-      <p style={{ margin: '4px 0 0', fontSize: 24, fontWeight: 800, color: accent ? c : TEXT_DARK, letterSpacing: '-0.03em' }}>
+    <motion.div
+      whileHover={{ y: -2, scale: 1.02 }}
+      transition={{ duration: 0.18 }}
+      style={{
+        position: 'relative',
+        borderRadius: 18,
+        padding: '14px 16px',
+        background: accent
+          ? `linear-gradient(135deg, color-mix(in srgb, ${c} 18%, transparent) 0%, color-mix(in srgb, ${c} 6%, transparent) 100%), var(--bg-card)`
+          : 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.008) 100%), var(--bg-card)',
+        border: accent
+          ? `1px solid color-mix(in srgb, ${c} 40%, transparent)`
+          : '1px solid var(--border-default)',
+        boxShadow: 'none',
+        backdropFilter: 'blur(10px)',
+        overflow: 'hidden',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+        <p style={{ margin: 0, fontSize: 10.5, fontWeight: 750, color: TEXT_MUTED, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          {label}
+        </p>
+        <div style={{
+          width: 26, height: 26, borderRadius: 8,
+          background: `color-mix(in srgb, ${c} 15%, transparent)`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: c,
+        }}>
+          <IconComp size={14} />
+        </div>
+      </div>
+      <p style={{ margin: 0, fontSize: 24, fontWeight: 850, color: accent ? c : TEXT_DARK, letterSpacing: '-0.03em', fontFamily: "'Outfit', sans-serif" }}>
         {value}
       </p>
-    </div>
+    </motion.div>
   );
 }
 
@@ -637,34 +732,41 @@ function HabitDetailSheet({
         padding: 16, pointerEvents: 'none',
       }}>
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 8 }}
+          initial={{ opacity: 0, scale: 0.94, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 8 }}
-          transition={{ type: 'spring', damping: 30, stiffness: 360 }}
+          exit={{ opacity: 0, scale: 0.94, y: 12 }}
+          transition={{ type: 'spring', damping: 28, stiffness: 340 }}
           onClick={(e) => e.stopPropagation()}
           style={{
+            position: 'relative',
             pointerEvents: 'auto',
-            width: '100%', maxWidth: 480,
-            background: 'var(--glass-bg-sheet)',
-            borderRadius: 24,
+            width: '100%', maxWidth: 490,
+            background: 'linear-gradient(155deg, rgba(22, 19, 36, 0.96) 0%, rgba(13, 11, 22, 0.98) 100%)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            border: `1px solid color-mix(in srgb, ${PURPLE} 35%, transparent)`,
+            borderRadius: 28,
             maxHeight: '90dvh',
             overflowY: 'auto',
-            padding: '24px 20px 32px',
+            padding: '26px 22px 34px',
             fontFamily: "system-ui, -apple-system, sans-serif",
-            boxShadow: '0 24px 64px rgba(31, 31, 31,0.40), inset 0 1px 0 rgba(255, 255, 255,0.12)',
+            boxShadow: '0 20px 48px rgba(0, 0, 0, 0.4)',
           }}
         >
           {/* Header */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 0, marginBottom: 22 }}>
-            <div style={{
-              width: 54, height: 54, borderRadius: 16,
-              background: PURPLE_LIGHT,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0, overflow: 'hidden',
-              boxShadow: 'none',
-            }}>
-              <DynamicIcon name={editMode ? editIcon : (habit.icon ?? 'circle-check')} size={26} color={PURPLE} />
-            </div>
+          <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: 14, marginTop: 0, marginBottom: 22 }}>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              style={{
+                width: 58, height: 58, borderRadius: 18,
+                background: `linear-gradient(135deg, ${PURPLE} 0%, color-mix(in srgb, ${PURPLE} 75%, black) 100%)`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0, overflow: 'hidden',
+                boxShadow: 'none',
+              }}
+            >
+              <DynamicIcon name={editMode ? editIcon : (habit.icon ?? 'circle-check')} size={28} color="#FFFFFF" />
+            </motion.div>
             <div style={{ flex: 1, minWidth: 0 }}>
               {editMode ? (
                 <input
@@ -675,17 +777,18 @@ function HabitDetailSheet({
                   style={{
                     width: '100%', boxSizing: 'border-box',
                     background: 'var(--input-bg)', border: `1.5px solid ${PURPLE}`,
-                    borderRadius: 10, padding: '8px 12px',
-                    fontSize: 17, fontWeight: 700, color: TEXT_DARK,
-                    outline: 'none', fontFamily: 'inherit',
+                    borderRadius: 12, padding: '8px 14px',
+                    fontSize: 18, fontWeight: 800, color: TEXT_DARK,
+                    outline: 'none', fontFamily: "'Outfit', sans-serif",
+                    boxShadow: `0 0 12px color-mix(in srgb, ${PURPLE} 30%, transparent)`,
                   }}
                 />
               ) : (
                 <>
-                  <h2 style={{ margin: 0, fontSize: 20, fontWeight: 800, color: TEXT_DARK, letterSpacing: '-0.02em' }}>
+                  <h2 style={{ margin: 0, fontSize: 22, fontWeight: 850, color: TEXT_DARK, letterSpacing: '-0.025em', fontFamily: "'Outfit', sans-serif" }}>
                     {habit.name}
                   </h2>
-                  <p style={{ margin: '3px 0 0', fontSize: 13, color: TEXT_MUTED }}>
+                  <p style={{ margin: '3px 0 0', fontSize: 13, color: TEXT_MUTED, fontWeight: 500 }}>
                     {habit.description ?? (habit.frequency?.type === 'daily' ? 'Daily habit' : 'Habit')}
                   </p>
                 </>
@@ -694,42 +797,54 @@ function HabitDetailSheet({
             <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
               {!editMode && (
                 <>
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.92 }}
                     onClick={() => generateHabitReport(habit, rate, monthDone, monthRate)}
                     style={{
-                      width: 34, height: 34, borderRadius: '50%',
-                      background: PURPLE_LIGHT, border: 'none',
+                      width: 36, height: 36, borderRadius: '50%',
+                      background: PURPLE_LIGHT,
+                      border: `1px solid color-mix(in srgb, ${PURPLE} 25%, transparent)`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       cursor: 'pointer',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                     }}
                     title="Download PDF Report"
                   >
                     <Download size={16} color={PURPLE} />
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.92 }}
                     onClick={() => { setEditName(habit.name); setEditIcon(habit.icon ?? 'circle-check'); setEditColor(habit.color || '#555555'); setEditNotes(habit.description ?? ''); setEditMode(true); }}
                     style={{
-                      width: 34, height: 34, borderRadius: '50%',
-                      background: PURPLE_LIGHT, border: 'none',
+                      width: 36, height: 36, borderRadius: '50%',
+                      background: PURPLE_LIGHT,
+                      border: `1px solid color-mix(in srgb, ${PURPLE} 25%, transparent)`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       cursor: 'pointer',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                     }}
                   >
                     <DynamicIcon name="pencil" size={16} color={PURPLE} />
-                  </button>
+                  </motion.button>
                 </>
               )}
-              <button
+              <motion.button
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.92 }}
                 onClick={editMode ? () => setEditMode(false) : onClose}
                 style={{
-                  width: 34, height: 34, borderRadius: '50%',
-                  background: PURPLE_MID, border: 'none',
+                  width: 36, height: 36, borderRadius: '50%',
+                  background: PURPLE_MID,
+                  border: `1px solid color-mix(in srgb, ${PURPLE} 30%, transparent)`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   cursor: 'pointer', color: PURPLE, fontWeight: 700, fontSize: 18,
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                 }}
               >
                 ×
-              </button>
+              </motion.button>
             </div>
           </div>
 
@@ -917,36 +1032,42 @@ function HabitDetailSheet({
                         const bg = cell.isFuture
                           ? 'transparent'
                           : cell.completed
-                            ? PURPLE
+                            ? `linear-gradient(135deg, ${PURPLE} 0%, color-mix(in srgb, ${PURPLE} 75%, black) 100%)`
                             : PURPLE_LIGHT;
-                        const txtColor = cell.completed ? '#fff' : cell.isToday ? PURPLE_HEX : cell.isFuture ? 'var(--drag-handle)' : TEXT_MUTED;
+                        const txtColor = cell.completed ? '#ffffff' : cell.isToday ? PURPLE_HEX : cell.isFuture ? 'var(--drag-handle)' : TEXT_MUTED;
                         const interactive = !cell.isFuture;
                         const isSaving = savingDay === cell.date;
                         const isSelected = cell.date === activeLogDate;
                         const hasVideo = entryVideoMap.get(cell.date);
                         return (
-                          <div
+                          <motion.div
                             key={di}
+                            whileHover={interactive ? { scale: 1.1, zIndex: 5 } : {}}
+                            whileTap={interactive ? { scale: 0.92 } : {}}
                             onClick={interactive && !isSaving ? () => setActiveLogDate(cell.date) : undefined}
                             title={interactive ? (cell.completed ? 'Tap to view details/unmark' : 'Tap to view details/mark done') : undefined}
                             style={{
                               flex: '1 1 0', minWidth: 0,
                               height: CELL_H,
-                              borderRadius: 8,
+                              borderRadius: 10,
                               background: bg,
                               border: isSelected
-                                ? '2px solid var(--text-primary)'
+                                ? '2px solid #ffffff'
                                 : cell.isToday
-                                  ? `2px solid ${PURPLE}`
-                                  : '2px solid transparent',
-                              boxShadow: cell.completed ? `0 2px 6px ${PURPLE_MID}` : 'none',
+                                  ? `2px solid ${PURPLE_HEX}`
+                                  : '1px solid transparent',
+                              boxShadow: isSelected
+                                ? `0 0 16px ${PURPLE_HEX}`
+                                : cell.completed
+                                  ? `0 4px 12px color-mix(in srgb, ${PURPLE} 35%, transparent)`
+                                  : 'none',
                               display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              fontSize: 11,
-                              fontWeight: cell.isToday || isSelected ? 800 : 500,
+                              fontSize: 11.5,
+                              fontWeight: cell.isToday || isSelected || cell.completed ? 850 : 500,
                               color: txtColor,
                               cursor: interactive ? 'pointer' : 'default',
                               opacity: isSaving ? 0.5 : 1,
-                              transition: 'background 0.15s ease, opacity 0.15s ease',
+                              transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
                               WebkitTapHighlightColor: 'transparent',
                             }}
                           >
@@ -963,27 +1084,29 @@ function HabitDetailSheet({
                                 }} />
                               )}
                             </div>
-                          </div>
+                          </motion.div>
                         );
                       })}
                     </div>
                   ))}
 
                   {/* Legend */}
-                  <div style={{ display: 'flex', gap: 14, marginTop: 10, justifyContent: 'center' }}>
+                  <div style={{ display: 'flex', gap: 10, marginTop: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
                     {[
                       { bg: PURPLE, label: 'Done', txt: '#fff' },
                       { bg: PURPLE_LIGHT, label: 'Missed', txt: TEXT_MUTED },
-                      { bg: 'transparent', label: 'Today', txt: PURPLE, border: `2px solid ${PURPLE}` },
+                      { bg: 'transparent', label: 'Today', txt: PURPLE_HEX, border: `2px solid ${PURPLE_HEX}` },
                     ].map(({ bg, label, txt, border }) => (
-                      <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <div key={label} style={{
+                        display: 'flex', alignItems: 'center', gap: 6,
+                        padding: '4px 10px', borderRadius: 9999,
+                        background: 'var(--bg-tertiary)', border: '1px solid var(--border-subtle)',
+                      }}>
                         <div style={{
-                          width: 16, height: 16, borderRadius: 4,
+                          width: 8, height: 8, borderRadius: '50%',
                           background: bg, border: border ?? 'none',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          fontSize: 9, fontWeight: 700, color: txt,
                         }} />
-                        <span style={{ fontSize: 11, color: TEXT_MUTED }}>{label}</span>
+                        <span style={{ fontSize: 11.5, fontWeight: 650, color: 'var(--text-secondary)' }}>{label}</span>
                       </div>
                     ))}
                   </div>
@@ -993,30 +1116,56 @@ function HabitDetailSheet({
           </div>
 
           {/* Daily Log & Video Proof Card */}
-          <div style={{ ...GLASS_NESTED, borderRadius: 18, padding: '16px 14px', marginBottom: 14 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-              <h3 style={{ margin: 0, fontSize: 13.5, fontWeight: 700, color: TEXT_DARK, display: 'flex', alignItems: 'center', gap: 6 }}>
-                <CalendarCheck size={16} color={PURPLE} />
+          <div style={{ ...GLASS_NESTED, borderRadius: 20, padding: '18px 16px', marginBottom: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 750, color: TEXT_DARK, display: 'flex', alignItems: 'center', gap: 7 }}>
+                <CalendarCheck size={17} color={PURPLE} />
                 Log: {activeLogDate === todayLocal ? 'Today' : activeLogDate}
               </h3>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 13, color: TEXT_DARK, fontWeight: 600 }}>
-                <input
-                  type="checkbox"
-                  checked={activeEntry?.is_completed ?? false}
-                  disabled={savingDay === activeLogDate}
-                  onChange={() => markDay(activeLogDate, activeEntry?.is_completed ?? false)}
-                  style={{ width: 16, height: 16, accentColor: PURPLE }}
-                />
-                Completed
-              </label>
+              
+              {/* Custom Animated Pill Toggle Button */}
+              <motion.button
+                type="button"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                disabled={savingDay === activeLogDate}
+                onClick={() => markDay(activeLogDate, activeEntry?.is_completed ?? false)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '6px 14px',
+                  borderRadius: 9999,
+                  border: activeEntry?.is_completed
+                    ? `1px solid ${PURPLE}`
+                    : '1px solid var(--border-default)',
+                  background: activeEntry?.is_completed
+                    ? `color-mix(in srgb, ${PURPLE} 16%, var(--bg-card))`
+                    : 'var(--bg-tertiary)',
+                  color: activeEntry?.is_completed ? PURPLE : 'var(--text-muted)',
+                  fontSize: 12.5,
+                  fontWeight: 750,
+                  cursor: 'pointer',
+                  transition: 'all 0.18s ease',
+                  boxShadow: 'none',
+                }}
+              >
+                <CheckCircle2 size={15} color={activeEntry?.is_completed ? PURPLE : 'var(--text-muted)'} />
+                <span>{activeEntry?.is_completed ? 'Completed' : 'Mark Done'}</span>
+              </motion.button>
             </div>
 
             {/* Notes input */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 12 }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: TEXT_MUTED, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 14 }}>
+              <span style={{ fontSize: 11, fontWeight: 750, color: TEXT_MUTED, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
                 Entry Notes
               </span>
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div style={{
+                display: 'flex', gap: 8, alignItems: 'center',
+                background: 'var(--input-bg)', border: '1px solid var(--input-border)',
+                borderRadius: 12, padding: '4px 6px 4px 12px',
+                transition: 'border-color 0.15s ease',
+              }}>
                 <input
                   type="text"
                   value={notesInput}
@@ -1024,10 +1173,8 @@ function HabitDetailSheet({
                   placeholder="What did you achieve today?"
                   style={{
                     flex: 1,
-                    background: 'var(--input-bg)',
-                    border: '1.5px solid var(--input-border)',
-                    borderRadius: 8,
-                    padding: '6px 10px',
+                    background: 'transparent',
+                    border: 'none',
                     fontSize: 13,
                     color: TEXT_DARK,
                     outline: 'none',
@@ -1040,23 +1187,26 @@ function HabitDetailSheet({
                     }
                   }}
                 />
-                <button
+                <motion.button
                   type="button"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={saveActiveNotes}
                   disabled={savingNotes || notesInput === (activeEntry?.notes ?? '')}
                   style={{
-                    padding: '6px 12px',
-                    borderRadius: 8,
+                    padding: '7px 14px',
+                    borderRadius: 9999,
                     border: 'none',
                     background: notesInput === (activeEntry?.notes ?? '') ? 'var(--bg-tertiary)' : PURPLE,
                     color: notesInput === (activeEntry?.notes ?? '') ? 'var(--text-muted)' : 'var(--accent-on-primary)',
-                    fontSize: 12.5,
-                    fontWeight: 600,
+                    fontSize: 12,
+                    fontWeight: 700,
                     cursor: notesInput === (activeEntry?.notes ?? '') ? 'default' : 'pointer',
+                    transition: 'all 0.15s ease',
                   }}
                 >
-                  {savingNotes ? 'Saving' : 'Save'}
-                </button>
+                  {savingNotes ? 'Saving…' : 'Save'}
+                </motion.button>
               </div>
             </div>
 
@@ -1617,7 +1767,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
             onClick={submit}
             disabled={loading}
             style={{
-              width: '100%', padding: '16px 0', borderRadius: 18, border: 'none',
+              width: '100%', padding: '16px 0', borderRadius: 9999, border: 'none',
               background: loading ? 'var(--accent-light)' : 'var(--accent-primary)',
               color: 'var(--accent-on-primary)', fontSize: 16, fontWeight: 700,
               cursor: loading ? 'default' : 'pointer',
@@ -1713,7 +1863,7 @@ function NavItem({
       onClick={onClick}
       style={{
         width: '100%', display: 'flex', alignItems: 'center', gap: 12,
-        padding: '11px 14px', borderRadius: 12, border: 'none', cursor: 'pointer',
+        padding: '11px 14px', borderRadius: 9999, border: 'none', cursor: 'pointer',
         background: active ? 'var(--accent-primary)' : 'transparent',
         color: active ? 'var(--accent-on-primary)' : 'var(--text-secondary)',
         fontSize: 14, fontWeight: active ? 700 : 600, fontFamily: 'inherit', textAlign: 'left',
@@ -1745,7 +1895,7 @@ function NavGroup({
         onClick={onToggle}
         style={{
           width: '100%', display: 'flex', alignItems: 'center', gap: 10,
-          padding: '10px 14px', borderRadius: 12, border: 'none', cursor: 'pointer',
+          padding: '10px 14px', borderRadius: 9999, border: 'none', cursor: 'pointer',
           background: '#ffffff',
           color: '#1a1a1a',
           fontSize: 13.5, fontWeight: 700, fontFamily: 'inherit', textAlign: 'left',
@@ -1805,7 +1955,7 @@ function SubNavItem({
       onClick={onClick}
       style={{
         width: '100%', display: 'flex', alignItems: 'center', gap: 10,
-        padding: '8px 10px', borderRadius: 10, border: 'none', cursor: 'pointer',
+        padding: '8px 10px', borderRadius: 9999, border: 'none', cursor: 'pointer',
         background: active ? 'rgba(255,255,255,0.10)' : 'transparent',
         color: active ? 'var(--text-primary)' : 'var(--text-muted)',
         fontSize: 13, fontWeight: active ? 600 : 400, fontFamily: 'inherit', textAlign: 'left',
@@ -1901,7 +2051,7 @@ export default function FitnessSummary({
       todayEntry: { habit_id: h.id, is_completed: dateEntries[h.id] ?? false } as HabitWithEntry['todayEntry'],
     }));
 
-  const displayHabits = showAllGoodHabits ? displayHabitsFull : displayHabitsFull.slice(0, 2);
+  const displayHabits = showAllGoodHabits ? displayHabitsFull : displayHabitsFull.slice(0, 5);
 
   const completedCount = displayHabitsFull.filter((h) => h.todayEntry?.is_completed).length;
   const totalCount = displayHabitsFull.length;
@@ -1994,37 +2144,83 @@ export default function FitnessSummary({
 
       {/* ───────────────── Main ───────────────── */}
       <div>
-        <div style={{
-          maxWidth: 1280, margin: '0 auto',
-          padding: 'clamp(18px, 2.5vw, 32px) clamp(16px, 2.5vw, 32px) 72px',
-          display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)',
-        }}>
-          {/* ── Topbar ── */}
+        <div
+          className="hf-dashboard-main-container"
+          style={{
+            maxWidth: 1280, margin: '0 auto',
+            padding: 'clamp(18px, 2.5vw, 32px) clamp(16px, 2.5vw, 32px) 72px',
+            display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)',
+          }}
+        >
+          {/* ── Top Hero Greeting Banner ── */}
           <motion.div
-            initial={{ opacity: 0, y: -8 }}
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}
+            transition={{ duration: 0.35 }}
+            style={{
+              background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-primary) 12%, var(--bg-card)) 0%, var(--bg-card) 100%)',
+              border: '1px solid var(--border-default)',
+              borderRadius: 24,
+              padding: '24px 28px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 20,
+              flexWrap: 'wrap',
+              boxShadow: '0 12px 32px rgba(0, 0, 0, 0.15)',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
           >
-            <div className="hf-greeting-container" style={{ minWidth: 0 }}>
-              <p className="hf-greeting-text" style={{ margin: 0, fontSize: 12.5, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.03em' }}>
+            {/* Ambient background glow */}
+            <div style={{
+              position: 'absolute', top: '-40%', right: '-10%', width: 300, height: 300,
+              borderRadius: '50%', background: 'radial-gradient(circle, var(--accent-glow-lg) 0%, transparent 70%)',
+              pointerEvents: 'none', filter: 'blur(30px)',
+            }} />
+
+            <div style={{ minWidth: 0, zIndex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  {dateStr}
+                </span>
+                <span style={{
+                  padding: '3px 10px', borderRadius: 9999,
+                  background: 'var(--surface-tint)', border: '1px solid var(--border-subtle)',
+                  fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)',
+                }}>
+                  {completedCount}/{totalCount} Completed Today
+                </span>
+              </div>
+              <h1 style={{
+                margin: 0, fontSize: 'clamp(24px, 3.5vw, 32px)', fontWeight: 800,
+                color: 'var(--text-primary)', letterSpacing: '-0.03em', lineHeight: 1.1, fontFamily: "'Outfit', sans-serif",
+              }}>
                 {greeting}, {displayName.split(' ')[0]} 👋
-              </p>
-              <h1 style={{ margin: '3px 0 0', fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.03em', lineHeight: 1.1, fontFamily: "'Outfit', sans-serif" }}>
-                Overview
               </h1>
+              <p style={{ margin: '6px 0 0', fontSize: 14, color: 'var(--text-muted)', fontWeight: 500 }}>
+                {todayPct === 100
+                  ? '🎉 Amazing job! All habits completed for today.'
+                  : todayPct >= 50
+                  ? `🔥 Great progress! You're ${todayPct}% done with today's habits.`
+                  : '💪 Let\'s crush today\'s goals one habit at a time.'}
+              </p>
             </div>
-            <div className="hf-topbar-actions" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, zIndex: 1 }}>
               <button
                 className="hf-add-habit-btn"
                 onClick={() => setAddOpen(true)}
                 style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 7,
-                  padding: '11px 16px', borderRadius: 12, border: 'none', cursor: 'pointer',
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  padding: '12px 22px', borderRadius: 9999, border: 'none', cursor: 'pointer',
                   background: 'var(--accent-primary)', color: 'var(--accent-on-primary)',
                   fontSize: 14, fontWeight: 700, fontFamily: 'inherit',
-                  justifyContent: 'center',
+                  boxShadow: '0 8px 24px color-mix(in srgb, var(--accent-primary) 35%, transparent)',
+                  transition: 'transform 0.15s ease, boxShadow 0.15s ease',
                 }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; }}
               >
                 <Plus size={18} strokeWidth={2.6} />
                 <span className="hf-dash-btn-label">Add New Habit</span>
@@ -2034,24 +2230,131 @@ export default function FitnessSummary({
                 href="/dashboard/settings"
                 aria-label="Open profile settings"
                 style={{
-                  width: 44, height: 44, borderRadius: '50%',
+                  width: 46, height: 46, borderRadius: '50%',
                   background: 'var(--bg-secondary)', border: '1px solid var(--border-default)',
-                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'var(--text-primary)', transition: 'background 0.15s ease',
                 }}
               >
-                <User size={19} color="var(--text-muted)" />
+                <User size={20} color="var(--text-muted)" />
               </Link>
             </div>
           </motion.div>
 
+          {/* ── 4 Top KPI Metric Cards ── */}
+          <div
+            className="hf-kpi-grid"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: 16,
+            }}
+          >
+            {/* Card 1: Today's Completion */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.05 }}
+              style={{
+                background: 'var(--bg-card)', border: '1px solid var(--border-default)',
+                borderRadius: 20, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 12,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Today Progress</span>
+                <div style={{ width: 36, height: 36, borderRadius: 12, background: 'var(--surface-tint)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-primary)' }}>
+                  <Target size={18} />
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+                  {todayPct}%
+                </div>
+                <p style={{ margin: '4px 0 0', fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                  {completedCount} of {totalCount} completed
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Card 2: Active Streak */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}
+              style={{
+                background: 'var(--bg-card)', border: '1px solid var(--border-default)',
+                borderRadius: 20, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 12,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Best Streak</span>
+                <div style={{ width: 36, height: 36, borderRadius: 12, background: 'rgba(251, 146, 60, 0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FB923C' }}>
+                  <Flame size={18} />
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+                  {stats?.bestStreak ?? 0} <span style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-muted)' }}>days</span>
+                </div>
+                <p style={{ margin: '4px 0 0', fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                  {stats?.bestStreakHabitName ? `Best in "${stats.bestStreakHabitName}"` : 'Keep up the momentum'}
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Card 3: Consistency Score */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.15 }}
+              style={{
+                background: 'var(--bg-card)', border: '1px solid var(--border-default)',
+                borderRadius: 20, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 12,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Consistency Score</span>
+                <div style={{ width: 36, height: 36, borderRadius: 12, background: 'rgba(56, 189, 248, 0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#38BDF8' }}>
+                  <TrendingUp size={18} />
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+                  {avgPct}%
+                </div>
+                <p style={{ margin: '4px 0 0', fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                  7-day completion average
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Card 4: Total Done */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}
+              style={{
+                background: 'var(--bg-card)', border: '1px solid var(--border-default)',
+                borderRadius: 20, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 12,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Total Completed</span>
+                <div style={{ width: 36, height: 36, borderRadius: 12, background: 'rgba(168, 85, 247, 0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#A855F7' }}>
+                  <Trophy size={18} />
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+                  {stats?.totalCompletions ?? 0}
+                </div>
+                <p style={{ margin: '4px 0 0', fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                  Lifetime completions
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
           {/* ── Week day selector ── */}
           <DashCard
-            title={isViewingToday ? 'Today' : new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+            title={isViewingToday ? '7-Day Overview' : new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
             action={
               !isViewingToday ? (
                 <button
                   onClick={() => selectDate(todayString())}
-                  style={{ background: 'var(--surface-tint)', border: '1px solid var(--border-default)', borderRadius: 9, padding: '5px 12px', fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', cursor: 'pointer', fontFamily: 'inherit' }}
+                  style={{ background: 'var(--surface-tint)', border: '1px solid var(--border-default)', borderRadius: 9999, padding: '5px 14px', fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', cursor: 'pointer', fontFamily: 'inherit' }}
                 >
                   Jump to today
                 </button>
@@ -2113,19 +2416,10 @@ export default function FitnessSummary({
             </div>
           </DashCard>
 
-
-
           {/* ── 2-column widget grid ── */}
           <div className="hf-dashboard-grid">
-            {/* LEFT */}
+            {/* LEFT COLUMN */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)', minWidth: 0 }}>
-              <DashCard title="Weekly report" action={<span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{avgPct}% avg</span>}>
-                <WeeklyReportChart
-                  data={weekBars.map(({ date, dayLabel, dayNum, pct, isToday }) => ({ date, label: dayLabel, dayNum, pct, isToday }))}
-                  avg={avgPct}
-                />
-              </DashCard>
-
               <DashCard
                 title={isViewingToday ? "Today's Habits" : new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                 action={
@@ -2135,38 +2429,71 @@ export default function FitnessSummary({
                 }
               >
                 {displayHabits.length === 0 ? (
-                  <div style={{ padding: '28px 20px', textAlign: 'center', border: '1px dashed var(--border-default)', borderRadius: 14 }}>
-                    <p style={{ margin: '0 0 12px', fontSize: 14, color: 'var(--text-muted)' }}>No habits yet.</p>
+                  <div style={{ padding: '32px 20px', textAlign: 'center', border: '1px dashed var(--border-default)', borderRadius: 18 }}>
+                    <p style={{ margin: '0 0 14px', fontSize: 14, color: 'var(--text-muted)' }}>No active habits yet.</p>
                     <button
                       onClick={() => setAddOpen(true)}
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '9px 16px', borderRadius: 10, border: 'none', background: 'var(--accent-primary)', color: 'var(--accent-on-primary)', fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 20px', borderRadius: 9999, border: 'none', background: 'var(--accent-primary)', color: 'var(--accent-on-primary)', fontSize: 13.5, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}
                     >
-                      <Plus size={15} strokeWidth={2.6} /> Add your first habit
+                      <Plus size={16} strokeWidth={2.6} /> Add your first habit
                     </button>
                   </div>
                 ) : (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                     {displayHabits.map((h, i) => (
                       <HabitRow key={h.id} habit={h} index={i} onToggle={handleToggle} onOpen={setSelectedId} />
                     ))}
-                    {displayHabitsFull.length > 2 && (
-                      <button
+                    {displayHabitsFull.length > 5 && (
+                      <motion.button
+                        whileHover={{ scale: 1.015, y: -1 }}
+                        whileTap={{ scale: 0.985 }}
                         onClick={() => setShowAllGoodHabits(!showAllGoodHabits)}
-                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '9px 16px', borderRadius: 10, border: '1px solid var(--border-subtle)', background: 'var(--bg-tertiary)', color: 'var(--text-muted)', fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', width: '100%' }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 8,
+                          padding: '12px 20px',
+                          borderRadius: 9999,
+                          border: '1px solid color-mix(in srgb, var(--accent-primary) 25%, transparent)',
+                          background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-primary) 12%, var(--bg-tertiary)) 0%, var(--bg-tertiary) 100%)',
+                          color: 'var(--text-primary)',
+                          fontSize: 13.5,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          fontFamily: 'inherit',
+                          width: '100%',
+                          marginTop: 6,
+                          backdropFilter: 'blur(10px)',
+                          boxShadow: 'none',
+                          transition: 'all 0.2s ease',
+                        }}
                       >
-                        {showAllGoodHabits ? 'Show less' : `Show all habits (${displayHabitsFull.length})`}
-                        {showAllGoodHabits ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                      </button>
+                        <span>{showAllGoodHabits ? 'Show less' : `Show all habits (${displayHabitsFull.length})`}</span>
+                        <motion.div
+                          animate={{ rotate: showAllGoodHabits ? 180 : 0 }}
+                          transition={{ duration: 0.22, ease: 'easeOut' }}
+                        >
+                          <ChevronDown size={16} color="var(--accent-primary)" />
+                        </motion.div>
+                      </motion.button>
                     )}
                   </div>
                 )}
               </DashCard>
+
+              <DashCard title="Weekly Completion Trend" action={<span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{avgPct}% avg</span>}>
+                <WeeklyReportChart
+                  data={weekBars.map(({ date, dayLabel, dayNum, pct, isToday }) => ({ date, label: dayLabel, dayNum, pct, isToday }))}
+                  avg={avgPct}
+                />
+              </DashCard>
             </div>
 
-            {/* RIGHT */}
+            {/* RIGHT COLUMN */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)', minWidth: 0 }}>
               <DashCard
-                title="Consistency score"
+                title="Consistency Score"
                 action={avgPct > 0 ? <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{avgPct}%</span> : null}
               >
                 <div style={{ position: 'relative' }}>
@@ -2177,7 +2504,7 @@ export default function FitnessSummary({
                       return (
                         <div key={date} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
                           <div style={{
-                            width: '100%', height: TRACK_H, borderRadius: 10,
+                            width: '100%', height: TRACK_H, borderRadius: 9999,
                             background: 'var(--surface-tint)',
                             position: 'relative', overflow: 'hidden',
                           }}>
@@ -2187,7 +2514,7 @@ export default function FitnessSummary({
                               transition={{ duration: 0.5, delay: 0.08 + i * 0.05, ease: 'easeOut' }}
                               style={{
                                 position: 'absolute', bottom: 0, left: 0, right: 0,
-                                borderRadius: '8px 8px 0 0',
+                                borderRadius: 9999,
                                 background: isToday
                                   ? 'var(--accent-primary)'
                                   : 'color-mix(in srgb, var(--accent-primary) 52%, transparent)',
@@ -2228,17 +2555,24 @@ export default function FitnessSummary({
               {isViewingToday && <CircularProgress completed={completedCount} total={totalCount} />}
 
               <DashCard
-                title="Bad Habits"
+                title="Bad Habits Avoided"
                 action={
                   displayBadHabits.length > 0 ? (
-                    <span style={{ fontSize: 13, fontWeight: 600, color: loadingDate ? 'var(--text-muted)' : RED_SOFT }}>
-                      {loadingDate ? 'Loading…' : `${avoidedCount}/${displayBadHabits.length} avoided`}
-                    </span>
+                    <div style={{
+                      padding: '4px 12px',
+                      borderRadius: 9999,
+                      background: 'rgba(248, 113, 113, 0.12)',
+                      border: '1px solid rgba(248, 113, 113, 0.3)',
+                    }}>
+                      <span style={{ fontSize: 12.5, fontWeight: 750, color: RED_SOFT }}>
+                        {loadingDate ? 'Loading…' : `${avoidedCount}/${displayBadHabits.length} avoided`}
+                      </span>
+                    </div>
                   ) : (
                     <button
                       onClick={() => { setAddBadDefault(true); setAddOpen(true); }}
                       style={{
-                        padding: '5px 12px', borderRadius: 10, border: 'none',
+                        padding: '5px 12px', borderRadius: 9999, border: 'none',
                         background: RED_LIGHT, color: RED_SOFT,
                         fontSize: 12, fontWeight: 700, cursor: 'pointer',
                         display: 'flex', alignItems: 'center', gap: 5,
@@ -2265,7 +2599,7 @@ export default function FitnessSummary({
                     <button
                       onClick={() => { setAddBadDefault(true); setAddOpen(true); }}
                       style={{
-                        padding: '9px 20px', borderRadius: 12, border: 'none',
+                        padding: '9px 20px', borderRadius: 9999, border: 'none',
                         background: RED, color: '#fff',
                         fontSize: 13, fontWeight: 700, cursor: 'pointer',
                         display: 'inline-flex', alignItems: 'center', gap: 6,
@@ -2283,22 +2617,75 @@ export default function FitnessSummary({
                   </div>
                 )}
               </DashCard>
+
+              {/* ── Quick Action Shortcuts ── */}
+              <DashCard title="Quick Actions">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
+                  <Link
+                    href="/dashboard/analytics"
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
+                      borderRadius: 14, background: 'var(--surface-tint)', color: 'var(--text-primary)',
+                      textDecoration: 'none', fontSize: 13, fontWeight: 700, transition: 'background 0.15s ease',
+                    }}
+                  >
+                    <BarChart3 size={18} color="var(--accent-primary)" />
+                    Analytics
+                  </Link>
+                  <Link
+                    href="/dashboard/achievements"
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
+                      borderRadius: 14, background: 'var(--surface-tint)', color: 'var(--text-primary)',
+                      textDecoration: 'none', fontSize: 13, fontWeight: 700, transition: 'background 0.15s ease',
+                    }}
+                  >
+                    <Trophy size={18} color="#FB923C" />
+                    Trophies
+                  </Link>
+                  <Link
+                    href="/dashboard/year-in-review"
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
+                      borderRadius: 14, background: 'var(--surface-tint)', color: 'var(--text-primary)',
+                      textDecoration: 'none', fontSize: 13, fontWeight: 700, transition: 'background 0.15s ease',
+                    }}
+                  >
+                    <Sparkles size={18} color="#A855F7" />
+                    Year Review
+                  </Link>
+                  <Link
+                    href="/dashboard/settings"
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
+                      borderRadius: 14, background: 'var(--surface-tint)', color: 'var(--text-primary)',
+                      textDecoration: 'none', fontSize: 13, fontWeight: 700, transition: 'background 0.15s ease',
+                    }}
+                  >
+                    <Settings size={18} color="var(--text-muted)" />
+                    Settings
+                  </Link>
+                </div>
+              </DashCard>
             </div>
           </div>
-
-          {/* Trip Planner section removed from habit dashboard */}
-
         </div>
       </div>
 
-      {/* Responsive: hide button label on tiny phones */}
+      {/* Responsive mobile adjustments */}
       <style>{`
-        @media (max-width: 479px) { 
-          .hf-greeting-container { display: none; }
-          .hf-greeting-text { display: none; }
-          .hf-profile-link { display: none !important; }
-          .hf-topbar-actions { width: 100%; margin-top: 0px; }
-          .hf-add-habit-btn { width: 100%; }
+        @media (max-width: 1023px) {
+          .hf-dashboard-main-container {
+            padding-bottom: 110px !important;
+          }
+          .hf-kpi-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+        }
+        @media (max-width: 479px) {
+          .hf-add-habit-btn {
+            width: 100%;
+          }
         }
       `}</style>
 

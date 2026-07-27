@@ -1,4 +1,5 @@
 import Sidebar from '@/components/layout/Sidebar';
+import MobileDock from '@/components/layout/MobileDock';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,6 +8,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="hf-dash-main">
         {children}
       </div>
+      <MobileDock />
     </div>
   );
 }

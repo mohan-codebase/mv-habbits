@@ -37,7 +37,7 @@ export default function SocialAuth({ loading, setLoading }: SocialAuthProps) {
       type="button"
       onClick={handleGoogleAuth}
       disabled={loading}
-      className="group relative w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl bg-white text-slate-900 font-semibold text-[14px] transition-all duration-200 hover:bg-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.2)] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer border border-white/20"
+      className="group relative w-full flex items-center justify-center gap-3 py-3 px-4 rounded-full bg-white text-slate-900 font-semibold text-[14px] transition-all duration-200 hover:bg-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.2)] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer border border-white/20"
     >
       <svg width="19" height="19" viewBox="0 0 24 24" className="shrink-0 transition-transform duration-200 group-hover:scale-110">
         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />

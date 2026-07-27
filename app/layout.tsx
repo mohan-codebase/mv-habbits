@@ -52,7 +52,7 @@ export const metadata: Metadata = {
 // and is a WCAG 1.4.4 violation. Default initialScale=1 is enough — we don't
 // need to lock zoom for a habit tracker.
 export const viewport: Viewport = {
-  themeColor: "#555555",
+  themeColor: "#8B5CF6",
   width: "device-width",
   initialScale: 1,
 };
@@ -79,7 +79,7 @@ export default function RootLayout({
         <script
           // Prevent flash of wrong theme — runs before paint.
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;var la='#0071e3';document.documentElement.style.setProperty('--accent-primary',la);}catch(e){}})();`,
+            __html: `(function(){try{var t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;var la='#8B5CF6';document.documentElement.style.setProperty('--accent-primary',la);}catch(e){}})();`,
           }}
         />
       </head>

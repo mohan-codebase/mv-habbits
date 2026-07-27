@@ -35,7 +35,7 @@ export function generateHabitReport(habit: HabitWithEntry, rate: number, monthDo
       [`${habit.current_streak} days`, `${habit.longest_streak} days`, `${rate}%`, `${habit.total_completions}`]
     ],
     theme: 'grid',
-    headStyles: { fillColor: [0, 113, 227] },
+    headStyles: { fillColor: [139, 92, 246] },
   });
 
   const finalY = (doc as any).lastAutoTable.finalY || currentY + 5;
@@ -48,7 +48,7 @@ export function generateHabitReport(habit: HabitWithEntry, rate: number, monthDo
       [`${monthDone}`, `${monthRate}%`]
     ],
     theme: 'grid',
-    headStyles: { fillColor: [0, 113, 227] },
+    headStyles: { fillColor: [139, 92, 246] },
   });
 
   // Footer

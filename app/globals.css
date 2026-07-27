@@ -101,18 +101,18 @@
   --bg-glass-strong: rgba(10, 10, 10, 0.94);
   --bg-overlay: rgba(0, 0, 0, 0.80);
 
-  /* Accent — dynamic color mix */
-  --accent-primary: #0071e3;
-  --accent-primary-rgb: 0, 113, 227;
-  --accent-hover: #0076df;
+  /* Accent — dynamic color mix (Premium Purple Theme) */
+  --accent-primary: #8B5CF6;
+  --accent-primary-rgb: 139, 92, 246;
+  --accent-hover: #7C3AED;
   --accent-light: color-mix(in srgb, var(--accent-primary) 70%, #fff);
   --accent-on-primary: #FFFFFF;
-  --accent-glow: color-mix(in srgb, var(--accent-primary) 12%, transparent);
-  --accent-glow-md: color-mix(in srgb, var(--accent-primary) 20%, transparent);
-  --accent-glow-lg: color-mix(in srgb, var(--accent-primary) 32%, transparent);
+  --accent-glow: color-mix(in srgb, var(--accent-primary) 16%, transparent);
+  --accent-glow-md: color-mix(in srgb, var(--accent-primary) 28%, transparent);
+  --accent-glow-lg: color-mix(in srgb, var(--accent-primary) 42%, transparent);
 
   /* Categorical accents */
-  --indigo: #A78BFA;
+  --indigo: #C4B5FD;
   --indigo-dim: var(--accent-primary);
   --indigo-glow: rgba(167, 139, 250, 0.14);
 
@@ -226,9 +226,9 @@
   --bg-glass-strong: rgba(255, 255, 255, 0.97);
   --bg-overlay: rgba(0, 0, 0, 0.45);
 
-  --accent-primary: #0071e3;
-  --accent-primary-rgb: 0, 113, 227;
-  --accent-hover: #0076df;
+  --accent-primary: #8B5CF6;
+  --accent-primary-rgb: 139, 92, 246;
+  --accent-hover: #7C3AED;
   --accent-light: color-mix(in srgb, var(--accent-primary) 70%, #fff);
   --accent-on-primary: #FFFFFF;
   --accent-glow: color-mix(in srgb, var(--accent-primary) 8%, transparent);
@@ -828,20 +828,14 @@ h6 {
     font-size: clamp(18px, 5.5vw, 22px) !important;
   }
 
-  /* ── Touch targets: every interactive element ≥ 44×44px ── */
-  button,
-  [role="button"],
-  a[href],
-  input[type="checkbox"],
-  input[type="radio"] {
+  /* ── Touch targets: ensure form inputs & primary buttons are touch-friendly ── */
+  .btn,
+  .button,
+  .hf-add-habit-btn,
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
     min-height: 44px;
-    min-width: 44px;
-  }
-
-  /* …but icon-only toolbar buttons shouldn't balloon — override to 36px if they're square */
-  button[aria-label] {
-    min-width: 36px;
-    min-height: 36px;
   }
 
   /* ── Topbar: hide text labels on very small phones ── */
@@ -1160,3 +1154,63 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s !important;
   box-shadow: 0 0 0 1000px var(--bg-tertiary) inset !important;
 }
+
+/* Custom Sleek Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.25);
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.55);
+}
+
+/* Ambient Purple Mesh Background */
+body {
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(124, 58, 237, 0.08), transparent);
+  background-attachment: fixed;
+}
+
+/* Premium Gradient Text Utility */
+.gradient-text-purple {
+  background: linear-gradient(135deg, #FFFFFF 0%, #C4B5FD 50%, #8B5CF6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glass Card Interactive Hover Effect */
+.glass-card-hover {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-2px);
+  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: 0 12px 30px -10px rgba(139, 92, 246, 0.15);
+}
+
+/* ─── Global Pill Buttons ───────────────────────────────────────────────
+   Enforce pill shape (rounded-full) for all buttons and interactive CTAs
+   ─────────────────────────────────────────────────────────────────────── */
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.btn,
+.button,
+.btn-pill {
+  border-radius: 9999px !important;
+}

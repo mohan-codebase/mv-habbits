@@ -194,7 +194,7 @@ function ResetPasswordContent() {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-1 w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 rounded-xl text-white font-semibold text-[13px] sm:text-[13.5px] bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 hover:from-indigo-400 hover:to-purple-500 border border-white/20 shadow-[0_4px_16px_rgba(79,70,229,0.4)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                className="mt-1 w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 rounded-full text-white font-semibold text-[13px] sm:text-[13.5px] bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 hover:from-indigo-400 hover:to-purple-500 border border-white/20 shadow-[0_4px_16px_rgba(79,70,229,0.4)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">

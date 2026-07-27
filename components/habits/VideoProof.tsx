@@ -349,26 +349,28 @@ export default function VideoProof({
             }
           }}
           style={{
-            border: '2px dashed var(--border-subtle)',
-            borderRadius: 16,
+            border: '1.5px dashed color-mix(in srgb, var(--text-muted) 35%, transparent)',
+            borderRadius: 18,
             background: 'var(--bg-tertiary)',
-            padding: '24px 16px',
+            padding: '22px 16px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             gap: 10,
             cursor: uploading ? 'default' : 'pointer',
-            transition: 'border-color 0.2s, background-color 0.2s',
+            transition: 'all 0.2s ease',
           }}
           onMouseEnter={(e) => {
             if (!uploading) {
               e.currentTarget.style.borderColor = accentColor;
+              e.currentTarget.style.backgroundColor = `color-mix(in srgb, ${accentColor} 6%, var(--bg-tertiary))`;
             }
           }}
           onMouseLeave={(e) => {
             if (!uploading) {
-              e.currentTarget.style.borderColor = 'var(--border-subtle)';
+              e.currentTarget.style.borderColor = 'color-mix(in srgb, var(--text-muted) 35%, transparent)';
+              e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)';
             }
           }}
         >
@@ -394,21 +396,22 @@ export default function VideoProof({
                 style={{
                   width: 44,
                   height: 44,
-                  borderRadius: 12,
-                  background: 'var(--bg-secondary)',
+                  borderRadius: 9999,
+                  background: `color-mix(in srgb, ${accentColor} 14%, transparent)`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'var(--text-muted)',
+                  color: accentColor,
+                  transition: 'transform 0.2s ease',
                 }}
               >
                 <Film size={20} />
               </div>
               <div style={{ textAlign: 'center' }}>
-                <p style={{ margin: 0, fontSize: 13, color: 'var(--text-primary)', fontWeight: 600 }}>
+                <p style={{ margin: 0, fontSize: 13.5, color: 'var(--text-primary)', fontWeight: 700 }}>
                   Upload Video Proof
                 </p>
-                <p style={{ margin: '4px 0 0', fontSize: 11, color: 'var(--text-muted)' }}>
+                <p style={{ margin: '3px 0 0', fontSize: 11.5, color: 'var(--text-muted)', fontWeight: 500 }}>
                   Drag & drop or tap to select (MP4/MOV/WEBM, max 50MB)
                 </p>
               </div>

@@ -126,16 +126,16 @@ function SignupContent() {
         </div>
 
         {/* Tab Switcher (Sign In / Create Account) */}
-        <div className="flex items-center p-1 rounded-xl bg-white/[0.06] border border-white/12 mb-3.5 sm:mb-4.5">
+        <div className="flex items-center p-1 rounded-full bg-white/[0.06] border border-white/12 mb-3.5 sm:mb-4.5">
           <Link
             href="/login"
-            className="flex-1 py-1.5 sm:py-2 text-[12px] sm:text-[13px] font-medium rounded-lg text-white/60 hover:text-white hover:bg-white/[0.04] transition-all text-center"
+            className="flex-1 py-1.5 sm:py-2 text-[12px] sm:text-[13px] font-medium rounded-full text-white/60 hover:text-white hover:bg-white/[0.04] transition-all text-center"
           >
             Sign In
           </Link>
           <button
             type="button"
-            className="flex-1 py-1.5 sm:py-2 text-[12px] sm:text-[13px] font-semibold rounded-lg bg-indigo-600 text-white shadow-[0_2px_10px_rgba(79,70,229,0.4)] transition-all cursor-default text-center"
+            className="flex-1 py-1.5 sm:py-2 text-[12px] sm:text-[13px] font-semibold rounded-full bg-indigo-600 text-white shadow-[0_2px_10px_rgba(79,70,229,0.4)] transition-all cursor-default text-center"
           >
             Create Account
           </button>
@@ -286,7 +286,7 @@ function SignupContent() {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-1 w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 rounded-xl text-white font-semibold text-[13px] sm:text-[13.5px] bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 hover:from-indigo-400 hover:to-purple-500 border border-white/20 shadow-[0_4px_16px_rgba(79,70,229,0.4)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                className="mt-1 w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 rounded-full text-white font-semibold text-[13px] sm:text-[13.5px] bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 hover:from-indigo-400 hover:to-purple-500 border border-white/20 shadow-[0_4px_16px_rgba(79,70,229,0.4)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">

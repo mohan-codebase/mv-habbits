@@ -204,7 +204,7 @@ export default function Sidebar() {
           className="hf-desktop-sidebar-toggle"
           style={{
             position: 'fixed', top: 20, left: 20, zIndex: 60,
-            width: 42, height: 42, borderRadius: 14,
+            width: 42, height: 42, borderRadius: 9999,
             background: 'var(--bg-card)',
             backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
             border: '1px solid var(--border-default)',
@@ -320,7 +320,7 @@ export default function Sidebar() {
               href="/dashboard/settings"
               style={{
                 display: 'flex', alignItems: 'center', gap: 11, width: '100%',
-                padding: '10px 12px', borderRadius: 14, marginTop: 6,
+                padding: '10px 12px', borderRadius: 9999, marginTop: 6,
                 border: '1px solid var(--border-default)', background: 'var(--bg-card)',
                 cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left',
                 textDecoration: 'none',
@@ -503,7 +503,7 @@ export default function Sidebar() {
                     onClick={() => setMobileOpen(false)}
                     style={{
                       display: 'flex', alignItems: 'center', gap: 11, width: '100%',
-                      padding: '10px 12px', borderRadius: 14, marginTop: 6,
+                      padding: '10px 12px', borderRadius: 9999, marginTop: 6,
                       border: '1px solid var(--border-default)', background: 'var(--bg-card)',
                       cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left',
                       textDecoration: 'none',

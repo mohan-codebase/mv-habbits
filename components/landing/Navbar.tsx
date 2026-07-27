@@ -98,7 +98,7 @@ export default function Navbar() {
           <Link href="/login" style={{ textDecoration: 'none' }}>
             <button style={{
               padding: '7px 14px',
-              borderRadius: 'var(--r-md)',
+              borderRadius: 9999,
               background: 'transparent',
               color: 'var(--text-secondary)',
               fontSize: 13.5,
@@ -120,7 +120,7 @@ export default function Navbar() {
               whileTap={{ scale: 0.98 }}
               style={{
                 padding: '7px 16px',
-                borderRadius: 'var(--r-md)',
+                borderRadius: 9999,
                 background: 'var(--accent-primary)',
                 color: 'var(--accent-on-primary)',
                 fontSize: 13.5,

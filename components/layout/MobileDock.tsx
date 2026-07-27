@@ -1,189 +1,173 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import { PieChart, Presentation, CreditCard, Compass, LayoutGrid } from 'lucide-react';
-import { useToast } from '@/components/ui/Toast';
+import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { LayoutDashboard, BarChart3, Plus, Trophy, Settings } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-export default function MobileDock() {
+interface MobileDockProps {
+  onAddHabit?: () => void;
+}
+
+export default function MobileDock({ onAddHabit }: MobileDockProps) {
   const pathname = usePathname();
-  const router = useRouter();
-  const { toast } = useToast();
-  
-  const [activeApp, setActiveApp] = useState<'habits' | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
 
-  // The dock ONLY shows when we have actively entered one of the apps:
-  // - Habits dashboard (/dashboard when activeApp is 'habits')
-  // - Trip dashboard (/trip)
-  // Persistent across the entire app: every dashboard and trip page, including
-  // the Hub and all subpages (analytics, settings, achievements, trip subpages).
-  // Public pages (landing, login, signup, legal) are excluded — an app nav there
-  // would point logged-out visitors into authenticated routes.
-  const showDock =
-    pathname.startsWith('/dashboard') ||
-    pathname.startsWith('/trip');
+  const isOverview = pathname === '/dashboard';
+  const isAnalytics = pathname === '/dashboard/analytics';
+  const isAchievements = pathname === '/dashboard/achievements';
+  const isSettings = pathname === '/dashboard/settings';
 
-  useEffect(() => {
-    setIsMounted(true);
-    
-    const syncState = () => {
-      const saved = localStorage.getItem('productivity_master_active_app');
-      setActiveApp(saved === 'habits' ? 'habits' : null);
-    };
-
-    // Initial sync
-    syncState();
-
-    // Listen for custom event from DashboardApp or other components
-    window.addEventListener('productivity-master:active-app-changed', syncState);
-    return () => {
-      window.removeEventListener('productivity-master:active-app-changed', syncState);
-    };
-  }, []);
-
-  // Dynamically add/remove body class to handle padding-bottom on mobile devices
-  useEffect(() => {
-    if (isMounted && showDock) {
-      document.body.classList.add('has-mobile-dock');
-    } else {
-      document.body.classList.remove('has-mobile-dock');
-    }
-    return () => {
-      document.body.classList.remove('has-mobile-dock');
-    };
-  }, [isMounted, showDock]);
-
-  if (!isMounted || !showDock) return null;
-
-  const navigateToHabits = () => {
-    localStorage.setItem('productivity_master_active_app', 'habits');
-    window.dispatchEvent(new Event('productivity-master:active-app-changed'));
-    if (pathname !== '/dashboard') {
-      router.push('/dashboard');
+  const triggerAddHabit = (e: React.MouseEvent) => {
+    if (onAddHabit) {
+      e.preventDefault();
+      onAddHabit();
     }
   };
-
-  const navigateToHub = () => {
-    localStorage.removeItem('productivity_master_active_app');
-    window.dispatchEvent(new Event('productivity-master:active-app-changed'));
-    if (pathname !== '/dashboard') {
-      router.push('/dashboard');
-    }
-  };
-
-  const navigateToTrip = () => {
-    router.push('/trip');
-  };
-
-
-
-  const showFinancePlaceholder = () => {
-    toast('Coming Soon - Finance & Savings Tracker service', 'info');
-  };
-
-  // Determine active tab (path-based so subpages highlight the right tab)
-  const isTripActive = pathname.startsWith('/trip');
-  const isHabitsActive = pathname.startsWith('/dashboard') && activeApp === 'habits';
-  const isHubActive = pathname === '/dashboard' && activeApp === null;
-
-  // Active styling helper
-  const tabStyle = (isActive: boolean): React.CSSProperties => ({
-    width: 44,
-    height: 44,
-    borderRadius: '50%',
-    border: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    background: isActive ? 'var(--accent-primary, #ffffff)' : 'transparent',
-    color: isActive ? 'var(--accent-on-primary, #000000)' : 'rgba(255, 255, 255, 0.45)',
-    transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-    boxShadow: isActive ? '0 4px 12px rgba(85, 85, 85, 0.35)' : 'none',
-    padding: 0,
-  });
 
   return (
     <div
-      className="hf-mobile-dock-container"
+      className="hf-mobile-dock-container no-print"
       style={{
         position: 'fixed',
-        bottom: '24px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 100,
-        width: '90%',
-        maxWidth: '360px',
-        height: '62px',
-        background: 'rgba(21, 21, 21, 0.88)',
-        backdropFilter: 'blur(20px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
-        borderRadius: '9999px',
-        boxShadow: '0 12px 36px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+        bottom: 16,
+        left: 16,
+        right: 16,
+        zIndex: 90,
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 10px',
-        boxSizing: 'border-box',
+        justifyContent: 'center',
+        pointerEvents: 'none',
       }}
     >
-      {/* 1. Habits (Pie Chart) */}
-      <button
-        type="button"
-        title="Habit Tracker"
-        onClick={navigateToHabits}
-        style={tabStyle(isHabitsActive)}
+      <motion.nav
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+        style={{
+          pointerEvents: 'auto',
+          width: '100%',
+          maxWidth: 420,
+          background: 'var(--bg-glass-strong)',
+          backdropFilter: 'blur(24px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          border: '1px solid var(--border-default)',
+          borderRadius: 9999,
+          padding: '6px 12px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          boxShadow: '0 16px 40px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
+        }}
       >
-        <PieChart size={20} />
-      </button>
+        {/* Overview */}
+        <Link
+          href="/dashboard"
+          aria-label="Overview"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            padding: '8px 12px',
+            borderRadius: 9999,
+            textDecoration: 'none',
+            color: isOverview ? 'var(--accent-on-primary)' : 'var(--text-muted)',
+            background: isOverview ? 'var(--accent-primary)' : 'transparent',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          <LayoutDashboard size={19} strokeWidth={isOverview ? 2.5 : 2} />
+          <span style={{ fontSize: 10, fontWeight: isOverview ? 700 : 500 }}>Home</span>
+        </Link>
 
-      {/* 3. Finance/Savings (Credit Card - Placeholder) */}
-      <button
-        type="button"
-        title="Finance Tracker (Coming Soon)"
-        onClick={showFinancePlaceholder}
-        style={tabStyle(false)}
-      >
-        <CreditCard size={20} />
-      </button>
+        {/* Analytics */}
+        <Link
+          href="/dashboard/analytics"
+          aria-label="Analytics"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            padding: '8px 12px',
+            borderRadius: 9999,
+            textDecoration: 'none',
+            color: isAnalytics ? 'var(--accent-on-primary)' : 'var(--text-muted)',
+            background: isAnalytics ? 'var(--accent-primary)' : 'transparent',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          <BarChart3 size={19} strokeWidth={isAnalytics ? 2.5 : 2} />
+          <span style={{ fontSize: 10, fontWeight: isAnalytics ? 700 : 500 }}>Stats</span>
+        </Link>
 
-      {/* 4. Trip Planner (Compass) */}
-      <button
-        type="button"
-        title="Trip Planner"
-        onClick={navigateToTrip}
-        style={tabStyle(isTripActive)}
-      >
-        <Compass size={20} />
-      </button>
+        {/* Quick Add Center Button */}
+        <button
+          onClick={triggerAddHabit}
+          aria-label="Add Habit"
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: '50%',
+            border: 'none',
+            background: 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 100%)',
+            color: 'var(--accent-on-primary)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            boxShadow: '0 6px 16px color-mix(in srgb, var(--accent-primary) 45%, transparent)',
+            margin: '0 2px',
+            transition: 'transform 0.15s ease',
+          }}
+          onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.92)'; }}
+          onMouseUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <Plus size={22} strokeWidth={2.8} />
+        </button>
 
-      {/* 5. App Hub (Layout Grid) */}
-      <button
-        type="button"
-        title="App Hub"
-        onClick={navigateToHub}
-        style={tabStyle(isHubActive)}
-      >
-        <LayoutGrid size={20} />
-      </button>
+        {/* Achievements */}
+        <Link
+          href="/dashboard/achievements"
+          aria-label="Achievements"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            padding: '8px 12px',
+            borderRadius: 9999,
+            textDecoration: 'none',
+            color: isAchievements ? 'var(--accent-on-primary)' : 'var(--text-muted)',
+            background: isAchievements ? 'var(--accent-primary)' : 'transparent',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          <Trophy size={19} strokeWidth={isAchievements ? 2.5 : 2} />
+          <span style={{ fontSize: 10, fontWeight: isAchievements ? 700 : 500 }}>Trophies</span>
+        </Link>
 
-      <style jsx global>{`
-        /* Hide mobile dock on desktop devices */
-        @media (min-width: 1024px) {
-          .hf-mobile-dock-container {
-            display: none !important;
-          }
-        }
-        
-        /* Ensure layout is not covered by bottom dock on mobile view only when active */
-        @media (max-width: 1023px) {
-          body.has-mobile-dock {
-            padding-bottom: 96px !important;
-          }
-        }
-      `}</style>
+        {/* Settings */}
+        <Link
+          href="/dashboard/settings"
+          aria-label="Settings"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            padding: '8px 12px',
+            borderRadius: 9999,
+            textDecoration: 'none',
+            color: isSettings ? 'var(--accent-on-primary)' : 'var(--text-muted)',
+            background: isSettings ? 'var(--accent-primary)' : 'transparent',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          <Settings size={19} strokeWidth={isSettings ? 2.5 : 2} />
+          <span style={{ fontSize: 10, fontWeight: isSettings ? 700 : 500 }}>Settings</span>
+        </Link>
+      </motion.nav>
     </div>
   );
 }

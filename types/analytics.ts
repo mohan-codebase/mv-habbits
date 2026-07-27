@@ -11,21 +11,6 @@ export interface HeatmapCell {
   percentage: number;
 }
 
-export interface CategoryStat {
-  category: string;
-  color: string;
-  completed: number;
-  total: number;
-  percentage: number;
-}
-
-export interface WeekdayPattern {
-  day: string; // 'Mon', 'Tue', etc.
-  dayIndex: number;
-  completionRate: number;
-  totalEntries: number;
-}
-
 export interface OverviewStats {
   todayCompleted: number;
   todayTotal: number;
@@ -36,11 +21,3 @@ export interface OverviewStats {
   totalCompletions: number;
 }
 
-export interface HabitLeaderboardItem {
-  habitId: string;
-  habitName: string;
-  habitIcon: string;
-  habitColor: string;
-  completionRate: number;
-  streak: number;
-}

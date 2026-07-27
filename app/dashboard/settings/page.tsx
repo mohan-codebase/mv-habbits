@@ -9,8 +9,6 @@ import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { useTheme } from '@/components/ui/ThemeProvider';
 import { Shield, Sun, Moon, HelpCircle, LogOut } from 'lucide-react';
 
-
-
 export default function SettingsPage() {
   const [devicesOpen, setDevicesOpen] = useState(false);
   const [user, setUser] = useState<SupabaseUser | null>(null);
@@ -177,8 +175,6 @@ export default function SettingsPage() {
               </button>
             </div>
           </div>
-
-
         </div>
 
         {/* Help & Support Card */}
@@ -272,5 +268,3 @@ export default function SettingsPage() {
     </div>
   );
 }
-
-

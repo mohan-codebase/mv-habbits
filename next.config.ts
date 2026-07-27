@@ -94,8 +94,17 @@ const nextConfig: NextConfig = {
   images: {
     // Use Vercel's CDN for image optimization
     formats: ['image/avif', 'image/webp'],
-    // Remote patterns for external images (if any)
-    remotePatterns: [],
+    // Remote patterns for external images
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.aceternity.com',
+      },
+    ],
   },
 
   // Headers — security + cache control.

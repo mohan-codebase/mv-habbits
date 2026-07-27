@@ -43,8 +43,8 @@ function applyTheme(theme: Theme) {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('dark');
-  const [lightAccent, setLightAccentState] = useState('#0071e3');
-  const [darkAccent, setDarkAccentState] = useState('#0071e3');
+  const [lightAccent, setLightAccentState] = useState('#8B5CF6');
+  const [darkAccent, setDarkAccentState] = useState('#8B5CF6');
 
   useEffect(() => {
     // Sync React state to the theme the pre-paint script already applied,
@@ -54,7 +54,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     // Read and sync custom accents from localStorage safely
     try {
-      // Disabled to enforce #0071e3 everywhere
+      // Disabled to enforce #8B5CF6 everywhere
       // const la = localStorage.getItem('productivity_master_light_accent');
       // if (la) setLightAccentState(la);
       // const da = localStorage.getItem('productivity_master_dark_accent');
