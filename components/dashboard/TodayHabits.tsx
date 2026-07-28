@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect, useTransition } from 'react';
-import { Plus, CalendarClock, Zap, ChevronDown, ChevronUp } from 'lucide-react';
+import { Plus, CalendarClock, Zap, ChevronDown, ChevronUp, Ban } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import type { HabitWithEntry, Habit, HabitEntry, Category } from '@/types/habit';
@@ -487,7 +487,7 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
                 gap: 4,
               }}
             >
-              🚫 {avoidedCount}/{badHabits.length} avoided
+              <Ban size={12} style={{ display: 'inline', marginRight: 2 }} /> {avoidedCount}/{badHabits.length} avoided
             </span>
           )}
         </div>

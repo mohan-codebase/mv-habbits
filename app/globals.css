@@ -1213,4 +1213,34 @@ input[type="reset"],
 .button,
 .btn-pill {
   border-radius: 9999px !important;
-}
+}
+
+/* ── KPI Grid: Horizontal scroll on mobile ── */
+@media (max-width: 1023px) {
+  .hf-kpi-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-bottom: 12px !important;
+  }
+  .hf-kpi-grid > div {
+    flex: 0 0 min(240px, 85vw) !important;
+    scroll-snap-align: center;
+  }
+  /* Hide scrollbar for a cleaner look */
+  .hf-kpi-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .hf-kpi-grid {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+

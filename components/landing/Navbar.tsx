@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Menu, X } from 'lucide-react';
+import { Zap, Menu, X, Smile } from 'lucide-react';
 
 const NAV_LINKS = [
   { label: 'Features', href: '/#features' },
@@ -52,7 +52,7 @@ export default function Navbar() {
           style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}
           onClick={() => setMenuOpen(false)}
         >
-            <span style={{ fontSize: 24, lineHeight: 1 }}>🙂</span>
+            <Smile size={24} color="var(--text-primary)" />
           <span style={{
             fontSize: 15,
             fontWeight: 700,

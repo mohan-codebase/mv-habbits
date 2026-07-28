@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BarChart3, Plus, Trophy, Settings } from 'lucide-react';
+import { LayoutDashboard, BarChart3, Plus, Trophy, Settings, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface MobileDockProps {
@@ -16,6 +16,7 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
   const isOverview = pathname === '/dashboard';
   const isAnalytics = pathname === '/dashboard/analytics';
   const isAchievements = pathname === '/dashboard/achievements';
+  const isNetwork = pathname === '/dashboard/network';
   const isSettings = pathname === '/dashboard/settings';
 
   const triggerAddHabit = (e: React.MouseEvent) => {
@@ -27,7 +28,7 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
 
   return (
     <div
-      className="hf-mobile-dock-container no-print"
+      className="hf-mobile-nav no-print"
       style={{
         position: 'fixed',
         bottom: 16,
@@ -145,6 +146,27 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
         >
           <Trophy size={19} strokeWidth={isAchievements ? 2.5 : 2} />
           <span style={{ fontSize: 10, fontWeight: isAchievements ? 700 : 500 }}>Trophies</span>
+        </Link>
+
+        {/* Network */}
+        <Link
+          href="/dashboard/network"
+          aria-label="Network"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            padding: '8px 12px',
+            borderRadius: 9999,
+            textDecoration: 'none',
+            color: isNetwork ? 'var(--accent-on-primary)' : 'var(--text-muted)',
+            background: isNetwork ? 'var(--accent-primary)' : 'transparent',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          <Users size={19} strokeWidth={isNetwork ? 2.5 : 2} />
+          <span style={{ fontSize: 10, fontWeight: isNetwork ? 700 : 500 }}>Social</span>
         </Link>
 
         {/* Settings */}

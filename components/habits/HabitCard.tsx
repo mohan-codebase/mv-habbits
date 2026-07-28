@@ -2,9 +2,10 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MoreHorizontal, Pencil, Archive, Trash2, Flame, Shield, Target, BadgeCheck, GripVertical } from 'lucide-react';
+import { MoreHorizontal, Pencil, Archive, Trash2, Flame, Shield, Target, BadgeCheck, GripVertical, Check } from 'lucide-react';
 import { DynamicIcon } from '@/lib/icons';
 import type { HabitWithEntry } from '@/types/habit';
+import ShareButton from '@/components/social/ShareButton';
 
 interface HabitCardProps {
   habit: HabitWithEntry;
@@ -458,6 +459,18 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                 {habit.completionRate ?? 0}%
               </span>
             </div>
+
+            {/* Share Button */}
+            {(streak > 0 || completed) && (
+              <div className="ml-auto pl-2 border-l border-white/20">
+                <ShareButton 
+                  title={habit.name}
+                  text={`I'm on a ${streak}-day streak for "${habit.name}" on Productivity Master!`}
+                  type="twitter"
+                  className="scale-90"
+                />
+              </div>
+            )}
           </div>
 
           {/* Action Button (Centered Pill) */}
@@ -488,7 +501,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
             className="habit-pill-btn"
           >
             {completed ? (
-              <>Completed ✓</>
+              <>Completed <Check size={16} style={{ display: 'inline', marginLeft: 4 }} /></>
             ) : (
               <>Mark Done +</>
             )}

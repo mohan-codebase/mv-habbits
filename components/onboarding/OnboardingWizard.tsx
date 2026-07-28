@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Sparkles, Check, X } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Sparkles, Check, X, Zap, PartyPopper, Flame } from 'lucide-react';
 import { DynamicIcon as OWIcon } from '@/lib/icons';
 import type { Habit } from '@/types/habit';
 
@@ -245,8 +245,8 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
               {step === 0 && (
                 <div style={{ textAlign: 'center' }}>
                   <div style={{
-                    fontSize: 48, marginBottom: 16, lineHeight: 1,
-                  }}>⚡</div>
+                    display: 'flex', justifyContent: 'center', marginBottom: 16,
+                  }}><Zap size={48} color="var(--accent-primary)" /></div>
                   <h2 style={{
                     fontSize: 24, fontWeight: 800, fontFamily: "'Outfit'",
                     letterSpacing: '-0.03em', color: 'var(--text-primary)', margin: '0 0 10px',
@@ -411,8 +411,10 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
                     <div style={{
                       width: 36, height: 36, borderRadius: 9, flexShrink: 0,
                       background: `${habitColor}25`, border: `1px solid ${habitColor}50`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
-                    }}>{template?.icon ?? '⚡'}</div>
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      {template?.icon ? <OWIcon name={template.icon} size={18} color={habitColor} /> : <Zap size={18} color={habitColor} />}
+                    </div>
                     <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
                       {habitName || 'Your habit'}
                     </span>
@@ -453,7 +455,7 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
               {step === 4 && (
                 <div style={{ textAlign: 'center', position: 'relative' }}>
                   {showConfetti && <Confetti />}
-                  <div style={{ fontSize: 52, marginBottom: 16, lineHeight: 1 }}>🎉</div>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}><PartyPopper size={52} color="var(--accent-primary)" /></div>
                   <h2 style={{
                     fontSize: 24, fontWeight: 800, fontFamily: "'Outfit'",
                     letterSpacing: '-0.03em', color: 'var(--text-primary)', margin: '0 0 10px',
@@ -463,8 +465,8 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
                   <p style={{ fontSize: 14.5, color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 8px' }}>
                     <strong style={{ color: 'var(--accent-primary)' }}>{createdHabit?.name}</strong> has been added to your dashboard.
                   </p>
-                  <p style={{ fontSize: 13.5, color: 'var(--text-muted)', margin: '0 0 28px' }}>
-                    Check it off today to start your streak! 🔥
+                  <p style={{ fontSize: 13.5, color: 'var(--text-muted)', margin: '0 0 28px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                    Check it off today to start your streak! <Flame size={16} color="var(--accent-primary)" />
                   </p>
                   <div style={{
                     padding: '10px 14px', borderRadius: 12, marginBottom: 24,

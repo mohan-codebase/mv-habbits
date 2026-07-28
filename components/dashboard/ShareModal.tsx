@@ -23,7 +23,7 @@ export default function ShareModal({ isOpen, onClose, stats }: ShareModalProps) 
   const level = Math.floor(stats.totalCompletions / 50) + 1;
   const rank = stats.totalCompletions >= 500 ? 'Master' : stats.totalCompletions >= 250 ? 'Elite' : stats.totalCompletions >= 100 ? 'Pro' : 'Adept';
 
-  const shareText = `🔥 My streak is at ${stats.bestStreak} days on Productivity Master! Just reached Level ${level} (${rank}). How's your consistency? #Productivity Master #Productivity`;
+  const shareText = `My streak is at ${stats.bestStreak} days on Productivity Master! Just reached Level ${level} (${rank}). How's your consistency? #Productivity Master #Productivity`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(shareText);

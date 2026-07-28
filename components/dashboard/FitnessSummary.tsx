@@ -19,7 +19,6 @@ import type { HabitWithEntry, Habit } from '@/types/habit';
 import { todayString } from '@/lib/utils/dates';
 import { generateHabitReport } from '@/lib/utils/pdf';
 import { createClient } from '@/lib/supabase/client';
-import VideoProof from '@/components/habits/VideoProof';
 import type { HabitEntry } from '@/types/entry';
 import { useToast } from '@/components/ui/Toast';
 
@@ -328,7 +327,7 @@ function HabitRow({
                 flexShrink: 0,
               }}
             >
-              🔥 {streak}d
+              <Flame size={12} style={{ display: 'inline', marginRight: 2 }} /> {streak}d
             </span>
           )}
         </div>
@@ -741,7 +740,7 @@ function HabitDetailSheet({
             position: 'relative',
             pointerEvents: 'auto',
             width: '100%', maxWidth: 490,
-            background: 'linear-gradient(155deg, rgba(22, 19, 36, 0.96) 0%, rgba(13, 11, 22, 0.98) 100%)',
+            background: 'var(--bg-card)',
             backdropFilter: 'blur(24px)',
             WebkitBackdropFilter: 'blur(24px)',
             border: `1px solid color-mix(in srgb, ${PURPLE} 35%, transparent)`,
@@ -1209,63 +1208,6 @@ function HabitDetailSheet({
                 </motion.button>
               </div>
             </div>
-
-            {/* Video Proof Component */}
-            <VideoProof
-              habitId={habit.id}
-              entryDate={activeLogDate}
-              userId={userId}
-              videoPath={activeEntry?.video_path ?? null}
-              onUploadSuccess={(path) => {
-                setEntries((prev) => {
-                  const exists = prev.some((e) => e.entry_date === activeLogDate);
-                  if (exists) {
-                    return prev.map((e) => e.entry_date === activeLogDate ? { ...e, is_completed: true, video_path: path } : e);
-                  } else {
-                    return [
-                      ...prev,
-                      {
-                        id: `temp-${Date.now()}`,
-                        habit_id: habit.id,
-                        user_id: userId || '',
-                        entry_date: activeLogDate,
-                        is_completed: true,
-                        video_path: path,
-                        notes: null,
-                        value: null,
-                        completed_at: new Date().toISOString(),
-                        created_at: new Date().toISOString(),
-                        updated_at: new Date().toISOString(),
-                      } as HabitEntry,
-                    ];
-                  }
-                });
-                onUpdate({
-                  id: habit.id,
-                  todayEntry: activeLogDate === todayLocal ? ({
-                    ...(habit.todayEntry || {}),
-                    habit_id: habit.id,
-                    entry_date: activeLogDate,
-                    is_completed: true,
-                    video_path: path,
-                  } as any) : habit.todayEntry,
-                });
-              }}
-              onDeleteSuccess={() => {
-                setEntries((prev) => prev.map((e) => e.entry_date === activeLogDate ? { ...e, video_path: null } : e));
-                onUpdate({
-                  id: habit.id,
-                  todayEntry: activeLogDate === todayLocal ? ({
-                    ...(habit.todayEntry || {}),
-                    habit_id: habit.id,
-                    entry_date: activeLogDate,
-                    is_completed: true,
-                    video_path: null,
-                  } as any) : habit.todayEntry,
-                });
-              }}
-              accentColor={PURPLE}
-            />
           </div>
 
           {/* Completion rate bar */}
@@ -2179,31 +2121,28 @@ export default function FitnessSummary({
               pointerEvents: 'none', filter: 'blur(30px)',
             }} />
 
-            <div style={{ minWidth: 0, zIndex: 1 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <div style={{ minWidth: 0, zIndex: 1, flex: '1 1 300px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   {dateStr}
                 </span>
-                <span style={{
-                  padding: '3px 10px', borderRadius: 9999,
-                  background: 'var(--surface-tint)', border: '1px solid var(--border-subtle)',
-                  fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)',
-                }}>
-                  {completedCount}/{totalCount} Completed Today
+                <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--border-medium)' }} />
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>
+                  <span style={{ color: 'var(--accent-primary)', fontWeight: 700 }}>{completedCount}</span>/{totalCount} Completed Today
                 </span>
               </div>
               <h1 style={{
-                margin: 0, fontSize: 'clamp(24px, 3.5vw, 32px)', fontWeight: 800,
-                color: 'var(--text-primary)', letterSpacing: '-0.03em', lineHeight: 1.1, fontFamily: "'Outfit', sans-serif",
+                margin: 0, fontSize: 'clamp(26px, 4vw, 34px)', fontWeight: 800,
+                color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1, fontFamily: "'Outfit', sans-serif",
               }}>
-                {greeting}, {displayName.split(' ')[0]} 👋
+                {greeting}, {displayName.split(' ')[0]}
               </h1>
-              <p style={{ margin: '6px 0 0', fontSize: 14, color: 'var(--text-muted)', fontWeight: 500 }}>
+              <p style={{ margin: '8px 0 0', fontSize: 15, color: 'var(--text-secondary)', fontWeight: 500 }}>
                 {todayPct === 100
-                  ? '🎉 Amazing job! All habits completed for today.'
+                  ? 'Amazing job! All habits completed for today.'
                   : todayPct >= 50
-                  ? `🔥 Great progress! You're ${todayPct}% done with today's habits.`
-                  : '💪 Let\'s crush today\'s goals one habit at a time.'}
+                  ? `Great progress! You're ${todayPct}% done with today's habits.`
+                  : 'Let\'s crush today\'s goals one habit at a time.'}
               </p>
             </div>
 
@@ -2213,17 +2152,18 @@ export default function FitnessSummary({
                 onClick={() => setAddOpen(true)}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
-                  padding: '12px 22px', borderRadius: 9999, border: 'none', cursor: 'pointer',
+                  padding: '12px 24px', borderRadius: 9999, border: 'none', cursor: 'pointer',
                   background: 'var(--accent-primary)', color: 'var(--accent-on-primary)',
                   fontSize: 14, fontWeight: 700, fontFamily: 'inherit',
                   boxShadow: '0 8px 24px color-mix(in srgb, var(--accent-primary) 35%, transparent)',
                   transition: 'transform 0.15s ease, boxShadow 0.15s ease',
+                  flexShrink: 0,
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; }}
               >
                 <Plus size={18} strokeWidth={2.6} />
-                <span className="hf-dash-btn-label">Add New Habit</span>
+                <span className="hf-dash-btn-label">Add Habit</span>
               </button>
               <Link
                 className="hf-profile-link"
@@ -2231,12 +2171,15 @@ export default function FitnessSummary({
                 aria-label="Open profile settings"
                 style={{
                   width: 46, height: 46, borderRadius: '50%',
-                  background: 'var(--bg-secondary)', border: '1px solid var(--border-default)',
+                  background: 'var(--surface-tint)', border: '1px solid var(--border-subtle)',
                   cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: 'var(--text-primary)', transition: 'background 0.15s ease',
+                  color: 'var(--text-primary)', transition: 'background 0.15s ease, transform 0.15s ease',
+                  flexShrink: 0,
                 }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; }}
               >
-                <User size={20} color="var(--text-muted)" />
+                <User size={20} color="var(--text-primary)" />
               </Link>
             </div>
           </motion.div>
@@ -2254,22 +2197,20 @@ export default function FitnessSummary({
             <motion.div
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.05 }}
               style={{
-                background: 'var(--bg-card)', border: '1px solid var(--border-default)',
-                borderRadius: 20, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 12,
+                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
+                borderRadius: 9999, padding: '14px 28px', display: 'flex', flexDirection: 'column', gap: 4,
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Today Progress</span>
-                <div style={{ width: 36, height: 36, borderRadius: 12, background: 'var(--surface-tint)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-primary)' }}>
-                  <Target size={18} />
-                </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
+                <Target size={14} color="var(--accent-primary)" />
+                <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Today Progress</span>
               </div>
-              <div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {todayPct}%
                 </div>
-                <p style={{ margin: '4px 0 0', fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
-                  {completedCount} of {totalCount} completed
+                <p style={{ margin: 0, fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                  {completedCount}/{totalCount} done
                 </p>
               </div>
             </motion.div>
@@ -2278,22 +2219,20 @@ export default function FitnessSummary({
             <motion.div
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}
               style={{
-                background: 'var(--bg-card)', border: '1px solid var(--border-default)',
-                borderRadius: 20, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 12,
+                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
+                borderRadius: 9999, padding: '14px 28px', display: 'flex', flexDirection: 'column', gap: 4,
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Best Streak</span>
-                <div style={{ width: 36, height: 36, borderRadius: 12, background: 'rgba(251, 146, 60, 0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FB923C' }}>
-                  <Flame size={18} />
-                </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
+                <Flame size={14} color="#FB923C" />
+                <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Best Streak</span>
               </div>
-              <div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
-                  {stats?.bestStreak ?? 0} <span style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-muted)' }}>days</span>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+                  {stats?.bestStreak ?? 0} <span style={{ fontSize: 15, fontWeight: 650, color: 'var(--text-muted)' }}>d</span>
                 </div>
-                <p style={{ margin: '4px 0 0', fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
-                  {stats?.bestStreakHabitName ? `Best in "${stats.bestStreakHabitName}"` : 'Keep up the momentum'}
+                <p style={{ margin: 0, fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                  {stats?.bestStreakHabitName ? `in "${stats.bestStreakHabitName.slice(0, 12)}${stats.bestStreakHabitName.length > 12 ? '…' : ''}"` : 'momentum'}
                 </p>
               </div>
             </motion.div>
@@ -2302,22 +2241,20 @@ export default function FitnessSummary({
             <motion.div
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.15 }}
               style={{
-                background: 'var(--bg-card)', border: '1px solid var(--border-default)',
-                borderRadius: 20, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 12,
+                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
+                borderRadius: 9999, padding: '14px 28px', display: 'flex', flexDirection: 'column', gap: 4,
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Consistency Score</span>
-                <div style={{ width: 36, height: 36, borderRadius: 12, background: 'rgba(56, 189, 248, 0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#38BDF8' }}>
-                  <TrendingUp size={18} />
-                </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
+                <TrendingUp size={14} color="#38BDF8" />
+                <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Consistency</span>
               </div>
-              <div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {avgPct}%
                 </div>
-                <p style={{ margin: '4px 0 0', fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
-                  7-day completion average
+                <p style={{ margin: 0, fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                  7-day avg
                 </p>
               </div>
             </motion.div>
@@ -2326,22 +2263,20 @@ export default function FitnessSummary({
             <motion.div
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}
               style={{
-                background: 'var(--bg-card)', border: '1px solid var(--border-default)',
-                borderRadius: 20, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 12,
+                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
+                borderRadius: 9999, padding: '14px 28px', display: 'flex', flexDirection: 'column', gap: 4,
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Total Completed</span>
-                <div style={{ width: 36, height: 36, borderRadius: 12, background: 'rgba(168, 85, 247, 0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#A855F7' }}>
-                  <Trophy size={18} />
-                </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
+                <Trophy size={14} color="#A855F7" />
+                <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Done</span>
               </div>
-              <div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {stats?.totalCompletions ?? 0}
                 </div>
-                <p style={{ margin: '4px 0 0', fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
-                  Lifetime completions
+                <p style={{ margin: 0, fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                  lifetime
                 </p>
               </div>
             </motion.div>
@@ -2377,38 +2312,26 @@ export default function FitnessSummary({
                       {dayLabel}
                     </span>
                     <div style={{ position: 'relative', width: 42, height: 42 }}>
-                      {isToday ? (
-                        <>
-                          <svg width="42" height="42" style={{ position: 'absolute', inset: 0 }}>
-                            <circle cx="21" cy="21" r={R} fill="none" style={{ stroke: `color-mix(in srgb, ${accentHex} 22%, transparent)` }} strokeWidth="2.5" />
-                            <circle cx="21" cy="21" r={R} fill="none" stroke={accentHex}
-                              strokeWidth="2.5" strokeLinecap="round"
-                              strokeDasharray={CIRC}
-                              strokeDashoffset={CIRC * (1 - todayPct / 100)}
-                              transform="rotate(-90 21 21)"
-                              style={{ transition: 'stroke-dashoffset 0.6s ease' }}
-                            />
-                          </svg>
-                          <div style={{
-                            position: 'absolute', inset: 5, borderRadius: '50%',
-                            background: 'var(--accent-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          }}>
-                            <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-on-primary)' }}>{dayNum}</span>
-                          </div>
-                        </>
-                      ) : (
-                        <div style={{
-                          width: 42, height: 42, borderRadius: '50%',
-                          background: isSelected ? 'var(--accent-primary)' : pct > 0 ? 'var(--surface-tint)' : 'transparent',
-                          border: isSelected ? 'none' : '1px solid var(--border-default)',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          transition: 'background 0.18s ease',
-                        }}>
-                          <span style={{ fontSize: 13, fontWeight: 600, color: isSelected ? 'var(--accent-on-primary)' : pct > 0 ? 'var(--text-primary)' : 'var(--text-muted)' }}>
-                            {dayNum}
-                          </span>
-                        </div>
-                      )}
+                      <svg width="42" height="42" style={{ position: 'absolute', inset: 0 }}>
+                        <circle cx="21" cy="21" r={R} fill="none" style={{ stroke: `color-mix(in srgb, ${accentHex} 22%, transparent)` }} strokeWidth="2.5" />
+                        <circle cx="21" cy="21" r={R} fill="none" stroke={accentHex}
+                          strokeWidth="2.5" strokeLinecap="round"
+                          strokeDasharray={CIRC}
+                          strokeDashoffset={CIRC * (1 - (isToday ? todayPct : pct) / 100)}
+                          transform="rotate(-90 21 21)"
+                          style={{ transition: 'stroke-dashoffset 0.6s ease' }}
+                        />
+                      </svg>
+                      <div style={{
+                        position: 'absolute', inset: 5, borderRadius: '50%',
+                        background: isSelected ? 'var(--accent-primary)' : 'transparent',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        transition: 'background 0.18s ease',
+                      }}>
+                        <span style={{ fontSize: 13, fontWeight: isSelected ? 700 : 600, color: isSelected ? 'var(--accent-on-primary)' : 'var(--text-primary)' }}>
+                          {dayNum}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 );

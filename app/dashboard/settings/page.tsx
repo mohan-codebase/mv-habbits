@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import PushNotificationToggle from '@/components/settings/PushNotificationToggle';
 import SecuritySettings from '@/components/settings/SecuritySettings';
 import DevicesModal from '@/components/settings/DevicesModal';
+import DataManagement from '@/components/settings/DataManagement';
 import { createClient } from '@/lib/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { useTheme } from '@/components/ui/ThemeProvider';
@@ -91,6 +92,9 @@ export default function SettingsPage() {
 
         {/* Passcode and Biometric Security Settings */}
         <SecuritySettings />
+
+        {/* Data Management Card */}
+        <DataManagement user={user} />
 
         {/* Security / Devices Card */}
         <div

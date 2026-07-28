@@ -182,7 +182,7 @@ export async function POST(req: NextRequest) {
     const names = dueHabits.map((h) => h.name);
     const body =
       names.length === 1
-        ? `Time to do: ${names[0]} 🔥`
+        ? `Time to do: ${names[0]}!`
         : `Time for ${names.length} habits: ${names.slice(0, 2).join(', ')}${names.length > 2 ? '…' : ''}`;
 
     for (const sub of userSubs) {

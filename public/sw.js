@@ -30,7 +30,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('push', (event) => {
   let data = {
     title: 'Productivity Master',
-    body: "Time to check in on today's habits! 🔥",
+    body: "Time to check in on today's habits!",
     icon: '/icons/icon-192.png',
     badge: '/icons/icon-192.png',
     url: '/dashboard',
@@ -54,7 +54,7 @@ self.addEventListener('push', (event) => {
       renotify: true,
       data: { url: data.url },
       actions: [
-        { action: 'open', title: '✅ Check in now' },
+        { action: 'open', title: 'Check in now' },
         { action: 'dismiss', title: 'Later' },
       ],
     })

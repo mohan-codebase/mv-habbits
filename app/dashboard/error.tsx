@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { AlertTriangle } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
 export default function DashboardError({
@@ -40,7 +41,7 @@ export default function DashboardError({
           fontSize: 22,
         }}
       >
-        ⚠
+        <AlertTriangle size={22} color="var(--danger)" />
       </div>
       <h2
         style={{

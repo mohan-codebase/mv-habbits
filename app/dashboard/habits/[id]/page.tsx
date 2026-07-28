@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, use } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Flame, CheckCircle2, Target, Calendar, TrendingUp, Clock } from 'lucide-react';
+import { ArrowLeft, Flame, CheckCircle2, Target, Calendar, TrendingUp, Clock, Video, Check } from 'lucide-react';
 import { DynamicIcon } from '@/lib/icons';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
@@ -16,7 +16,6 @@ import type { Habit } from '@/types/habit';
 import type { HabitEntry } from '@/types/entry';
 import type { HeatmapCell, DailyTrend } from '@/types/analytics';
 import { createClient } from '@/lib/supabase/client';
-import VideoProof from '@/components/habits/VideoProof';
 
 interface HabitDetailData extends Omit<Habit, 'category'> {
   entries: HabitEntry[];
@@ -480,7 +479,7 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
                       flexShrink: 0,
                     }}
                   >
-                    📹 Video Proof
+                    <Video size={12} /> Video Proof
                   </span>
                 )}
               </div>
@@ -493,7 +492,7 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
                   flexShrink: 0,
                 }}
               >
-                {entry.is_completed ? '✓' : '—'}
+                {entry.is_completed ? <Check size={14} style={{ display: 'inline', verticalAlign: 'middle' }} /> : '—'}
                 {entry.value != null ? ` ${entry.value}` : ''}
               </span>
             </button>
@@ -569,35 +568,7 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
               />
             </div>
 
-            {/* Video Proof Component */}
-            <VideoProof
-              habitId={habit.id}
-              entryDate={editEntry.entry_date}
-              userId={userId}
-              videoPath={editEntry.video_path}
-              onUploadSuccess={(path) => {
-                setHabit((prev) => {
-                  if (!prev) return prev;
-                  const entries = prev.entries.map((e) =>
-                    e.id === editEntry.id ? { ...e, is_completed: true, video_path: path } : e
-                  );
-                  return { ...prev, entries };
-                });
-                setEditCompleted(true);
-                setEditEntry((prev) => (prev ? { ...prev, is_completed: true, video_path: path } : null));
-              }}
-              onDeleteSuccess={() => {
-                setHabit((prev) => {
-                  if (!prev) return prev;
-                  const entries = prev.entries.map((e) =>
-                    e.id === editEntry.id ? { ...e, video_path: null } : e
-                  );
-                  return { ...prev, entries };
-                });
-                setEditEntry((prev) => (prev ? { ...prev, video_path: null } : null));
-              }}
-              accentColor="var(--accent-primary)"
-            />
+
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
               <Button variant="ghost" onClick={closeEditModal} disabled={editSaving}>

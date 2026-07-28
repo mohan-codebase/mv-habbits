@@ -16,6 +16,9 @@ import {
   Search,
   X,
   Menu,
+  Users,
+  Activity,
+  Smile,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/lib/supabase/client';
@@ -194,6 +197,8 @@ export default function Sidebar() {
   const isAnalyticsActive = pathname === '/dashboard/analytics';
   const isAchievementsActive = pathname === '/dashboard/achievements';
   const isYearActive = pathname === '/dashboard/year-in-review';
+  const isNetworkActive = pathname === '/dashboard/network';
+  const isFeedActive = pathname === '/dashboard/feed';
   const isSettingsActive = pathname === '/dashboard/settings';
 
   return (
@@ -244,7 +249,7 @@ export default function Sidebar() {
       >
         <div style={{ padding: '2px 8px 22px' }}>
           <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none' }}>
-            <span style={{ fontSize: 28, lineHeight: 1 }}>🙂</span>
+            <Smile size={28} color="var(--text-primary)" />
             <div style={{ minWidth: 0 }}>
               <p style={{ margin: 0, fontSize: 16, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', fontFamily: "'Outfit', sans-serif" }}>Productivity Master</p>
               <p style={{ margin: '1px 0 0', fontSize: 11, color: 'var(--text-muted)', fontWeight: 600 }}>by Mohan</p>
@@ -278,6 +283,16 @@ export default function Sidebar() {
             <SubNavItem icon={<BarChart3 size={15} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" />
             <SubNavItem icon={<Trophy size={15} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" />
             <SubNavItem icon={<CalendarCheck size={15} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" />
+          </NavGroup>
+
+          <NavGroup
+            icon={<Users size={16} strokeWidth={2.2} color="#1a1a1a" />}
+            label="Social"
+            expanded={true}
+            onToggle={() => {}}
+          >
+            <SubNavItem icon={<Users size={15} />} label="Network" active={isNetworkActive} href="/dashboard/network" />
+            <SubNavItem icon={<Activity size={15} />} label="Feed" active={isFeedActive} href="/dashboard/feed" />
           </NavGroup>
 
           <NavItem icon={<Settings size={18} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" />
@@ -341,48 +356,7 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      <div className="hf-mobile-nav no-print" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 40, padding: '16px 16px 0 16px' }}>
-        <header
-          style={{
-            height: 72,
-            padding: '0 16px',
-            background: 'var(--bg-glass-strong)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: 16,
-            boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-          }}
-        >
-        <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <span style={{ fontSize: 26, lineHeight: 1 }}>🙂</span>
-          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
-            <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-primary)', fontFamily: "'Outfit', sans-serif" }}>Productivity Master</span>
-            <span style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>by Mohan</span>
-          </div>
-        </Link>
 
-        <button
-          onClick={() => setMobileOpen(true)}
-          aria-label="Open menu"
-          style={{
-            width: 38,
-            height: 38,
-            borderRadius: '50%',
-            background: 'var(--bg-secondary)', border: '1px solid var(--border-default)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', color: 'var(--text-primary)',
-          }}
-        >
-          <Menu size={18} />
-        </button>
-        </header>
-      </div>
-      <div className="hf-mobile-nav no-print" style={{ height: 88, width: '100%', flexShrink: 0 }} aria-hidden="true" />
 
       <AnimatePresence>
         {mobileOpen && (
@@ -475,6 +449,16 @@ export default function Sidebar() {
                   <SubNavItem icon={<BarChart3 size={15} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" onClick={() => setMobileOpen(false)} />
                   <SubNavItem icon={<Trophy size={15} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" onClick={() => setMobileOpen(false)} />
                   <SubNavItem icon={<CalendarCheck size={15} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" onClick={() => setMobileOpen(false)} />
+                </NavGroup>
+
+                <NavGroup
+                  icon={<Users size={16} strokeWidth={2.2} color="#1a1a1a" />}
+                  label="Social"
+                  expanded={true}
+                  onToggle={() => {}}
+                >
+                  <SubNavItem icon={<Users size={15} />} label="Network" active={isNetworkActive} href="/dashboard/network" onClick={() => setMobileOpen(false)} />
+                  <SubNavItem icon={<Activity size={15} />} label="Feed" active={isFeedActive} href="/dashboard/feed" onClick={() => setMobileOpen(false)} />
                 </NavGroup>
 
                 <NavItem icon={<Settings size={18} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" onClick={() => setMobileOpen(false)} />

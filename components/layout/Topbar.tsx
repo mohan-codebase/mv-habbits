@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { Search, Plus, LayoutDashboard, Dumbbell, BarChart2, Trophy, Settings2, LogOut, X, ChevronDown, CalendarDays } from 'lucide-react';
+import { Search, Plus, LayoutDashboard, Dumbbell, BarChart2, Trophy, Settings2, LogOut, X, ChevronDown, CalendarDays, Smile } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
@@ -109,7 +109,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
               {/* Sidebar Header */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ fontSize: 26, lineHeight: 1 }}>🙂</span>
+                    <Smile size={26} color="var(--text-primary)" />
                   <span
                     style={{
                       fontSize: 18,
@@ -330,7 +330,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
       >
         {/* Left: Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-            <span style={{ fontSize: 28, lineHeight: 1 }}>🙂</span>
+            <Smile size={28} color="var(--text-primary)" />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span
               style={{
