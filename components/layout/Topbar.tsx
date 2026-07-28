@@ -9,6 +9,7 @@ import CommandPalette from '@/components/layout/CommandPalette';
 import NotificationBell from '@/components/layout/NotificationBell';
 import ThemeToggle from '@/components/layout/ThemeToggle';
 import { motion, AnimatePresence } from 'framer-motion';
+import AppLogo from '@/components/ui/AppLogo';
 
 const HABIT_SUB_NAV = [
   { label: 'Overview',       tab: 'habits',       icon: LayoutDashboard },
@@ -109,7 +110,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
               {/* Sidebar Header */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <Smile size={26} color="var(--text-primary)" />
+                    <AppLogo width={28} height={28} />
                   <span
                     style={{
                       fontSize: 18,
@@ -330,7 +331,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
       >
         {/* Left: Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-            <Smile size={28} color="var(--text-primary)" />
+            <AppLogo width={32} height={32} />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span
               style={{

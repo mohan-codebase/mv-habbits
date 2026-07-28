@@ -79,7 +79,7 @@ export default function RootLayout({
         <script
           // Prevent flash of wrong theme — runs before paint.
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;var la='#8B5CF6';document.documentElement.style.setProperty('--accent-primary',la);}catch(e){}})();`,
+            __html: `(function(){try{var t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;var la='#8B5CF6';document.documentElement.style.setProperty('--accent-primary',la);var icon=document.createElement('link');icon.rel='icon';icon.href=t==='dark'?'/logo/logo-dark.png':'/logo/logo-light.png';document.head.appendChild(icon);}catch(e){}})();`,
           }}
         />
       </head>

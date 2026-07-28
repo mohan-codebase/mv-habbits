@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
   Eye,
@@ -83,8 +84,8 @@ function LoginContent() {
       >
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center mb-3.5 sm:mb-5">
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-indigo-600 flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.5)] border border-white/20 mb-2">
-            <Sparkles size={18} className="text-white" />
+          <div className="w-10 h-10 mb-2 relative">
+            <Image src="/logo/logo-dark.png" alt="Productivity Master" fill style={{ objectFit: 'contain' }} priority sizes="40px" />
           </div>
           <h1 className="text-lg sm:text-xl font-bold font-['Outfit'] tracking-tight text-white">
             Productivity Master

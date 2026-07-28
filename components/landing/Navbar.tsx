@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Menu, X, Smile } from 'lucide-react';
+import AppLogo from '@/components/ui/AppLogo';
 
 const NAV_LINKS = [
   { label: 'Features', href: '/#features' },
@@ -52,7 +53,7 @@ export default function Navbar() {
           style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}
           onClick={() => setMenuOpen(false)}
         >
-            <Smile size={24} color="var(--text-primary)" />
+          <AppLogo width={28} height={28} />
           <span style={{
             fontSize: 15,
             fontWeight: 700,

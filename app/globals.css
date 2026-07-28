@@ -1243,4 +1243,11 @@ input[type="reset"],
     scrollbar-width: none;
   }
 }
-
+
+/* ─── Logo Visibility based on Theme ─────────────────────────────────── */
+html[data-theme="dark"] .hf-logo-light {
+  display: none !important;
+}
+html[data-theme="light"] .hf-logo-dark {
+  display: none !important;
+}

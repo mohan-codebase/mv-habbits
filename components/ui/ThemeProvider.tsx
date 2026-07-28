@@ -39,6 +39,19 @@ function applyTheme(theme: Theme) {
   if (typeof document === 'undefined') return;
   document.documentElement.dataset.theme = theme;
   document.documentElement.style.colorScheme = theme;
+  
+  const iconPaths = {
+    dark: '/logo/logo-dark.png',
+    light: '/logo/logo-light.png'
+  };
+  
+  let link = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.head.appendChild(link);
+  }
+  link.href = iconPaths[theme];
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {

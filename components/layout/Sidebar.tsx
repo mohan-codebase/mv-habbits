@@ -26,6 +26,7 @@ import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { useTheme } from '@/components/ui/ThemeProvider';
 import CommandPalette from '@/components/layout/CommandPalette';
 import DevicesModal from '@/components/settings/DevicesModal';
+import AppLogo from '@/components/ui/AppLogo';
 
 // Sidebar nav row — filled when active, hover tint otherwise.
 function NavItem({
@@ -249,7 +250,7 @@ export default function Sidebar() {
       >
         <div style={{ padding: '2px 8px 22px' }}>
           <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none' }}>
-            <Smile size={28} color="var(--text-primary)" />
+            <AppLogo width={32} height={32} />
             <div style={{ minWidth: 0 }}>
               <p style={{ margin: 0, fontSize: 16, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', fontFamily: "'Outfit', sans-serif" }}>Productivity Master</p>
               <p style={{ margin: '1px 0 0', fontSize: 11, color: 'var(--text-muted)', fontWeight: 600 }}>by Mohan</p>
@@ -398,13 +399,7 @@ export default function Sidebar() {
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
                 <Link href="/dashboard" onClick={() => setMobileOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-                  <div style={{
-                    width: 34, height: 34, borderRadius: 9999,
-                    background: 'var(--accent-primary)', color: 'var(--accent-on-primary)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <CheckCircle2 size={18} strokeWidth={2.4} />
-                  </div>
+                  <AppLogo width={34} height={34} />
                   <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
                     <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-primary)', fontFamily: "'Outfit', sans-serif" }}>Productivity Master</span>
                     <span style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>by Mohan</span>
