@@ -95,10 +95,11 @@ interface ToastCardProps {
 function ToastCard({ item, onDismiss }: ToastCardProps) {
   const cfg = typeConfig[item.type];
   const [progress, setProgress] = useState(100);
-  const startRef = useRef<number>(Date.now());
+  const startRef = useRef<number>(0);
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
+    startRef.current = Date.now();
     const tick = () => {
       const elapsed = Date.now() - startRef.current;
       const remaining = Math.max(0, 100 - (elapsed / DISMISS_AFTER_MS) * 100);

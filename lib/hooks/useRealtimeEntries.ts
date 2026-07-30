@@ -20,12 +20,15 @@ interface Options {
 export function useRealtimeEntries({ userId, entryDate, onEntryChange }: Options): RealtimeStatus {
   const [status, setStatus] = useState<RealtimeStatus>('connecting');
   const cbRef = useRef(onEntryChange);
-  cbRef.current = onEntryChange;
   const instanceId = useId();
 
   useEffect(() => {
+    cbRef.current = onEntryChange;
+  });
+
+  useEffect(() => {
     if (!userId) {
-      setStatus('offline');
+      queueMicrotask(() => setStatus('offline'));
       return;
     }
 

@@ -116,11 +116,11 @@ function StatCard({
         overflow: 'hidden',
         transition: 'all 0.2s ease',
         cursor: 'default',
-        boxShadow: '0 2px 12px rgba(0, 0, 0,0.08)',
+        boxShadow: 'none',
       }}
       whileHover={{
         y: -2,
-        boxShadow: `0 8px 28px color-mix(in srgb, ${accentColor} 15%, transparent)`,
+        boxShadow: 'none',
       }}
     >
       {/* Top accent bar */}

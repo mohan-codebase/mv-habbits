@@ -148,7 +148,7 @@ export default function Modal({
             className="hf-modal-panel"
             style={{
               background: 'var(--glass-bg)',
-              boxShadow: 'var(--glass-shadow)',
+              boxShadow: 'none',
               borderRadius: 18,
               width: '100%',
               maxWidth: sizeMap[size],

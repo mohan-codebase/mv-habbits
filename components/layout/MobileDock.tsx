@@ -49,15 +49,15 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
           width: '100%',
           maxWidth: 420,
           background: 'var(--bg-glass-strong)',
-          backdropFilter: 'blur(24px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          backdropFilter: 'none',
+          WebkitBackdropFilter: 'none',
           border: '1px solid var(--border-default)',
           borderRadius: 9999,
           padding: '6px 12px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-around',
-          boxShadow: '0 16px 40px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
+          boxShadow: 'none',
         }}
       >
         {/* Overview */}
@@ -117,7 +117,7 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            boxShadow: '0 6px 16px color-mix(in srgb, var(--accent-primary) 45%, transparent)',
+            boxShadow: 'none',
             margin: '0 2px',
             transition: 'transform 0.15s ease',
           }}

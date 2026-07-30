@@ -398,12 +398,10 @@ function StatPill({ label, value, accent, color }: { label: string; value: strin
 
   return (
     <motion.div
-      whileHover={{ y: -2, scale: 1.02 }}
-      transition={{ duration: 0.18 }}
       style={{
         position: 'relative',
-        borderRadius: 18,
-        padding: '14px 16px',
+        borderRadius: 9999,
+        padding: '14px 22px',
         background: accent
           ? `linear-gradient(135deg, color-mix(in srgb, ${c} 18%, transparent) 0%, color-mix(in srgb, ${c} 6%, transparent) 100%), var(--bg-card)`
           : 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.008) 100%), var(--bg-card)',
@@ -731,6 +729,7 @@ function HabitDetailSheet({
         padding: 16, pointerEvents: 'none',
       }}>
         <motion.div
+          className="hf-modal-panel"
           initial={{ opacity: 0, scale: 0.94, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: 12 }}
@@ -741,15 +740,15 @@ function HabitDetailSheet({
             pointerEvents: 'auto',
             width: '100%', maxWidth: 490,
             background: 'var(--bg-card)',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
+            backdropFilter: 'none',
+            WebkitBackdropFilter: 'none',
             border: `1px solid color-mix(in srgb, ${PURPLE} 35%, transparent)`,
             borderRadius: 28,
             maxHeight: '90dvh',
             overflowY: 'auto',
             padding: '26px 22px 34px',
             fontFamily: "system-ui, -apple-system, sans-serif",
-            boxShadow: '0 20px 48px rgba(0, 0, 0, 0.4)',
+            boxShadow: 'none',
           }}
         >
           {/* Header */}
@@ -851,24 +850,6 @@ function HabitDetailSheet({
           {editMode && (
             <div style={{ ...GLASS_NESTED_PURPLE, borderRadius: 18, padding: '16px', marginBottom: 16 }}>
               <p style={{ margin: '0 0 10px', fontSize: 12, fontWeight: 700, color: TEXT_MUTED, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-                Notes
-              </p>
-              <textarea
-                value={editNotes}
-                onChange={(e) => setEditNotes(e.target.value)}
-                placeholder="Why this matters, how you'll do it…"
-                maxLength={500}
-                rows={3}
-                style={{
-                  width: '100%', boxSizing: 'border-box', resize: 'vertical', minHeight: 60,
-                  background: 'var(--input-bg)', border: `1.5px solid var(--input-border)`,
-                  borderRadius: 10, padding: '8px 12px', marginBottom: 16,
-                  fontSize: 14, color: TEXT_DARK, outline: 'none', fontFamily: 'inherit', lineHeight: 1.5,
-                }}
-                onFocus={(e) => { e.target.style.borderColor = PURPLE; }}
-                onBlur={(e) => { e.target.style.borderColor = 'var(--input-border)'; }}
-              />
-              <p style={{ margin: '0 0 10px', fontSize: 12, fontWeight: 700, color: TEXT_MUTED, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
                 Choose icon
               </p>
               <div className="hf-icon-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, minmax(0, 1fr))', gap: 8, marginBottom: 16, maxHeight: 200, overflowY: 'auto', paddingRight: 2 }}>
@@ -908,32 +889,6 @@ function HabitDetailSheet({
               >
                 {saving ? 'Saving…' : 'Save Changes'}
               </button>
-            </div>
-          )}
-
-          {/* Notes (read mode) */}
-          {!editMode && (
-            <div style={{ ...GLASS_NESTED, borderRadius: 18, padding: '14px 16px', marginBottom: 14 }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: habit.description ? 8 : 0 }}>
-                <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: TEXT_MUTED, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-                  Notes
-                </p>
-                <button
-                  onClick={() => { setEditName(habit.name); setEditIcon(habit.icon ?? 'circle-check'); setEditColor(habit.color || '#555555'); setEditNotes(habit.description ?? ''); setEditMode(true); }}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: PURPLE, fontSize: 12.5, fontWeight: 700, padding: 0 }}
-                >
-                  {habit.description ? 'Edit' : 'Add'}
-                </button>
-              </div>
-              {habit.description ? (
-                <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: TEXT_DARK, whiteSpace: 'pre-wrap' }}>
-                  {habit.description}
-                </p>
-              ) : (
-                <p style={{ margin: 0, fontSize: 13.5, color: TEXT_MUTED }}>
-                  No notes yet — tap “Add” to jot why this habit matters.
-                </p>
-              )}
             </div>
           )}
 
@@ -1039,27 +994,21 @@ function HabitDetailSheet({
                         const isSelected = cell.date === activeLogDate;
                         const hasVideo = entryVideoMap.get(cell.date);
                         return (
-                          <motion.div
-                            key={di}
-                            whileHover={interactive ? { scale: 1.1, zIndex: 5 } : {}}
-                            whileTap={interactive ? { scale: 0.92 } : {}}
-                            onClick={interactive && !isSaving ? () => setActiveLogDate(cell.date) : undefined}
-                            title={interactive ? (cell.completed ? 'Tap to view details/unmark' : 'Tap to view details/mark done') : undefined}
-                            style={{
-                              flex: '1 1 0', minWidth: 0,
-                              height: CELL_H,
-                              borderRadius: 10,
+                          <div key={di} style={{ flex: '1 1 0', display: 'flex', justifyContent: 'center' }}>
+                            <motion.div
+                              onClick={interactive && !isSaving ? () => setActiveLogDate(cell.date) : undefined}
+                              title={interactive ? (cell.completed ? 'Tap to view details/unmark' : 'Tap to view details/mark done') : undefined}
+                              style={{
+                                width: CELL_H,
+                                height: CELL_H,
+                                borderRadius: 9999,
                               background: bg,
                               border: isSelected
                                 ? '2px solid #ffffff'
                                 : cell.isToday
                                   ? `2px solid ${PURPLE_HEX}`
                                   : '1px solid transparent',
-                              boxShadow: isSelected
-                                ? `0 0 16px ${PURPLE_HEX}`
-                                : cell.completed
-                                  ? `0 4px 12px color-mix(in srgb, ${PURPLE} 35%, transparent)`
-                                  : 'none',
+                              boxShadow: 'none',
                               display: 'flex', alignItems: 'center', justifyContent: 'center',
                               fontSize: 11.5,
                               fontWeight: cell.isToday || isSelected || cell.completed ? 850 : 500,
@@ -1067,11 +1016,11 @@ function HabitDetailSheet({
                               cursor: interactive ? 'pointer' : 'default',
                               opacity: isSaving ? 0.5 : 1,
                               transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
-                              WebkitTapHighlightColor: 'transparent',
-                            }}
-                          >
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', position: 'relative', width: '100%' }}>
-                              <span>{cell.day}</span>
+                                WebkitTapHighlightColor: 'transparent',
+                              }}
+                            >
+                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', position: 'relative', width: '100%' }}>
+                                <span>{cell.day}</span>
                               {hasVideo && (
                                 <div style={{
                                   position: 'absolute',
@@ -1081,9 +1030,10 @@ function HabitDetailSheet({
                                   borderRadius: '50%',
                                   background: cell.completed ? '#fff' : PURPLE,
                                 }} />
-                              )}
-                            </div>
-                          </motion.div>
+                                )}
+                              </div>
+                            </motion.div>
+                          </div>
                         );
                       })}
                     </div>

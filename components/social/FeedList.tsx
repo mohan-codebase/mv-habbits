@@ -236,7 +236,7 @@ export default function FeedList({ currentUserId }: { currentUserId: string }) {
               borderRadius: 24,
               border: '1px solid var(--border-default)',
               padding: 24,
-              boxShadow: '0 12px 32px rgba(0, 0, 0, 0.06)',
+              boxShadow: 'none',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>

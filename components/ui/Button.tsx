@@ -93,7 +93,7 @@ export default function Button({
     background: v.bg,
     color: v.color,
     border: v.border,
-    boxShadow: v.shadow,
+    boxShadow: 'none',
     ...sizes[size],
   };
 

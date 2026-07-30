@@ -211,7 +211,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
                     border: 'none',
                     color: '#1a1a1a',
                     fontWeight: 700, width: '100%', textAlign: 'left',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.18)',
+                    boxShadow: 'none',
                     transition: 'opacity 0.15s',
                     marginBottom: 2,
                   }}
@@ -403,7 +403,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
                     background: 'var(--bg-card)',
                     border: '1px solid var(--border-default)',
                     borderRadius: 14,
-                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.25)',
+                    boxShadow: 'none',
                     padding: 8,
                     zIndex: 100,
                     display: 'flex',

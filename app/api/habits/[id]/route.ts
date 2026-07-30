@@ -35,25 +35,30 @@ export async function GET(_req: NextRequest, { params }: Params) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return err('Unauthorized', 401);
 
-    const { data: habit, error } = await supabase
-      .from('habits')
-      .select('*, category:categories(*)')
-      .eq('id', id)
-      .eq('user_id', user.id)
-      .single();
-
-    if (error || !habit) return err('Habit not found', 404);
-
-    // Fetch last 90 days of entries
+    // Fetch habit and entries concurrently
     const ninetyDaysAgo = new Date();
     ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
-    const { data: entries } = await supabase
-      .from('habit_entries')
-      .select('*')
-      .eq('habit_id', id)
-      .eq('user_id', user.id)
-      .gte('entry_date', toLocalDateString(ninetyDaysAgo))
-      .order('entry_date', { ascending: false });
+
+    const [
+      { data: habit, error },
+      { data: entries }
+    ] = await Promise.all([
+      supabase
+        .from('habits')
+        .select('*, category:categories(*)')
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .single(),
+      supabase
+        .from('habit_entries')
+        .select('*')
+        .eq('habit_id', id)
+        .eq('user_id', user.id)
+        .gte('entry_date', toLocalDateString(ninetyDaysAgo))
+        .order('entry_date', { ascending: false })
+    ]);
+
+    if (error || !habit) return err('Habit not found', 404);
 
     return ok({ ...habit, entries: entries ?? [] });
   } catch (e) {

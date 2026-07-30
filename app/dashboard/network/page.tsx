@@ -77,7 +77,7 @@ export default async function NetworkPage() {
             padding: '10px 16px', borderRadius: 9999, border: 'none',
             background: 'var(--accent-primary)', color: 'var(--accent-on-primary)',
             fontSize: 14, fontWeight: 700, cursor: 'pointer',
-            boxShadow: '0 4px 12px color-mix(in srgb, var(--accent-primary) 30%, transparent)',
+            boxShadow: 'none',
             transition: 'transform 0.15s ease',
           }}>
             <UserPlus size={18} />
@@ -97,7 +97,7 @@ export default async function NetworkPage() {
               borderRadius: 9999, padding: '12px 16px 12px 42px',
               fontSize: 15, fontWeight: 500, color: 'var(--text-primary)',
               outline: 'none', transition: 'all 0.2s ease',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+              boxShadow: 'none',
             }}
           />
         </div>
@@ -111,7 +111,7 @@ export default async function NetworkPage() {
           borderRadius: 24,
           border: '1px solid var(--border-default)',
           padding: 24,
-          boxShadow: '0 12px 32px rgba(0, 0, 0, 0.06)',
+          boxShadow: 'none',
           display: 'flex',
           flexDirection: 'column',
           gap: 16
@@ -170,7 +170,7 @@ export default async function NetworkPage() {
           borderRadius: 24,
           border: '1px solid var(--border-default)',
           padding: 24,
-          boxShadow: '0 12px 32px rgba(0, 0, 0, 0.06)',
+          boxShadow: 'none',
           display: 'flex',
           flexDirection: 'column',
           gap: 16
@@ -231,7 +231,7 @@ export default async function NetworkPage() {
           borderRadius: 24,
           border: '1px solid #F59E0B40',
           padding: 24,
-          boxShadow: '0 8px 24px rgba(245, 158, 11, 0.08)',
+          boxShadow: 'none',
         }}>
           <h3 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 750, color: '#F59E0B', display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#F59E0B' }}></span>

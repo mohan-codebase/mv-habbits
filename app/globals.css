@@ -77,11 +77,11 @@
   --radius-2xl: var(--r-2xl);
 
   /* Shadows */
-  --shadow-xs: var(--shadow-xs);
-  --shadow-sm: var(--shadow-sm);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
-  --shadow-accent: var(--shadow-accent);
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-accent: none;
 }
 
 /* ─── Design Tokens ─────────────────────────────────────────────────────
@@ -142,14 +142,14 @@
   --border-active: color-mix(in srgb, var(--accent-primary) 48%, transparent);
 
   /* Shadows — layered, tight. No neon glow by default. */
-  --shadow-xs: 0 0 0 0 transparent;
-  --shadow-sm: 0 0 0 0 transparent;
-  --shadow-md: 0 0 0 0 transparent;
-  --shadow-lg: 0 0 0 0 transparent;
-  --shadow-accent: 0 0 0 0 transparent;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-accent: none;
 
   /* Glass mechanics */
-  /* --glass-blur:      20px; */
+  /* --glass-blur: none; */
   --glass-sat: 160%;
   --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 
@@ -201,9 +201,9 @@
   --glass-bg-purple: color-mix(in srgb, var(--accent-primary) 10%, transparent);
   --glass-bg-sheet: var(--bg-secondary);
   --glass-blur: none;
-  --glass-shadow: 0 1px 3px rgba(0, 0, 0, 0.20), 0 0 0 1px var(--border-subtle);
-  --glass-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.15), 0 0 0 1px var(--border-subtle);
-  --glass-shadow-purple: 0 2px 8px color-mix(in srgb, var(--accent-primary) 15%, transparent), 0 0 0 1px color-mix(in srgb, var(--accent-primary) 20%, transparent);
+  --glass-shadow: none;
+  --glass-shadow-sm: none;
+  --glass-shadow-purple: none;
   --glass-border: none;
 
   /* Legacy aliases */
@@ -262,11 +262,11 @@
   --border-accent: color-mix(in srgb, var(--accent-primary) 34%, transparent);
   --border-active: color-mix(in srgb, var(--accent-primary) 55%, transparent);
 
-  --shadow-xs: 0 1px 3px color-mix(in srgb, var(--accent-primary) 6%, transparent);
-  --shadow-sm: 0 2px 8px color-mix(in srgb, var(--accent-primary) 8%, transparent);
-  --shadow-md: 0 4px 16px color-mix(in srgb, var(--accent-primary) 10%, transparent);
-  --shadow-lg: 0 8px 32px color-mix(in srgb, var(--accent-primary) 12%, transparent);
-  --shadow-accent: 0 4px 20px color-mix(in srgb, var(--accent-primary) 25%, transparent);
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-accent: none;
 
   --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.80);
 
@@ -286,9 +286,9 @@
   --glass-bg-accent: color-mix(in srgb, var(--accent-primary) 6%, transparent);
   --glass-bg-sheet: var(--bg-secondary);
   --glass-blur: none;
-  --glass-shadow: 0 1px 3px rgba(0, 0, 0, 0.10), 0 0 0 1px var(--border-subtle);
-  --glass-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--border-subtle);
-  --glass-shadow-accent: 0 2px 8px color-mix(in srgb, var(--accent-primary) 12%, transparent), 0 0 0 1px color-mix(in srgb, var(--accent-primary) 16%, transparent);
+  --glass-shadow: none;
+  --glass-shadow-sm: none;
+  --glass-shadow-accent: none;
   --glass-border: none;
 }
 
@@ -428,17 +428,17 @@ h6 {
 /* ── Card utilities (formerly liquid glass) ─────────────────────────────── */
 .liquid-glass {
   background: var(--glass-bg);
-  box-shadow: var(--glass-shadow);
+  box-shadow: none;
 }
 
 .liquid-glass-sm {
-  background: var(--glass-bg);
-  box-shadow: var(--glass-shadow-sm);
+  background: none;
+  box-shadow: none;
 }
 
 .liquid-glass-accent {
-  background: var(--glass-bg-accent);
-  box-shadow: var(--glass-shadow-accent);
+  background: none;
+  box-shadow: none;
 }
 
 /* Gradient text — flattened to solid ink (monochrome) */
@@ -1152,7 +1152,7 @@ input:-webkit-autofill:active {
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: var(--text-primary) !important;
   transition: background-color 5000s ease-in-out 0s !important;
-  box-shadow: 0 0 0 1000px var(--bg-tertiary) inset !important;
+  box-shadow: none;
 }
 
 /* Custom Sleek Scrollbar */
@@ -1198,7 +1198,7 @@ body {
 .glass-card-hover:hover {
   transform: translateY(-2px);
   border-color: rgba(139, 92, 246, 0.35);
-  box-shadow: 0 12px 30px -10px rgba(139, 92, 246, 0.15);
+  box-shadow: none;
 }
 
 /* ─── Global Pill Buttons ───────────────────────────────────────────────

@@ -188,13 +188,13 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                 height: 38,
                 borderRadius: '50%',
                 background: 'rgba(255, 255, 255, 0.2)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
                 border: '1px solid rgba(255, 255, 255, 0.25)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 4px 10px rgba(0, 0, 0,0.1)',
+                boxShadow: 'none',
               }}
             >
               <DynamicIcon name={habit.icon} size={18} color="#ffffff" />
@@ -207,8 +207,8 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                   padding: '4px 10px',
                   borderRadius: 'var(--r-pill)',
                   background: 'rgba(255, 255, 255, 0.2)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
+                  backdropFilter: 'none',
+                  WebkitBackdropFilter: 'none',
                   border: '1px solid rgba(255, 255, 255, 0.25)',
                   color: '#ffffff',
                   fontSize: 10,
@@ -233,8 +233,8 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                   height: 32,
                   borderRadius: '50%',
                   background: 'rgba(255, 255, 255, 0.2)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
+                  backdropFilter: 'none',
+                  WebkitBackdropFilter: 'none',
                   border: '1px solid rgba(255, 255, 255, 0.25)',
                   display: 'flex',
                   alignItems: 'center',
@@ -266,8 +266,8 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                     justifyContent: 'center',
                     borderRadius: '50%',
                     background: 'rgba(255, 255, 255, 0.2)',
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
+                    backdropFilter: 'none',
+                    WebkitBackdropFilter: 'none',
                     border: '1px solid rgba(255, 255, 255, 0.25)',
                     color: '#ffffff',
                     cursor: 'pointer',
@@ -290,7 +290,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                         background: 'var(--bg-elevated)',
                         border: '1px solid var(--border-default)',
                         borderRadius: 11,
-                        boxShadow: '0 10px 25px rgba(0, 0, 0,0.25)',
+                        boxShadow: 'none',
                         padding: 5,
                         minWidth: 140,
                         zIndex: 30,
@@ -418,8 +418,8 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                 padding: '4px 10px',
                 borderRadius: 9999,
                 background: isBad ? 'rgba(239, 68, 68, 0.2)' : 'rgba(245, 158, 11, 0.22)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
                 border: `1px solid ${isBad ? 'rgba(239, 68, 68, 0.4)' : 'rgba(245, 158, 11, 0.4)'}`,
                 fontSize: 12,
                 color: isBad ? '#fca5a5' : '#fbbf24',
@@ -445,8 +445,8 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                 padding: '4px 10px',
                 borderRadius: 9999,
                 background: 'rgba(255, 255, 255, 0.18)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
                 border: '1px solid rgba(255, 255, 255, 0.25)',
                 fontSize: 12,
                 color: '#ffffff',
@@ -516,7 +516,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
     // Bezel effect
     border: '6px solid var(--bg-card)',
     borderRadius: 28,
-    boxShadow: '0 12px 32px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.05)',
+    boxShadow: 'none',
     overflow: 'visible',
     position: 'relative' as const,
     height: 380, // slightly taller to comfortably host full-height imagery + action button
@@ -535,7 +535,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
           style={containerStyles}
           whileHover={{
             y: -5,
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0,0.06)',
+            boxShadow: 'none',
           }}
           transition={{ type: 'spring', stiffness: 350, damping: 25 }}
         >
@@ -546,7 +546,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
           style={containerStyles}
           whileHover={{
             y: -5,
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0,0.06)',
+            boxShadow: 'none',
           }}
           transition={{ type: 'spring', stiffness: 350, damping: 25 }}
         >

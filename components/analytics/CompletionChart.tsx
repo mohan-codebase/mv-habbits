@@ -51,7 +51,7 @@ function CustomTooltip({
         border: '1px solid var(--border-default)',
         borderRadius: 14,
         padding: '12px 16px',
-        boxShadow: '0 4px 16px rgba(0, 0, 0,0.15)',
+        boxShadow: 'none',
       }}
     >
       <p style={{ margin: '0 0 6px', fontSize: 12, color: 'var(--text-muted)', fontFamily: "'IBM Plex Sans'", fontWeight: 500 }}>

@@ -63,7 +63,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Sync React state to the theme the pre-paint script already applied,
     // rather than re-deriving it. No applyTheme() call needed — the DOM is
     // already correct, so this only catches the toggle's state up to it.
-    setThemeState(readAppliedTheme());
+    queueMicrotask(() => setThemeState(readAppliedTheme()));
 
     // Read and sync custom accents from localStorage safely
     try {
