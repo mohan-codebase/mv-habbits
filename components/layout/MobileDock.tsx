@@ -81,26 +81,6 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
           <span style={{ fontSize: 10, fontWeight: isOverview ? 700 : 500 }}>Home</span>
         </Link>
 
-        {/* Analytics */}
-        <Link
-          href="/dashboard/analytics"
-          aria-label="Analytics"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 2,
-            padding: '8px 12px',
-            borderRadius: 9999,
-            textDecoration: 'none',
-            color: isAnalytics ? 'var(--accent-on-primary)' : 'var(--text-muted)',
-            background: isAnalytics ? 'var(--accent-primary)' : 'transparent',
-            transition: 'all 0.2s ease',
-          }}
-        >
-          <BarChart3 size={19} strokeWidth={isAnalytics ? 2.5 : 2} />
-          <span style={{ fontSize: 10, fontWeight: isAnalytics ? 700 : 500 }}>Stats</span>
-        </Link>
 
         {/* Quick Add Center Button */}
         <button
@@ -127,47 +107,6 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
           <Plus size={22} strokeWidth={2.8} />
         </button>
 
-        {/* Achievements */}
-        <Link
-          href="/dashboard/achievements"
-          aria-label="Achievements"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 2,
-            padding: '8px 12px',
-            borderRadius: 9999,
-            textDecoration: 'none',
-            color: isAchievements ? 'var(--accent-on-primary)' : 'var(--text-muted)',
-            background: isAchievements ? 'var(--accent-primary)' : 'transparent',
-            transition: 'all 0.2s ease',
-          }}
-        >
-          <Trophy size={19} strokeWidth={isAchievements ? 2.5 : 2} />
-          <span style={{ fontSize: 10, fontWeight: isAchievements ? 700 : 500 }}>Trophies</span>
-        </Link>
-
-        {/* Network */}
-        <Link
-          href="/dashboard/network"
-          aria-label="Network"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 2,
-            padding: '8px 12px',
-            borderRadius: 9999,
-            textDecoration: 'none',
-            color: isNetwork ? 'var(--accent-on-primary)' : 'var(--text-muted)',
-            background: isNetwork ? 'var(--accent-primary)' : 'transparent',
-            transition: 'all 0.2s ease',
-          }}
-        >
-          <Users size={19} strokeWidth={isNetwork ? 2.5 : 2} />
-          <span style={{ fontSize: 10, fontWeight: isNetwork ? 700 : 500 }}>Social</span>
-        </Link>
 
         {/* Settings */}
         <Link

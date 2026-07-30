@@ -400,8 +400,8 @@ function StatPill({ label, value, accent, color }: { label: string; value: strin
     <motion.div
       style={{
         position: 'relative',
-        borderRadius: 9999,
-        padding: '14px 22px',
+        borderRadius: 24,
+        padding: '14px 20px',
         background: accent
           ? `linear-gradient(135deg, color-mix(in srgb, ${c} 18%, transparent) 0%, color-mix(in srgb, ${c} 6%, transparent) 100%), var(--bg-card)`
           : 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.008) 100%), var(--bg-card)',
@@ -414,7 +414,7 @@ function StatPill({ label, value, accent, color }: { label: string; value: strin
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-        <p style={{ margin: 0, fontSize: 10.5, fontWeight: 750, color: TEXT_MUTED, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+        <p style={{ margin: 0, fontSize: 10.5, fontWeight: 750, color: TEXT_MUTED, letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', paddingRight: 4 }}>
           {label}
         </p>
         <div style={{
@@ -783,10 +783,10 @@ function HabitDetailSheet({
                 />
               ) : (
                 <>
-                  <h2 style={{ margin: 0, fontSize: 22, fontWeight: 850, color: TEXT_DARK, letterSpacing: '-0.025em', fontFamily: "'Outfit', sans-serif" }}>
+                  <h2 style={{ margin: 0, fontSize: 22, fontWeight: 850, color: TEXT_DARK, letterSpacing: '-0.025em', fontFamily: "'Outfit', sans-serif", whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                     {habit.name}
                   </h2>
-                  <p style={{ margin: '3px 0 0', fontSize: 13, color: TEXT_MUTED, fontWeight: 500 }}>
+                  <p style={{ margin: '3px 0 0', fontSize: 13, color: TEXT_MUTED, fontWeight: 500, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                     {habit.description ?? (habit.frequency?.type === 'daily' ? 'Daily habit' : 'Habit')}
                   </p>
                 </>
@@ -994,14 +994,15 @@ function HabitDetailSheet({
                         const isSelected = cell.date === activeLogDate;
                         const hasVideo = entryVideoMap.get(cell.date);
                         return (
-                          <div key={di} style={{ flex: '1 1 0', display: 'flex', justifyContent: 'center' }}>
+                          <div key={di} style={{ flex: '1 1 0', display: 'flex', justifyContent: 'center', minWidth: 0 }}>
                             <motion.div
                               onClick={interactive && !isSaving ? () => setActiveLogDate(cell.date) : undefined}
                               title={interactive ? (cell.completed ? 'Tap to view details/unmark' : 'Tap to view details/mark done') : undefined}
                               style={{
-                                width: CELL_H,
-                                height: CELL_H,
-                                borderRadius: 9999,
+                                width: '100%',
+                                maxWidth: 40,
+                                aspectRatio: '1 / 1',
+                                borderRadius: '50%',
                               background: bg,
                               border: isSelected
                                 ? '2px solid #ffffff'
@@ -2044,7 +2045,11 @@ export default function FitnessSummary({
             display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)',
           }}
         >
-          {/* ── Top Hero Greeting Banner ── */}
+          {/* ── 2-column widget grid ── */}
+          <div className="hf-dashboard-grid">
+            {/* LEFT COLUMN */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)', minWidth: 0 }}>
+              {/* ── Top Hero Greeting Banner ── */}
           <motion.div
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -2135,20 +2140,13 @@ export default function FitnessSummary({
           </motion.div>
 
           {/* ── 4 Top KPI Metric Cards ── */}
-          <div
-            className="hf-kpi-grid"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: 16,
-            }}
-          >
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 14 }}>
             {/* Card 1: Today's Completion */}
             <motion.div
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.05 }}
               style={{
                 background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 9999, padding: '14px 28px', display: 'flex', flexDirection: 'column', gap: 4,
+                borderRadius: 24, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 6,
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
@@ -2170,7 +2168,7 @@ export default function FitnessSummary({
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}
               style={{
                 background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 9999, padding: '14px 28px', display: 'flex', flexDirection: 'column', gap: 4,
+                borderRadius: 24, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 6,
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
@@ -2181,8 +2179,8 @@ export default function FitnessSummary({
                 <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {stats?.bestStreak ?? 0} <span style={{ fontSize: 15, fontWeight: 650, color: 'var(--text-muted)' }}>d</span>
                 </div>
-                <p style={{ margin: 0, fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
-                  {stats?.bestStreakHabitName ? `in "${stats.bestStreakHabitName.slice(0, 12)}${stats.bestStreakHabitName.length > 12 ? '…' : ''}"` : 'momentum'}
+                <p style={{ margin: 0, fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {stats?.bestStreakHabitName ? `in "${stats.bestStreakHabitName}"` : 'momentum'}
                 </p>
               </div>
             </motion.div>
@@ -2192,7 +2190,7 @@ export default function FitnessSummary({
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.15 }}
               style={{
                 background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 9999, padding: '14px 28px', display: 'flex', flexDirection: 'column', gap: 4,
+                borderRadius: 24, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 6,
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
@@ -2214,7 +2212,7 @@ export default function FitnessSummary({
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}
               style={{
                 background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 9999, padding: '14px 28px', display: 'flex', flexDirection: 'column', gap: 4,
+                borderRadius: 24, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 6,
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
@@ -2289,10 +2287,7 @@ export default function FitnessSummary({
             </div>
           </DashCard>
 
-          {/* ── 2-column widget grid ── */}
-          <div className="hf-dashboard-grid">
-            {/* LEFT COLUMN */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)', minWidth: 0 }}>
+
               <DashCard
                 title={isViewingToday ? "Today's Habits" : new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                 action={

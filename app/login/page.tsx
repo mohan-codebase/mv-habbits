@@ -80,32 +80,32 @@ function LoginContent() {
         initial={{ opacity: 0, y: 16, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 w-full max-w-[400px] rounded-2xl sm:rounded-3xl bg-[#11141F]/95 backdrop-blur-2xl border border-white/15 p-4.5 sm:p-7 shadow-[0_24px_64px_rgba(0,0,0,0.75),0_2px_8px_rgba(255,255,255,0.06)_inset]"
+        className="relative z-10 w-full max-w-[420px] rounded-2xl sm:rounded-[24px] bg-[#11141F] border border-white/10 p-6 sm:p-8"
       >
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center mb-3.5 sm:mb-5">
           <div className="w-10 h-10 mb-2 relative">
             <Image src="/logo/logo-dark.png" alt="Productivity Master" fill style={{ objectFit: 'contain' }} priority sizes="40px" />
           </div>
-          <h1 className="text-lg sm:text-xl font-bold font-['Outfit'] tracking-tight text-white">
+          <h1 className="text-xl sm:text-2xl font-bold font-['Outfit'] tracking-tight text-white">
             Productivity Master
           </h1>
-          <p className="text-[11.5px] sm:text-xs text-white/60 mt-0.5">
+          <p className="text-sm sm:text-[15px] text-white/60 mt-1">
             Build daily habits that actually stick
           </p>
         </div>
 
         {/* Tab Switcher (Sign In / Create Account) */}
-        <div className="flex items-center p-1 rounded-full bg-white/[0.06] border border-white/12 mb-3.5 sm:mb-4.5">
+        <div className="flex items-center p-1 rounded-xl bg-white/[0.06] border border-white/12 mb-4 sm:mb-5">
           <button
             type="button"
-            className="flex-1 py-1.5 sm:py-2 text-[12px] sm:text-[13px] font-semibold rounded-full bg-indigo-600 text-white shadow-[0_2px_10px_rgba(79,70,229,0.4)] transition-all cursor-default text-center"
+            className="flex-1 py-2 sm:py-2.5 text-[14px] sm:text-[15px] font-semibold rounded-lg bg-indigo-600 text-white transition-all cursor-default text-center"
           >
             Sign In
           </button>
           <Link
             href="/signup"
-            className="flex-1 py-1.5 sm:py-2 text-[12px] sm:text-[13px] font-medium rounded-full text-white/60 hover:text-white hover:bg-white/[0.04] transition-all text-center"
+            className="flex-1 py-2 sm:py-2.5 text-[14px] sm:text-[15px] font-medium rounded-lg text-white/60 hover:text-white hover:bg-white/[0.04] transition-all text-center"
           >
             Create Account
           </Link>
@@ -154,7 +154,7 @@ function LoginContent() {
         <form onSubmit={handleLogin} className="flex flex-col gap-2.5 sm:gap-3">
           {/* Email Field */}
           <div className="flex flex-col gap-1">
-            <label className="text-[12px] sm:text-[12.5px] font-semibold text-white/90 px-0.5">
+            <label className="text-sm sm:text-[14.5px] font-semibold text-white/90 px-0.5">
               Email Address
             </label>
             <div className="relative flex items-center">
@@ -167,7 +167,7 @@ function LoginContent() {
                 autoComplete="email"
                 required
                 style={{ paddingLeft: '38px', paddingRight: '14px' }}
-                className="w-full py-2 sm:py-2.5 bg-white/[0.07] hover:bg-white/[0.09] focus:bg-white/[0.1] border border-white/15 focus:border-indigo-500 rounded-xl text-white text-[13px] placeholder:text-white/35 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                className="w-full py-3 sm:py-3.5 bg-white/[0.07] hover:bg-white/[0.09] focus:bg-white/[0.1] border border-white/15 focus:border-indigo-500 rounded-xl text-white text-[14.5px] sm:text-[15px] placeholder:text-white/35 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
               />
             </div>
           </div>
@@ -175,12 +175,12 @@ function LoginContent() {
           {/* Password Field */}
           <div className="flex flex-col gap-1">
             <div className="flex justify-between items-center px-0.5">
-              <label className="text-[12px] sm:text-[12.5px] font-semibold text-white/90">
+              <label className="text-sm sm:text-[14.5px] font-semibold text-white/90">
                 Password
               </label>
               <Link
                 href="/forgot-password"
-                className="text-[11px] sm:text-[12px] font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
+                className="text-xs sm:text-[13px] font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
               >
                 Forgot password?
               </Link>
@@ -195,7 +195,7 @@ function LoginContent() {
                 autoComplete="current-password"
                 required
                 style={{ paddingLeft: '38px', paddingRight: '38px' }}
-                className="w-full py-2 sm:py-2.5 bg-white/[0.07] hover:bg-white/[0.09] focus:bg-white/[0.1] border border-white/15 focus:border-indigo-500 rounded-xl text-white text-[13px] placeholder:text-white/35 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                className="w-full py-3 sm:py-3.5 bg-white/[0.07] hover:bg-white/[0.09] focus:bg-white/[0.1] border border-white/15 focus:border-indigo-500 rounded-xl text-white text-[14.5px] sm:text-[15px] placeholder:text-white/35 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
               />
               <button
                 type="button"
@@ -212,7 +212,7 @@ function LoginContent() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-1 w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 rounded-full text-white font-semibold text-[13px] sm:text-[13.5px] bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 hover:from-indigo-400 hover:to-purple-500 border border-white/20 shadow-[0_4px_16px_rgba(79,70,229,0.4)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+            className="mt-2 w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 px-4 rounded-xl text-white font-semibold text-[15px] sm:text-[15.5px] bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 hover:from-indigo-400 hover:to-purple-500 border border-white/20 active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? (
               <span className="flex items-center gap-2">
@@ -230,7 +230,7 @@ function LoginContent() {
         {/* Divider */}
         <div className="flex items-center gap-3 my-3 sm:my-3.5">
           <div className="flex-1 h-px bg-white/15" />
-          <span className="text-[10px] sm:text-[10.5px] uppercase tracking-wider text-white/50 font-semibold">
+          <span className="text-[11px] sm:text-[11.5px] uppercase tracking-wider text-white/50 font-semibold">
             Or continue with
           </span>
           <div className="flex-1 h-px bg-white/15" />
@@ -240,7 +240,7 @@ function LoginContent() {
         <SocialAuth loading={loading} setLoading={setLoading} />
 
         {/* Security & Features Badge */}
-        <div className="mt-3.5 sm:mt-4 pt-2.5 border-t border-white/12 flex items-center justify-center gap-3 text-white/40 text-[10.5px] sm:text-[11px]">
+        <div className="mt-4 sm:mt-5 pt-3 border-t border-white/12 flex items-center justify-center gap-3 text-white/40 text-[11.5px] sm:text-[12px]">
           <span className="flex items-center gap-1.5">
             <ShieldCheck size={13} className="text-emerald-400" /> 256-bit Encrypted
           </span>
