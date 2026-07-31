@@ -4,7 +4,6 @@ import React, { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  CheckCircle2,
   LayoutDashboard,
   BarChart3,
   Trophy,
@@ -18,7 +17,7 @@ import {
   Menu,
   Users,
   Activity,
-  Smile,
+  NotebookPen,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/lib/supabase/client';
@@ -195,6 +194,7 @@ export default function Sidebar() {
     .slice(0, 2);
 
   const isOverviewActive = pathname === '/dashboard';
+  const isNotesActive = pathname === '/dashboard/notes';
   const isAnalyticsActive = pathname === '/dashboard/analytics';
   const isAchievementsActive = pathname === '/dashboard/achievements';
   const isYearActive = pathname === '/dashboard/year-in-review';
@@ -275,6 +275,7 @@ export default function Sidebar() {
         <nav style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <p style={{ margin: '4px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Habit Tracker</p>
           <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={(e) => { if (isOverviewActive) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }} />
+          <NavItem icon={<NotebookPen size={17} />} label="Notes" active={isNotesActive} href="/dashboard/notes" />
           <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" />
           <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" />
           <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" />
@@ -423,6 +424,7 @@ export default function Sidebar() {
               <nav style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                 <p style={{ margin: '4px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Habit Tracker</p>
                 <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={() => setMobileOpen(false)} />
+                <NavItem icon={<NotebookPen size={17} />} label="Notes" active={isNotesActive} href="/dashboard/notes" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" onClick={() => setMobileOpen(false)} />

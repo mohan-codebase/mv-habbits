@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, LayoutDashboard, CheckSquare, BarChart2, Trophy, Settings, Plus, X, Target } from 'lucide-react';
+import { Search, LayoutDashboard, CheckSquare, BarChart2, Trophy, Settings, Plus, X, Target, NotebookPen } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 interface Command {
@@ -89,6 +89,14 @@ export default function CommandPalette({ isOpen, onClose }: Props) {
       icon: <LayoutDashboard size={16} />,
       action: () => navigate('/dashboard'),
       keywords: ['home', 'overview'],
+    },
+    {
+      id: 'notes',
+      label: 'Notes & Journal',
+      description: 'View and manage all habit notes',
+      icon: <NotebookPen size={16} />,
+      action: () => navigate('/dashboard/notes'),
+      keywords: ['notes', 'journal', 'log', 'entries'],
     },
     {
       id: 'habits',

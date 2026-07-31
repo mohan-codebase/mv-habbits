@@ -5,6 +5,7 @@ type SkeletonVariant = 'text' | 'rect' | 'circle';
 interface SkeletonProps {
   className?: string;
   variant?: SkeletonVariant;
+  style?: React.CSSProperties;
 }
 
 interface SkeletonGroupProps {
@@ -30,11 +31,11 @@ const variantStyles: Record<SkeletonVariant, React.CSSProperties> = {
   },
 };
 
-export default function Skeleton({ className = '', variant = 'text' }: SkeletonProps) {
+export default function Skeleton({ className = '', variant = 'text', style: customStyle }: SkeletonProps) {
   return (
     <div
       className={`shimmer ${className}`}
-      style={variantStyles[variant]}
+      style={{ ...variantStyles[variant], ...customStyle }}
       aria-hidden="true"
     />
   );

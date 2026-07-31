@@ -16,6 +16,7 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
   children?: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 const Spinner = () => (
@@ -73,6 +74,7 @@ export default function Button({
   type = 'button',
   children,
   className = '',
+  style: customStyle,
 }: ButtonProps) {
   const off = disabled || loading;
   const v = base[variant];
@@ -95,6 +97,7 @@ export default function Button({
     border: v.border,
     boxShadow: 'none',
     ...sizes[size],
+    ...customStyle,
   };
 
   const onEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
