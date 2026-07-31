@@ -1,5 +1,5 @@
 import { createServerClient } from '@/lib/supabase/server';
-import { todayString } from '@/lib/utils/dates';
+import { todayString, isHabitActiveOnDate } from '@/lib/utils/dates';
 import { formatInTimeZone } from 'date-fns-tz';
 import type { OverviewStats as OverviewStatsType } from '@/types/analytics';
 import type { HabitWithEntry } from '@/types/habit';
@@ -78,6 +78,32 @@ export default async function DashboardPage() {
   const goodHabitIds = new Set<string>(goodHabits.map((h) => h.id));
   const goodHabitCount = goodHabits.length;
 
+  // Calculate week bar-chart data & dynamic 7-day completion total
+  let weekTotalPossible = 0;
+  let weekTotalCompleted = 0;
+
+  const weekData = weekDays.map(({ date, isToday }) => {
+    const activeGoodHabits = goodHabits.filter((h) => isHabitActiveOnDate(h.created_at, date));
+    const activeCount = activeGoodHabits.length;
+    const activeIds = new Set(activeGoodHabits.map((h) => h.id));
+
+    const completedOnDate = weekEntriesRaw.filter(
+      (e) => activeIds.has(e.habit_id) && e.entry_date === date && e.is_completed
+    ).length;
+
+    weekTotalPossible += activeCount;
+    weekTotalCompleted += completedOnDate;
+
+    return {
+      date,
+      isToday,
+      percentage:
+        activeCount > 0
+          ? Math.round((completedOnDate / activeCount) * 100)
+          : 0,
+    };
+  });
+
   // Overview stats
   let stats: OverviewStatsType | null = null;
   if (userId) {
@@ -98,20 +124,15 @@ export default async function DashboardPage() {
         null
       ) as { current_streak: number; name: string } | null;
 
-      const weekCompleted = weekEntriesRaw.filter(
-        (e) => goodHabitIds.has(e.habit_id) && e.is_completed
-      ).length;
-
       stats = {
         todayCompleted: completedToday,
         todayTotal: goodHabitCount,
         todayPercentage: Math.round((completedToday / goodHabitCount) * 100),
         bestStreak: (bestHabit as any)?.current_streak ?? 0,
         bestStreakHabitName: bestHabit?.name ?? '',
-        weekPercentage: Math.min(
-          100,
-          Math.round((weekCompleted / (goodHabitCount * 7)) * 100)
-        ),
+        weekPercentage: weekTotalPossible > 0
+          ? Math.min(100, Math.round((weekTotalCompleted / weekTotalPossible) * 100))
+          : 0,
         totalCompletions: goodHabits.reduce(
           (sum, h) => sum + ((h as any).total_completions ?? 0),
           0
@@ -119,22 +140,6 @@ export default async function DashboardPage() {
       };
     }
   }
-
-  // Week bar-chart data — completed count per day / total good habits
-  const completedByDate = new Map<string, number>();
-  for (const e of weekEntriesRaw) {
-    if (goodHabitIds.has(e.habit_id) && e.is_completed) {
-      completedByDate.set(e.entry_date, (completedByDate.get(e.entry_date) ?? 0) + 1);
-    }
-  }
-  const weekData = weekDays.map(({ date, isToday }) => ({
-    date,
-    isToday,
-    percentage:
-      goodHabitCount > 0
-        ? Math.round(((completedByDate.get(date) ?? 0) / goodHabitCount) * 100)
-        : 0,
-  }));
 
   // Display helpers
   const displayName: string =

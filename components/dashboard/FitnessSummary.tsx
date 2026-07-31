@@ -13,14 +13,16 @@ import { DynamicIcon, HABIT_ICON_NAMES } from '@/lib/icons';
 import DevicesModal from '@/components/settings/DevicesModal';
 import ToggleSwitch from '@/components/ui/ToggleSwitch';
 import WeeklyReportChart from '@/components/dashboard/WeeklyReportChart';
+import CompletionChart from '@/components/analytics/CompletionChart';
 import { useAccentColor } from '@/components/ui/ThemeProvider';
-import type { OverviewStats } from '@/types/analytics';
+import type { OverviewStats, DailyTrend } from '@/types/analytics';
 import type { HabitWithEntry, Habit } from '@/types/habit';
-import { todayString } from '@/lib/utils/dates';
+import { todayString, isHabitActiveOnDate } from '@/lib/utils/dates';
 import { generateHabitReport } from '@/lib/utils/pdf';
 import { createClient } from '@/lib/supabase/client';
 import type { HabitEntry } from '@/types/entry';
 import { useToast } from '@/components/ui/Toast';
+import SwipeToComplete from '@/components/ui/SwipeToComplete';
 
 interface FitnessSummaryProps {
   stats: OverviewStats | null;
@@ -200,13 +202,13 @@ function HabitRow({
   const icon = habit.icon ?? (bad ? 'ban' : 'circle-check');
   const streak = habit.current_streak ?? 0;
 
-  const accent = bad ? RED : PURPLE;
-  const accentLight = bad ? RED_LIGHT : `color-mix(in srgb, ${accent} 15%, transparent)`;
+  const accentHex = bad ? '#F87171' : BLUE_HEX;
+  const accentLight = bad ? RED_LIGHT : `color-mix(in srgb, ${accentHex} 15%, transparent)`;
 
   const subtitle = bad
     ? (done ? 'Avoided today' : 'Avoid this habit')
     : habit.description
-      ? habit.description.slice(0, 36) + (habit.description.length > 36 ? '…' : '')
+      ? habit.description.slice(0, 40) + (habit.description.length > 40 ? '…' : '')
       : habit.frequency?.type === 'daily'
         ? 'Daily habit'
         : 'Habit';
@@ -215,176 +217,120 @@ function HabitRow({
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -1, transition: { duration: 0.15 } }}
-      whileTap={{ scale: 0.985 }}
       transition={{ duration: 0.22, delay: index * 0.03 }}
       style={{
         position: 'relative',
         display: 'flex',
-        alignItems: 'center',
-        gap: 14,
-        padding: '12px 18px',
+        flexDirection: 'column',
+        gap: 10,
+        padding: '14px 16px',
         background: done
           ? (bad
-              ? 'rgba(248, 113, 113, 0.08)'
-              : 'color-mix(in srgb, var(--accent-primary) 10%, var(--bg-card))')
+              ? 'rgba(248, 113, 113, 0.07)'
+              : `color-mix(in srgb, ${accentHex} 8%, var(--bg-card))`)
           : 'var(--bg-card)',
         border: `1px solid ${
           done
-            ? (bad ? 'rgba(248, 113, 113, 0.35)' : 'color-mix(in srgb, var(--accent-primary) 35%, transparent)')
+            ? (bad ? 'rgba(248, 113, 113, 0.3)' : `color-mix(in srgb, ${accentHex} 30%, transparent)`)
             : 'var(--border-default)'
         }`,
-        borderRadius: 9999,
-        cursor: 'pointer',
+        borderRadius: 20,
         width: '100%',
-        minWidth: 0,
         boxSizing: 'border-box',
         overflow: 'hidden',
-        transition: 'all 0.2s ease',
+        transition: 'all 0.22s ease',
         boxShadow: 'none',
+        cursor: 'pointer',
       }}
       onClick={() => onOpen(habit.id)}
     >
-      {/* Clean Bottom Accent Bar for Completed items */}
-      {done && (
-        <motion.div
-          initial={{ opacity: 0, scaleX: 0 }}
-          animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.25 }}
+      {/* Top Row: Icon + Name + Streak */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        {/* Icon Circle */}
+        <div
           style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 2.5,
-            background: accent,
+            width: 40,
+            height: 40,
             borderRadius: 9999,
-            transformOrigin: 'left',
+            background: done ? accentHex : accentLight,
+            color: done ? '#FFFFFF' : accentHex,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            transition: 'all 0.2s ease',
           }}
-        />
-      )}
+        >
+          <DynamicIcon name={icon} size={19} color={done ? '#FFFFFF' : accentHex} />
+        </div>
 
-      {/* Icon Circle */}
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        style={{
-          width: 42,
-          height: 42,
-          borderRadius: 9999,
-          background: done ? accent : accentLight,
-          color: done ? '#FFFFFF' : accent,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          transition: 'all 0.2s ease',
-          boxShadow: 'none',
-        }}
-      >
-        <DynamicIcon
-          name={icon}
-          size={20}
-          color={done ? '#FFFFFF' : accent}
-        />
-      </motion.div>
-
-      {/* Text & Badges */}
-      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'nowrap' }}>
+        {/* Text */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+            <p
+              style={{
+                margin: 0,
+                fontSize: 14.5,
+                fontWeight: 700,
+                color: 'var(--text-primary)',
+                letterSpacing: '-0.01em',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                textDecoration: done && !bad ? 'line-through' : 'none',
+                opacity: done && !bad ? 0.75 : 1,
+              }}
+            >
+              {habit.name}
+            </p>
+            {streak > 0 && (
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 3,
+                  fontSize: 10.5,
+                  fontWeight: 750,
+                  padding: '2px 6px',
+                  borderRadius: 9999,
+                  background: 'rgba(245, 158, 11, 0.12)',
+                  border: '1px solid rgba(245, 158, 11, 0.28)',
+                  color: '#f59e0b',
+                  lineHeight: 1,
+                  flexShrink: 0,
+                }}
+              >
+                <Flame size={11} style={{ display: 'inline', marginRight: 1 }} />{streak}d
+              </span>
+            )}
+          </div>
           <p
             style={{
-              margin: 0,
-              fontSize: 15,
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              letterSpacing: '-0.01em',
+              margin: '2px 0 0',
+              fontSize: 11.5,
+              fontWeight: 500,
+              color: 'var(--text-muted)',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
-              textDecoration: done && !bad ? 'line-through' : 'none',
-              opacity: done && !bad ? 0.8 : 1,
             }}
           >
-            {habit.name}
+            {subtitle}
           </p>
-
-          {/* Streak Badge */}
-          {streak > 0 && (
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 3,
-                fontSize: 11,
-                fontWeight: 750,
-                padding: '2px 7px',
-                borderRadius: 9999,
-                background: 'rgba(245, 158, 11, 0.12)',
-                border: '1px solid rgba(245, 158, 11, 0.3)',
-                color: '#f59e0b',
-                lineHeight: 1,
-                flexShrink: 0,
-              }}
-            >
-              <Flame size={12} style={{ display: 'inline', marginRight: 2 }} /> {streak}d
-            </span>
-          )}
         </div>
-
-        <p
-          style={{
-            margin: 0,
-            fontSize: 12,
-            fontWeight: 500,
-            color: done ? 'var(--text-secondary)' : 'var(--text-muted)',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {subtitle}
-        </p>
       </div>
 
-      {/* Interactive Checkbox */}
-      <motion.div
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.92 }}
-        onClick={(e) => {
-          e.stopPropagation();
-          onToggle(habit.id, done);
-        }}
-        style={{
-          position: 'relative',
-          width: 32,
-          height: 32,
-          borderRadius: '50%',
-          background: done ? accent : 'transparent',
-          border: `2px solid ${done ? accent : `color-mix(in srgb, ${accent} 40%, transparent)`}`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          cursor: 'pointer',
-          transition: 'all 0.2s ease',
-          boxShadow: 'none',
-        }}
-      >
-        <AnimatePresence mode="wait">
-          {done && (
-            <motion.div
-              key="check-icon"
-              initial={{ scale: 0, rotate: -30 }}
-              animate={{ scale: 1, rotate: 0 }}
-              exit={{ scale: 0, rotate: 30 }}
-              transition={{ type: 'spring', stiffness: 450, damping: 25 }}
-            >
-              <CheckIcon />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
+      {/* iOS Swipe Slider */}
+      <div onClick={(e) => e.stopPropagation()}>
+        <SwipeToComplete
+          completed={done}
+          onToggle={(val) => onToggle(habit.id, !val)}
+          color={accentHex}
+          label={bad ? 'slide to avoid' : 'slide to complete'}
+          completedLabel={bad ? 'avoided' : 'completed'}
+          height={44}
+        />
+      </div>
     </motion.div>
   );
 }
@@ -1884,6 +1830,25 @@ export default function FitnessSummary({
   const [habitNavOpen, setHabitNavOpen] = useState(true);
   const [tripNavOpen, setTripNavOpen] = useState(false);
   const [showAllGoodHabits, setShowAllGoodHabits] = useState(false);
+  const [trendDays, setTrendDays] = useState<number>(30);
+  const [trendData, setTrendData] = useState<DailyTrend[]>([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchTrends() {
+      try {
+        const res = await fetch(`/api/analytics/trends?days=${trendDays}`);
+        if (res.ok) {
+          const json = await res.json();
+          if (isMounted && json.data) setTrendData(json.data);
+        }
+      } catch (e) {
+        console.error('[fetchTrends] error:', e);
+      }
+    }
+    fetchTrends();
+    return () => { isMounted = false; };
+  }, [trendDays]);
 
   // ── Theme (sidebar/topbar quick toggle) ──
   // Reflect the theme actually applied to <html>; re-sync after the profile
@@ -1921,7 +1886,7 @@ export default function FitnessSummary({
   };
 
   const handleAddSuccess = (saved: Habit) => {
-    setLocalHabits((prev) => [...prev, { ...saved, todayEntry: null, completionRate: 0 } as HabitWithEntry]);
+    setLocalHabits((prev) => [...prev, { ...saved, created_at: saved.created_at || new Date().toISOString(), todayEntry: null, completionRate: 0 } as HabitWithEntry]);
     setAddOpen(false);
   };
 
@@ -1934,7 +1899,8 @@ export default function FitnessSummary({
     setSelectedId(null);
   };
 
-  const goodHabits = localHabits.filter((h) => !h.is_bad_habit);
+  const activeHabitsForSelectedDate = localHabits.filter((h) => isHabitActiveOnDate(h.created_at, selectedDate));
+  const goodHabits = activeHabitsForSelectedDate.filter((h) => !h.is_bad_habit);
 
   // Habits displayed with the selected date's completion state
   const displayHabitsFull = isViewingToday
@@ -1951,7 +1917,7 @@ export default function FitnessSummary({
   const todayPct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   // Bad habits — checking one off means it was *avoided* on the selected date.
-  const badHabits = localHabits.filter((h) => h.is_bad_habit);
+  const badHabits = activeHabitsForSelectedDate.filter((h) => h.is_bad_habit);
   const displayBadHabits = isViewingToday
     ? badHabits
     : badHabits.map((h) => ({
@@ -2045,11 +2011,7 @@ export default function FitnessSummary({
             display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)',
           }}
         >
-          {/* ── 2-column widget grid ── */}
-          <div className="hf-dashboard-grid">
-            {/* LEFT COLUMN */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)', minWidth: 0 }}>
-              {/* ── Top Hero Greeting Banner ── */}
+          {/* ── Top Hero Greeting Banner ── */}
           <motion.div
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -2140,24 +2102,27 @@ export default function FitnessSummary({
           </motion.div>
 
           {/* ── 4 Top KPI Metric Cards ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 14 }}>
+          <div className="hf-kpi-grid">
             {/* Card 1: Today's Completion */}
             <motion.div
+              className="hf-kpi-card"
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.05 }}
               style={{
                 background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 24, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 6,
+                borderRadius: 16, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 6,
+                transition: 'transform 0.15s ease, border-color 0.15s ease',
               }}
+              whileHover={{ y: -2 }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
                 <Target size={14} color="var(--accent-primary)" />
-                <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Today Progress</span>
+                <span className="hf-kpi-card-title" style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Today Progress</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
+                <div className="hf-kpi-card-val" style={{ fontSize: 22, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {todayPct}%
                 </div>
-                <p style={{ margin: 0, fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                <p className="hf-kpi-card-sub" style={{ margin: 0, fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)' }}>
                   {completedCount}/{totalCount} done
                 </p>
               </div>
@@ -2165,21 +2130,24 @@ export default function FitnessSummary({
 
             {/* Card 2: Active Streak */}
             <motion.div
+              className="hf-kpi-card"
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}
               style={{
                 background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 24, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 6,
+                borderRadius: 16, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 6,
+                transition: 'transform 0.15s ease, border-color 0.15s ease',
               }}
+              whileHover={{ y: -2 }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
                 <Flame size={14} color="#FB923C" />
-                <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Best Streak</span>
+                <span className="hf-kpi-card-title" style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Best Streak</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
-                  {stats?.bestStreak ?? 0} <span style={{ fontSize: 15, fontWeight: 650, color: 'var(--text-muted)' }}>d</span>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, minWidth: 0 }}>
+                <div className="hf-kpi-card-val" style={{ fontSize: 22, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1, flexShrink: 0 }}>
+                  {stats?.bestStreak ?? 0}<span style={{ fontSize: 14, fontWeight: 650, color: 'var(--text-muted)' }}>d</span>
                 </div>
-                <p style={{ margin: 0, fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <p className="hf-kpi-card-sub" style={{ margin: 0, fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>
                   {stats?.bestStreakHabitName ? `in "${stats.bestStreakHabitName}"` : 'momentum'}
                 </p>
               </div>
@@ -2187,21 +2155,24 @@ export default function FitnessSummary({
 
             {/* Card 3: Consistency Score */}
             <motion.div
+              className="hf-kpi-card"
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.15 }}
               style={{
                 background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 24, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 6,
+                borderRadius: 16, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 6,
+                transition: 'transform 0.15s ease, border-color 0.15s ease',
               }}
+              whileHover={{ y: -2 }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
                 <TrendingUp size={14} color="#38BDF8" />
-                <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Consistency</span>
+                <span className="hf-kpi-card-title" style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Consistency</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
+                <div className="hf-kpi-card-val" style={{ fontSize: 22, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {avgPct}%
                 </div>
-                <p style={{ margin: 0, fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                <p className="hf-kpi-card-sub" style={{ margin: 0, fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)' }}>
                   7-day avg
                 </p>
               </div>
@@ -2209,26 +2180,34 @@ export default function FitnessSummary({
 
             {/* Card 4: Total Done */}
             <motion.div
+              className="hf-kpi-card"
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}
               style={{
                 background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 24, padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 6,
+                borderRadius: 16, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 6,
+                transition: 'transform 0.15s ease, border-color 0.15s ease',
               }}
+              whileHover={{ y: -2 }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
                 <Trophy size={14} color="#A855F7" />
-                <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Done</span>
+                <span className="hf-kpi-card-title" style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Done</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
+                <div className="hf-kpi-card-val" style={{ fontSize: 22, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {stats?.totalCompletions ?? 0}
                 </div>
-                <p style={{ margin: 0, fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                <p className="hf-kpi-card-sub" style={{ margin: 0, fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)' }}>
                   lifetime
                 </p>
               </div>
             </motion.div>
           </div>
+
+          {/* ── 2-column widget grid ── */}
+          <div className="hf-dashboard-grid">
+            {/* LEFT COLUMN */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)', minWidth: 0 }}>
 
           {/* ── Week day selector ── */}
           <DashCard
@@ -2350,10 +2329,20 @@ export default function FitnessSummary({
                 )}
               </DashCard>
 
-              <DashCard title="Weekly Completion Trend" action={<span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{avgPct}% avg</span>}>
-                <WeeklyReportChart
-                  data={weekBars.map(({ date, dayLabel, dayNum, pct, isToday }) => ({ date, label: dayLabel, dayNum, pct, isToday }))}
-                  avg={avgPct}
+              <DashCard title="Completion Trends">
+                <CompletionChart
+                  data={
+                    trendData.length > 0
+                      ? trendData
+                      : weekBars.map(({ date, pct }) => ({
+                          date,
+                          completed: Math.round((pct / 100) * totalCount),
+                          total: totalCount,
+                          percentage: pct,
+                        }))
+                  }
+                  currentRange={trendDays}
+                  onRangeChange={(days) => setTrendDays(days)}
                 />
               </DashCard>
             </div>
@@ -2545,9 +2534,6 @@ export default function FitnessSummary({
         @media (max-width: 1023px) {
           .hf-dashboard-main-container {
             padding-bottom: 110px !important;
-          }
-          .hf-kpi-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           }
         }
         @media (max-width: 479px) {

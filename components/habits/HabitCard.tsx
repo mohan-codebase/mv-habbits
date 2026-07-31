@@ -6,6 +6,7 @@ import { MoreHorizontal, Pencil, Archive, Trash2, Flame, Shield, Target, BadgeCh
 import { DynamicIcon } from '@/lib/icons';
 import type { HabitWithEntry } from '@/types/habit';
 import ShareButton from '@/components/social/ShareButton';
+import SwipeToComplete from '@/components/ui/SwipeToComplete';
 
 interface HabitCardProps {
   habit: HabitWithEntry;
@@ -473,39 +474,20 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
             )}
           </div>
 
-          {/* Action Button (Centered Pill) */}
-          <motion.button
-            type="button"
-            whileHover={{ scale: 1.02, y: -1 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={handleToggle}
-            style={{
-              width: '100%',
-              height: 44,
-              borderRadius: 22,
-              border: 'none',
-              background: completed
-                ? `linear-gradient(135deg, ${color} 0%, color-mix(in srgb, ${color} 75%, black) 100%)`
-                : 'linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)',
-              color: completed ? '#ffffff' : '#0f172a',
-              fontSize: 14,
-              fontWeight: 800,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 6,
-              boxShadow: 'none',
-              transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
-            }}
-            className="habit-pill-btn"
-          >
-            {completed ? (
-              <>Completed <Check size={16} style={{ display: 'inline', marginLeft: 4 }} /></>
-            ) : (
-              <>Mark Done +</>
-            )}
-          </motion.button>
+          {/* iOS Swipe to Complete Action Button */}
+          <div onClick={(e) => e.stopPropagation()} style={{ width: '100%' }}>
+            <SwipeToComplete
+              completed={completed}
+              onToggle={(val) => {
+                setChecked(val);
+                onToggle(habit.id, val);
+              }}
+              color={color}
+              label={isBad ? 'slide to avoid' : 'slide to complete'}
+              completedLabel={isBad ? 'avoided' : 'completed'}
+              height={48}
+            />
+          </div>
         </div>
       </div>
     </div>

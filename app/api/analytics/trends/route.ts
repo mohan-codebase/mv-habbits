@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
-import { toLocalDateString } from '@/lib/utils/dates';
+import { isHabitActiveOnDate } from '@/lib/utils/dates';
 import { formatInTimeZone } from 'date-fns-tz';
 
 function ok<T>(data: T, maxAge = 60) {
@@ -33,11 +33,11 @@ export async function GET(req: NextRequest) {
 
     const { data: habits } = await supabase
       .from('habits')
-      .select('id')
+      .select('id, created_at, is_bad_habit')
       .eq('user_id', user.id)
       .eq('is_archived', false);
 
-    const habitCount = (habits ?? []).length;
+    const activeHabits = (habits ?? []).filter((h) => !h.is_bad_habit);
 
     const { data: entries } = await supabase
       .from('habit_entries')
@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
       const dateStr = formatInTimeZone(d, userTz, 'yyyy-MM-dd');
       const slot = byDate.get(dateStr);
       const completed = slot?.completed ?? 0;
-      const total = habitCount; // use current habit count as baseline
+      const total = activeHabits.filter((h) => isHabitActiveOnDate(h.created_at, dateStr)).length;
       result.push({
         date: dateStr,
         completed,

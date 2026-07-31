@@ -30,7 +30,7 @@ import AppLogo from '@/components/ui/AppLogo';
 
 // Sidebar nav row — filled when active, hover tint otherwise.
 function NavItem({
-  label, active = false, href, onClick,
+  icon, label, active = false, href, onClick,
 }: {
   icon?: React.ReactNode; label: string; active?: boolean; href: string; onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }) {
@@ -40,7 +40,7 @@ function NavItem({
       onClick={onClick}
       style={{
         width: '100%', display: 'flex', alignItems: 'center', gap: 12,
-        padding: '11px 14px', borderRadius: 9999, border: 'none', cursor: 'pointer',
+        padding: '10px 14px', borderRadius: 9999, border: 'none', cursor: 'pointer',
         background: active ? 'var(--accent-primary)' : 'transparent',
         color: active ? 'var(--accent-on-primary)' : 'var(--text-secondary)',
         fontSize: 14, fontWeight: active ? 700 : 600, fontFamily: 'inherit', textAlign: 'left',
@@ -50,7 +50,8 @@ function NavItem({
       onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = 'var(--surface-tint)'; }}
       onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = 'transparent'; }}
     >
-      {label}
+      {icon && <span style={{ display: 'flex', flexShrink: 0, alignItems: 'center' }}>{icon}</span>}
+      <span>{label}</span>
     </Link>
   );
 }
@@ -151,7 +152,6 @@ export default function Sidebar() {
   const { theme, toggle } = useTheme();
 
   const [user, setUser] = useState<SupabaseUser | null>(null);
-  const [habitNavOpen, setHabitNavOpen] = useState(pathname.startsWith('/dashboard') || pathname === '/dashboard');
   const [devicesOpen, setDevicesOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -272,31 +272,19 @@ export default function Sidebar() {
           <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-dimmed)' }}>⌘K</span>
         </button>
 
-        <p style={{ margin: '0 0 8px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Menu</p>
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <NavGroup
-            icon={<CheckCircle2 size={16} strokeWidth={2.2} color="#1a1a1a" />}
-            label="Habit Tracker"
-            expanded={habitNavOpen}
-            onToggle={() => setHabitNavOpen(o => !o)}
-          >
-            <SubNavItem icon={<LayoutDashboard size={15} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={(e) => { if (isOverviewActive) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }} />
-            <SubNavItem icon={<BarChart3 size={15} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" />
-            <SubNavItem icon={<Trophy size={15} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" />
-            <SubNavItem icon={<CalendarCheck size={15} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" />
-          </NavGroup>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <p style={{ margin: '4px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Habit Tracker</p>
+          <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={(e) => { if (isOverviewActive) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }} />
+          <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" />
+          <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" />
+          <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" />
 
-          <NavGroup
-            icon={<Users size={16} strokeWidth={2.2} color="#1a1a1a" />}
-            label="Social"
-            expanded={true}
-            onToggle={() => {}}
-          >
-            <SubNavItem icon={<Users size={15} />} label="Network" active={isNetworkActive} href="/dashboard/network" />
-            <SubNavItem icon={<Activity size={15} />} label="Feed" active={isFeedActive} href="/dashboard/feed" />
-          </NavGroup>
+          <p style={{ margin: '14px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Social</p>
+          <NavItem icon={<Users size={17} />} label="Network" active={isNetworkActive} href="/dashboard/network" />
+          <NavItem icon={<Activity size={17} />} label="Feed" active={isFeedActive} href="/dashboard/feed" />
 
-          <NavItem icon={<Settings size={18} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" />
+          <p style={{ margin: '14px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Settings</p>
+          <NavItem icon={<Settings size={17} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" />
         </nav>
 
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 6, paddingTop: 18 }}>
@@ -432,31 +420,19 @@ export default function Sidebar() {
                 <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-dimmed)' }}>⌘K</span>
               </button>
 
-              <p style={{ margin: '0 0 8px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Menu</p>
-              <nav style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <NavGroup
-                  icon={<CheckCircle2 size={16} strokeWidth={2.2} color="#1a1a1a" />}
-                  label="Habit Tracker"
-                  expanded={habitNavOpen}
-                  onToggle={() => setHabitNavOpen(o => !o)}
-                >
-                  <SubNavItem icon={<LayoutDashboard size={15} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={() => setMobileOpen(false)} />
-                  <SubNavItem icon={<BarChart3 size={15} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" onClick={() => setMobileOpen(false)} />
-                  <SubNavItem icon={<Trophy size={15} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" onClick={() => setMobileOpen(false)} />
-                  <SubNavItem icon={<CalendarCheck size={15} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" onClick={() => setMobileOpen(false)} />
-                </NavGroup>
+              <nav style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <p style={{ margin: '4px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Habit Tracker</p>
+                <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={() => setMobileOpen(false)} />
+                <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" onClick={() => setMobileOpen(false)} />
+                <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" onClick={() => setMobileOpen(false)} />
+                <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" onClick={() => setMobileOpen(false)} />
 
-                <NavGroup
-                  icon={<Users size={16} strokeWidth={2.2} color="#1a1a1a" />}
-                  label="Social"
-                  expanded={true}
-                  onToggle={() => {}}
-                >
-                  <SubNavItem icon={<Users size={15} />} label="Network" active={isNetworkActive} href="/dashboard/network" onClick={() => setMobileOpen(false)} />
-                  <SubNavItem icon={<Activity size={15} />} label="Feed" active={isFeedActive} href="/dashboard/feed" onClick={() => setMobileOpen(false)} />
-                </NavGroup>
+                <p style={{ margin: '14px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Social</p>
+                <NavItem icon={<Users size={17} />} label="Network" active={isNetworkActive} href="/dashboard/network" onClick={() => setMobileOpen(false)} />
+                <NavItem icon={<Activity size={17} />} label="Feed" active={isFeedActive} href="/dashboard/feed" onClick={() => setMobileOpen(false)} />
 
-                <NavItem icon={<Settings size={18} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" onClick={() => setMobileOpen(false)} />
+                <p style={{ margin: '14px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Settings</p>
+                <NavItem icon={<Settings size={17} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" onClick={() => setMobileOpen(false)} />
               </nav>
 
               <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 6, paddingTop: 18 }}>

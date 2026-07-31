@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
-import { toLocalDateString } from '@/lib/utils/dates';
+import { isHabitActiveOnDate } from '@/lib/utils/dates';
 import { formatInTimeZone } from 'date-fns-tz';
 
 function ok<T>(data: T, maxAge = 120) {
@@ -49,11 +49,11 @@ export async function GET(req: NextRequest) {
 
     const { data: habits } = await supabase
       .from('habits')
-      .select('id')
+      .select('id, created_at, is_bad_habit')
       .eq('user_id', user.id)
       .eq('is_archived', false);
 
-    const habitCount = habitId ? 1 : (habits ?? []).length;
+    const activeHabits = (habits ?? []).filter((h) => !h.is_bad_habit);
 
     // Aggregate by date
     const byDate = new Map<string, { completed: number; total: number }>();
@@ -70,10 +70,14 @@ export async function GET(req: NextRequest) {
     while (cur <= today) {
       const dateStr = formatInTimeZone(cur, userTz, 'yyyy-MM-dd');
       const slot = byDate.get(dateStr);
+      const activeCount = habitId
+        ? 1
+        : activeHabits.filter((h) => isHabitActiveOnDate(h.created_at, dateStr)).length;
+
       result.push({
         date: dateStr,
         count: slot?.completed ?? 0,
-        percentage: habitCount > 0 && slot ? Math.round((slot.completed / habitCount) * 100) : 0,
+        percentage: activeCount > 0 && slot ? Math.round((slot.completed / activeCount) * 100) : 0,
       });
       cur.setDate(cur.getDate() + 1);
     }

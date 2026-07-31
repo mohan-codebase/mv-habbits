@@ -35,14 +35,15 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Toolti
       style={{
         background: 'var(--bg-card)',
         border: '1px solid var(--border-default)',
-        borderRadius: 9999,
-        padding: '10px 14px',
+        borderRadius: 14,
+        padding: '12px 16px',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)',
       }}
     >
-      <p style={{ margin: '0 0 4px', fontSize: 12, color: 'var(--text-muted)', fontWeight: 500 }}>
+      <p style={{ margin: '0 0 4px', fontSize: 12, color: 'var(--text-muted)', fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 500 }}>
         {d.label} {d.dayNum}{d.isToday ? ' · Today' : ''}
       </p>
-      <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: 'var(--accent-primary)', fontFamily: "'IBM Plex Mono', monospace" }}>
+      <p style={{ margin: 0, fontSize: 20, fontWeight: 800, color: 'var(--accent-primary)', fontFamily: "'IBM Plex Mono', monospace" }}>
         {d.pct}%
       </p>
     </div>
@@ -122,11 +123,11 @@ const WeeklyReportChart = memo(function WeeklyReportChart({
               type="monotone"
               dataKey="pct"
               stroke={c}
-              strokeWidth={4}
+              strokeWidth={3.5}
               strokeLinecap="round"
               fill={`url(#${gradientId})`}
-              style={{ filter: `drop-shadow(0px 4px 5px ${c}4D)` }}
-              dot={{ r: 4, fill: c, strokeWidth: 0 }}
+              style={{ filter: `drop-shadow(0px 4px 8px color-mix(in srgb, ${c} 50%, transparent))` }}
+              dot={false}
               activeDot={{ r: 7, fill: c, stroke: 'var(--bg-primary)', strokeWidth: 3 }}
               isAnimationActive={true}
               animationDuration={1200}

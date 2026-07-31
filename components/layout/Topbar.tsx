@@ -30,8 +30,6 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
   const [user, setUser]           = useState<User | null>(null);
   const [paletteOpen, setPalette] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [habitExpanded, setHabitExpanded] = useState(true);
-  const [habitDropdownOpen, setHabitDropdownOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
@@ -201,75 +199,31 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
               </div>
 
               {/* All nav pages */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1, overflowY: 'auto' }}>
-                <button
-                  onClick={() => setHabitExpanded(o => !o)}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: 10,
-                    padding: '11px 16px', borderRadius: 14, cursor: 'pointer',
-                    background: '#ffffff',
-                    border: 'none',
-                    color: '#1a1a1a',
-                    fontWeight: 700, width: '100%', textAlign: 'left',
-                    boxShadow: 'none',
-                    transition: 'opacity 0.15s',
-                    marginBottom: 2,
-                  }}
-                >
-                  <Dumbbell size={16} strokeWidth={2.2} color="#1a1a1a" />
-                  <span style={{ fontSize: 14, flex: 1, letterSpacing: '-0.01em' }}>Habit Tracker</span>
-                  <motion.span
-                    animate={{ rotate: habitExpanded ? 180 : 0 }}
-                    transition={{ duration: 0.22 }}
-                    style={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <ChevronDown size={16} color="#555" />
-                  </motion.span>
-                </button>
-
-                <AnimatePresence initial={false}>
-                  {habitExpanded && (
-                    <motion.div
-                      key="habit-sub"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.22, ease: 'easeInOut' }}
-                      style={{ overflow: 'hidden' }}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, overflowY: 'auto' }}>
+                <p style={{ margin: '4px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Habit Tracker</p>
+                {HABIT_SUB_NAV.map(({ label, tab, icon: Icon }) => {
+                  const active = activeTab === tab;
+                  return (
+                    <button
+                      key={tab}
+                      onClick={() => { onTabChange?.(tab); setSidebarOpen(false); }}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 10,
+                        padding: '10px 14px', borderRadius: 9999, cursor: 'pointer',
+                        background: active ? 'var(--accent-primary)' : 'transparent',
+                        border: 'none',
+                        color: active ? 'var(--accent-on-primary)' : 'var(--text-secondary)',
+                        fontSize: 14,
+                        fontWeight: active ? 700 : 600,
+                        width: '100%', textAlign: 'left',
+                        transition: 'all 0.15s',
+                      }}
                     >
-                      <div style={{
-                        display: 'flex', flexDirection: 'column', gap: 0,
-                        paddingLeft: 16,
-                        borderLeft: '2px solid rgba(255,255,255,0.12)',
-                        marginLeft: 10,
-                        marginBottom: 8,
-                      }}>
-                        {HABIT_SUB_NAV.map(({ label, tab, icon: Icon }) => {
-                          const active = activeTab === tab;
-                          return (
-                            <button
-                              key={tab}
-                              onClick={() => { onTabChange?.(tab); setSidebarOpen(false); }}
-                              style={{
-                                display: 'flex', alignItems: 'center', gap: 10,
-                                padding: '9px 10px', borderRadius: 9999, cursor: 'pointer',
-                                background: active ? 'rgba(255,255,255,0.08)' : 'transparent',
-                                border: 'none',
-                                color: active ? '#ffffff' : 'rgba(255,255,255,0.55)',
-                                fontWeight: active ? 600 : 400,
-                                width: '100%', textAlign: 'left',
-                                transition: 'all 0.15s',
-                              }}
-                            >
-                              <Icon size={15} strokeWidth={active ? 2.2 : 1.6} />
-                              <span style={{ fontSize: 13.5 }}>{label}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      <Icon size={16} />
+                      <span>{label}</span>
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Search & Logout at Bottom */}
@@ -364,85 +318,28 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
             margin: '0 24px',
           }}
         >
-          {/* Habit Tracker Dropdown */}
-          <div
-            onMouseEnter={() => setHabitDropdownOpen(true)}
-            onMouseLeave={() => setHabitDropdownOpen(false)}
-            style={{ position: 'relative' }}
-          >
-            <button
-              style={{
-                display: 'flex', alignItems: 'center', gap: 6,
-                padding: '8px 14px', borderRadius: 9999, cursor: 'pointer',
-                transition: 'all 0.15s ease',
-                background: isHabitsActive ? 'rgba(85, 85, 85, 0.08)' : 'transparent',
-                border: `1px solid ${isHabitsActive ? 'rgba(85, 85, 85, 0.25)' : 'transparent'}`,
-                color: isHabitsActive ? 'var(--text-primary)' : 'var(--text-muted)',
-                fontWeight: 600,
-                fontSize: 13,
-              }}
-            >
-              <Dumbbell size={15} />
-              <span>Habit Tracker</span>
-              <ChevronDown size={14} style={{ transform: habitDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
-            </button>
-
-            <AnimatePresence>
-              {habitDropdownOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  transition={{ duration: 0.15 }}
-                  style={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: 0,
-                    marginTop: 6,
-                    width: 200,
-                    background: 'var(--bg-card)',
-                    border: '1px solid var(--border-default)',
-                    borderRadius: 14,
-                    boxShadow: 'none',
-                    padding: 8,
-                    zIndex: 100,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 3,
-                  }}
-                >
-                  {HABIT_SUB_NAV.map(({ label, tab, icon: Icon }) => {
-                    const active = activeTab === tab;
-                    return (
-                      <button
-                        key={tab}
-                        onClick={() => {
-                          onTabChange?.(tab);
-                          setHabitDropdownOpen(false);
-                        }}
-                        style={{
-                          display: 'flex', alignItems: 'center', gap: 10,
-                          padding: '10px 12px', borderRadius: 9999, cursor: 'pointer',
-                          background: active ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
-                          border: 'none',
-                          color: active ? 'var(--text-primary)' : 'var(--text-muted)',
-                          fontSize: 13,
-                          fontWeight: active ? 600 : 400,
-                          width: '100%', textAlign: 'left',
-                          transition: 'all 0.15s',
-                        }}
-                        onMouseEnter={(e) => { if (!active) { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'; e.currentTarget.style.color = 'var(--text-primary)'; } }}
-                        onMouseLeave={(e) => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; } }}
-                      >
-                        <Icon size={14} />
-                        <span>{label}</span>
-                      </button>
-                    );
-                  })}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          {HABIT_SUB_NAV.map(({ label, tab, icon: Icon }) => {
+            const active = activeTab === tab;
+            return (
+              <button
+                key={tab}
+                onClick={() => onTabChange?.(tab)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '8px 14px', borderRadius: 9999, cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                  background: active ? 'rgba(85, 85, 85, 0.08)' : 'transparent',
+                  border: `1px solid ${active ? 'rgba(85, 85, 85, 0.25)' : 'transparent'}`,
+                  color: active ? 'var(--text-primary)' : 'var(--text-muted)',
+                  fontWeight: active ? 700 : 600,
+                  fontSize: 13,
+                }}
+              >
+                <Icon size={15} />
+                <span>{label}</span>
+              </button>
+            );
+          })}
         </nav>
 
         {/* Right: Desktop actions (lg+ only) + Mobile hamburger menu */}

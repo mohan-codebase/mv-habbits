@@ -62,3 +62,23 @@ export function getFrequencyLabel(frequency: { type: string; days?: number[]; co
   if (frequency.type === 'x_per_month') return `${frequency.count}x per month`;
   return '';
 }
+
+/** Returns YYYY-MM-DD for a habit's created_at string */
+export function getHabitCreatedDate(createdAt?: string): string {
+  if (!createdAt) return '1970-01-01';
+  try {
+    const d = parseISO(createdAt);
+    if (isNaN(d.getTime())) return createdAt.slice(0, 10);
+    return format(d, 'yyyy-MM-dd');
+  } catch {
+    return createdAt.slice(0, 10);
+  }
+}
+
+/** Returns true if habit was created on or before targetDate (YYYY-MM-DD) */
+export function isHabitActiveOnDate(createdAt?: string, targetDate?: string): boolean {
+  if (!targetDate) return true;
+  const createdDate = getHabitCreatedDate(createdAt);
+  return createdDate <= targetDate;
+}
+

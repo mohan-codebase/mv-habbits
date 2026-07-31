@@ -10,7 +10,7 @@ import HabitForm from '@/components/habits/HabitForm';
 import Modal from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
-import { todayString } from '@/lib/utils/dates';
+import { todayString, isHabitActiveOnDate } from '@/lib/utils/dates';
 import { useRealtimeEntries } from '@/lib/hooks/useRealtimeEntries';
 import { createClient } from '@/lib/supabase/client';
 import OnboardingWizard from '@/components/onboarding/OnboardingWizard';
@@ -248,8 +248,9 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
         const existing = (json?.data ?? []) as HabitEntry[];
         if (cancelled) return;
         const byHabit = new Map(existing.map((e) => [e.habit_id, e]));
+        const activeHabitsForBackfill = habits.filter((h) => isHabitActiveOnDate(h.created_at, backfillDate));
         setBackfillRows(
-          habits.map((h) => {
+          activeHabitsForBackfill.map((h) => {
             const e = byHabit.get(h.id);
             return {
               habit_id: h.id,
@@ -262,8 +263,9 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
         );
       } catch {
         if (!cancelled) {
+          const activeHabitsForBackfill = habits.filter((h) => isHabitActiveOnDate(h.created_at, backfillDate));
           setBackfillRows(
-            habits.map((h) => ({
+            activeHabitsForBackfill.map((h) => ({
               habit_id: h.id,
               is_completed: false,
               notes: '',

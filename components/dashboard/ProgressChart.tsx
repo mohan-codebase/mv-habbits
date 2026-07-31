@@ -1,9 +1,18 @@
-'use client';
-
-import React, { useMemo, useState, useRef, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
 import { TrendingUp, TrendingDown, Minus, Check } from 'lucide-react';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
+import { useAccentColor } from '@/components/ui/ThemeProvider';
+
 interface HeatmapDay { date: string; count: number; }
 
 interface ProgressChartProps {
@@ -14,30 +23,6 @@ interface ProgressChartProps {
 type Range = '7d' | '30d' | '90d';
 
 const rangeDays: Record<Range, number> = { '7d': 7, '30d': 30, '90d': 90 };
-
-/** Cardinal spline → smooth cubic bezier SVG path. */
-function smoothPath(points: { x: number; y: number }[], tension = 0.35): string {
-  if (points.length === 0) return '';
-  if (points.length === 1) return `M ${points[0].x},${points[0].y}`;
-
-  const d: string[] = [`M ${points[0].x.toFixed(2)},${points[0].y.toFixed(2)}`];
-  for (let i = 0; i < points.length - 1; i++) {
-    const p0 = points[i - 1] ?? points[i];
-    const p1 = points[i];
-    const p2 = points[i + 1];
-    const p3 = points[i + 2] ?? p2;
-
-    const cp1x = p1.x + (p2.x - p0.x) * tension;
-    const cp1y = p1.y + (p2.y - p0.y) * tension;
-    const cp2x = p2.x - (p3.x - p1.x) * tension;
-    const cp2y = p2.y - (p3.y - p1.y) * tension;
-
-    d.push(
-      `C ${cp1x.toFixed(2)},${cp1y.toFixed(2)} ${cp2x.toFixed(2)},${cp2y.toFixed(2)} ${p2.x.toFixed(2)},${p2.y.toFixed(2)}`
-    );
-  }
-  return d.join(' ');
-}
 
 function DeltaPill({ value, positive }: { value: number; positive: boolean }) {
   const zero = value === 0;
@@ -63,52 +48,10 @@ function DeltaPill({ value, positive }: { value: number; positive: boolean }) {
     </span>
   );
 }
-function ChartSkeleton() {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div>
-          <div className="shimmer" style={{ height: 12, width: 120, borderRadius: 14, marginBottom: 12 }} />
-          <div className="shimmer" style={{ height: 32, width: 200, borderRadius: 14, marginBottom: 8 }} />
-          <div className="shimmer" style={{ height: 14, width: 150, borderRadius: 14 }} />
-        </div>
-        <div className="shimmer" style={{ height: 32, width: 100, borderRadius: 14 }} />
-      </div>
-      <div
-        className="shimmer"
-        style={{
-          height: 200,
-          width: '100%',
-          borderRadius: 14,
-          opacity: 0.4,
-          background: 'linear-gradient(90deg, transparent 0%, var(--bg-tertiary) 50%, transparent 100%)',
-          backgroundSize: '200% 100%',
-        }}
-      />
-    </div>
-  );
-}
 
 export default function ProgressChart({ data, habitCount }: ProgressChartProps) {
+  const accentHex = useAccentColor();
   const [range, setRange] = useState<Range>('30d');
-  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  // Start at 0×0 — ResizeObserver sets the real size before first paint
-  const [size, setSize] = useState({ w: 0, h: 160 });
-  const svgRef = useRef<SVGSVGElement>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  // Responsive sizing
-  useEffect(() => {
-    if (!wrapRef.current) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const e of entries) {
-        const w = Math.max(280, Math.floor(e.contentRect.width));
-        setSize({ w, h: Math.min(240, Math.max(180, Math.round(w * 0.32))) });
-      }
-    });
-    ro.observe(wrapRef.current);
-    return () => ro.disconnect();
-  }, []);
 
   // Window + stats
   const { window, prevWindow } = useMemo(() => {
@@ -123,10 +66,9 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
   const prevTotal = useMemo(() => prevWindow.reduce((s, d) => s + d.count, 0), [prevWindow]);
   const avg       = window.length > 0 ? total / window.length : 0;
   const prevAvg   = prevWindow.length > 0 ? prevTotal / prevWindow.length : 0;
-  const delta     = avg - prevAvg;
   const deltaPct  = prevAvg === 0 ? (avg > 0 ? 100 : 0) : Math.round(((avg - prevAvg) / prevAvg) * 100);
 
-  // "Completion rate" — cap at habitCount per day
+  // Completion rate
   const completionPct = useMemo(() => {
     if (window.length === 0 || habitCount === 0) return 0;
     const maxPossible = habitCount * window.length;
@@ -135,68 +77,17 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
   const prevCompletionPct = useMemo(() => {
     if (prevWindow.length === 0 || habitCount === 0) return 0;
     const maxPossible = habitCount * prevWindow.length;
-    return Math.round((prevTotal / maxPossible) * 100);
+    return Math.round((prevTotal / prevWindow.length) * 100);
   }, [prevWindow, habitCount, prevTotal]);
   const completionDelta = completionPct - prevCompletionPct;
 
-  // Chart geometry
-  const padding = { top: 18, right: 20, bottom: 24, left: 32 };
-  const W = size.w;
-  const H = size.h;
-  const innerW = W - padding.left - padding.right;
-  const innerH = H - padding.top - padding.bottom;
-
-  const maxVal = useMemo(() => {
-    const m = window.reduce((acc, d) => (d.count > acc ? d.count : acc), 0);
-    return Math.max(m, habitCount || 1, 1);
-  }, [window, habitCount]);
-
-  const points = useMemo(() => {
-    if (window.length === 0) return [];
-    const step = window.length > 1 ? innerW / (window.length - 1) : 0;
-    return window.map((d, i) => ({
-      x: padding.left + i * step,
-      y: padding.top + innerH - (d.count / maxVal) * innerH,
-      data: d,
+  const chartData = useMemo(() => {
+    return window.map((d) => ({
+      date: d.date,
+      count: d.count,
+      percentage: habitCount > 0 ? Math.min(100, Math.round((d.count / habitCount) * 100)) : 0,
     }));
-  }, [window, innerW, innerH, padding.left, padding.top, maxVal]);
-
-  const linePath = useMemo(() => smoothPath(points), [points]);
-  const areaPath = useMemo(() => {
-    if (points.length === 0) return '';
-    const baseY = padding.top + innerH;
-    return `${linePath} L ${points[points.length - 1].x.toFixed(2)},${baseY} L ${points[0].x.toFixed(2)},${baseY} Z`;
-  }, [points, linePath, padding.top, innerH]);
-
-  // Tick marks
-  const yTicks = [0, 0.5, 1].map((f) => ({
-    v: Math.round(maxVal * f),
-    y: padding.top + innerH - f * innerH,
-  }));
-  const xTicks = useMemo(() => {
-    if (points.length === 0) return [];
-    const n = points.length;
-    const count = Math.min(5, n);
-    return Array.from({ length: count }, (_, i) => {
-      const idx = Math.round((i / (count - 1 || 1)) * (n - 1));
-      return { idx, label: format(parseISO(points[idx].data.date), range === '7d' ? 'EEE' : 'MMM d'), x: points[idx].x };
-    });
-  }, [points, range]);
-
-  // Mouse → nearest index
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (points.length === 0 || !svgRef.current) return;
-    const rect = svgRef.current.getBoundingClientRect();
-    const scaleX = size.w / rect.width;
-    const mx = (e.clientX - rect.left) * scaleX;
-    let bestIdx = 0;
-    let bestD = Infinity;
-    for (let i = 0; i < points.length; i++) {
-      const d = Math.abs(points[i].x - mx);
-      if (d < bestD) { bestD = d; bestIdx = i; }
-    }
-    setHoverIdx(bestIdx);
-  };
+  }, [window, habitCount]);
 
   const onTrack = completionDelta >= 0 && completionPct >= 50;
 
@@ -205,24 +96,25 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
       style={{
         background: 'var(--bg-card)',
         border: '1px solid var(--border-subtle)',
-        borderRadius: 'var(--r-xl)',
-        padding: 'var(--space-5)',
+        borderRadius: 16,
+        padding: 20,
         boxShadow: 'none',
       }}
     >
       {/* Header: title + status + range tabs */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-4)', gap: 12, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <h3
             style={{
               fontSize: 17,
               fontWeight: 700,
               color: 'var(--text-primary)',
-              fontFamily: "'Outfit'",
+              fontFamily: "'Outfit', sans-serif",
               letterSpacing: '-0.02em',
+              margin: 0,
             }}
           >
-            Progress
+            Progress Trends
           </h3>
           <span
             style={{
@@ -230,13 +122,12 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
               alignItems: 'center',
               gap: 5,
               padding: '3px 9px',
-              borderRadius: 'var(--r-pill)',
+              borderRadius: 9999,
               background: onTrack ? 'var(--accent-glow-md)' : 'var(--warm-glow)',
               border: `1px solid ${onTrack ? 'color-mix(in srgb, var(--accent-primary) 28%, transparent)' : 'rgba(187, 187, 187,0.28)'}`,
               color: onTrack ? 'var(--accent-light)' : 'var(--warm)',
               fontSize: 11,
               fontWeight: 600,
-              letterSpacing: '-0.005em',
             }}
           >
             <Check size={11} strokeWidth={3} />
@@ -245,16 +136,7 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
         </div>
 
         {/* Range tabs */}
-        <div
-          style={{
-            display: 'flex',
-            background: 'var(--bg-tertiary)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: "var(--r-md)",
-            padding: '3px',
-            gap: '2px',
-          }}
-        >
+        <div style={{ display: 'flex', gap: 6 }}>
           {(['7d', '30d', '90d'] as Range[]).map((r) => {
             const active = range === r;
             return (
@@ -264,16 +146,15 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
                 onClick={() => setRange(r)}
                 style={{
                   padding: '5px 12px',
-                  borderRadius: "var(--r-md)",
-                  border: 'none',
-                  background: active ? 'var(--bg-secondary)' : 'transparent',
-                  color: active ? 'var(--text-primary)' : 'var(--text-muted)',
-                  fontSize: 12.5,
-                  fontWeight: active ? 600 : 400,
+                  borderRadius: 9999,
+                  border: active ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
+                  background: active ? 'var(--accent-primary)' : 'var(--surface-tint)',
+                  color: active ? 'var(--accent-on-primary)' : 'var(--text-muted)',
+                  fontSize: 12,
+                  fontWeight: active ? 700 : 500,
                   cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                  boxShadow: 'none',
-                  minWidth: 48,
+                  transition: 'all 0.2s ease',
+                  boxShadow: active ? '0 0 12px color-mix(in srgb, var(--accent-primary) 35%, transparent)' : 'none',
                 }}
               >
                 {r.toUpperCase()}
@@ -288,8 +169,8 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 'var(--space-3)',
-          marginBottom: 'var(--space-4)',
+          gap: 12,
+          marginBottom: 16,
         }}
       >
         <KpiTile
@@ -307,155 +188,78 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
         />
       </div>
 
-      {/* Chart */}
-      <div ref={wrapRef} style={{ width: '100%', minWidth: 0, position: 'relative', overflow: 'hidden' }}>
-      {/* Don't render SVG until measured to avoid width:0 artifacts */}
-      {size.w === 0 ? (
-        <ChartSkeleton />
-      ) : (
-        <>
-          <svg
-            ref={svgRef}
-            width={W}
-            height={H}
-            viewBox={`0 0 ${W} ${H}`}
-            preserveAspectRatio="none"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={() => setHoverIdx(null)}
-            style={{ display: 'block', cursor: 'crosshair', maxWidth: '100%' }}
-          >
+      {/* Recharts Glowing Monotone Area Chart */}
+      <motion.div animate={{ opacity: [0.85, 1, 0.85] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} style={{ width: '100%' }}>
+        <ResponsiveContainer width="100%" height={220}>
+          <AreaChart data={chartData} margin={{ top: 8, right: 5, left: -20, bottom: 0 }}>
             <defs>
-              <linearGradient id="pc-fill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stopColor="var(--accent-primary)" stopOpacity="0.35" />
-                <stop offset="60%"  stopColor="var(--accent-primary)" stopOpacity="0.10" />
-                <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient id="pc-line" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%"   stopColor="var(--accent-primary)" />
-                <stop offset="100%" stopColor="var(--cyan)" />
+              <linearGradient id="progressGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor={accentHex} stopOpacity={0.6} />
+                <stop offset="95%" stopColor={accentHex} stopOpacity={0.02} />
               </linearGradient>
             </defs>
-
-            {/* Grid lines */}
-            {yTicks.map((t, i) => (
-              <g key={i}>
-                <line
-                  x1={padding.left}
-                  x2={W - padding.right}
-                  y1={t.y}
-                  y2={t.y}
-                  stroke="var(--border-subtle)"
-                  strokeDasharray="3 4"
-                  strokeWidth={1}
-                />
-                <text
-                  x={padding.left - 6}
-                  y={t.y + 3}
-                  textAnchor="end"
-                  fill="var(--text-dimmed)"
-                  fontSize={9.5}
-                  fontFamily="'IBM Plex Mono', monospace"
-                  letterSpacing="0.04em"
-                >
-                  {t.v}
-                </text>
-              </g>
-            ))}
-
-            {/* X labels */}
-            {xTicks.map((t, i) => (
-              <text
-                key={i}
-                x={t.x}
-                y={H - padding.bottom + 14}
-                textAnchor="middle"
-                fill="var(--text-dimmed)"
-                fontSize={9.5}
-                fontFamily="'IBM Plex Mono', monospace"
-                letterSpacing="0.04em"
-              >
-                {t.label}
-              </text>
-            ))}
-
-            {/* Area fill */}
-            {areaPath && (
-              <motion.path
-                d={areaPath}
-                fill="url(#pc-fill)"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            )}
-
-            {/* Line */}
-            {linePath && (
-              <motion.path
-                d={linePath}
-                fill="none"
-                stroke="url(#pc-line)"
-                strokeWidth={2.4}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 0.9, ease: 'easeOut' }}
-              />
-            )}
-
-            {/* Hover crosshair + dot */}
-            {hoverIdx !== null && points[hoverIdx] && (
-              <g>
-                <line
-                  x1={points[hoverIdx].x}
-                  x2={points[hoverIdx].x}
-                  y1={padding.top}
-                  y2={H - padding.bottom}
-                  stroke="var(--border-medium)"
-                  strokeWidth={1}
-                  strokeDasharray="2 3"
-                />
-                <circle
-                  cx={points[hoverIdx].x}
-                  cy={points[hoverIdx].y}
-                  r={5}
-                  fill="var(--bg-primary)"
-                  stroke="var(--accent-primary)"
-                  strokeWidth={2}
-                />
-              </g>
-            )}
-          </svg>
-
-          {/* Tooltip */}
-          {hoverIdx !== null && points[hoverIdx] && (
-            <div
-              style={{
-                position: 'absolute',
-                left: Math.max(0, Math.min(points[hoverIdx].x - 60, size.w - 120)),
-                top: Math.max(0, points[hoverIdx].y - 54),
-                background: 'var(--bg-elevated)',
-                border: '1px solid var(--border-default)',
-                borderRadius: 'var(--r-sm)',
-                padding: '7px 10px',
-                pointerEvents: 'none',
-                boxShadow: 'none',
-                minWidth: 120,
-                zIndex: 2,
+            <CartesianGrid strokeDasharray="4 4" stroke="rgba(255, 255, 255, 0.06)" vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickFormatter={(val) => {
+                try { return format(parseISO(val), range === '7d' ? 'EEE' : 'MMM d'); } catch { return val; }
               }}
-            >
-              <p style={{ fontSize: 10.5, color: 'var(--text-muted)', fontFamily: "'IBM Plex Mono', monospace", letterSpacing: '0.02em', marginBottom: 2 }}>
-                {format(parseISO(points[hoverIdx].data.date), 'MMM d, yyyy')}
-              </p>
-              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Outfit'" }}>
-                {points[hoverIdx].data.count} <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 500 }}>check-in{points[hoverIdx].data.count === 1 ? '' : 's'}</span>
-              </p>
-            </div>
-          )}
-        </>
-      )}
-      </div>{/* /wrapRef */}
+              tick={{ fill: 'var(--text-muted)', fontSize: 11, fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 500 }}
+              axisLine={false}
+              tickLine={false}
+              dy={6}
+            />
+            <YAxis
+              tickFormatter={(v) => `${v}`}
+              tick={{ fill: 'var(--text-muted)', fontSize: 11, fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 500 }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <Tooltip
+              content={({ active, payload, label }) => {
+                if (!active || !payload || !payload.length) return null;
+                const d = payload[0].payload;
+                return (
+                  <div
+                    style={{
+                      background: 'var(--bg-card)',
+                      border: '1px solid var(--border-default)',
+                      borderRadius: 14,
+                      padding: '10px 14px',
+                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+                    }}
+                  >
+                    <p style={{ margin: '0 0 4px', fontSize: 11.5, color: 'var(--text-muted)', fontWeight: 500 }}>
+                      {typeof label === 'string' ? format(parseISO(label), 'MMM d, yyyy') : label ?? ''}
+                    </p>
+                    <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: accentHex, fontFamily: "'IBM Plex Mono', monospace" }}>
+                      {d.count} <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>check-in{d.count === 1 ? '' : 's'}</span>
+                    </p>
+                    <p style={{ margin: '3px 0 0', fontSize: 11.5, color: 'var(--text-secondary)' }}>
+                      {d.percentage}% completion
+                    </p>
+                  </div>
+                );
+              }}
+              cursor={{ stroke: accentHex, strokeOpacity: 0.35, strokeWidth: 2 }}
+            />
+            <Area
+              type="monotone"
+              dataKey="count"
+              stroke={accentHex}
+              strokeWidth={3.5}
+              strokeLinecap="round"
+              fill="url(#progressGradient)"
+              style={{ filter: `drop-shadow(0px 4px 8px color-mix(in srgb, ${accentHex} 50%, transparent))` }}
+              dot={false}
+              activeDot={{ r: 7, fill: accentHex, stroke: 'var(--bg-primary)', strokeWidth: 3 }}
+              isAnimationActive={true}
+              animationDuration={1200}
+              animationEasing="ease-out"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </motion.div>
     </section>
   );
 }

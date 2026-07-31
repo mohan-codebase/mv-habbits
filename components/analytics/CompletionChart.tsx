@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { motion } from 'framer-motion';
 import {
   AreaChart,
@@ -51,16 +51,16 @@ function CustomTooltip({
         border: '1px solid var(--border-default)',
         borderRadius: 14,
         padding: '12px 16px',
-        boxShadow: 'none',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
       }}
     >
-      <p style={{ margin: '0 0 6px', fontSize: 12, color: 'var(--text-muted)', fontFamily: "'IBM Plex Sans'", fontWeight: 500 }}>
+      <p style={{ margin: '0 0 4px', fontSize: 12, color: 'var(--text-muted)', fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 500 }}>
         {label ? format(parseISO(label), 'MMM d, yyyy') : ''}
       </p>
-      <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: 'var(--accent-primary)', fontFamily: "'IBM Plex Mono'" }}>
+      <p style={{ margin: 0, fontSize: 20, fontWeight: 800, color: 'var(--accent-primary)', fontFamily: "'IBM Plex Mono', monospace" }}>
         {d.percentage}%
       </p>
-      <p style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--text-secondary)' }}>
+      <p style={{ margin: '4px 0 0', fontSize: 12.5, fontWeight: 500, color: 'var(--text-secondary)' }}>
         {d.completed} / {d.total} habits
       </p>
     </div>
@@ -70,6 +70,10 @@ function CustomTooltip({
 const CompletionChart = memo(function CompletionChart({ data, onRangeChange, currentRange = 30 }: CompletionChartProps) {
   const accentHex = useAccentColor();
   const [range, setRange] = useState(currentRange);
+
+  useEffect(() => {
+    setRange(currentRange);
+  }, [currentRange]);
 
   const handleRange = (days: number) => {
     setRange(days);
@@ -105,7 +109,7 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Range selector */}
-      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
         {RANGES.map(({ label, days }) => {
           const active = range === days;
           return (
@@ -115,14 +119,15 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
               onClick={() => handleRange(days)}
               style={{
                 padding: '6px 14px',
-                borderRadius: 14,
+                borderRadius: 9999,
                 border: active ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
-                background: active ? 'var(--accent-primary)' : 'transparent',
+                background: active ? 'var(--accent-primary)' : 'var(--surface-tint)',
                 color: active ? 'var(--accent-on-primary)' : 'var(--text-muted)',
                 fontSize: 12,
                 fontWeight: active ? 700 : 500,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
+                boxShadow: active ? '0 0 12px color-mix(in srgb, var(--accent-primary) 35%, transparent)' : 'none',
               }}
             >
               {label}
@@ -142,15 +147,15 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
             <defs>
               <linearGradient id="completionGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={accentHex} stopOpacity={0.6} />
-                <stop offset="95%" stopColor={accentHex} stopOpacity={0.0} />
+                <stop offset="95%" stopColor={accentHex} stopOpacity={0.02} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="4 4" stroke="rgba(255, 255, 255,0.06)" vertical={false} />
+            <CartesianGrid strokeDasharray="4 4" stroke="rgba(255, 255, 255, 0.06)" vertical={false} />
             <XAxis
               dataKey="date"
               tickFormatter={formatXAxis}
               ticks={ticks}
-              tick={{ fill: 'var(--text-muted)', fontSize: 12, fontFamily: "'IBM Plex Sans'", fontWeight: 500 }}
+              tick={{ fill: 'var(--text-muted)', fontSize: 12, fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 500 }}
               axisLine={false}
               tickLine={false}
               dy={8}
@@ -158,19 +163,19 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
             <YAxis
               domain={[0, 100]}
               tickFormatter={(v) => `${v}%`}
-              tick={{ fill: 'var(--text-muted)', fontSize: 12, fontFamily: "'IBM Plex Sans'", fontWeight: 500 }}
+              tick={{ fill: 'var(--text-muted)', fontSize: 12, fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 500 }}
               axisLine={false}
               tickLine={false}
             />
-            <Tooltip content={<CustomTooltip />} cursor={{ stroke: accentHex, strokeOpacity: 0.3, strokeWidth: 2 }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: accentHex, strokeOpacity: 0.35, strokeWidth: 2 }} />
             <Area
               type="monotone"
               dataKey="percentage"
               stroke={accentHex}
-              strokeWidth={4}
+              strokeWidth={3.5}
               strokeLinecap="round"
               fill="url(#completionGradient)"
-              style={{ filter: `drop-shadow(0px 4px 5px ${accentHex}4D)` }}
+              style={{ filter: `drop-shadow(0px 4px 8px color-mix(in srgb, ${accentHex} 50%, transparent))` }}
               dot={false}
               activeDot={{ r: 7, fill: accentHex, stroke: 'var(--bg-primary)', strokeWidth: 3 }}
               isAnimationActive={true}
