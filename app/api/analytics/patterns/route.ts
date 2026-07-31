@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { DAY_LABELS } from '@/lib/constants';
-import { toLocalDateString } from '@/lib/utils/dates';
 import { formatInTimeZone } from 'date-fns-tz';
 
 function ok<T>(data: T, maxAge = 120) {
