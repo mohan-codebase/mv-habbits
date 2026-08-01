@@ -31,7 +31,7 @@ function FaceIdGlyph({ size = 68 }: { size?: number }) {
       viewBox="0 0 72 72"
       fill="none"
       aria-hidden
-      style={{ display: 'block' }}
+      className="block"
     >
       <path d="M20 8h-4a8 8 0 0 0-8 8v4" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
       <path d="M52 8h4a8 8 0 0 1 8 8v4" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
@@ -407,34 +407,15 @@ export default function DashboardApp({
     const canUseFaceId = lockScreenMode === 'unlock' && hasBiometric && biometricSupported;
 
     return (
-      <div
-        style={{
-          background: 'var(--bg-primary)',
-          fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-          minHeight: '100dvh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '24px',
-        }}
-      >
+      <div className="flex min-h-[100dvh] items-center justify-center bg-bg-primary p-6 font-[system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif]">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            maxWidth: 390,
-            width: '100%',
-            background: 'var(--bg-secondary)',
-            border: '1px solid color-mix(in srgb, var(--text-primary) 10%, transparent)',
-            borderRadius: 28,
-            padding: '34px 26px 24px',
-            boxShadow: '0 22px 70px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.06)',
-            textAlign: 'center',
-            boxSizing: 'border-box',
-          }}
+          className="box-border w-full max-w-[390px] rounded-[28px] border border-[color-mix(in_srgb,var(--text-primary)_10%,transparent)] bg-bg-secondary p-[34px_26px_24px] text-center shadow-[0_22px_70px_rgba(0,0,0,0.30),inset_0_1px_0_rgba(255,255,255,0.06)]"
         >
           <div
+            className="mb-[22px] inline-flex items-center justify-center text-text-primary"
             style={{
               width: canUseFaceId ? 104 : 70,
               height: canUseFaceId ? 104 : 70,
@@ -443,29 +424,16 @@ export default function DashboardApp({
                 ? 'linear-gradient(180deg, color-mix(in srgb, var(--text-primary) 12%, transparent), color-mix(in srgb, var(--text-primary) 4%, transparent))'
                 : 'color-mix(in srgb, var(--text-primary) 9%, transparent)',
               border: '1px solid color-mix(in srgb, var(--text-primary) 10%, transparent)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: 22,
-              color: 'var(--text-primary)',
               boxShadow: canUseFaceId ? '0 14px 34px rgba(0, 0, 0, 0.18)' : 'none',
             }}
           >
             {canUseFaceId ? <FaceIdGlyph size={70} /> : lockScreenMode === 'create' ? <Lock size={28} /> : <Unlock size={28} />}
           </div>
 
-          <h2
-            style={{
-              margin: 0,
-              fontSize: 24,
-              fontWeight: 760,
-              color: 'var(--text-primary)',
-              letterSpacing: 0,
-            }}
-          >
+          <h2 className="m-0 text-2xl font-[760] tracking-normal text-text-primary">
             {lockScreenMode === 'create' ? 'Set Habit Passcode' : canUseFaceId ? 'Face ID' : 'Habits Locked'}
           </h2>
-          <p style={{ margin: '8px 0 24px', fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.45 }}>
+          <p className="m-0 mb-6 mt-2 text-sm leading-[1.45] text-text-secondary">
             {lockScreenMode === 'create'
               ? 'Create a passcode to protect your habit tracking entries.'
               : canUseFaceId
@@ -478,7 +446,7 @@ export default function DashboardApp({
               e.preventDefault();
               handleVerifyPasscode();
             }}
-            style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
+            className="flex flex-col gap-4"
           >
             {canUseFaceId && (
               <>
@@ -486,36 +454,20 @@ export default function DashboardApp({
                   type="button"
                   disabled={biometricBusy}
                   onClick={handleBiometricUnlock}
-                  style={{
-                    width: '100%',
-                    padding: '14px 0',
-                    borderRadius: 16,
-                    border: 'none',
-                    background: 'var(--text-primary)',
-                    color: 'var(--bg-primary)',
-                    fontSize: 15,
-                    fontWeight: 760,
-                    cursor: biometricBusy ? 'wait' : 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 9,
-                    boxShadow: '0 10px 24px rgba(0, 0, 0, 0.18)',
-                    transition: 'transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease',
-                    opacity: biometricBusy ? 0.72 : 1,
-                  }}
+                  className="flex w-full items-center justify-center gap-[9px] rounded-2xl border-none bg-text-primary py-3.5 text-[15px] font-[760] text-bg-primary shadow-[0_10px_24px_rgba(0,0,0,0.18)] transition-[transform,filter,opacity] duration-150 ease-[ease] disabled:cursor-wait"
+                  style={{ cursor: biometricBusy ? 'wait' : 'pointer', opacity: biometricBusy ? 0.72 : 1 }}
                 >
                   <FaceIdGlyph size={22} />
                   {biometricBusy ? 'Looking for Face ID...' : 'Use Face ID'}
                 </button>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
-                  <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>Passcode</span>
-                  <span style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
+                <div className="flex items-center gap-2.5">
+                  <span className="h-px flex-1 bg-border-subtle" />
+                  <span className="text-xs font-semibold text-text-muted">Passcode</span>
+                  <span className="h-px flex-1 bg-border-subtle" />
                 </div>
               </>
             )}
-            <div style={{ position: 'relative', width: '100%' }}>
+            <div className="relative w-full">
               <input
                 autoFocus
                 type={showPasscodeText ? 'text' : 'password'}
@@ -525,40 +477,12 @@ export default function DashboardApp({
                   setPasscode(e.target.value);
                   setPasscodeError(null);
                 }}
-                style={{
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  background: 'color-mix(in srgb, var(--text-primary) 6%, transparent)',
-                  border: '1px solid color-mix(in srgb, var(--text-primary) 11%, transparent)',
-                  borderRadius: 16,
-                  padding: '13px 42px 13px 14px',
-                  fontSize: 16,
-                  color: 'var(--text-primary)',
-                  outline: 'none',
-                  textAlign: 'center',
-                  fontFamily: 'inherit',
-                  fontWeight: 600,
-                  transition: 'all 0.15s ease',
-                }}
-                onFocus={(e) => (e.target.style.borderColor = 'color-mix(in srgb, var(--text-primary) 26%, transparent)')}
-                onBlur={(e) => (e.target.style.borderColor = 'color-mix(in srgb, var(--text-primary) 11%, transparent)')}
+                className="box-border w-full rounded-2xl border border-[color-mix(in_srgb,var(--text-primary)_11%,transparent)] bg-[color-mix(in_srgb,var(--text-primary)_6%,transparent)] p-[13px_42px_13px_14px] text-center text-base font-semibold font-[inherit] text-text-primary outline-none transition-all duration-150 ease-[ease] focus:border-[color-mix(in_srgb,var(--text-primary)_26%,transparent)]"
               />
               <button
                 type="button"
                 onClick={() => setShowPasscodeText(!showPasscodeText)}
-                style={{
-                  position: 'absolute',
-                  right: 12,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  color: 'var(--text-muted)',
-                  padding: 4,
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
+                className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center border-none bg-none p-1 text-text-muted cursor-pointer"
               >
                 {showPasscodeText ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -573,48 +497,25 @@ export default function DashboardApp({
                   setConfirmPasscode(e.target.value);
                   setPasscodeError(null);
                 }}
-                style={{
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  background: 'color-mix(in srgb, var(--text-primary) 6%, transparent)',
-                  border: '1px solid color-mix(in srgb, var(--text-primary) 11%, transparent)',
-                  borderRadius: 16,
-                  padding: '13px 14px',
-                  fontSize: 16,
-                  color: 'var(--text-primary)',
-                  outline: 'none',
-                  textAlign: 'center',
-                  fontFamily: 'inherit',
-                  fontWeight: 600,
-                  transition: 'all 0.15s ease',
-                }}
-                onFocus={(e) => (e.target.style.borderColor = 'color-mix(in srgb, var(--text-primary) 26%, transparent)')}
-                onBlur={(e) => (e.target.style.borderColor = 'color-mix(in srgb, var(--text-primary) 11%, transparent)')}
+                className="box-border w-full rounded-2xl border border-[color-mix(in_srgb,var(--text-primary)_11%,transparent)] bg-[color-mix(in_srgb,var(--text-primary)_6%,transparent)] p-[13px_14px] text-center text-base font-semibold font-[inherit] text-text-primary outline-none transition-all duration-150 ease-[ease] focus:border-[color-mix(in_srgb,var(--text-primary)_26%,transparent)]"
               />
             )}
 
             {passcodeError && (
-              <p style={{ margin: 0, fontSize: 13, color: '#6a6a6a', fontWeight: 600 }}>
+              <p className="m-0 text-[13px] font-semibold text-[#6a6a6a]">
                 {passcodeError}
               </p>
             )}
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 8 }}>
+            <div className="mt-2 flex flex-col gap-2.5">
               <button
                 type="submit"
+                className="w-full cursor-pointer rounded-2xl border-none py-[13px] text-[15px] font-[760] transition-all duration-150 ease-[ease]"
                 style={{
-                  width: '100%',
-                  padding: '13px 0',
-                  borderRadius: 16,
-                  border: 'none',
                   background: canUseFaceId
                     ? 'color-mix(in srgb, var(--text-primary) 8%, transparent)'
                     : 'var(--text-primary)',
                   color: canUseFaceId ? 'var(--text-primary)' : 'var(--bg-primary)',
-                  fontSize: 15,
-                  fontWeight: 760,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
                 }}
               >
                 {lockScreenMode === 'create' ? 'Save and Unlock' : canUseFaceId ? 'Unlock with Passcode' : 'Unlock'}
@@ -628,18 +529,7 @@ export default function DashboardApp({
                   setConfirmPasscode('');
                   setPasscodeError(null);
                 }}
-                style={{
-                  width: '100%',
-                  padding: '12px 0',
-                  borderRadius: 16,
-                  border: '1px solid color-mix(in srgb, var(--text-primary) 9%, transparent)',
-                  background: 'transparent',
-                  color: 'var(--text-secondary)',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                }}
+                className="w-full cursor-pointer rounded-2xl border border-[color-mix(in_srgb,var(--text-primary)_9%,transparent)] bg-transparent py-3 text-sm font-semibold text-text-secondary transition-all duration-150 ease-[ease]"
               >
                 Cancel
               </button>
