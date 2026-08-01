@@ -84,8 +84,7 @@ export default function AchievementCard({ achievement, onNewUnlock = false }: Pr
       {/* Title + description */}
       <div className="flex-1">
         <p
-          className="m-0 mb-1 text-[14px] font-bold [font-family:'Outfit']"
-          style={{ color: isUnlocked ? 'var(--text-primary)' : 'var(--text-secondary)' }}
+          className={`m-0 mb-1 text-[14px] font-bold [font-family:'Outfit'] ${isUnlocked ? 'text-text-primary' : 'text-text-secondary'}`}
         >
           {achievement.title}
         </p>
