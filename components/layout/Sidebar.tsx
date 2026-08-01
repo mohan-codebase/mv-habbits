@@ -37,19 +37,13 @@ function NavItem({
     <Link
       href={href}
       onClick={onClick}
-      style={{
-        width: '100%', display: 'flex', alignItems: 'center', gap: 12,
-        padding: '10px 14px', borderRadius: 9999, border: 'none', cursor: 'pointer',
-        background: active ? 'var(--accent-primary)' : 'transparent',
-        color: active ? 'var(--accent-on-primary)' : 'var(--text-secondary)',
-        fontSize: 14, fontWeight: active ? 700 : 600, fontFamily: 'inherit', textAlign: 'left',
-        textDecoration: 'none',
-        transition: 'background 0.15s ease, color 0.15s ease',
-      }}
-      onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = 'var(--surface-tint)'; }}
-      onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = 'transparent'; }}
+      className={`w-full flex items-center gap-3 px-[14px] py-[10px] rounded-full border-none cursor-pointer text-[14px] font-[inherit] text-left no-underline transition-[background,color] duration-150 ease-in-out ${
+        active
+          ? 'bg-accent-primary text-accent-on-primary font-bold'
+          : 'bg-transparent text-text-secondary font-semibold hover:bg-[var(--surface-tint)]'
+      }`}
     >
-      {icon && <span style={{ display: 'flex', flexShrink: 0, alignItems: 'center' }}>{icon}</span>}
+      {icon && <span className="flex shrink-0 items-center">{icon}</span>}
       <span>{label}</span>
     </Link>
   );
@@ -66,25 +60,16 @@ function NavGroup({
   children: React.ReactNode;
 }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+    <div className="flex flex-col gap-px">
       <button
         onClick={onToggle}
-        style={{
-          width: '100%', display: 'flex', alignItems: 'center', gap: 10,
-          padding: '10px 14px', borderRadius: 9999, border: 'none', cursor: 'pointer',
-          background: 'var(--accent-primary)',
-          color: 'var(--accent-on-primary)',
-          fontSize: 13.5, fontWeight: 700, fontFamily: 'inherit', textAlign: 'left',
-          transition: 'opacity 0.15s',
-        }}
-        onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.88'; }}
-        onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
+        className="w-full flex items-center gap-[10px] px-[14px] py-[10px] rounded-full border-none cursor-pointer bg-accent-primary text-accent-on-primary text-base font-bold font-[inherit] text-left transition-opacity duration-150 hover:opacity-[0.88]"
       >
-        <span style={{ flex: 1 }}>{label}</span>
+        <span className="flex-1">{label}</span>
         <motion.span
           animate={{ rotate: expanded ? 180 : 0 }}
           transition={{ duration: 0.22 }}
-          style={{ display: 'flex', alignItems: 'center' }}
+          className="flex items-center"
         >
           <ChevronDown size={15} color="currentColor" />
         </motion.span>
@@ -98,16 +83,9 @@ function NavGroup({
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.22, ease: 'easeInOut' }}
-            style={{ overflow: 'hidden' }}
+            className="overflow-hidden"
           >
-            <div style={{
-              display: 'flex', flexDirection: 'column', gap: 0,
-              paddingLeft: 14,
-              borderLeft: '2px solid rgba(255,255,255,0.12)',
-              marginLeft: 10,
-              marginTop: 2,
-              marginBottom: 4,
-            }}>
+            <div className="flex flex-col gap-0 pl-[14px] border-l-2 border-[rgba(255,255,255,0.12)] ml-[10px] mt-0.5 mb-1">
               {children}
             </div>
           </motion.div>
@@ -127,17 +105,11 @@ function SubNavItem({
     <Link
       href={href}
       onClick={onClick}
-      style={{
-        width: '100%', display: 'flex', alignItems: 'center', gap: 10,
-        padding: '8px 10px', borderRadius: 9999, border: 'none', cursor: 'pointer',
-        background: active ? 'rgba(255,255,255,0.10)' : 'transparent',
-        color: active ? 'var(--text-primary)' : 'var(--text-muted)',
-        fontSize: 13, fontWeight: active ? 600 : 400, fontFamily: 'inherit', textAlign: 'left',
-        textDecoration: 'none',
-        transition: 'all 0.15s',
-      }}
-      onMouseEnter={(e) => { if (!active) { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.color = 'var(--text-primary)'; } }}
-      onMouseLeave={(e) => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; } }}
+      className={`w-full flex items-center gap-[10px] px-[10px] py-2 rounded-full border-none cursor-pointer text-[13px] font-[inherit] text-left no-underline transition-all duration-150 ${
+        active
+          ? 'bg-[rgba(255,255,255,0.10)] text-text-primary font-semibold'
+          : 'bg-transparent text-text-muted font-normal hover:bg-[rgba(255,255,255,0.07)] hover:text-text-primary'
+      }`}
     >
       {icon}
       {label}
@@ -207,18 +179,7 @@ export default function Sidebar() {
       {isCollapsed && (
         <button
           onClick={() => setIsCollapsed(false)}
-          className="hf-desktop-sidebar-toggle"
-          style={{
-            position: 'fixed', top: 20, left: 20, zIndex: 60,
-            width: 42, height: 42, borderRadius: 9999,
-            background: 'var(--bg-card)',
-            backdropFilter: 'none', WebkitBackdropFilter: 'none',
-            border: '1px solid var(--border-default)',
-            boxShadow: 'none',
-            cursor: 'pointer', color: 'var(--text-primary)',
-            alignItems: 'center', justifyContent: 'center',
-            display: 'none',
-          }}
+          className="hf-desktop-sidebar-toggle fixed top-5 left-5 z-[60] w-[42px] h-[42px] rounded-full bg-bg-card border border-border-default shadow-none cursor-pointer text-text-primary items-center justify-center hidden"
           title="Show Sidebar"
         >
           <Menu size={20} />
@@ -226,120 +187,68 @@ export default function Sidebar() {
       )}
 
       <aside
-        className="hf-desktop-sidebar no-print"
-        style={{
-          position: 'fixed',
-          top: 16,
-          left: 16,
-          bottom: 16,
-          height: 'calc(100vh - 32px)',
-          width: 240,
-          zIndex: 50,
-          display: 'flex',
-          flexDirection: 'column',
-          background: 'var(--bg-card)',
-          backdropFilter: 'none',
-          WebkitBackdropFilter: 'none',
-          border: '1px solid var(--border-default)',
-          borderRadius: 24,
-          boxShadow: 'none',
-          padding: '20px 14px 16px',
-          overflowY: 'auto',
-          transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
-        }}
+        className="hf-desktop-sidebar no-print fixed top-4 left-4 bottom-4 h-[calc(100vh-32px)] w-[240px] z-50 flex flex-col bg-bg-card border border-border-default rounded-2xl shadow-none px-[14px] pt-5 pb-4 overflow-y-auto transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
       >
-        <div style={{ padding: '2px 8px 22px' }}>
-          <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none' }}>
+        <div className="px-2 pt-0.5 pb-[22px]">
+          <Link href="/dashboard" className="flex items-center gap-[11px] no-underline">
             <AppLogo width={32} height={32} />
-            <div style={{ minWidth: 0 }}>
-              <p style={{ margin: 0, fontSize: 16, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', fontFamily: "'Outfit', sans-serif" }}>Productivity Master</p>
-              <p style={{ margin: '1px 0 0', fontSize: 11, color: 'var(--text-muted)', fontWeight: 600 }}>by Mohan</p>
+            <div className="min-w-0">
+              <p className="m-0 text-lg font-extrabold text-text-primary tracking-[-0.02em] font-['Outfit',sans-serif]">Productivity Master</p>
+              <p className="mt-px mb-0 text-xs text-text-muted font-semibold">by Mohan</p>
             </div>
           </Link>
         </div>
 
         <button
           onClick={() => setPaletteOpen(true)}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 10, width: '100%',
-            padding: '9px 12px', borderRadius: 9999, marginBottom: 14,
-            border: '1px solid var(--border-default)', background: 'var(--bg-card)',
-            color: 'var(--text-muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 600,
-          }}
+          className="flex items-center gap-[10px] w-full px-3 py-[9px] rounded-full mb-[14px] border border-border-default bg-bg-card text-text-muted cursor-pointer font-[inherit] text-[13px] font-semibold"
         >
           <Search size={16} />
-          <span style={{ flex: 1, textAlign: 'left' }}>Search</span>
-          <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-dimmed)' }}>⌘K</span>
+          <span className="flex-1 text-left">Search</span>
+          <span className="text-xs font-bold text-text-dimmed">⌘K</span>
         </button>
 
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-          <p style={{ margin: '4px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Habit Tracker</p>
+        <nav className="flex flex-col gap-[3px]">
+          <p className="mt-1 mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Habit Tracker</p>
           <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={(e) => { if (isOverviewActive) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }} />
           <NavItem icon={<NotebookPen size={17} />} label="Notes" active={isNotesActive} href="/dashboard/notes" />
           <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" />
           <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" />
           <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" />
 
-          <p style={{ margin: '14px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Social</p>
+          <p className="mt-[14px] mx-0 mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Social</p>
           <NavItem icon={<Users size={17} />} label="Network" active={isNetworkActive} href="/dashboard/network" />
           <NavItem icon={<Activity size={17} />} label="Feed" active={isFeedActive} href="/dashboard/feed" />
 
-          <p style={{ margin: '14px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Settings</p>
+          <p className="mt-[14px] mx-0 mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Settings</p>
           <NavItem icon={<Settings size={17} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" />
         </nav>
 
-        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 6, paddingTop: 18 }}>
+        <div className="mt-auto flex flex-col gap-[6px] pt-[18px]">
           <button
             onClick={() => setIsCollapsed(true)}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 12, width: '100%',
-              padding: '11px 14px', borderRadius: 9999, border: 'none', cursor: 'pointer',
-              background: 'transparent', color: 'var(--text-secondary)',
-              fontSize: 14, fontWeight: 600, fontFamily: 'inherit', textAlign: 'left',
-              transition: 'background 0.15s ease',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface-tint)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+            className="flex items-center gap-3 w-full px-[14px] py-[11px] rounded-full border-none cursor-pointer bg-transparent text-text-secondary text-[14px] font-semibold font-[inherit] text-left transition-colors duration-150 hover:bg-[var(--surface-tint)]"
           >
-            <span style={{ display: 'flex', flexShrink: 0 }}><Menu size={18} /></span>
+            <span className="flex shrink-0"><Menu size={18} /></span>
             Hide sidebar
           </button>
           <button
             onClick={toggle}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 12, width: '100%',
-              padding: '11px 14px', borderRadius: 9999, border: 'none', cursor: 'pointer',
-              background: 'transparent', color: 'var(--text-secondary)',
-              fontSize: 14, fontWeight: 600, fontFamily: 'inherit', textAlign: 'left',
-              transition: 'background 0.15s ease',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface-tint)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+            className="flex items-center gap-3 w-full px-[14px] py-[11px] rounded-full border-none cursor-pointer bg-transparent text-text-secondary text-[14px] font-semibold font-[inherit] text-left transition-colors duration-150 hover:bg-[var(--surface-tint)]"
           >
-            <span style={{ display: 'flex', flexShrink: 0 }}>{isDark ? <Sun size={18} /> : <Moon size={18} />}</span>
+            <span className="flex shrink-0">{isDark ? <Sun size={18} /> : <Moon size={18} />}</span>
             {isDark ? 'Light mode' : 'Dark mode'}
           </button>
 
           {user && (
             <Link
               href="/dashboard/settings"
-              style={{
-                display: 'flex', alignItems: 'center', gap: 11, width: '100%',
-                padding: '10px 12px', borderRadius: 9999, marginTop: 6,
-                border: '1px solid var(--border-default)', background: 'var(--bg-card)',
-                cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left',
-                textDecoration: 'none',
-              }}
+              className="flex items-center gap-[11px] w-full px-3 py-[10px] rounded-full mt-[6px] border border-border-default bg-bg-card cursor-pointer font-[inherit] text-left no-underline"
             >
-              <div style={{
-                width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-                background: 'var(--accent-primary)', color: 'var(--accent-on-primary)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 14, fontWeight: 800,
-              }}>{initials}</div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{displayName}</p>
-                <p style={{ margin: 0, fontSize: 11, color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.email}</p>
+              <div className="w-9 h-9 rounded-full shrink-0 bg-accent-primary text-accent-on-primary flex items-center justify-center text-[14px] font-extrabold">{initials}</div>
+              <div className="flex-1 min-w-0">
+                <p className="m-0 text-[13px] font-bold text-text-primary whitespace-nowrap overflow-hidden text-ellipsis">{displayName}</p>
+                <p className="m-0 text-xs text-text-muted whitespace-nowrap overflow-hidden text-ellipsis">{user.email}</p>
               </div>
             </Link>
           )}
@@ -357,51 +266,26 @@ export default function Sidebar() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setMobileOpen(false)}
-              style={{
-                position: 'fixed',
-                inset: 0,
-                zIndex: 99,
-                background: 'rgba(0, 0, 0, 0.5)',
-              }}
-              className="hf-mobile-nav"
+              className="hf-mobile-nav fixed inset-0 z-[99] bg-[rgba(0,0,0,0.5)]"
             />
             <motion.div
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                bottom: 0,
-                width: 240,
-                zIndex: 100,
-                background: 'var(--bg-tertiary)',
-                borderRight: '1px solid var(--border-default)',
-                padding: '20px 16px',
-                display: 'flex',
-                flexDirection: 'column',
-                overflowY: 'auto',
-              }}
-              className="hf-mobile-nav"
+              className="hf-mobile-nav fixed top-0 left-0 bottom-0 w-[240px] z-[100] bg-bg-tertiary border-r border-border-default px-4 py-5 flex flex-col overflow-y-auto"
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-                <Link href="/dashboard" onClick={() => setMobileOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+              <div className="flex items-center justify-between mb-5">
+                <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="flex items-center gap-[10px] no-underline">
                   <AppLogo width={34} height={34} />
-                  <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
-                    <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-primary)', fontFamily: "'Outfit', sans-serif" }}>Productivity Master</span>
-                    <span style={{ fontSize: 10, color: 'var(--text-muted)', fontWeight: 600 }}>by Mohan</span>
+                  <div className="flex flex-col leading-[1.15]">
+                    <span className="text-[14px] font-extrabold text-text-primary font-['Outfit',sans-serif]">Productivity Master</span>
+                    <span className="text-[10px] text-text-muted font-semibold">by Mohan</span>
                   </div>
                 </Link>
                 <button
                   onClick={() => setMobileOpen(false)}
-                  style={{
-                    width: 32, height: 32, borderRadius: '50%',
-                    background: 'rgba(255, 255, 255, 0.08)', border: 'none',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer', color: 'var(--text-primary)',
-                  }}
+                  className="w-8 h-8 rounded-full bg-[rgba(255,255,255,0.08)] border-none flex items-center justify-center cursor-pointer text-text-primary"
                 >
                   <X size={16} />
                 </button>
@@ -409,48 +293,35 @@ export default function Sidebar() {
 
               <button
                 onClick={() => { setPaletteOpen(true); setMobileOpen(false); }}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 10, width: '100%',
-                  padding: '9px 12px', borderRadius: 9999, marginBottom: 14,
-                  border: '1px solid var(--border-default)', background: 'var(--bg-card)',
-                  color: 'var(--text-muted)', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 600,
-                }}
+                className="flex items-center gap-[10px] w-full px-3 py-[9px] rounded-full mb-[14px] border border-border-default bg-bg-card text-text-muted cursor-pointer font-[inherit] text-[13px] font-semibold"
               >
                 <Search size={16} />
-                <span style={{ flex: 1, textAlign: 'left' }}>Search</span>
-                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-dimmed)' }}>⌘K</span>
+                <span className="flex-1 text-left">Search</span>
+                <span className="text-xs font-bold text-text-dimmed">⌘K</span>
               </button>
 
-              <nav style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                <p style={{ margin: '4px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Habit Tracker</p>
+              <nav className="flex flex-col gap-[3px]">
+                <p className="mt-1 mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Habit Tracker</p>
                 <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<NotebookPen size={17} />} label="Notes" active={isNotesActive} href="/dashboard/notes" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" onClick={() => setMobileOpen(false)} />
 
-                <p style={{ margin: '14px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Social</p>
+                <p className="mt-[14px] mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Social</p>
                 <NavItem icon={<Users size={17} />} label="Network" active={isNetworkActive} href="/dashboard/network" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<Activity size={17} />} label="Feed" active={isFeedActive} href="/dashboard/feed" onClick={() => setMobileOpen(false)} />
 
-                <p style={{ margin: '14px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Settings</p>
+                <p className="mt-[14px] mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Settings</p>
                 <NavItem icon={<Settings size={17} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" onClick={() => setMobileOpen(false)} />
               </nav>
 
-              <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 6, paddingTop: 18 }}>
+              <div className="mt-auto flex flex-col gap-[6px] pt-[18px]">
                 <button
                   onClick={() => { toggle(); setMobileOpen(false); }}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: 12, width: '100%',
-                    padding: '11px 14px', borderRadius: 9999, border: 'none', cursor: 'pointer',
-                    background: 'transparent', color: 'var(--text-secondary)',
-                    fontSize: 14, fontWeight: 600, fontFamily: 'inherit', textAlign: 'left',
-                    transition: 'background 0.15s ease',
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface-tint)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                  className="flex items-center gap-3 w-full px-[14px] py-[11px] rounded-full border-none cursor-pointer bg-transparent text-text-secondary text-[14px] font-semibold font-[inherit] text-left transition-colors duration-150 hover:bg-[var(--surface-tint)]"
                 >
-                  <span style={{ display: 'flex', flexShrink: 0 }}>{isDark ? <Sun size={18} /> : <Moon size={18} />}</span>
+                  <span className="flex shrink-0">{isDark ? <Sun size={18} /> : <Moon size={18} />}</span>
                   {isDark ? 'Light mode' : 'Dark mode'}
                 </button>
 
@@ -458,23 +329,12 @@ export default function Sidebar() {
                   <Link
                     href="/dashboard/settings"
                     onClick={() => setMobileOpen(false)}
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: 11, width: '100%',
-                      padding: '10px 12px', borderRadius: 9999, marginTop: 6,
-                      border: '1px solid var(--border-default)', background: 'var(--bg-card)',
-                      cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left',
-                      textDecoration: 'none',
-                    }}
+                    className="flex items-center gap-[11px] w-full px-3 py-[10px] rounded-full mt-[6px] border border-border-default bg-bg-card cursor-pointer font-[inherit] text-left no-underline"
                   >
-                    <div style={{
-                      width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-                      background: 'var(--accent-primary)', color: 'var(--accent-on-primary)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 14, fontWeight: 800,
-                    }}>{initials}</div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{displayName}</p>
-                      <p style={{ margin: 0, fontSize: 11, color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.email}</p>
+                    <div className="w-9 h-9 rounded-full shrink-0 bg-accent-primary text-accent-on-primary flex items-center justify-center text-[14px] font-extrabold">{initials}</div>
+                    <div className="flex-1 min-w-0">
+                      <p className="m-0 text-[13px] font-bold text-text-primary whitespace-nowrap overflow-hidden text-ellipsis">{displayName}</p>
+                      <p className="m-0 text-xs text-text-muted whitespace-nowrap overflow-hidden text-ellipsis">{user.email}</p>
                     </div>
                   </Link>
                 )}
