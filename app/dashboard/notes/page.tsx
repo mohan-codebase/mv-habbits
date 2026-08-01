@@ -251,49 +251,19 @@ export default function CentralizedNotesPage() {
   };
 
   return (
-    <div style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 16px 60px', width: '100%' }}>
+    <div className="mx-auto w-full max-w-[1100px] p-[24px_16px_60px]">
       {/* Header section */}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 16,
-          marginBottom: 28,
-        }}
-      >
+      <div className="mb-7 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-            <div
-              style={{
-                width: 38,
-                height: 38,
-                borderRadius: 12,
-                background: 'var(--accent-glow)',
-                border: '1px solid color-mix(in srgb, var(--accent-primary) 25%, transparent)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--accent-primary)',
-              }}
-            >
+          <div className="mb-1 flex items-center gap-2.5">
+            <div className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)] bg-accent-glow text-accent-primary">
               <NotebookPen size={20} />
             </div>
-            <h1
-              style={{
-                margin: 0,
-                fontSize: 26,
-                fontWeight: 800,
-                color: 'var(--text-primary)',
-                fontFamily: "'Outfit', sans-serif",
-                letterSpacing: '-0.02em',
-              }}
-            >
+            <h1 className="m-0 text-[26px] font-extrabold tracking-[-0.02em] text-text-primary [font-family:'Outfit',sans-serif]">
               Centralized Habit Notes
             </h1>
           </div>
-          <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)' }}>
+          <p className="m-0 text-[14px] text-text-muted">
             All thoughts, reflection logs, and progress notes recorded across your habits in one place.
           </p>
         </div>
@@ -316,180 +286,71 @@ export default function CentralizedNotesPage() {
       </div>
 
       {/* Summary Cards */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: 16,
-          marginBottom: 28,
-        }}
-      >
-        <div
-          style={{
-            background: 'var(--bg-glass)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 16,
-            padding: '16px 20px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 16,
-          }}
-        >
-          <div
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 12,
-              background: 'rgba(59, 130, 246, 0.12)',
-              color: '#3B82F6',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+      <div className="mb-7 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
+        <div className="flex items-center gap-4 rounded-2xl border border-border-default bg-bg-glass p-[16px_20px]">
+          <div className="flex h-[44px] w-[44px] items-center justify-center rounded-xl bg-[rgba(59,130,246,0.12)] text-[#3B82F6]">
             <FileText size={22} />
           </div>
           <div>
-            <p style={{ margin: 0, fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', fontFamily: "'Outfit'" }}>
+            <p className="m-0 text-2xl font-extrabold text-text-primary [font-family:'Outfit']">
               {stats.totalNotes}
             </p>
-            <p style={{ margin: '2px 0 0', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>Total Notes Saved</p>
+            <p className="m-0 mt-0.5 text-xs font-semibold text-text-muted">Total Notes Saved</p>
           </div>
         </div>
 
-        <div
-          style={{
-            background: 'var(--bg-glass)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 16,
-            padding: '16px 20px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 16,
-          }}
-        >
-          <div
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 12,
-              background: 'rgba(168, 85, 247, 0.12)',
-              color: '#A855F7',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+        <div className="flex items-center gap-4 rounded-2xl border border-border-default bg-bg-glass p-[16px_20px]">
+          <div className="flex h-[44px] w-[44px] items-center justify-center rounded-xl bg-[rgba(168,85,247,0.12)] text-[#A855F7]">
             <BookOpen size={22} />
           </div>
           <div>
-            <p style={{ margin: 0, fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', fontFamily: "'Outfit'" }}>
+            <p className="m-0 text-2xl font-extrabold text-text-primary [font-family:'Outfit']">
               {stats.uniqueHabitIds}
             </p>
-            <p style={{ margin: '2px 0 0', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>Habits with Notes</p>
+            <p className="m-0 mt-0.5 text-xs font-semibold text-text-muted">Habits with Notes</p>
           </div>
         </div>
 
-        <div
-          style={{
-            background: 'var(--bg-glass)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 16,
-            padding: '16px 20px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 16,
-          }}
-        >
-          <div
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 12,
-              background: 'rgba(34, 197, 94, 0.12)',
-              color: '#22C55E',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+        <div className="flex items-center gap-4 rounded-2xl border border-border-default bg-bg-glass p-[16px_20px]">
+          <div className="flex h-[44px] w-[44px] items-center justify-center rounded-xl bg-[rgba(34,197,94,0.12)] text-[#22C55E]">
             <Sparkles size={22} />
           </div>
           <div>
-            <p style={{ margin: 0, fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', fontFamily: "'Outfit'" }}>
+            <p className="m-0 text-2xl font-extrabold text-text-primary [font-family:'Outfit']">
               {stats.notesThisMonth}
             </p>
-            <p style={{ margin: '2px 0 0', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>Added This Month</p>
+            <p className="m-0 mt-0.5 text-xs font-semibold text-text-muted">Added This Month</p>
           </div>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 12,
-          marginBottom: 24,
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          background: 'var(--bg-glass)',
-          border: '1px solid var(--border-default)',
-          borderRadius: 16,
-          padding: '12px 16px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 240 }}>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border-default bg-bg-glass p-[12px_16px]">
+        <div className="flex min-w-[240px] flex-1 items-center gap-2.5">
           <Search size={18} color="var(--text-muted)" />
           <input
             type="text"
             placeholder="Search notes by content, habit name, or date..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              background: 'transparent',
-              border: 'none',
-              outline: 'none',
-              color: 'var(--text-primary)',
-              fontSize: 14,
-              fontFamily: 'inherit',
-            }}
+            className="w-full border-none bg-transparent text-[14px] text-text-primary outline-none [font-family:inherit]"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                color: 'var(--text-muted)',
-                display: 'flex',
-                alignItems: 'center',
-                padding: 2,
-              }}
+              className="flex cursor-pointer items-center border-none bg-transparent p-0.5 text-text-muted"
             >
               <X size={16} />
             </button>
           )}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div className="flex items-center gap-2.5">
           <Filter size={16} color="var(--text-muted)" />
           <select
             value={selectedHabitId}
             onChange={(e) => setSelectedHabitId(e.target.value)}
-            style={{
-              background: 'var(--bg-card)',
-              border: '1px solid var(--border-default)',
-              borderRadius: 9999,
-              padding: '6px 14px',
-              fontSize: 13,
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              outline: 'none',
-              cursor: 'pointer',
-            }}
+            className="cursor-pointer rounded-full border border-border-default bg-bg-card p-[6px_14px] text-[13px] font-semibold text-text-primary outline-none"
           >
             <option value="ALL">All Habits</option>
             {habits.map((h) => (
@@ -503,44 +364,21 @@ export default function CentralizedNotesPage() {
 
       {/* Notes Grid / List */}
       {loading ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 20 }}>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-5">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <Skeleton key={i} style={{ height: 180, borderRadius: 16 }} />
           ))}
         </div>
       ) : filteredNotes.length === 0 ? (
-        <div
-          style={{
-            background: 'var(--bg-glass)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 20,
-            padding: '48px 24px',
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 14,
-          }}
-        >
-          <div
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: '50%',
-              background: 'var(--surface-tint)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--text-muted)',
-            }}
-          >
+        <div className="flex flex-col items-center gap-3.5 rounded-[20px] border border-border-default bg-bg-glass p-[48px_24px] text-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--surface-tint)] text-text-muted">
             <NotebookPen size={28} />
           </div>
           <div>
-            <h3 style={{ margin: '0 0 6px', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
+            <h3 className="m-0 mb-1.5 text-[17px] font-bold text-text-primary">
               {searchQuery || selectedHabitId !== 'ALL' ? 'No notes match your filters' : 'No notes recorded yet'}
             </h3>
-            <p style={{ margin: 0, fontSize: 14, color: 'var(--text-muted)', maxWidth: 420 }}>
+            <p className="m-0 max-w-[420px] text-[14px] text-text-muted">
               {searchQuery || selectedHabitId !== 'ALL'
                 ? 'Try adjusting your search keywords or habit filter.'
                 : 'Whenever you log a note when completing a habit, it will automatically show up here! You can also click below to add a note.'}
@@ -554,7 +392,7 @@ export default function CentralizedNotesPage() {
           )}
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 20 }}>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-5">
           <AnimatePresence>
             {filteredNotes.map((note) => {
               const habitColor = note.habit?.color ?? 'var(--accent-primary)';
@@ -569,85 +407,43 @@ export default function CentralizedNotesPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  style={{
-                    background: 'var(--bg-card)',
-                    border: '1px solid var(--border-default)',
-                    borderRadius: 18,
-                    padding: 20,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    gap: 16,
-                    position: 'relative',
-                    transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
-                  }}
-                  className="hf-note-card"
+                  className="hf-note-card relative flex flex-col justify-between gap-4 rounded-[18px] border border-border-default bg-bg-card p-5 transition-[border-color,box-shadow] duration-150 ease-in-out"
                 >
                   {/* Top Bar: Habit Pill & Date */}
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginBottom: 12 }}>
+                    <div className="mb-3 flex items-center justify-between gap-2.5">
                       <Link
                         href={`/dashboard/habits/${note.habit_id}`}
+                        className="inline-flex max-w-[70%] items-center gap-1.5 rounded-full p-[4px_10px] text-xs font-bold no-underline"
                         style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: 6,
-                          padding: '4px 10px',
-                          borderRadius: 9999,
                           background: `color-mix(in srgb, ${habitColor} 12%, transparent)`,
                           color: habitColor,
-                          fontSize: 12,
-                          fontWeight: 700,
-                          textDecoration: 'none',
-                          maxWidth: '70%',
                         }}
                       >
                         <DynamicIcon name={habitIcon} size={14} />
-                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <span className="truncate">
                           {note.habit?.name ?? 'Habit Note'}
                         </span>
-                        <ExternalLink size={11} style={{ opacity: 0.7, flexShrink: 0 }} />
+                        <ExternalLink size={11} className="shrink-0 opacity-70" />
                       </Link>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>
+                      <div className="flex items-center gap-1.5 text-xs font-semibold text-text-muted">
                         <Calendar size={13} />
                         <span>{formatDateLabel(note.entry_date)}</span>
                       </div>
                     </div>
 
                     {/* Note Content */}
-                    <div
-                      style={{
-                        fontSize: 14,
-                        lineHeight: 1.6,
-                        color: 'var(--text-primary)',
-                        whiteSpace: 'pre-wrap',
-                        wordBreak: 'break-word',
-                      }}
-                    >
+                    <div className="whitespace-pre-wrap break-words text-[14px] leading-[1.6] text-text-primary">
                       {note.notes}
                     </div>
                   </div>
 
                   {/* Footer Bar: Completion Status & Actions */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      paddingTop: 12,
-                      borderTop: '1px solid var(--border-subtle)',
-                    }}
-                  >
+                  <div className="flex items-center justify-between border-t border-border-subtle pt-3">
                     <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 6,
-                        fontSize: 12,
-                        fontWeight: 600,
-                        color: note.is_completed ? '#22C55E' : 'var(--text-muted)',
-                      }}
+                      className="flex items-center gap-1.5 text-xs font-semibold"
+                      style={{ color: note.is_completed ? '#22C55E' : 'var(--text-muted)' }}
                     >
                       {note.is_completed ? (
                         <>
@@ -662,24 +458,12 @@ export default function CentralizedNotesPage() {
                       )}
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <div className="flex items-center gap-1.5">
                       <button
                         onClick={() => handleCopyNote(note.id, note.notes)}
                         title="Copy note text"
-                        style={{
-                          background: 'transparent',
-                          border: 'none',
-                          cursor: 'pointer',
-                          padding: 6,
-                          borderRadius: 8,
-                          color: isCopied ? '#22C55E' : 'var(--text-muted)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          transition: 'background 0.15s, color 0.15s',
-                        }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface-tint)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                        className="flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 transition-[background,color] duration-150 hover:bg-[var(--surface-tint)]"
+                        style={{ color: isCopied ? '#22C55E' : 'var(--text-muted)' }}
                       >
                         {isCopied ? <Check size={15} /> : <Copy size={15} />}
                       </button>
@@ -687,20 +471,7 @@ export default function CentralizedNotesPage() {
                       <button
                         onClick={() => openEditNoteModal(note)}
                         title="Edit note"
-                        style={{
-                          background: 'transparent',
-                          border: 'none',
-                          cursor: 'pointer',
-                          padding: 6,
-                          borderRadius: 8,
-                          color: 'var(--text-muted)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          transition: 'background 0.15s, color 0.15s',
-                        }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface-tint)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+                        className="group flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 text-text-muted transition-[background,color] duration-150 hover:bg-[var(--surface-tint)] hover:text-text-primary"
                       >
                         <Edit3 size={15} />
                       </button>
@@ -708,20 +479,7 @@ export default function CentralizedNotesPage() {
                       <button
                         onClick={() => setDeleteTarget(note)}
                         title="Delete note"
-                        style={{
-                          background: 'transparent',
-                          border: 'none',
-                          cursor: 'pointer',
-                          padding: 6,
-                          borderRadius: 8,
-                          color: 'var(--text-muted)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          transition: 'background 0.15s, color 0.15s',
-                        }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(239, 68, 68, 0.12)'; e.currentTarget.style.color = '#EF4444'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+                        className="flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 text-text-muted transition-[background,color] duration-150 hover:bg-[rgba(239,68,68,0.12)] hover:text-[#EF4444]"
                       >
                         <Trash2 size={15} />
                       </button>
@@ -736,43 +494,25 @@ export default function CentralizedNotesPage() {
 
       {/* Add / Edit Note Modal */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div style={{ padding: 4 }}>
-          <h2
-            style={{
-              margin: '0 0 4px',
-              fontSize: 20,
-              fontWeight: 800,
-              color: 'var(--text-primary)',
-              fontFamily: "'Outfit', sans-serif",
-            }}
-          >
+        <div className="p-1">
+          <h2 className="m-0 mb-1 text-xl font-extrabold text-text-primary [font-family:'Outfit',sans-serif]">
             {editingNote ? 'Edit Habit Note' : 'Add Habit Note'}
           </h2>
-          <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--text-muted)' }}>
+          <p className="m-0 mb-5 text-[13px] text-text-muted">
             {editingNote ? 'Update your reflection or notes for this entry.' : 'Select a habit and record your reflection or journal note.'}
           </p>
 
-          <form onSubmit={handleSaveNote} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <form onSubmit={handleSaveNote} className="flex flex-col gap-4">
             {/* Habit selector */}
             <div>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>
+              <label className="mb-1.5 block text-[13px] font-bold text-text-primary">
                 Habit
               </label>
               <select
                 value={formHabitId}
                 onChange={(e) => setFormHabitId(e.target.value)}
                 disabled={Boolean(editingNote)}
-                style={{
-                  width: '100%',
-                  padding: '10px 14px',
-                  borderRadius: 12,
-                  border: '1px solid var(--border-default)',
-                  background: 'var(--bg-card)',
-                  color: 'var(--text-primary)',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  outline: 'none',
-                }}
+                className="w-full rounded-xl border border-border-default bg-bg-card p-[10px_14px] text-[14px] font-semibold text-text-primary outline-none"
               >
                 {habits.map((h) => (
                   <option key={h.id} value={h.id}>
@@ -784,7 +524,7 @@ export default function CentralizedNotesPage() {
 
             {/* Date selector */}
             <div>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>
+              <label className="mb-1.5 block text-[13px] font-bold text-text-primary">
                 Date
               </label>
               <input
@@ -792,23 +532,13 @@ export default function CentralizedNotesPage() {
                 value={formDate}
                 onChange={(e) => setFormDate(e.target.value)}
                 disabled={Boolean(editingNote)}
-                style={{
-                  width: '100%',
-                  padding: '10px 14px',
-                  borderRadius: 12,
-                  border: '1px solid var(--border-default)',
-                  background: 'var(--bg-card)',
-                  color: 'var(--text-primary)',
-                  fontSize: 14,
-                  fontFamily: 'inherit',
-                  outline: 'none',
-                }}
+                className="w-full rounded-xl border border-border-default bg-bg-card p-[10px_14px] text-[14px] text-text-primary outline-none [font-family:inherit]"
               />
             </div>
 
             {/* Note text */}
             <div>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>
+              <label className="mb-1.5 block text-[13px] font-bold text-text-primary">
                 Note / Journal Content
               </label>
               <textarea
@@ -817,46 +547,23 @@ export default function CentralizedNotesPage() {
                 value={formText}
                 onChange={(e) => setFormText(e.target.value)}
                 required
-                style={{
-                  width: '100%',
-                  padding: '12px 14px',
-                  borderRadius: 12,
-                  border: '1px solid var(--border-default)',
-                  background: 'var(--bg-card)',
-                  color: 'var(--text-primary)',
-                  fontSize: 14,
-                  fontFamily: 'inherit',
-                  lineHeight: 1.5,
-                  outline: 'none',
-                  resize: 'vertical',
-                }}
+                className="w-full resize-y rounded-xl border border-border-default bg-bg-card p-[12px_14px] text-[14px] leading-normal text-text-primary outline-none [font-family:inherit]"
               />
             </div>
 
             {/* Completion Checkbox */}
-            <label
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                cursor: 'pointer',
-                fontSize: 13,
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                userSelect: 'none',
-              }}
-            >
+            <label className="flex cursor-pointer select-none items-center gap-2.5 text-[13px] font-semibold text-text-primary">
               <input
                 type="checkbox"
                 checked={formCompleted}
                 onChange={(e) => setFormCompleted(e.target.checked)}
-                style={{ width: 18, height: 18, accentColor: 'var(--accent-primary)', cursor: 'pointer' }}
+                className="h-[18px] w-[18px] cursor-pointer accent-accent-primary"
               />
               Mark habit as completed for this date
             </label>
 
             {/* Actions */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 8 }}>
+            <div className="mt-2 flex justify-end gap-3">
               <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} disabled={saving}>
                 Cancel
               </Button>
@@ -870,30 +577,18 @@ export default function CentralizedNotesPage() {
 
       {/* Delete Confirmation Modal */}
       <Modal isOpen={Boolean(deleteTarget)} onClose={() => setDeleteTarget(null)}>
-        <div style={{ padding: 4, textAlign: 'center' }}>
-          <div
-            style={{
-              width: 48,
-              height: 48,
-              borderRadius: '50%',
-              background: 'rgba(239, 68, 68, 0.12)',
-              color: '#EF4444',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 16px',
-            }}
-          >
+        <div className="p-1 text-center">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(239,68,68,0.12)] text-[#EF4444]">
             <Trash2 size={24} />
           </div>
-          <h2 style={{ margin: '0 0 6px', fontSize: 19, fontWeight: 800, color: 'var(--text-primary)' }}>
+          <h2 className="m-0 mb-1.5 text-[19px] font-extrabold text-text-primary">
             Delete Note?
           </h2>
-          <p style={{ margin: '0 0 24px', fontSize: 14, color: 'var(--text-muted)' }}>
+          <p className="m-0 mb-6 text-[14px] text-text-muted">
             Are you sure you want to remove this note? The habit completion record will remain intact.
           </p>
 
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 12 }}>
+          <div className="flex justify-center gap-3">
             <Button variant="ghost" onClick={() => setDeleteTarget(null)} disabled={deleting}>
               Cancel
             </Button>
