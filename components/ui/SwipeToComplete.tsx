@@ -98,46 +98,28 @@ export default function SwipeToComplete({
     <div
       ref={containerRef}
       onClick={handleTap}
-      className={className}
+      className={`relative flex w-full items-center justify-center overflow-hidden rounded-full select-none transition-[background,border,box-shadow] duration-[350ms] [-webkit-backdrop-filter:blur(20px)] [backdrop-filter:blur(20px)] ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} ${className ?? ''}`}
       style={{
-        position: 'relative',
-        width: '100%',
         height,
-        borderRadius: 9999,
         background: completed
           ? `linear-gradient(135deg, ${color} 0%, color-mix(in srgb, ${color} 72%, #000) 100%)`
           : 'rgba(50, 48, 45, 0.58)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
         border: completed
           ? `1.5px solid rgba(255,255,255,0.28)`
           : '1.5px solid rgba(255, 255, 255, 0.18)',
         boxShadow: completed
           ? `0 6px 20px ${iconColor}55, inset 0 1px 1px rgba(255,255,255,0.35)`
           : 'inset 0 1.5px 3px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.2)',
-        overflow: 'hidden',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        userSelect: 'none',
-        WebkitUserSelect: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: 'background 0.35s ease, border 0.35s ease, box-shadow 0.35s ease',
         ...style,
       }}
     >
       {/* Swipe progress glow fill */}
       {!completed && (
         <motion.div
+          className="pointer-events-none absolute inset-y-0 left-0 rounded-full"
           style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            bottom: 0,
             width: fillWidth,
             background: `linear-gradient(90deg, rgba(255,255,255,0.04) 0%, ${iconColor}66 100%)`,
-            borderRadius: 9999,
-            pointerEvents: 'none',
           }}
         />
       )}
@@ -160,20 +142,7 @@ export default function SwipeToComplete({
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 7,
-            fontSize: 15,
-            fontWeight: 700,
-            fontFamily:
-              "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
-            color: '#ffffff',
-            pointerEvents: 'none',
-            letterSpacing: '-0.01em',
-            textTransform: 'lowercase',
-          }}
+          className="pointer-events-none flex items-center justify-center gap-[7px] text-[15px] font-bold lowercase tracking-[-0.01em] text-white [font-family:-apple-system,BlinkMacSystemFont,'SF_Pro_Display',sans-serif]"
         >
           <span>{completedLabel}</span>
           <Check size={18} strokeWidth={3} />
@@ -189,24 +158,12 @@ export default function SwipeToComplete({
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onClick={(e) => e.stopPropagation()}
+        className="absolute top-[5px] left-[5px] z-10 flex shrink-0 touch-none items-center justify-center rounded-full bg-white shadow-[0_4px_14px_rgba(0,0,0,0.38),inset_0_-1px_2px_rgba(0,0,0,0.07)]"
         style={{
           x,
-          position: 'absolute',
-          left: padding,
-          top: padding,
           width: thumbSize,
           height: thumbSize,
-          borderRadius: '50%',
-          background: '#ffffff',
-          boxShadow:
-            '0 4px 14px rgba(0,0,0,0.38), inset 0 -1px 2px rgba(0,0,0,0.07)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
           cursor: disabled ? 'not-allowed' : isDragging ? 'grabbing' : 'grab',
-          zIndex: 10,
-          touchAction: 'none',
-          flexShrink: 0,
         }}
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.94 }}

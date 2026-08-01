@@ -128,53 +128,21 @@ function ToastCard({ item, onDismiss }: ToastCardProps) {
       transition={{ type: 'spring', stiffness: 340, damping: 28 }}
       role="alert"
       aria-live="polite"
-      style={{
-        background: 'var(--bg-secondary)',
-        border: `1px solid ${cfg.border}`,
-        borderRadius: '12px',
-        boxShadow: 'none',
-        overflow: 'hidden',
-        minWidth: '280px',
-        maxWidth: '360px',
-        pointerEvents: 'all',
-      }}
+      className="min-w-[280px] max-w-[360px] overflow-hidden rounded-[12px] bg-bg-secondary shadow-none [pointer-events:all]"
+      style={{ border: `1px solid ${cfg.border}` }}
     >
       {/* Content row */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: '10px',
-          padding: '12px 14px',
-        }}
-      >
+      <div className="flex items-start gap-2.5 py-3 px-3.5">
         {/* Icon */}
         <span
-          style={{
-            color: cfg.color,
-            flexShrink: 0,
-            display: 'flex',
-            alignItems: 'center',
-            marginTop: '1px',
-            background: cfg.bg,
-            borderRadius: '6px',
-            padding: '4px',
-          }}
+          className="mt-px flex shrink-0 items-center rounded-[6px] p-1"
+          style={{ color: cfg.color, background: cfg.bg }}
         >
           {cfg.icon}
         </span>
 
         {/* Message */}
-        <p
-          style={{
-            margin: 0,
-            flex: 1,
-            fontSize: '13px',
-            lineHeight: 1.5,
-            color: 'var(--text-primary)',
-            paddingTop: '2px',
-          }}
-        >
+        <p className="m-0 flex-1 pt-0.5 text-[13px] leading-[1.5] text-text-primary">
           {item.message}
         </p>
 
@@ -182,23 +150,7 @@ function ToastCard({ item, onDismiss }: ToastCardProps) {
         <button
           onClick={() => onDismiss(item.id)}
           aria-label="Dismiss notification"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '20px',
-            height: '20px',
-            flexShrink: 0,
-            border: 'none',
-            background: 'transparent',
-            color: 'var(--text-muted)',
-            cursor: 'pointer',
-            borderRadius: '4px',
-            marginTop: '1px',
-            transition: 'color 0.1s',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+          className="mt-px flex h-5 w-5 shrink-0 items-center justify-center rounded-[4px] border-none bg-transparent text-text-muted transition-colors duration-100 cursor-pointer hover:text-text-primary"
         >
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
             <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -207,19 +159,10 @@ function ToastCard({ item, onDismiss }: ToastCardProps) {
       </div>
 
       {/* Progress bar */}
-      <div
-        style={{
-          height: '2px',
-          background: 'var(--border-subtle)',
-        }}
-      >
+      <div className="h-[2px] bg-border-subtle">
         <div
-          style={{
-            height: '100%',
-            width: `${progress}%`,
-            background: cfg.color,
-            transition: 'width 0.1s linear',
-          }}
+          className="h-full transition-[width] duration-100 ease-linear"
+          style={{ width: `${progress}%`, background: cfg.color }}
         />
       </div>
     </motion.div>
@@ -258,16 +201,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       <div
         aria-live="polite"
         aria-atomic="false"
-        style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          zIndex: 9999,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          pointerEvents: 'none',
-        }}
+        className="pointer-events-none fixed top-5 right-5 z-[9999] flex flex-col gap-2.5"
       >
         <AnimatePresence mode="sync">
           {toasts.map((item) => (
