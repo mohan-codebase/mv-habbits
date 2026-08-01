@@ -35,8 +35,6 @@ interface FitnessSummaryProps {
 }
 
 const PURPLE = 'var(--accent-primary)';
-const PURPLE_LIGHT = 'var(--surface-tint)';
-const PURPLE_MID = 'var(--surface-tint-mid)';
 const TEXT_DARK = 'var(--text-primary)';
 const TEXT_MUTED = 'var(--text-muted)';
 // Raw hex needed only for SVG attributes and rgba() calls
@@ -107,7 +105,7 @@ function CircularProgress({
         </div>
 
         {/* Ring */}
-        <div className="relative my-2 mb-4" style={{ width: size, height: size }}>
+        <div className="relative my-2 mb-4 h-[218px] w-[218px]">
           <svg width={size} height={size} className="-rotate-90">
             {/* Track */}
             <circle
@@ -240,11 +238,7 @@ function HabitRow({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-[7px]">
             <p
-              className="m-0 truncate text-[14.5px] font-bold tracking-[-0.01em] text-text-primary"
-              style={{
-                textDecoration: done && !bad ? 'line-through' : 'none',
-                opacity: done && !bad ? 0.75 : 1,
-              }}
+              className={`m-0 truncate text-[14.5px] font-bold tracking-[-0.01em] text-text-primary ${done && !bad ? 'line-through opacity-75' : 'no-underline opacity-100'}`}
             >
               {habit.name}
             </p>
@@ -607,16 +601,13 @@ function HabitDetailSheet({
       {/* Floating card */}
       <div className="pointer-events-none fixed inset-0 z-[201] flex items-center justify-center p-4">
         <motion.div
-          className="hf-modal-panel pointer-events-auto relative w-full max-w-[490px] max-h-[90dvh] overflow-y-auto rounded-[28px] p-[26px_22px_34px] shadow-none [font-family:system-ui,-apple-system,sans-serif]"
+          className="hf-modal-panel pointer-events-auto relative w-full max-w-[490px] max-h-[90dvh] overflow-y-auto rounded-[28px] p-[26px_22px_34px] shadow-none [font-family:system-ui,-apple-system,sans-serif] bg-bg-card [backdrop-filter:none] [-webkit-backdrop-filter:none]"
           initial={{ opacity: 0, scale: 0.94, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: 12 }}
           transition={{ type: 'spring', damping: 28, stiffness: 340 }}
           onClick={(e) => e.stopPropagation()}
           style={{
-            background: 'var(--bg-card)',
-            backdropFilter: 'none',
-            WebkitBackdropFilter: 'none',
             border: `1px solid color-mix(in srgb, ${PURPLE} 35%, transparent)`,
           }}
         >
@@ -638,9 +629,9 @@ function HabitDetailSheet({
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
-                  className="box-border w-full rounded-xl p-[8px_14px] text-lg font-extrabold text-text-primary outline-none font-[Outfit]"
+                  className="box-border w-full rounded-xl p-[8px_14px] text-lg font-extrabold text-text-primary outline-none font-[Outfit] bg-[var(--input-bg)]"
                   style={{
-                    background: 'var(--input-bg)', border: `1.5px solid ${PURPLE}`,
+                    border: `1.5px solid ${PURPLE}`,
                     boxShadow: `0 0 12px color-mix(in srgb, ${PURPLE} 30%, transparent)`,
                   }}
                 />
@@ -703,7 +694,7 @@ function HabitDetailSheet({
 
           {/* Edit mode — icon picker + save */}
           {editMode && (
-            <div className="mb-4 rounded-xl p-4" style={{ ...GLASS_NESTED_PURPLE }}>
+            <div className="mb-4 rounded-xl p-4 bg-[var(--glass-bg-purple)] shadow-[var(--glass-shadow-purple)]">
               <p className="m-0 mb-2.5 text-xs font-bold uppercase tracking-[0.07em] text-text-muted">
                 Choose icon
               </p>
@@ -715,12 +706,11 @@ function HabitDetailSheet({
                       key={ic}
                       onClick={() => setEditIcon(ic)}
                       title={ic}
-                      className="flex aspect-square w-full cursor-pointer items-center justify-center rounded-xl transition-all duration-150"
+                      className={`flex aspect-square w-full cursor-pointer items-center justify-center rounded-xl transition-all duration-150 ${active ? 'scale-110' : 'scale-100'}`}
                       style={{
                         border: `2px solid ${active ? PURPLE : 'transparent'}`,
                         background: PURPLE_LIGHT,
                         boxShadow: active ? `0 2px 10px ${PURPLE_LIGHT}` : 'none',
-                        transform: active ? 'scale(1.1)' : 'scale(1)',
                       }}
                     >
                       <DynamicIcon name={ic} size={20} color={active ? PURPLE : TEXT_MUTED} />
@@ -738,11 +728,9 @@ function HabitDetailSheet({
               <button
                 onClick={saveEdit}
                 disabled={saving}
-                className="w-full rounded-2xl border-none p-[13px_0] text-[15px] font-bold shadow-none"
+                className={`w-full rounded-2xl border-none p-[13px_0] text-[15px] font-bold shadow-none text-[var(--accent-on-primary)] ${saving ? 'cursor-default' : 'cursor-pointer'}`}
                 style={{
                   background: saving ? 'var(--accent-light)' : PURPLE,
-                  color: 'var(--accent-on-primary)',
-                  cursor: saving ? 'default' : 'pointer',
                 }}
               >
                 {saving ? 'Saving…' : 'Save Changes'}
@@ -759,7 +747,7 @@ function HabitDetailSheet({
           </div>
 
           {/* Weekly report — this habit, last 7 days */}
-          <div className="mb-3.5 rounded-xl p-[14px_12px_10px]" style={{ ...GLASS_NESTED }}>
+          <div className="mb-3.5 rounded-xl p-[14px_12px_10px] bg-[var(--glass-bg)] shadow-[var(--glass-shadow-sm)]">
             <div className="mb-1.5 flex items-baseline justify-between px-1">
               <p className="m-0 text-xs font-bold uppercase tracking-[0.07em] text-text-muted">
                 Weekly report
@@ -772,16 +760,15 @@ function HabitDetailSheet({
           </div>
 
           {/* Calendar */}
-          <div className="mb-3.5 rounded-xl p-[16px_14px]" style={{ ...GLASS_NESTED }}>
+          <div className="mb-3.5 rounded-xl p-[16px_14px] bg-[var(--glass-bg)] shadow-[var(--glass-shadow-sm)]">
             {/* Month header + navigation */}
             <div className="mb-3.5 flex items-center justify-between">
               <button
                 onClick={() => setMonthOffset((o) => o - 1)}
                 disabled={!canGoBack}
-                className="flex h-8 w-8 items-center justify-center rounded-full border-none text-lg font-bold"
+                className={`flex h-8 w-8 items-center justify-center rounded-full border-none text-lg font-bold ${canGoBack ? 'cursor-pointer' : 'cursor-default'}`}
                 style={{
                   background: canGoBack ? PURPLE_LIGHT : 'transparent',
-                  cursor: canGoBack ? 'pointer' : 'default',
                   color: canGoBack ? PURPLE : 'var(--drag-handle)',
                 }}
               >‹</button>
@@ -798,30 +785,25 @@ function HabitDetailSheet({
               <button
                 onClick={() => setMonthOffset((o) => o + 1)}
                 disabled={!canGoForward}
+                className={`flex h-8 w-8 items-center justify-center rounded-full border-none text-[18px] font-bold ${canGoForward ? 'cursor-pointer' : 'cursor-default'}`}
                 style={{
-                  width: 32, height: 32, borderRadius: '50%',
                   background: canGoForward ? PURPLE_LIGHT : 'transparent',
-                  border: 'none', cursor: canGoForward ? 'pointer' : 'default',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: canGoForward ? PURPLE : 'var(--drag-handle)', fontSize: 18, fontWeight: 700,
+                  color: canGoForward ? PURPLE : 'var(--drag-handle)',
                 }}
               >›</button>
             </div>
 
             {loading ? (
-              <p style={{ margin: 0, fontSize: 13, color: TEXT_MUTED, textAlign: 'center', padding: '16px 0' }}>Loading…</p>
+              <p className="m-0 text-[13px] text-text-muted text-center p-[16px_0]">Loading…</p>
             ) : (() => {
               const weeks = Array.from(
                 { length: Math.ceil(calCells.length / 7) },
                 (_, wi) => calCells.slice(wi * 7, (wi + 1) * 7)
               );
-              const CELL_H = 'clamp(30px, 10vw, 40px)';
-              const rowStyle: React.CSSProperties = { display: 'flex', gap: '4px', width: '100%' };
-
               return (
                 <div className="flex w-full flex-col gap-1">
                   {/* Day-of-week headers */}
-                  <div style={rowStyle}>
+                  <div className="flex w-full gap-1">
                     {DOW_LABELS.map((d, i) => (
                       <div key={i} className="flex-1 pb-1 text-center text-[10px] font-bold text-text-muted">
                         {d}
@@ -831,10 +813,10 @@ function HabitDetailSheet({
 
                   {/* Week rows */}
                   {weeks.map((week, wi) => (
-                    <div key={wi} style={rowStyle}>
+                    <div key={wi} className="flex w-full gap-1">
                       {week.map((cell, di) => {
                         if (!cell) {
-                          return <div key={di} className="flex-1" style={{ height: CELL_H }} />;
+                          return <div key={di} className="flex-1 h-[clamp(30px,10vw,40px)]" />;
                         }
                         const bg = cell.isFuture
                           ? 'transparent'
@@ -851,7 +833,7 @@ function HabitDetailSheet({
                             <motion.div
                               onClick={interactive && !isSaving ? () => setActiveLogDate(cell.date) : undefined}
                               title={interactive ? (cell.completed ? 'Tap to view details/unmark' : 'Tap to view details/mark done') : undefined}
-                              className="flex aspect-square w-full max-w-10 items-center justify-center rounded-full text-[11.5px] shadow-none transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] [-webkit-tap-highlight-color:transparent]"
+                              className={`flex aspect-square w-full max-w-10 items-center justify-center rounded-full text-[11.5px] shadow-none transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] [-webkit-tap-highlight-color:transparent] ${cell.isToday || isSelected || cell.completed ? 'font-[850]' : 'font-medium'} ${interactive ? 'cursor-pointer' : 'cursor-default'} ${isSaving ? 'opacity-50' : 'opacity-100'}`}
                               style={{
                               background: bg,
                               border: isSelected
@@ -859,10 +841,7 @@ function HabitDetailSheet({
                                 : cell.isToday
                                   ? `2px solid ${PURPLE_HEX}`
                                   : '1px solid transparent',
-                              fontWeight: cell.isToday || isSelected || cell.completed ? 850 : 500,
                               color: txtColor,
-                              cursor: interactive ? 'pointer' : 'default',
-                              opacity: isSaving ? 0.5 : 1,
                               }}
                             >
                               <div className="relative flex h-full w-full flex-col items-center justify-center">
@@ -906,7 +885,7 @@ function HabitDetailSheet({
           </div>
 
           {/* Daily Log & Video Proof Card */}
-          <div className="mb-3.5 rounded-[20px] p-[18px_16px]" style={{ ...GLASS_NESTED }}>
+          <div className="mb-3.5 rounded-[20px] p-[18px_16px] bg-[var(--glass-bg)] shadow-[var(--glass-shadow-sm)]">
             <div className="mb-3.5 flex items-center justify-between">
               <h3 className="m-0 flex items-center gap-[7px] text-sm font-[750] text-text-primary">
                 <CalendarCheck size={17} color={PURPLE} />
@@ -920,7 +899,7 @@ function HabitDetailSheet({
                 whileTap={{ scale: 0.96 }}
                 disabled={savingDay === activeLogDate}
                 onClick={() => markDay(activeLogDate, activeEntry?.is_completed ?? false)}
-                className="inline-flex items-center gap-1.5 rounded-full p-[6px_14px] text-[12.5px] font-[750] shadow-none transition-all duration-[180ms]"
+                className="inline-flex items-center gap-1.5 rounded-full p-[6px_14px] text-[12.5px] font-[750] shadow-none transition-all duration-[180ms] cursor-pointer"
                 style={{
                   border: activeEntry?.is_completed
                     ? `1px solid ${PURPLE}`
@@ -929,7 +908,6 @@ function HabitDetailSheet({
                     ? `color-mix(in srgb, ${PURPLE} 16%, var(--bg-card))`
                     : 'var(--bg-tertiary)',
                   color: activeEntry?.is_completed ? PURPLE : 'var(--text-muted)',
-                  cursor: 'pointer',
                 }}
               >
                 <CheckCircle2 size={15} color={activeEntry?.is_completed ? PURPLE : 'var(--text-muted)'} />
@@ -943,10 +921,7 @@ function HabitDetailSheet({
                 Entry Notes
               </span>
               <div
-                className="flex items-center gap-2 rounded-xl p-[4px_6px_4px_12px] transition-[border-color] duration-150 ease-linear"
-                style={{
-                  background: 'var(--input-bg)', border: '1px solid var(--input-border)',
-                }}
+                className="flex items-center gap-2 rounded-xl p-[4px_6px_4px_12px] transition-[border-color] duration-150 ease-linear bg-[var(--input-bg)] border border-[var(--input-border)]"
               >
                 <input
                   type="text"
@@ -967,11 +942,9 @@ function HabitDetailSheet({
                   whileTap={{ scale: 0.97 }}
                   onClick={saveActiveNotes}
                   disabled={savingNotes || notesInput === (activeEntry?.notes ?? '')}
-                  className="rounded-full border-none p-[7px_14px] text-xs font-bold transition-all duration-150 ease-linear"
+                  className={`rounded-full border-none p-[7px_14px] text-xs font-bold transition-all duration-150 ease-linear ${notesInput === (activeEntry?.notes ?? '') ? 'text-text-muted cursor-default' : 'text-[var(--accent-on-primary)] cursor-pointer'}`}
                   style={{
                     background: notesInput === (activeEntry?.notes ?? '') ? 'var(--bg-tertiary)' : PURPLE,
-                    color: notesInput === (activeEntry?.notes ?? '') ? 'var(--text-muted)' : 'var(--accent-on-primary)',
-                    cursor: notesInput === (activeEntry?.notes ?? '') ? 'default' : 'pointer',
                   }}
                 >
                   {savingNotes ? 'Saving…' : 'Save'}
@@ -981,7 +954,7 @@ function HabitDetailSheet({
           </div>
 
           {/* Completion rate bar */}
-          <div className="rounded-xl p-4" style={{ ...GLASS_NESTED }}>
+          <div className="rounded-xl p-4 bg-[var(--glass-bg)] shadow-[var(--glass-shadow-sm)]">
             <div className="mb-2.5 flex justify-between">
               <p className="m-0 text-[13px] font-bold text-text-primary">
                 {MONTHS[calMonth]} Completion
@@ -1031,11 +1004,7 @@ function HabitDetailSheet({
                 <button
                   onClick={handleDelete}
                   disabled={deleting}
-                  className="flex-1 rounded-xl border-none bg-[#EF4444] p-[12px_0] text-sm font-bold text-white [font-family:inherit]"
-                  style={{
-                    cursor: deleting ? 'default' : 'pointer',
-                    opacity: deleting ? 0.7 : 1,
-                  }}
+                  className={`flex-1 rounded-xl border-none bg-[#EF4444] p-[12px_0] text-sm font-bold text-white [font-family:inherit] ${deleting ? 'cursor-default opacity-70' : 'cursor-pointer opacity-100'}`}
                 >
                   {deleting ? 'Deleting…' : 'Yes, Delete'}
                 </button>
@@ -1087,13 +1056,12 @@ function ColorPicker({ value, onChange }: { value: string; onChange: (c: string)
             title={c}
             aria-label={`Color ${c}`}
             aria-pressed={active}
-            className={orbBaseClass}
+            className={`${orbBaseClass} ${active ? 'scale-[1.08]' : 'scale-100'}`}
             style={{
               background: orbGloss(c),
               boxShadow: active
                 ? `inset 0 1px 1px rgba(255, 255, 255,0.45), 0 0 0 2px var(--glass-bg-sheet), 0 0 0 4px ${c}`
                 : 'inset 0 1px 1px rgba(255, 255, 255,0.45)',
-              transform: active ? 'scale(1.08)' : 'scale(1)',
             }}
           >
             {active && <CheckIcon />}
@@ -1105,7 +1073,7 @@ function ColorPicker({ value, onChange }: { value: string; onChange: (c: string)
       <label
         title="Custom color"
         aria-label="Pick a custom color"
-        className={orbBaseClass + " relative overflow-hidden"}
+        className={`${orbBaseClass} relative overflow-hidden ${isCustom ? 'scale-[1.08]' : 'scale-100'}`}
         style={{
           background: isCustom
             ? orbGloss(value)
@@ -1113,7 +1081,6 @@ function ColorPicker({ value, onChange }: { value: string; onChange: (c: string)
           boxShadow: isCustom
             ? `inset 0 1px 1px rgba(255, 255, 255,0.45), 0 0 0 2px var(--glass-bg-sheet), 0 0 0 4px ${value}`
             : 'inset 0 1px 1px rgba(255, 255, 255,0.45)',
-          transform: isCustom ? 'scale(1.08)' : 'scale(1)',
         }}
       >
         <input
@@ -1133,7 +1100,7 @@ type TargetType = 'boolean' | 'duration';
 
 function SectionCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-3.5 rounded-xl p-4" style={{ ...GLASS_NESTED }}>
+    <div className="mb-3.5 rounded-xl p-4 bg-[var(--glass-bg)] shadow-[var(--glass-shadow-sm)]">
       {children}
     </div>
   );
@@ -1204,10 +1171,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
     { key: 'x_per_week', label: 'Per Week' },
   ];
 
-  const inputStyle: React.CSSProperties = {
-    background: 'var(--input-bg)', border: `1.5px solid var(--input-border)`,
-  };
-  const inputClass = "box-border w-full rounded-xl p-[13px_16px] text-base font-semibold text-text-primary outline-none [font-family:inherit] transition-[border-color] duration-150 ease-linear";
+  const inputClass = "box-border w-full rounded-xl p-[13px_16px] text-base font-semibold text-text-primary outline-none [font-family:inherit] transition-[border-color] duration-150 ease-linear bg-[var(--input-bg)]";
 
   return (
     <>
@@ -1223,11 +1187,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
           exit={{ opacity: 0, scale: 0.95, y: 8 }}
           transition={{ type: 'spring', damping: 30, stiffness: 360 }}
           onClick={(e) => e.stopPropagation()}
-          className="pointer-events-auto w-full max-w-[480px] rounded-3xl p-[24px_16px_32px] [font-family:system-ui,-apple-system,sans-serif] shadow-[0_24px_64px_rgba(31,31,31,0.40),inset_0_1px_0_rgba(255,255,255,0.12)]"
-          style={{
-            background: 'var(--glass-bg-sheet)',
-            maxHeight: '90dvh', overflowY: 'auto',
-          }}
+          className="pointer-events-auto w-full max-w-[480px] rounded-3xl p-[24px_16px_32px] [font-family:system-ui,-apple-system,sans-serif] shadow-[0_24px_64px_rgba(31,31,31,0.40),inset_0_1px_0_rgba(255,255,255,0.12)] bg-[var(--glass-bg-sheet)] max-h-[90dvh] overflow-y-auto"
         >
           {/* Header */}
           <div className="mt-0 mb-4 flex items-center justify-between">
@@ -1239,7 +1199,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
                 {isBadHabit ? 'Check off days you successfully avoided it' : 'Build a streak that sticks'}
               </p>
             </div>
-            <button onClick={onClose} className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border-none text-xl font-bold" style={{ background: PURPLE_MID, cursor: 'pointer', color: PURPLE }}>×</button>
+            <button onClick={onClose} className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border-none text-xl font-bold bg-[var(--surface-tint-mid)] cursor-pointer text-[var(--accent-primary)]">×</button>
           </div>
 
           {/* Good / Bad toggle */}
@@ -1247,12 +1207,9 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
             <button
               type="button"
               onClick={() => { setIsBadHabit(false); if (isBadHabit) { setIcon('circle-check'); setColor(accentHex); } }}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-2xl border-none p-[10px_0] text-[13px] transition-all duration-200"
+              className={`flex flex-1 items-center justify-center gap-1.5 rounded-2xl border-none p-[10px_0] text-[13px] transition-all duration-200 cursor-pointer ${!isBadHabit ? 'text-white font-bold' : 'text-text-muted font-medium'}`}
               style={{
                 background: !isBadHabit ? accentHex : 'var(--bg-elevated)',
-                color: !isBadHabit ? '#fff' : TEXT_MUTED,
-                fontWeight: !isBadHabit ? 700 : 500,
-                cursor: 'pointer',
                 boxShadow: !isBadHabit ? `0 2px 12px color-mix(in srgb, ${accentHex} 35%, transparent)` : 'none',
               }}
             >
@@ -1262,14 +1219,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
             <button
               type="button"
               onClick={() => { setIsBadHabit(true); if (!isBadHabit) { setIcon('ban'); setColor(RED); } }}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-2xl border-none p-[10px_0] text-[13px] transition-all duration-200"
-              style={{
-                background: isBadHabit ? RED : 'var(--bg-elevated)',
-                color: isBadHabit ? '#fff' : TEXT_MUTED,
-                fontWeight: isBadHabit ? 700 : 500,
-                cursor: 'pointer',
-                boxShadow: isBadHabit ? '0 2px 12px rgba(248,113,113,0.35)' : 'none',
-              }}
+              className={`flex flex-1 items-center justify-center gap-1.5 rounded-2xl border-none p-[10px_0] text-[13px] transition-all duration-200 cursor-pointer ${isBadHabit ? 'bg-[#F87171] text-white font-bold shadow-[0_2px_12px_rgba(248,113,113,0.35)]' : 'bg-[var(--bg-elevated)] text-text-muted font-medium shadow-none'}`}
             >
               <Ban size={15} />
               Bad Habit
@@ -1284,8 +1234,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
               value={name}
               onChange={(e) => { setName(e.target.value); setError(null); }}
               placeholder="e.g. Morning Run"
-              className={inputClass}
-              style={{ ...inputStyle, border: `1.5px solid ${error && !name.trim() ? '#6a6a6a' : 'var(--input-border)'}` }}
+              className={`${inputClass} ${error && !name.trim() ? 'border-[1.5px] border-[#6a6a6a]' : 'border-[1.5px] border-[var(--input-border)]'}`}
               onFocus={(e) => { e.target.style.borderColor = PURPLE; }}
               onBlur={(e) => { e.target.style.borderColor = 'var(--input-border)'; }}
             />
@@ -1298,8 +1247,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
                 placeholder="Why this matters, how you'll do it…"
                 maxLength={500}
                 rows={3}
-                className={inputClass + " min-h-16 resize-y leading-[1.5]"}
-                style={{ ...inputStyle, border: '1.5px solid var(--input-border)' }}
+                className={inputClass + " min-h-16 resize-y leading-[1.5] border-[1.5px] border-[var(--input-border)]"}
                 onFocus={(e) => { e.target.style.borderColor = PURPLE; }}
                 onBlur={(e) => { e.target.style.borderColor = 'var(--input-border)'; }}
               />
@@ -1317,12 +1265,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
                     key={ic}
                     onClick={() => setIcon(ic)}
                     title={ic}
-                    className="flex aspect-square w-full items-center justify-center rounded-xl transition-[background,border-color] duration-150 ease-linear"
-                    style={{
-                      border: `1.5px solid ${active ? PURPLE : 'transparent'}`,
-                      background: active ? 'var(--surface-tint-mid)' : PURPLE_LIGHT,
-                      cursor: 'pointer',
-                    }}
+                    className={`flex aspect-square w-full items-center justify-center rounded-xl transition-[background,border-color] duration-150 ease-linear cursor-pointer border-[1.5px] ${active ? 'border-[var(--accent-primary)] bg-[var(--surface-tint-mid)]' : 'border-transparent bg-[var(--surface-tint)]'}`}
                   >
                     <DynamicIcon name={ic} size={20} color={active ? PURPLE : TEXT_MUTED} />
                   </button>
@@ -1332,8 +1275,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
             <button
               type="button"
               onClick={() => setShowAllIcons((v) => !v)}
-              className="mb-[18px] border-none bg-transparent p-[2px_0] text-[13px] font-bold cursor-pointer"
-              style={{ color: PURPLE }}
+              className="mb-[18px] border-none bg-transparent p-[2px_0] text-[13px] font-bold cursor-pointer text-[var(--accent-primary)]"
             >
               {showAllIcons ? 'Show less' : `View more (${HABIT_ICONS.length - 6})`}
             </button>
@@ -1349,13 +1291,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
                 <button
                   key={key}
                   onClick={() => setFreqType(key)}
-                  className="flex-1 whitespace-nowrap rounded-[9px] border-none p-[8px_4px] text-xs transition-all duration-150"
-                  style={{
-                    background: freqType === key ? PURPLE : 'transparent',
-                    color: freqType === key ? '#fff' : TEXT_MUTED,
-                    fontWeight: freqType === key ? 700 : 500,
-                    cursor: 'pointer',
-                  }}
+                  className={`flex-1 whitespace-nowrap rounded-[9px] border-none p-[8px_4px] text-xs transition-all duration-150 cursor-pointer ${freqType === key ? 'bg-[var(--accent-primary)] text-white font-bold' : 'bg-transparent text-text-muted font-medium'}`}
                 >{label}</button>
               ))}
             </div>
@@ -1368,12 +1304,9 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
                     <button
                       key={idx}
                       onClick={() => toggleDay(idx)}
-                      className="h-[38px] w-[38px] rounded-full border-none text-[13px] transition-all duration-150"
+                      className={`h-[38px] w-[38px] rounded-full border-none text-[13px] transition-all duration-150 cursor-pointer ${active ? 'text-white font-bold' : 'text-text-muted font-medium'}`}
                       style={{
                         background: active ? color : 'var(--bg-elevated)',
-                        color: active ? '#fff' : TEXT_MUTED,
-                        fontWeight: active ? 700 : 500,
-                        cursor: 'pointer',
                         boxShadow: active ? `0 2px 8px color-mix(in srgb, ${color} 30%, transparent)` : 'none',
                       }}
                     >{label}</button>
@@ -1388,9 +1321,9 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
                   {perWeek}× per week
                 </p>
                 <div className="flex items-center gap-1.5">
-                  <button onClick={() => setPerWeek((n) => Math.max(1, n - 1))} className="flex h-9 w-9 items-center justify-center rounded-full border-none bg-[var(--surface-tint)] text-[22px] font-bold cursor-pointer" style={{ color: PURPLE }}>−</button>
+                  <button onClick={() => setPerWeek((n) => Math.max(1, n - 1))} className="flex h-9 w-9 items-center justify-center rounded-full border-none bg-[var(--surface-tint)] text-[22px] font-bold cursor-pointer text-[var(--accent-primary)]">−</button>
                   <span className="w-7 text-center text-xl font-extrabold text-text-primary">{perWeek}</span>
-                  <button onClick={() => setPerWeek((n) => Math.min(7, n + 1))} className="flex h-9 w-9 items-center justify-center rounded-full border-none text-[22px] font-bold text-white cursor-pointer" style={{ background: PURPLE }}>+</button>
+                  <button onClick={() => setPerWeek((n) => Math.min(7, n + 1))} className="flex h-9 w-9 items-center justify-center rounded-full border-none text-[22px] font-bold text-white cursor-pointer bg-[var(--accent-primary)]">+</button>
                 </div>
               </div>
             )}
@@ -1399,17 +1332,14 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
           {/* ── Target / Timer ── */}
           <SectionCard>
             <FieldLabel>Target type</FieldLabel>
-            <div className="flex gap-2.5" style={{ marginBottom: targetType === 'duration' ? 16 : 0 }}>
+            <div className={`flex gap-2.5 ${targetType === 'duration' ? 'mb-4' : 'mb-0'}`}>
               {(['boolean', 'duration'] as TargetType[]).map((t) => (
                 <button
                   key={t}
                   onClick={() => setTargetType(t)}
-                  className="flex-1 rounded-xl border-none p-[10px_0] text-[13px] transition-all duration-150"
+                  className={`flex-1 rounded-xl border-none p-[10px_0] text-[13px] transition-all duration-150 cursor-pointer ${targetType === t ? 'text-white font-bold' : 'text-text-muted font-medium'}`}
                   style={{
                     background: targetType === t ? color : 'var(--bg-elevated)',
-                    color: targetType === t ? '#fff' : TEXT_MUTED,
-                    fontWeight: targetType === t ? 700 : 500,
-                    cursor: 'pointer',
                     boxShadow: targetType === t ? `0 2px 10px color-mix(in srgb, ${color} 25%, transparent)` : 'none',
                   }}
                 >
@@ -1422,9 +1352,9 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
               <div className="flex items-center justify-between pt-1">
                 <p className="m-0 text-sm font-semibold text-text-primary">{duration} minutes</p>
                 <div className="flex items-center gap-1.5">
-                  <button onClick={() => setDuration((n) => Math.max(5, n - 5))} className="flex h-9 w-9 items-center justify-center rounded-full border-none bg-[var(--surface-tint)] text-[22px] font-bold cursor-pointer" style={{ color: PURPLE }}>−</button>
+                  <button onClick={() => setDuration((n) => Math.max(5, n - 5))} className="flex h-9 w-9 items-center justify-center rounded-full border-none bg-[var(--surface-tint)] text-[22px] font-bold cursor-pointer text-[var(--accent-primary)]">−</button>
                   <span className="w-10 text-center text-xl font-extrabold text-text-primary">{duration}</span>
-                  <button onClick={() => setDuration((n) => Math.min(240, n + 5))} className="flex h-9 w-9 items-center justify-center rounded-full border-none text-[22px] font-bold text-white cursor-pointer" style={{ background: PURPLE }}>+</button>
+                  <button onClick={() => setDuration((n) => Math.min(240, n + 5))} className="flex h-9 w-9 items-center justify-center rounded-full border-none text-[22px] font-bold text-white cursor-pointer bg-[var(--accent-primary)]">+</button>
                 </div>
               </div>
             )}
@@ -1441,12 +1371,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
           <button
             onClick={submit}
             disabled={loading}
-            className="w-full rounded-full border-none p-[16px_0] text-base font-bold shadow-none transition-all duration-150"
-            style={{
-              background: loading ? 'var(--accent-light)' : 'var(--accent-primary)',
-              color: 'var(--accent-on-primary)',
-              cursor: loading ? 'default' : 'pointer',
-            }}
+            className={`w-full rounded-full border-none p-[16px_0] text-base font-bold shadow-none transition-all duration-150 text-[var(--accent-on-primary)] ${loading ? 'bg-[var(--accent-light)] cursor-default' : 'bg-accent-primary cursor-pointer'}`}
           >
             {loading ? 'Saving…' : 'Create Habit'}
           </button>
@@ -1516,13 +1441,7 @@ function NavItem({
   return (
     <button
       onClick={onClick}
-      className="flex w-full items-center gap-3 rounded-full border-none p-[11px_14px] text-left text-sm [font-family:inherit] transition-[background,color] duration-150 ease-linear"
-      style={{
-        background: active ? 'var(--accent-primary)' : 'transparent',
-        color: active ? 'var(--accent-on-primary)' : 'var(--text-secondary)',
-        fontWeight: active ? 700 : 600,
-        cursor: 'pointer',
-      }}
+      className={`flex w-full items-center gap-3 rounded-full border-none p-[11px_14px] text-left text-sm [font-family:inherit] transition-[background,color] duration-150 ease-linear cursor-pointer ${active ? 'bg-accent-primary text-[var(--accent-on-primary)] font-bold' : 'bg-transparent text-text-secondary font-semibold'}`}
       onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = 'var(--surface-tint)'; }}
       onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = 'transparent'; }}
     >
@@ -1592,12 +1511,7 @@ function SubNavItem({
   return (
     <button
       onClick={onClick}
-      className="flex w-full items-center gap-2.5 rounded-full border-none p-[8px_10px] text-left text-[13px] [font-family:inherit] transition-all duration-150 cursor-pointer"
-      style={{
-        background: active ? 'rgba(255,255,255,0.10)' : 'transparent',
-        color: active ? 'var(--text-primary)' : 'var(--text-muted)',
-        fontWeight: active ? 600 : 400,
-      }}
+      className={`flex w-full items-center gap-2.5 rounded-full border-none p-[8px_10px] text-left text-[13px] [font-family:inherit] transition-all duration-150 cursor-pointer ${active ? 'bg-[rgba(255,255,255,0.10)] text-text-primary font-semibold' : 'bg-transparent text-text-muted font-normal'}`}
       onMouseEnter={(e) => { if (!active) { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.color = 'var(--text-primary)'; } }}
       onMouseLeave={(e) => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; } }}
     >
@@ -1791,8 +1705,7 @@ export default function FitnessSummary({
 
   return (
     <div
-      className="relative min-h-[100dvh] overflow-x-hidden [font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif]"
-      style={{ background: 'var(--bg-primary)' }}
+      className="relative min-h-[100dvh] overflow-x-hidden [font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif] bg-bg-primary"
     >
       {/* Desktop Sidebar is rendered by layout.tsx */}
 
@@ -1806,15 +1719,11 @@ export default function FitnessSummary({
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
-            className="relative flex flex-wrap items-center justify-between gap-5 overflow-hidden rounded-3xl border border-border-default p-[24px_28px] shadow-[0_12px_32px_rgba(0,0,0,0.15)]"
-            style={{
-              background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-primary) 12%, var(--bg-card)) 0%, var(--bg-card) 100%)',
-            }}
+            className="relative flex flex-wrap items-center justify-between gap-5 overflow-hidden rounded-3xl border border-border-default p-[24px_28px] shadow-[0_12px_32px_rgba(0,0,0,0.15)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent-primary)_12%,var(--bg-card))_0%,var(--bg-card)_100%)]"
           >
             {/* Ambient background glow */}
             <div
-              className="pointer-events-none absolute -top-[40%] -right-[10%] h-[300px] w-[300px] rounded-full blur-[30px]"
-              style={{ background: 'radial-gradient(circle, var(--accent-glow-lg) 0%, transparent 70%)' }}
+              className="pointer-events-none absolute -top-[40%] -right-[10%] h-[300px] w-[300px] rounded-full blur-[30px] bg-[radial-gradient(circle,var(--accent-glow-lg)_0%,transparent_70%)]"
             />
 
             <div className="z-[1] min-w-0 flex-[1_1_300px]">
@@ -1841,9 +1750,8 @@ export default function FitnessSummary({
 
             <div className="z-[1] flex items-center gap-3">
               <button
-                className="hf-add-habit-btn inline-flex shrink-0 items-center gap-2 rounded-full border-none p-[12px_24px] text-sm font-bold [font-family:inherit] shadow-[0_8px_24px_color-mix(in_srgb,var(--accent-primary)_35%,transparent)] transition-[transform,box-shadow] duration-150 ease-linear cursor-pointer"
+                className="hf-add-habit-btn inline-flex shrink-0 items-center gap-2 rounded-full border-none p-[12px_24px] text-sm font-bold [font-family:inherit] shadow-[0_8px_24px_color-mix(in_srgb,var(--accent-primary)_35%,transparent)] transition-[transform,box-shadow] duration-150 ease-linear cursor-pointer bg-accent-primary text-[var(--accent-on-primary)]"
                 onClick={() => setAddOpen(true)}
-                style={{ background: 'var(--accent-primary)', color: 'var(--accent-on-primary)' }}
                 onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; }}
               >
@@ -1976,7 +1884,7 @@ export default function FitnessSummary({
                     onClick={() => selectDate(date)}
                     className="flex cursor-pointer flex-col items-center gap-1.5"
                   >
-                    <span className="text-[11px] font-semibold" style={{ color: isSelected ? 'var(--accent-primary)' : 'var(--text-muted)' }}>
+                    <span className={`text-[11px] font-semibold ${isSelected ? 'text-accent-primary' : 'text-text-muted'}`}>
                       {dayLabel}
                     </span>
                     <div className="relative h-[42px] w-[42px]">
@@ -1991,10 +1899,9 @@ export default function FitnessSummary({
                         />
                       </svg>
                       <div
-                        className="absolute inset-[5px] flex items-center justify-center rounded-full transition-[background] duration-[180ms] ease-linear"
-                        style={{ background: isSelected ? 'var(--accent-primary)' : 'transparent' }}
+                        className={`absolute inset-[5px] flex items-center justify-center rounded-full transition-[background] duration-[180ms] ease-linear ${isSelected ? 'bg-accent-primary' : 'bg-transparent'}`}
                       >
-                        <span className="text-[13px]" style={{ fontWeight: isSelected ? 700 : 600, color: isSelected ? 'var(--accent-on-primary)' : 'var(--text-primary)' }}>
+                        <span className={`text-[13px] ${isSelected ? 'font-bold text-[var(--accent-on-primary)]' : 'font-semibold text-text-primary'}`}>
                           {dayNum}
                         </span>
                       </div>
@@ -2009,7 +1916,7 @@ export default function FitnessSummary({
               <DashCard
                 title={isViewingToday ? "Today's Habits" : new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                 action={
-                  <span className="text-[13px] font-semibold" style={{ color: loadingDate ? 'var(--text-muted)' : 'var(--text-primary)' }}>
+                  <span className={`text-[13px] font-semibold ${loadingDate ? 'text-text-muted' : 'text-text-primary'}`}>
                     {loadingDate ? 'Loading…' : `${completedCount}/${totalCount} done`}
                   </span>
                 }
@@ -2019,8 +1926,7 @@ export default function FitnessSummary({
                     <p className="m-0 mb-3.5 text-sm text-text-muted">No active habits yet.</p>
                     <button
                       onClick={() => setAddOpen(true)}
-                      className="inline-flex items-center gap-1.5 rounded-full border-none p-[10px_20px] text-[13.5px] font-bold [font-family:inherit] cursor-pointer"
-                      style={{ background: 'var(--accent-primary)', color: 'var(--accent-on-primary)' }}
+                      className="inline-flex items-center gap-1.5 rounded-full border-none p-[10px_20px] text-[13.5px] font-bold [font-family:inherit] cursor-pointer bg-accent-primary text-[var(--accent-on-primary)]"
                     >
                       <Plus size={16} strokeWidth={2.6} /> Add your first habit
                     </button>
@@ -2035,10 +1941,7 @@ export default function FitnessSummary({
                         whileHover={{ scale: 1.015, y: -1 }}
                         whileTap={{ scale: 0.985 }}
                         onClick={() => setShowAllGoodHabits(!showAllGoodHabits)}
-                        className="mt-1.5 flex w-full items-center justify-center gap-2 rounded-full border border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)] p-[12px_20px] text-[13.5px] font-bold text-text-primary [font-family:inherit] shadow-none [backdrop-filter:blur(10px)] transition-all duration-200 cursor-pointer"
-                        style={{
-                          background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-primary) 12%, var(--bg-tertiary)) 0%, var(--bg-tertiary) 100%)',
-                        }}
+                        className="mt-1.5 flex w-full items-center justify-center gap-2 rounded-full border border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)] p-[12px_20px] text-[13.5px] font-bold text-text-primary [font-family:inherit] shadow-none [backdrop-filter:blur(10px)] transition-all duration-200 cursor-pointer bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent-primary)_12%,var(--bg-tertiary))_0%,var(--bg-tertiary)_100%)]"
                       >
                         <span>{showAllGoodHabits ? 'Show less' : `Show all habits (${displayHabitsFull.length})`}</span>
                         <motion.div
@@ -2085,26 +1988,20 @@ export default function FitnessSummary({
                       return (
                         <div key={date} className="flex flex-1 flex-col items-center gap-[5px]">
                           <div
-                            className="relative w-full overflow-hidden rounded-full bg-[var(--surface-tint)]"
-                            style={{ height: TRACK_H }}
+                            className="relative w-full overflow-hidden rounded-full bg-[var(--surface-tint)] h-[88px]"
                           >
                             <motion.div
                               initial={{ height: 0 }}
                               animate={{ height: barH }}
                               transition={{ duration: 0.5, delay: 0.08 + i * 0.05, ease: 'easeOut' }}
-                              className="absolute inset-x-0 bottom-0 rounded-full"
-                              style={{
-                                background: isToday
-                                  ? 'var(--accent-primary)'
-                                  : 'color-mix(in srgb, var(--accent-primary) 52%, transparent)',
-                              }}
+                              className={`absolute inset-x-0 bottom-0 rounded-full ${isToday ? 'bg-accent-primary' : 'bg-[color-mix(in_srgb,var(--accent-primary)_52%,transparent)]'}`}
                             />
                           </div>
                           <div className="flex flex-col items-center gap-px">
-                            <span className="text-[9px] font-medium" style={{ color: isToday ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+                            <span className={`text-[9px] font-medium ${isToday ? 'text-text-primary' : 'text-text-muted'}`}>
                               {dayLabel}
                             </span>
-                            <span className="text-[11px]" style={{ fontWeight: isToday ? 800 : 500, color: isToday ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
+                            <span className={`text-[11px] ${isToday ? 'font-extrabold text-text-primary' : 'font-medium text-text-secondary'}`}>
                               {dayNum}
                             </span>
                           </div>
@@ -2132,15 +2029,14 @@ export default function FitnessSummary({
                 action={
                   displayBadHabits.length > 0 ? (
                     <div className="rounded-full bg-[rgba(248,113,113,0.12)] p-[4px_12px] border border-[rgba(248,113,113,0.3)]">
-                      <span className="text-[12.5px] font-[750]" style={{ color: RED_SOFT }}>
+                      <span className="text-[12.5px] font-[750] text-[#FCA5A5]">
                         {loadingDate ? 'Loading…' : `${avoidedCount}/${displayBadHabits.length} avoided`}
                       </span>
                     </div>
                   ) : (
                     <button
                       onClick={() => { setAddBadDefault(true); setAddOpen(true); }}
-                      className="flex items-center gap-[5px] rounded-full border-none p-[5px_12px] text-xs font-bold cursor-pointer"
-                      style={{ background: RED_LIGHT, color: RED_SOFT }}
+                      className="flex items-center gap-[5px] rounded-full border-none p-[5px_12px] text-xs font-bold cursor-pointer bg-[rgba(248,113,113,0.12)] text-[#FCA5A5]"
                     >
                       <Plus size={13} /> Add
                     </button>
@@ -2150,8 +2046,7 @@ export default function FitnessSummary({
                 {displayBadHabits.length === 0 ? (
                   <div className="p-[20px_12px_8px] text-center">
                     <div
-                      className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full"
-                      style={{ background: RED_LIGHT }}
+                      className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(248,113,113,0.12)]"
                     >
                       <Ban size={22} color={RED_SOFT} />
                     </div>
@@ -2161,8 +2056,7 @@ export default function FitnessSummary({
                     </p>
                     <button
                       onClick={() => { setAddBadDefault(true); setAddOpen(true); }}
-                      className="inline-flex items-center gap-1.5 rounded-full border-none p-[9px_20px] text-sm font-bold text-white cursor-pointer shadow-[0_2px_10px_rgba(248,113,113,0.35)]"
-                      style={{ background: RED }}
+                      className="inline-flex items-center gap-1.5 rounded-full border-none p-[9px_20px] text-sm font-bold text-white cursor-pointer shadow-[0_2px_10px_rgba(248,113,113,0.35)] bg-[#F87171]"
                     >
                       <Plus size={14} /> Track a bad habit
                     </button>
