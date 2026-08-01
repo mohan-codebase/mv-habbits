@@ -57,6 +57,13 @@ export const metadata: Metadata = {
     title: "Productivity Master",
     startupImage: ["/icons/icon-512.png"],
   },
+  other: {
+    // Next emits the standardized `mobile-web-app-capable` for appleWebApp.capable.
+    // iOS 16.4+ honours the manifest's `display: standalone`, but 16.3 and older
+    // only read this legacy tag — without it they open in Safari chrome instead
+    // of standalone after Add to Home Screen.
+    "apple-mobile-web-app-capable": "yes",
+  },
 };
 
 // NOTE: maximumScale/userScalable=false breaks pinch-zoom for low-vision users

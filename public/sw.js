@@ -2,13 +2,14 @@
  * Productivity Master Service Worker
  * Handles: Web Push notifications.
  *
- * NOTE: This worker deliberately has NO `fetch` handler. An earlier version
- * intercepted same-origin GETs for an "offline shell", but that broke the
+ * NOTE: the `fetch` handler below is intentionally a no-op. Chrome requires a
+ * registered fetch handler for PWA install eligibility, but an earlier version
+ * that actually intercepted same-origin GETs for an "offline shell" broke the
  * Next.js App Router: it corrupted RSC payloads (so client-side tab navigation
  * fell back to hard reloads) and truncated streamed SSR documents on larger
  * pages (e.g. /trip/expenses rendered blank). For an auth-gated, network-bound
  * app the offline shell added little value and lots of breakage, so navigation
- * and document requests are now left entirely to the browser. Push remains.
+ * and document requests are left entirely to the browser. Push remains.
  */
 
 const CACHE_NAME = 'productivity-master-v3';
