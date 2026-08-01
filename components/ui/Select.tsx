@@ -18,17 +18,6 @@ interface SelectProps {
   className?: string;
 }
 
-const controlBase: React.CSSProperties = {
-  width: '100%',
-  padding: '9px 12px',
-  fontSize: 13.5,
-  color: 'var(--text-primary)',
-  background: 'var(--bg-tertiary)',
-  border: '1px solid var(--border-subtle)',
-  borderRadius: 9999,
-  outline: 'none',
-};
-
 export default function Select({
   value,
   onChange,
@@ -44,18 +33,12 @@ export default function Select({
   const activeLabel = activeOption ? activeOption.label : (placeholder || value);
 
   return (
-    <div className={className} style={{ position: 'relative', width: '100%' }}>
+    <div className={`relative w-full ${className}`}>
       {/* Backdrop overlay to close when clicking outside */}
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 49,
-            cursor: 'default',
-            background: 'transparent',
-          }}
+          className="fixed inset-0 z-[49] cursor-default bg-transparent"
         />
       )}
 
@@ -63,33 +46,16 @@ export default function Select({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        style={{
-          ...controlBase,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          cursor: 'pointer',
-          textAlign: 'left',
-          paddingRight: '10px',
-          borderColor: isOpen ? 'var(--border-active)' : 'var(--border-subtle)',
-          boxShadow: 'none',
-          transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
-          ...style,
-        }}
+        className="flex w-full items-center justify-between rounded-full bg-bg-tertiary py-[9px] pr-2.5 pl-3 text-left text-[13.5px] text-text-primary shadow-none outline-none transition-[border-color,box-shadow] duration-150 cursor-pointer"
+        style={{ border: `1px solid ${isOpen ? 'var(--border-active)' : 'var(--border-subtle)'}`, ...style }}
       >
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <span className="truncate">
           {activeLabel}
         </span>
         <motion.span
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            color: 'var(--text-muted)',
-            marginLeft: 6,
-            flexShrink: 0,
-          }}
+          className="ml-1.5 inline-flex shrink-0 items-center text-text-muted"
         >
           <ChevronDown size={14} />
         </motion.span>
@@ -103,22 +69,7 @@ export default function Select({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.97 }}
             transition={{ duration: 0.15, ease: 'easeOut' }}
-            style={{
-              position: 'absolute',
-              top: 'calc(100% + 6px)',
-              left: 0,
-              right: 0,
-              zIndex: 50,
-              background: 'var(--bg-glass-strong)',
-              backdropFilter: 'none',
-              WebkitBackdropFilter: 'none',
-              border: '1px solid var(--border-medium)',
-              borderRadius: 12,
-              boxShadow: 'none',
-              maxHeight: '220px',
-              overflowY: 'auto',
-              padding: '6px',
-            }}
+            className="absolute top-[calc(100%_+_6px)] left-0 right-0 z-50 max-h-[220px] overflow-y-auto rounded-[12px] border border-border-medium bg-bg-glass-strong p-1.5 shadow-none [backdrop-filter:none] [-webkit-backdrop-filter:none]"
           >
             {opts.map((o) => {
               const isSelected = o.value === value;
@@ -130,34 +81,8 @@ export default function Select({
                     onChange(o.value);
                     setIsOpen(false);
                   }}
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    fontSize: 13,
-                    textAlign: 'left',
-                    borderRadius: 8,
-                    border: 'none',
-                    background: isSelected ? 'var(--accent-glow-md)' : 'transparent',
-                    color: isSelected ? 'var(--accent-light)' : 'var(--text-secondary)',
-                    cursor: 'pointer',
-                    fontWeight: isSelected ? 600 : 500,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    transition: 'background 0.15s ease, color 0.15s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isSelected) {
-                      e.currentTarget.style.background = 'var(--bg-tertiary)';
-                      e.currentTarget.style.color = 'var(--text-primary)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isSelected) {
-                      e.currentTarget.style.background = 'transparent';
-                      e.currentTarget.style.color = 'var(--text-secondary)';
-                    }
-                  }}
+                  className={`flex w-full items-center justify-between rounded-sm border-none py-2 px-3 text-left text-[13px] cursor-pointer transition-colors duration-150 ${isSelected ? 'font-semibold' : 'font-medium text-text-secondary hover:bg-bg-tertiary hover:text-text-primary'}`}
+                  style={isSelected ? { background: 'var(--accent-glow-md)', color: 'var(--accent-light)' } : undefined}
                 >
                   <span>{o.label}</span>
                 </button>

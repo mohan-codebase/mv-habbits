@@ -13,29 +13,17 @@ interface SkeletonGroupProps {
   className?: string;
 }
 
-const variantStyles: Record<SkeletonVariant, React.CSSProperties> = {
-  text: {
-    height: '14px',
-    borderRadius: '4px',
-    width: '100%',
-  },
-  rect: {
-    height: '80px',
-    borderRadius: '12px',
-    width: '100%',
-  },
-  circle: {
-    height: '40px',
-    width: '40px',
-    borderRadius: 'var(--r-pill)',
-  },
+const variantClasses: Record<SkeletonVariant, string> = {
+  text: 'h-[14px] w-full rounded-[4px]',
+  rect: 'h-[80px] w-full rounded-[12px]',
+  circle: 'h-10 w-10 rounded-full',
 };
 
 export default function Skeleton({ className = '', variant = 'text', style: customStyle }: SkeletonProps) {
   return (
     <div
-      className={`shimmer ${className}`}
-      style={{ ...variantStyles[variant], ...customStyle }}
+      className={`shimmer ${variantClasses[variant]} ${className}`}
+      style={customStyle}
       aria-hidden="true"
     />
   );
