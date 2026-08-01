@@ -14,19 +14,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const [focused, setFocused] = React.useState(false);
 
-    const borderColor = error
-      ? 'var(--danger)'
+    const borderClass = error
+      ? 'border-danger'
       : focused
-        ? 'var(--border-active)'
-        : 'var(--border-subtle)';
+        ? 'border-border-active'
+        : 'border-border-subtle';
 
-    const boxShadow = error
+    const shadowClass = error
       ? focused
-        ? '0 0 0 3px color-mix(in srgb, var(--accent-primary) 15%, transparent)'
-        : 'none'
+        ? 'shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent-primary)_15%,transparent)]'
+        : 'shadow-none'
       : focused
-        ? '0 0 0 3px var(--accent-glow)'
-        : 'none';
+        ? 'shadow-[0_0_0_3px_var(--accent-glow)]'
+        : 'shadow-none';
 
     return (
       <div className={`flex flex-col gap-1.5 ${className}`} style={style}>
@@ -44,8 +44,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <div className="relative flex items-center">
           {icon && (
             <span
-              className="absolute left-3 z-[1] flex items-center pointer-events-none transition-colors duration-150"
-              style={{ color: focused ? 'var(--accent-primary)' : 'var(--text-muted)' }}
+              className={`absolute left-3 z-[1] flex items-center pointer-events-none transition-colors duration-150 ${
+                focused ? 'text-accent-primary' : 'text-text-muted'
+              }`}
             >
               {icon}
             </span>
@@ -66,11 +67,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               setFocused(false);
               props.onBlur?.(e);
             }}
-            className={`w-full rounded-full bg-bg-tertiary text-[14px] text-text-primary outline-none transition-[transform,filter,background,opacity,border-color] duration-150 disabled:cursor-not-allowed disabled:opacity-50 ${icon ? 'py-2.5 pr-3.5 pl-10' : 'px-3.5 py-2.5'}`}
-            style={{
-              border: `1px solid ${borderColor}`,
-              boxShadow,
-            }}
+            className={`w-full rounded-full border bg-bg-tertiary text-[14px] text-text-primary outline-none transition-[transform,filter,background,opacity,border-color] duration-150 disabled:cursor-not-allowed disabled:opacity-50 ${icon ? 'py-2.5 pr-3.5 pl-10' : 'px-3.5 py-2.5'} ${borderClass} ${shadowClass}`}
           />
         </div>
 
