@@ -53,86 +53,56 @@ export default function DataManagement({ user }: { user: SupabaseUser | null }) 
   };
 
   return (
-    <div
-      style={{
-        display: 'flex', alignItems: 'flex-start', gap: 14,
-        padding: '16px 18px',
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 'var(--r-xl)',
-      }}
-    >
-      <div style={{
-        width: 38, height: 38, borderRadius: 'var(--r-md)', flexShrink: 0,
-        background: 'var(--bg-tertiary)',
-        border: '1px solid var(--border-subtle)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        color: 'var(--text-primary)',
-      }}>
+    <div className="flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card py-4 px-[18px]">
+      <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle bg-bg-tertiary text-text-primary">
         <Database size={18} />
       </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 3px' }}>
+      <div className="min-w-0 flex-1">
+        <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
           Data Management
         </p>
-        <p style={{ fontSize: 12.5, color: 'var(--text-muted)', margin: '0 0 12px', lineHeight: 1.5 }}>
+        <p className="m-0 mb-3 text-sm leading-[1.5] text-text-muted">
           Export all your data for backup or import an existing backup. Importing will overwrite conflicting records.
         </p>
 
         {error && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: 'rgba(239, 68, 68, 0.1)', color: 'var(--danger)', borderRadius: 8, fontSize: 12, fontWeight: 600, marginBottom: 12 }}>
+          <div className="mb-3 flex items-center gap-2 rounded-sm bg-[rgba(239,68,68,0.1)] px-3 py-2 text-[12px] font-semibold text-[var(--danger)]">
             <AlertCircle size={14} />
             <span>{error}</span>
           </div>
         )}
 
         {success && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', borderRadius: 8, fontSize: 12, fontWeight: 600, marginBottom: 12 }}>
+          <div className="mb-3 flex items-center gap-2 rounded-sm bg-[rgba(34,197,94,0.1)] px-3 py-2 text-[12px] font-semibold text-[#22c55e]">
             <Database size={14} />
             <span>{success}</span>
           </div>
         )}
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+        <div className="flex flex-wrap gap-2.5">
           <button
             onClick={handleExport}
             disabled={exporting || importing}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 6,
-              padding: '7px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600,
-              background: 'var(--bg-tertiary)',
-              color: 'var(--text-secondary)',
-              border: '1px solid var(--border-default)',
-              cursor: (exporting || importing) ? 'not-allowed' : 'pointer',
-              fontFamily: 'inherit', opacity: (exporting || importing) ? 0.6 : 1,
-            }}
+            className="flex items-center gap-1.5 rounded-sm border border-border-default bg-bg-tertiary px-3.5 py-[7px] text-[13px] font-semibold text-text-secondary [font-family:inherit] cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Download size={15} />
             {exporting ? 'Exporting...' : 'Export Data'}
           </button>
-          
+
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={exporting || importing}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 6,
-              padding: '7px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600,
-              background: 'var(--bg-tertiary)',
-              color: 'var(--text-secondary)',
-              border: '1px solid var(--border-default)',
-              cursor: (exporting || importing) ? 'not-allowed' : 'pointer',
-              fontFamily: 'inherit', opacity: (exporting || importing) ? 0.6 : 1,
-            }}
+            className="flex items-center gap-1.5 rounded-sm border border-border-default bg-bg-tertiary px-3.5 py-[7px] text-[13px] font-semibold text-text-secondary [font-family:inherit] cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Upload size={15} />
             {importing ? 'Importing...' : 'Import Data'}
           </button>
-          <input 
+          <input
             type="file"
             accept=".json"
             ref={fileInputRef}
             onChange={handleImport}
-            style={{ display: 'none' }}
+            className="hidden"
           />
         </div>
       </div>

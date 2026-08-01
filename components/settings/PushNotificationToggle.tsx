@@ -128,15 +128,12 @@ export default function PushNotificationToggle({ compact = false }: Props) {
         disabled={state === 'requesting'}
         aria-label={isOn ? 'Disable push notifications' : 'Enable push notifications'}
         title={isOn ? 'Notifications on — click to disable' : 'Enable habit reminders'}
+        className="relative flex h-[34px] w-[34px] items-center justify-center rounded-[9px] transition-all duration-150"
         style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          width: 34, height: 34, borderRadius: 9,
           border: `1px solid ${isOn ? 'var(--border-accent)' : 'var(--border-default)'}`,
           background: isOn ? 'var(--accent-glow)' : 'var(--bg-tertiary)',
           color: isOn ? 'var(--accent-primary)' : 'var(--text-secondary)',
           cursor: state === 'requesting' ? 'wait' : 'pointer',
-          transition: 'all 0.15s ease',
-          position: 'relative',
         }}
       >
         {state === 'requesting'
@@ -147,11 +144,7 @@ export default function PushNotificationToggle({ compact = false }: Props) {
 
         {/* Live dot when subscribed */}
         {isOn && (
-          <span style={{
-            position: 'absolute', top: 5, right: 5,
-            width: 6, height: 6, borderRadius: '50%',
-            background: 'var(--accent-primary)',
-          }} className="glow-pulse" />
+          <span className="glow-pulse absolute top-[5px] right-[5px] h-1.5 w-1.5 rounded-full bg-accent-primary" />
         )}
       </button>
     );
@@ -213,48 +206,41 @@ export default function PushNotificationToggle({ compact = false }: Props) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -8 }}
         transition={{ duration: 0.2 }}
-        style={{
-          display: 'flex', alignItems: 'flex-start', gap: 14,
-          padding: '16px 18px',
-          background: 'var(--bg-card)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 'var(--r-xl)',
-          boxShadow: 'none',
-        }}
+        className="flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card py-4 px-[18px] shadow-none"
       >
         {/* Icon chip */}
-        <div style={{
-          width: 38, height: 38, borderRadius: 'var(--r-md)', flexShrink: 0,
-          background: state === 'subscribed' ? 'var(--accent-glow-md)' : 'var(--bg-tertiary)',
-          border: `1px solid ${state === 'subscribed' ? 'var(--border-accent)' : 'var(--border-subtle)'}`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: c.tone,
-        }}>
+        <div
+          className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md"
+          style={{
+            background: state === 'subscribed' ? 'var(--accent-glow-md)' : 'var(--bg-tertiary)',
+            border: `1px solid ${state === 'subscribed' ? 'var(--border-accent)' : 'var(--border-subtle)'}`,
+            color: c.tone,
+          }}
+        >
           {c.icon}
         </div>
 
         {/* Text + CTA */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+        <div className="min-w-0 flex-1">
+          <div className="mb-[3px] flex items-center gap-2">
+            <p className="m-0 text-[14px] font-bold text-text-primary">
               {c.title}
             </p>
             {state === 'subscribed' && (
               <CheckCircle2 size={13} color="var(--accent-primary)" />
             )}
           </div>
-          <p style={{ fontSize: 12.5, color: 'var(--text-muted)', margin: '0 0 12px', lineHeight: 1.5 }}>
+          <p className="m-0 mb-3 text-sm leading-[1.5] text-text-muted">
             {c.desc}
           </p>
           {c.cta && c.ctaFn && (
             <button
               onClick={c.ctaFn}
+              className="rounded-sm px-3.5 py-[7px] text-[13px] font-semibold cursor-pointer [font-family:inherit]"
               style={{
-                padding: '7px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600,
                 background: state === 'subscribed' ? 'var(--bg-tertiary)' : 'var(--accent-primary)',
                 color: state === 'subscribed' ? 'var(--text-secondary)' : 'var(--accent-on-primary)',
                 border: state === 'subscribed' ? '1px solid var(--border-default)' : 'none',
-                cursor: 'pointer', fontFamily: 'inherit',
               }}
             >
               {c.cta}
