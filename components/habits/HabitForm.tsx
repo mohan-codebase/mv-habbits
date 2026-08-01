@@ -76,12 +76,7 @@ function SegmentedControl<T extends string>({
             key={opt}
             type="button"
             onClick={() => onChange(opt)}
-            className="flex-1 min-w-0 px-2.5 py-1.5 rounded-[7px] border-none text-[13px] cursor-pointer transition-all duration-150 shadow-none whitespace-nowrap"
-            style={{
-              background: active ? 'var(--bg-secondary)' : 'transparent',
-              color: active ? 'var(--text-primary)' : 'var(--text-muted)',
-              fontWeight: active ? 600 : 400,
-            }}
+            className={`flex-1 min-w-0 px-2.5 py-1.5 rounded-[7px] border-none text-[13px] cursor-pointer transition-all duration-150 shadow-none whitespace-nowrap ${active ? 'bg-bg-secondary text-text-primary font-semibold' : 'bg-transparent text-text-muted font-normal'}`}
           >
             {labels[opt]}
           </button>
@@ -205,17 +200,13 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
                           setValue('icon', isBad ? 'ban' : 'circle-check');
                         }
                       }}
-                      className="flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-[12px] text-[13px] cursor-pointer transition-all duration-150"
-                      style={{
-                        border: `1.5px solid ${active ? (isBad ? '#6a6a6a' : 'var(--accent-primary)') : 'var(--border-default)'}`,
-                        background: active
-                          ? isBad ? 'rgba(104, 104, 104,0.10)' : 'var(--accent-glow-md)'
-                          : 'var(--bg-tertiary)',
-                        color: active
-                          ? isBad ? '#6a6a6a' : 'var(--accent-primary)'
-                          : 'var(--text-muted)',
-                        fontWeight: active ? 700 : 500,
-                      }}
+                      className={`flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-[12px] text-[13px] cursor-pointer transition-all duration-150 border-[1.5px] ${
+                        active
+                          ? isBad
+                            ? 'border-[#6a6a6a] bg-[rgba(104,104,104,0.10)] text-[#6a6a6a] font-bold'
+                            : 'border-accent-primary bg-[var(--accent-glow-md)] text-accent-primary font-bold'
+                          : 'border-border-default bg-bg-tertiary text-text-muted font-medium'
+                      }`}
                     >
                       {isBad ? <Ban size={16} /> : <CheckCircle2 size={16} />}
                       {isBad ? 'Bad Habit' : 'Good Habit'}
@@ -413,13 +404,11 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
                         aria-label={DAY_FULL_LABELS[idx]}
                         aria-pressed={active}
                         onClick={() => toggleDay(idx)}
-                        className="w-9 h-9 rounded-full text-[13px] cursor-pointer transition-all duration-150"
-                        style={{
-                          border: `1px solid ${active ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
-                          background: active ? 'var(--accent-primary)' : 'transparent',
-                          color: active ? 'var(--accent-on-primary)' : 'var(--text-secondary)',
-                          fontWeight: active ? 700 : 500,
-                        }}
+                        className={`w-9 h-9 rounded-full text-[13px] cursor-pointer transition-all duration-150 border ${
+                          active
+                            ? 'border-accent-primary bg-accent-primary text-accent-on-primary font-bold'
+                            : 'border-border-subtle bg-transparent text-text-secondary font-medium'
+                        }`}
                       >
                         {label}
                       </button>
