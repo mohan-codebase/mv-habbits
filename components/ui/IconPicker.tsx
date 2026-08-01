@@ -22,10 +22,10 @@ export default function IconPicker({ value, onChange, color = 'var(--accent-prim
   }, [search]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+    <div className="flex flex-col gap-2.5">
       {/* Search Input */}
-      <div style={{ position: 'relative' }}>
-        <div style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }}>
+      <div className="relative">
+        <div className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted">
           <Search size={14} />
         </div>
         <input
@@ -33,32 +33,13 @@ export default function IconPicker({ value, onChange, color = 'var(--accent-prim
           placeholder="Search icons..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{
-            width: '100%',
-            background: 'var(--bg-tertiary)',
-            color: 'var(--text-primary)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: 10,
-            padding: '8px 12px 8px 32px',
-            fontSize: 13,
-            outline: 'none',
-          }}
+          className="w-full rounded-md border border-border-subtle bg-bg-tertiary py-2 pr-3 pl-8 text-[13px] text-text-primary outline-none"
         />
         {search && (
           <button
             type="button"
             onClick={() => setSearch('')}
-            style={{
-              position: 'absolute',
-              right: 8,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              background: 'none',
-              border: 'none',
-              color: 'var(--text-muted)',
-              cursor: 'pointer',
-              padding: 4,
-            }}
+            className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer border-none bg-none p-1 text-text-muted"
           >
             <X size={14} />
           </button>
@@ -67,18 +48,7 @@ export default function IconPicker({ value, onChange, color = 'var(--accent-prim
 
       {/* Icon Grid */}
       <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(36px, 1fr))',
-          gap: 6,
-          maxHeight: 200,
-          overflowY: 'auto',
-          padding: '4px',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 12,
-          background: 'var(--bg-card)',
-        }}
-        className="hf-custom-scrollbar"
+        className="hf-custom-scrollbar grid max-h-[200px] grid-cols-[repeat(auto-fill,minmax(36px,1fr))] gap-1.5 overflow-y-auto rounded-[12px] border border-border-subtle bg-bg-card p-1"
       >
         {filteredIcons.map((name) => {
           const active = value === name;
@@ -89,49 +59,26 @@ export default function IconPicker({ value, onChange, color = 'var(--accent-prim
               type="button"
               onClick={() => onChange(name)}
               title={name}
-              style={{
-                width: 36,
-                height: 36,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 8,
-                border: `1px solid ${active ? color : 'transparent'}`,
-                background: active ? `${color}15` : 'transparent',
-                color: active ? color : 'var(--text-secondary)',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
-              onMouseEnter={(e) => {
-                if (!active) {
-                  e.currentTarget.style.background = 'var(--bg-tertiary)';
-                  e.currentTarget.style.color = 'var(--text-primary)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!active) {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = 'var(--text-secondary)';
-                }
-              }}
+              className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-sm border transition-all duration-150 ${active ? '' : 'border-transparent bg-transparent text-text-secondary hover:bg-bg-tertiary hover:text-text-primary'}`}
+              style={active ? { border: `1px solid ${color}`, background: `${color}15`, color } : undefined}
             >
               <DynamicIcon name={name} size={18} color="currentColor" />
             </button>
           );
         })}
         {filteredIcons.length === 0 && (
-          <div style={{ gridColumn: '1 / -1', padding: '20px 0', textAlign: 'center', color: 'var(--text-muted)', fontSize: 13 }}>
+          <div className="col-[1/-1] py-5 text-center text-[13px] text-text-muted">
             No icons found
           </div>
         )}
       </div>
 
       {/* Selected Preview */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '4px 8px' }}>
-        <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>Selected:</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, color, fontWeight: 600, fontSize: 13 }}>
+      <div className="flex items-center gap-2.5 px-2 py-1">
+        <span className="text-xs text-text-muted">Selected:</span>
+        <div className="flex items-center gap-1.5 text-[13px] font-semibold" style={{ color }}>
           <DynamicIcon name={value} size={16} color="currentColor" />
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{value}</span>
+          <span className="[font-family:'IBM_Plex_Mono',monospace]">{value}</span>
         </div>
       </div>
     </div>

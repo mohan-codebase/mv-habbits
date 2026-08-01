@@ -29,39 +29,23 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         : 'none';
 
     return (
-      <div className={className} style={{ display: 'flex', flexDirection: 'column', gap: '6px', ...style }}>
+      <div className={`flex flex-col gap-1.5 ${className}`} style={style}>
         {label && (
-          <label
-            htmlFor={inputId}
-            style={{
-              fontSize: '13px',
-              fontWeight: 500,
-              color: 'var(--text-secondary)',
-              userSelect: 'none',
-            }}
-          >
+          <label htmlFor={inputId} className="select-none text-[13px] font-medium text-text-secondary">
             {label}
             {required && (
-              <span style={{ color: 'var(--danger)', marginLeft: '3px' }} aria-hidden="true">
+              <span className="ml-[3px] text-[var(--danger)]" aria-hidden="true">
                 *
               </span>
             )}
           </label>
         )}
 
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+        <div className="relative flex items-center">
           {icon && (
             <span
-              style={{
-                position: 'absolute',
-                left: '12px',
-                color: focused ? 'var(--accent-primary)' : 'var(--text-muted)',
-                display: 'flex',
-                alignItems: 'center',
-                pointerEvents: 'none',
-                transition: 'color 0.15s ease',
-                zIndex: 1,
-              }}
+              className="absolute left-3 z-[1] flex items-center pointer-events-none transition-colors duration-150"
+              style={{ color: focused ? 'var(--accent-primary)' : 'var(--text-muted)' }}
             >
               {icon}
             </span>
@@ -82,36 +66,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               setFocused(false);
               props.onBlur?.(e);
             }}
+            className={`w-full rounded-full bg-bg-tertiary text-[14px] text-text-primary outline-none transition-[transform,filter,background,opacity,border-color] duration-150 disabled:cursor-not-allowed disabled:opacity-50 ${icon ? 'py-2.5 pr-3.5 pl-10' : 'px-3.5 py-2.5'}`}
             style={{
-              width: '100%',
-              background: 'var(--bg-tertiary)',
-              color: 'var(--text-primary)',
               border: `1px solid ${borderColor}`,
-              borderRadius: 9999,
-              padding: icon ? '10px 14px 10px 40px' : '10px 14px',
-              fontSize: '14px',
-              outline: 'none',
               boxShadow,
-              transition: 'transform 0.15s ease, filter 0.15s ease, background 0.15s ease, opacity 0.15s ease, border-color 0.15s ease',
-              opacity: props.disabled ? 0.5 : 1,
-              cursor: props.disabled ? 'not-allowed' : undefined,
             }}
           />
         </div>
 
         {error && (
-          <p
-            id={errorId}
-            role="alert"
-            style={{
-              margin: 0,
-              fontSize: '12px',
-              color: 'var(--danger)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-            }}
-          >
+          <p id={errorId} role="alert" className="m-0 flex items-center gap-1 text-[12px] text-[var(--danger)]">
             {error}
           </p>
         )}
