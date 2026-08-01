@@ -49,7 +49,7 @@ export default function AuthLayout({ children, activeTab }: AuthLayoutProps) {
           <Link href="/" className="inline-flex items-center gap-3 group w-fit mx-auto lg:mx-0">
             <div className="w-10 h-10 sm:w-11 sm:h-11 relative flex items-center justify-center p-2 rounded-2xl bg-gradient-to-tr from-white/15 to-white/5 border border-white/10 shadow-inner group-hover:scale-105 transition-transform">
               <Image
-                src="/logo/logo-dark.png"
+                src="/logo/key-gold-128.png"
                 alt="Productivity Master Logo"
                 width={36}
                 height={36}

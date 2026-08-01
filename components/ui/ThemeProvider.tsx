@@ -39,19 +39,8 @@ function applyTheme(theme: Theme) {
   if (typeof document === 'undefined') return;
   document.documentElement.dataset.theme = theme;
   document.documentElement.style.colorScheme = theme;
-  
-  const iconPaths = {
-    dark: '/logo/logo-dark.png',
-    light: '/logo/logo-light.png'
-  };
-  
-  let link = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
-  if (!link) {
-    link = document.createElement('link');
-    link.rel = 'icon';
-    document.head.appendChild(link);
-  }
-  link.href = iconPaths[theme];
+  // The favicon no longer swaps per theme: the gold key mark is transparent and
+  // reads on both light and dark tab strips. app/icon.png is served by Next.
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {

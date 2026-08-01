@@ -1266,13 +1266,8 @@ body {
   }
 }
 
-/* ─── Logo Visibility based on Theme ─────────────────────────────────── */
-html[data-theme="dark"] .hf-logo-light {
-  display: none !important;
-}
-html[data-theme="light"] .hf-logo-dark {
-  display: none !important;
-}
+/* The per-theme logo swap lived here. AppLogo now renders a single key mark
+   that reads on both themes, so there is nothing left to hide. */
 
 /* ─── Auth Page Specific Overrides ────────────────────────────────────── */
 .auth-card-btn {

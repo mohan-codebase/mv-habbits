@@ -30,15 +30,12 @@ export const metadata: Metadata = {
   title: "Productivity Master — Build daily habits that actually stick",
   description: "Premium habit tracker for routines, streaks, and self-growth. Track, analyze, and stay consistent — beautifully.",
   manifest: "/manifest.json",
-  icons: {
-    icon: [
-      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
-    ],
-    apple: [
-      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-  },
+  // No `icons` block on purpose. Next's file convention picks up app/icon.png
+  // and app/apple-icon.png automatically, and an explicit block here overrides
+  // it — which previously pointed the browser tab at the PWA install icon. That
+  // one has an opaque dark background (right for a home screen, wrong for a tab,
+  // where it reads as a dark sticker on a light tab strip). app/icon.png is
+  // transparent and sits correctly on either.
   openGraph: {
     title: "Productivity Master",
     description: "Premium habit tracker for routines, streaks, and self-growth.",
@@ -98,7 +95,10 @@ export default function RootLayout({
         <script
           // Prevent flash of wrong theme — runs before paint.
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;var la='#8B5CF6';document.documentElement.style.setProperty('--accent-primary',la);var icon=document.createElement('link');icon.rel='icon';icon.href=t==='dark'?'/logo/logo-dark.png':'/logo/logo-light.png';document.head.appendChild(icon);}catch(e){}})();`,
+            // No favicon injection here any more — it used to append a 3.9 MB
+            // logo-dark.png as the icon on every page load. Next serves
+            // app/icon.png instead, and the gold key reads on either theme.
+            __html: `(function(){try{var t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;document.documentElement.style.setProperty('--accent-primary','#8B5CF6');}catch(e){}})();`,
           }}
         />
       </head>
