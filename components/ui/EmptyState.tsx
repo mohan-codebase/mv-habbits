@@ -36,49 +36,29 @@ export default function EmptyState({
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-20px' });
 
-  const py = compact ? '36px' : '64px';
-
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 20, scale: 0.98 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        padding: `${py} 24px`,
-        gap: compact ? 12 : 16,
-      }}
+      className={`flex flex-col items-center justify-center px-6 text-center ${compact ? 'gap-3 py-9' : 'gap-4 py-16'}`}
     >
       {/* Emoji illustration with glow ring */}
-      <div style={{ position: 'relative', marginBottom: compact ? 2 : 6 }}>
+      <div className={`relative ${compact ? 'mb-0.5' : 'mb-1.5'}`}>
         {/* Outer glow ring */}
-        <div style={{
-          position: 'absolute',
-          inset: -8,
-          borderRadius: '50%',
-          background: `radial-gradient(circle, ${accentColor}18 0%, transparent 70%)`,
-          pointerEvents: 'none',
-        }} />
+        <div
+          className="pointer-events-none absolute -inset-2 rounded-full"
+          style={{ background: `radial-gradient(circle, ${accentColor}18 0%, transparent 70%)` }}
+        />
 
         <motion.div
           animate={{ y: [0, -5, 0] }}
           transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+          className={`relative flex items-center justify-center shadow-none ${compact ? 'h-[52px] w-[52px] rounded-[16px]' : 'h-[72px] w-[72px] rounded-[20px]'}`}
           style={{
-            width: compact ? 52 : 72,
-            height: compact ? 52 : 72,
-            borderRadius: compact ? 16 : 20,
             background: `${accentColor}14`,
             border: `1px solid ${accentColor}30`,
-            boxShadow: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
           }}
         >
           {icon}
@@ -86,43 +66,25 @@ export default function EmptyState({
       </div>
 
       {/* Text */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 5 : 8, maxWidth: 300 }}>
-        <h3 style={{
-          margin: 0,
-          fontSize: compact ? 16 : 18,
-          fontWeight: 700,
-          color: 'var(--text-primary)',
-          fontFamily: "'Outfit', sans-serif",
-          letterSpacing: '-0.02em',
-        }}>
+      <div className={`flex max-w-[300px] flex-col ${compact ? 'gap-[5px]' : 'gap-2'}`}>
+        <h3 className={`m-0 font-bold tracking-[-0.02em] text-text-primary ${compact ? 'text-lg' : 'text-[18px]'}`}>
           {title}
         </h3>
-        <p style={{
-          margin: 0,
-          fontSize: compact ? 13 : 14,
-          color: 'var(--text-muted)',
-          lineHeight: 1.65,
-        }}>
+        <p className={`m-0 leading-[1.65] text-text-muted ${compact ? 'text-[13px]' : 'text-[14px]'}`}>
           {description}
         </p>
       </div>
 
       {/* CTA */}
       {cta && (
-        <div style={{ marginTop: compact ? 4 : 8 }}>
+        <div className={compact ? 'mt-1' : 'mt-2'}>
           {cta}
         </div>
       )}
 
       {/* Hint text */}
       {hint && (
-        <p style={{
-          margin: 0,
-          fontSize: 12,
-          color: 'var(--text-dimmed)',
-          lineHeight: 1.5,
-          maxWidth: 260,
-        }}>
+        <p className="m-0 max-w-[260px] text-[12px] leading-normal text-text-dimmed">
           {hint}
         </p>
       )}

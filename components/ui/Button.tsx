@@ -31,36 +31,21 @@ const Spinner = () => (
    - secondary: frosted glass
    - ghost: fully transparent with soft hover fill
    - danger: tinted red glass */
-const base: Record<ButtonVariant, { bg: string; color: string; border: string; shadow?: string }> = {
-  primary: {
-    bg: 'var(--accent-primary)',
-    color: 'var(--accent-on-primary)',
-    border: '1px solid rgba(255, 255, 255,0.14)',
-    shadow: 'none',
-  },
-  secondary: {
-    bg: 'var(--bg-tertiary)',
-    color: 'var(--text-primary)',
-    border: '1px solid var(--border-default)',
-    shadow: 'none',
-  },
-  ghost: {
-    bg: 'transparent',
-    color: 'var(--text-secondary)',
-    border: '1px solid transparent',
-  },
-  danger: {
-    bg: 'rgba(142, 142, 142,0.12)',
-    color: 'var(--danger)',
-    border: '1px solid rgba(142, 142, 142,0.30)',
-    shadow: 'none',
-  },
+const variantClasses: Record<ButtonVariant, string> = {
+  primary:
+    'bg-accent-primary text-accent-on-primary border border-white/[0.14] shadow-none hover:filter hover:brightness-[1.06] hover:-translate-y-px active:translate-y-0 active:scale-[0.97]',
+  secondary:
+    'bg-bg-tertiary text-text-primary border border-border-default shadow-none hover:bg-white/10 hover:border-border-medium active:scale-[0.97]',
+  ghost:
+    'bg-transparent text-text-secondary border border-transparent hover:bg-white/[0.06] hover:text-text-primary active:scale-[0.97]',
+  danger:
+    'bg-[rgba(142,142,142,0.12)] text-[var(--danger)] border border-[rgba(142,142,142,0.30)] shadow-none hover:bg-[rgba(142,142,142,0.20)] active:scale-[0.97]',
 };
 
-const sizes: Record<ButtonSize, React.CSSProperties> = {
-  sm: { padding: '6px 13px', fontSize: 12.5, borderRadius: 9999, gap: 6 },
-  md: { padding: '9px 18px', fontSize: 13.5, borderRadius: 9999, gap: 7 },
-  lg: { padding: '12px 24px', fontSize: 14.5, borderRadius: 9999, gap: 8 },
+const sizeClasses: Record<ButtonSize, string> = {
+  sm: 'py-1.5 px-[13px] text-[12.5px] rounded-full gap-1.5',
+  md: 'py-[9px] px-[18px] text-[13.5px] rounded-full gap-[7px]',
+  lg: 'py-3 px-6 text-[14.5px] rounded-full gap-2',
 };
 
 export default function Button({
@@ -77,79 +62,16 @@ export default function Button({
   style: customStyle,
 }: ButtonProps) {
   const off = disabled || loading;
-  const v = base[variant];
-
-  const style: React.CSSProperties = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: 700,
-    letterSpacing: '-0.1px',
-    cursor: off ? 'not-allowed' : 'pointer',
-    opacity: off ? 0.45 : 1,
-    transition: 'transform 0.15s ease, filter 0.15s ease, background 0.15s ease, opacity 0.15s ease, border-color 0.15s ease',
-    width: fullWidth ? '100%' : undefined,
-    outline: 'none',
-    userSelect: 'none',
-    whiteSpace: 'nowrap',
-    background: v.bg,
-    color: v.color,
-    border: v.border,
-    boxShadow: 'none',
-    ...sizes[size],
-    ...customStyle,
-  };
-
-  const onEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (off) return;
-    const el = e.currentTarget;
-    if (variant === 'primary') {
-      el.style.filter = 'brightness(1.06)';
-      el.style.transform = 'translateY(-1px)';
-      el.style.boxShadow = 'none';
-    } else if (variant === 'secondary') {
-      el.style.background = 'rgba(255, 255, 255,0.10)';
-      el.style.borderColor = 'var(--border-medium)';
-    } else if (variant === 'ghost') {
-      el.style.background = 'rgba(255, 255, 255,0.06)';
-      el.style.color = 'var(--text-primary)';
-    } else if (variant === 'danger') {
-      el.style.background = 'rgba(142, 142, 142,0.20)';
-    }
-  };
-
-  const onLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (off) return;
-    const el = e.currentTarget;
-    el.style.filter = '';
-    el.style.transform = '';
-    el.style.background = v.bg;
-    el.style.borderColor = '';
-    el.style.boxShadow = 'none';
-    el.style.color = v.color;
-  };
-
-  const onDown = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!off) e.currentTarget.style.transform = 'scale(0.97)';
-  };
-
-  const onUp = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!off) e.currentTarget.style.transform = variant === 'primary' ? 'translateY(-1px)' : '';
-  };
 
   return (
     <button
       type={type}
       disabled={off}
       onClick={off ? undefined : onClick}
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
-      onMouseDown={onDown}
-      onMouseUp={onUp}
-      style={style}
-      className={className}
+      style={customStyle}
+      className={`inline-flex items-center justify-center font-bold tracking-[-0.1px] outline-none select-none whitespace-nowrap transition-[transform,filter,background,opacity,border-color] duration-150 ${off ? 'cursor-not-allowed opacity-45' : 'cursor-pointer opacity-100'} ${fullWidth ? 'w-full' : ''} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
     >
-      {loading ? <Spinner /> : icon ? <span style={{ display: 'flex', alignItems: 'center' }}>{icon}</span> : null}
+      {loading ? <Spinner /> : icon ? <span className="flex items-center">{icon}</span> : null}
       {children && <span>{children}</span>}
     </button>
   );

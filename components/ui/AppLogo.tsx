@@ -10,13 +10,12 @@ export default function AppLogo({
   className?: string;
 }) {
   return (
-    <div className={`hf-app-logo ${className}`} style={{ width, height, position: 'relative', flexShrink: 0 }}>
+    <div className={`hf-app-logo relative shrink-0 ${className}`} style={{ width, height }}>
       <Image
         src="/logo/logo-dark.png"
         alt="Productivity Master"
         fill
-        className="hf-logo-dark"
-        style={{ objectFit: 'contain' }}
+        className="hf-logo-dark object-contain"
         sizes={`${width}px`}
         priority
       />
@@ -24,8 +23,7 @@ export default function AppLogo({
         src="/logo/logo-light.png"
         alt="Productivity Master"
         fill
-        className="hf-logo-light"
-        style={{ objectFit: 'contain' }}
+        className="hf-logo-light object-contain"
         sizes={`${width}px`}
         priority
       />
