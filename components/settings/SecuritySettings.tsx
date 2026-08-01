@@ -231,11 +231,7 @@ export default function SecuritySettings() {
       {/* Security Status Card */}
       <div className="relative flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card p-[16px_18px]">
         <div
-          className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle"
-          style={{
-            background: hasPasscode ? 'var(--surface-tint)' : 'rgba(255,255,255,0.04)',
-            color: hasPasscode ? 'var(--accent-primary)' : 'var(--text-muted)',
-          }}
+          className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle ${hasPasscode ? 'bg-[var(--surface-tint)] text-accent-primary' : 'bg-[rgba(255,255,255,0.04)] text-text-muted'}`}
         >
           {hasPasscode ? <Lock size={18} /> : <Unlock size={18} />}
         </div>
@@ -319,8 +315,7 @@ export default function SecuritySettings() {
                   <button
                     type="submit"
                     disabled={savingPasscode}
-                    className="rounded-lg border-none bg-text-primary p-[8px_14px] text-[13px] font-bold text-bg-primary [font-family:inherit]"
-                    style={{ cursor: savingPasscode ? 'wait' : 'pointer' }}
+                    className="cursor-pointer rounded-lg border-none bg-text-primary p-[8px_14px] text-[13px] font-bold text-bg-primary [font-family:inherit] disabled:cursor-wait"
                   >
                     {savingPasscode ? 'Saving...' : 'Save Lock'}
                   </button>
@@ -362,8 +357,7 @@ export default function SecuritySettings() {
                   <button
                     type="submit"
                     disabled={removingPasscode}
-                    className="rounded-lg border-none bg-danger p-[8px_14px] text-[13px] font-bold text-accent-on-primary [font-family:inherit]"
-                    style={{ cursor: removingPasscode ? 'wait' : 'pointer' }}
+                    className="cursor-pointer rounded-lg border-none bg-danger p-[8px_14px] text-[13px] font-bold text-accent-on-primary [font-family:inherit] disabled:cursor-wait"
                   >
                     {removingPasscode ? 'Removing...' : 'Confirm Disable'}
                   </button>
@@ -385,11 +379,7 @@ export default function SecuritySettings() {
       {hasPasscode && biometricSupported && (
         <div className="flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card p-[16px_18px]">
           <div
-            className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle"
-            style={{
-              background: hasBiometric ? 'var(--surface-tint)' : 'rgba(255,255,255,0.04)',
-              color: hasBiometric ? 'var(--accent-primary)' : 'var(--text-muted)',
-            }}
+            className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle ${hasBiometric ? 'bg-[var(--surface-tint)] text-accent-primary' : 'bg-[rgba(255,255,255,0.04)] text-text-muted'}`}
           >
             <Fingerprint size={18} />
           </div>
@@ -404,13 +394,7 @@ export default function SecuritySettings() {
             <button
               disabled={biometricBusy}
               onClick={hasBiometric ? handleDisableBiometric : handleEnrollBiometric}
-              className="rounded-lg p-[7px_14px] text-[13px] font-semibold [font-family:inherit]"
-              style={{
-                background: hasBiometric ? 'transparent' : 'var(--accent-primary)',
-                color: hasBiometric ? 'var(--text-secondary)' : 'var(--accent-on-primary)',
-                border: hasBiometric ? '1px solid var(--border-default)' : 'none',
-                cursor: biometricBusy ? 'wait' : 'pointer',
-              }}
+              className={`cursor-pointer rounded-lg p-[7px_14px] text-[13px] font-semibold [font-family:inherit] disabled:cursor-wait ${hasBiometric ? 'bg-transparent text-text-secondary border border-border-default' : 'bg-accent-primary text-accent-on-primary border-none'}`}
             >
               {biometricBusy
                 ? 'Processing...'
@@ -492,8 +476,7 @@ export default function SecuritySettings() {
                   <button
                     type="submit"
                     disabled={updatingPassword}
-                    className="rounded-lg border-none bg-text-primary p-[8px_14px] text-[13px] font-bold text-bg-primary [font-family:inherit]"
-                    style={{ cursor: updatingPassword ? 'wait' : 'pointer' }}
+                    className="cursor-pointer rounded-lg border-none bg-text-primary p-[8px_14px] text-[13px] font-bold text-bg-primary [font-family:inherit] disabled:cursor-wait"
                   >
                     {updatingPassword ? 'Updating...' : 'Update Password'}
                   </button>
