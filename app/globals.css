@@ -292,11 +292,16 @@
   --glass-border: none;
 }
 
-/* ─── Base ───────────────────────────────────────────────────────────── */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* ─── Base ─────────────────────────────────────────────────────────────
+   Must live in @layer base. Unlayered rules outrank every cascade layer, so
+   an unlayered `* { margin: 0; padding: 0 }` silently zeroes out all Tailwind
+   padding and margin utilities, which ship inside @layer utilities. */
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 /* Next.js 16: set scroll-behavior on html but use data attribute to avoid
@@ -360,15 +365,19 @@ body::after {
   background-size: 64px 64px;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Outfit', 'Inter', sans-serif;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
+/* Layered so per-heading `leading-*` / `tracking-*` / `font-*` utilities can
+   still override these defaults. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Outfit', 'Inter', sans-serif;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+  }
 }
 
 /* ─── Scrollbars ─────────────────────────────────────────────────────── */

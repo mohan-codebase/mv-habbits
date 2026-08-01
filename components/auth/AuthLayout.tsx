@@ -164,10 +164,10 @@ export default function AuthLayout({ children, activeTab }: AuthLayoutProps) {
 
           {/* Social Proof Footer Pill */}
           <div className="flex items-center gap-3 pt-1 text-slate-400 text-xs">
-            <div className="flex -space-x-2 overflow-hidden">
-              <div className="inline-block h-7 w-7 rounded-full ring-2 ring-[#07090E] bg-gradient-to-tr from-indigo-500 to-purple-500 text-[10px] font-bold flex items-center justify-center text-white">AM</div>
-              <div className="inline-block h-7 w-7 rounded-full ring-2 ring-[#07090E] bg-gradient-to-tr from-emerald-500 to-teal-500 text-[10px] font-bold flex items-center justify-center text-white">JS</div>
-              <div className="inline-block h-7 w-7 rounded-full ring-2 ring-[#07090E] bg-gradient-to-tr from-pink-500 to-rose-500 text-[10px] font-bold flex items-center justify-center text-white">RK</div>
+            <div className="flex -space-x-2 shrink-0 pl-0.5">
+              <div className="h-7 w-7 shrink-0 rounded-full ring-2 ring-[#07090E] bg-gradient-to-tr from-indigo-500 to-purple-500 text-[10px] font-bold flex items-center justify-center text-white">AM</div>
+              <div className="h-7 w-7 shrink-0 rounded-full ring-2 ring-[#07090E] bg-gradient-to-tr from-emerald-500 to-teal-500 text-[10px] font-bold flex items-center justify-center text-white">JS</div>
+              <div className="h-7 w-7 shrink-0 rounded-full ring-2 ring-[#07090E] bg-gradient-to-tr from-pink-500 to-rose-500 text-[10px] font-bold flex items-center justify-center text-white">RK</div>
             </div>
             <span>Join <strong>15,000+</strong> high achievers building better habits daily.</span>
           </div>
