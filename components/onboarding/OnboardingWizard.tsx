@@ -374,8 +374,7 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
                     <button
                       onClick={handleSave}
                       disabled={saving}
-                      className="flex flex-1 items-center justify-center gap-[7px] rounded-[10px] border-none bg-accent-primary p-3 text-[14px] font-bold text-accent-on-primary [font-family:inherit]"
-                      style={{ cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1 }}
+                      className="flex flex-1 items-center justify-center gap-[7px] rounded-[10px] border-none bg-accent-primary p-3 text-[14px] font-bold text-accent-on-primary [font-family:inherit] disabled:cursor-not-allowed disabled:opacity-70"
                     >
                       {saving ? 'Creating…' : <><Check size={15} /> Create habit</>}
                     </button>
