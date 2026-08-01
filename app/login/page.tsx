@@ -122,8 +122,7 @@ function LoginContent() {
               placeholder="you@example.com"
               autoComplete="email"
               required
-              style={{ paddingLeft: '48px', paddingRight: '16px' }}
-              className="auth-input w-full h-12 bg-white/[0.05] hover:bg-white/[0.08] focus:bg-white/[0.09] border border-white/10 focus:border-indigo-500/80 rounded-2xl text-white text-xs sm:text-sm placeholder:text-slate-500 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+              className="auth-input w-full h-12 pl-12 pr-4 bg-white/[0.05] hover:bg-white/[0.08] focus:bg-white/[0.09] border border-white/10 focus:border-indigo-500/80 rounded-2xl text-white text-xs sm:text-sm placeholder:text-slate-500 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
             />
           </div>
         </div>
@@ -150,8 +149,7 @@ function LoginContent() {
               placeholder="Enter your password"
               autoComplete="current-password"
               required
-              style={{ paddingLeft: '48px', paddingRight: '48px' }}
-              className="auth-input-pw w-full h-12 bg-white/[0.05] hover:bg-white/[0.08] focus:bg-white/[0.09] border border-white/10 focus:border-indigo-500/80 rounded-2xl text-white text-xs sm:text-sm placeholder:text-slate-500 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+              className="auth-input-pw w-full h-12 pl-12 pr-12 bg-white/[0.05] hover:bg-white/[0.08] focus:bg-white/[0.09] border border-white/10 focus:border-indigo-500/80 rounded-2xl text-white text-xs sm:text-sm placeholder:text-slate-500 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
             />
             <button
               type="button"

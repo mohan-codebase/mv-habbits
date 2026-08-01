@@ -120,12 +120,7 @@ function ResetPasswordContent() {
             >
               {error && (
                 <div
-                  className="mb-3 p-2.5 rounded-xl flex items-start gap-2 text-xs font-medium"
-                  style={{
-                    background: 'rgba(244, 63, 94, 0.15)',
-                    border: '1px solid rgba(244, 63, 94, 0.3)',
-                    color: '#fb7185',
-                  }}
+                  className="mb-3 p-2.5 rounded-xl flex items-start gap-2 text-xs font-medium bg-[rgba(244,63,94,0.15)] border border-[rgba(244,63,94,0.3)] text-[#fb7185]"
                 >
                   <AlertCircle size={15} className="mt-0.5 shrink-0" />
                   <span>{error}</span>
@@ -149,8 +144,7 @@ function ResetPasswordContent() {
                     placeholder="At least 8 characters"
                     required
                     minLength={8}
-                    style={{ paddingLeft: '38px', paddingRight: '38px' }}
-                    className="w-full py-2 sm:py-2.5 bg-white/[0.07] hover:bg-white/[0.09] focus:bg-white/[0.1] border border-white/15 focus:border-indigo-500 rounded-xl text-white text-[13px] placeholder:text-white/35 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                    className="w-full py-2 sm:py-2.5 pl-[38px] pr-[38px] bg-white/[0.07] hover:bg-white/[0.09] focus:bg-white/[0.1] border border-white/15 focus:border-indigo-500 rounded-xl text-white text-[13px] placeholder:text-white/35 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
                   />
                   <button
                     type="button"
@@ -176,8 +170,7 @@ function ResetPasswordContent() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Repeat new password"
                     required
-                    style={{ paddingLeft: '38px', paddingRight: '38px' }}
-                    className="w-full py-2 sm:py-2.5 bg-white/[0.07] hover:bg-white/[0.09] focus:bg-white/[0.1] border border-white/15 focus:border-indigo-500 rounded-xl text-white text-[13px] placeholder:text-white/35 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                    className="w-full py-2 sm:py-2.5 pl-[38px] pr-[38px] bg-white/[0.07] hover:bg-white/[0.09] focus:bg-white/[0.1] border border-white/15 focus:border-indigo-500 rounded-xl text-white text-[13px] placeholder:text-white/35 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
                   />
                   <button
                     type="button"

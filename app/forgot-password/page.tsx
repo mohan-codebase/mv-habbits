@@ -112,12 +112,7 @@ function ForgotPasswordContent() {
             >
               {error && (
                 <div
-                  className="mb-4 p-3 rounded-xl flex items-start gap-2.5 text-xs font-medium"
-                  style={{
-                    background: 'rgba(244, 63, 94, 0.12)',
-                    border: '1px solid rgba(244, 63, 94, 0.25)',
-                    color: '#fb7185',
-                  }}
+                  className="mb-4 p-3 rounded-xl flex items-start gap-2.5 text-xs font-medium bg-[rgba(244,63,94,0.12)] border border-[rgba(244,63,94,0.25)] text-[#fb7185]"
                 >
                   <AlertCircle size={16} className="mt-0.5 shrink-0" />
                   <span>{error}</span>
