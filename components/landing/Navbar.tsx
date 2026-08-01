@@ -33,11 +33,10 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed inset-x-0 top-0 z-50 flex h-[60px] items-center justify-between px-[clamp(16px,4vw,48px)] border-b"
+        className="fixed inset-x-0 top-0 z-50 flex h-[60px] items-center justify-between px-[clamp(16px,4vw,48px)] border-b transition-[background,border-color] duration-200 ease-[ease]"
         style={{
           background: scrolled ? 'var(--bg-glass-strong)' : 'var(--bg-glass)',
           borderBottomColor: scrolled ? 'var(--border-default)' : 'var(--border-subtle)',
-          transition: 'background 0.2s ease, border-color 0.2s ease',
         }}
       >
         {/* Logo */}
