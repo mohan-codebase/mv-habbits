@@ -16,20 +16,9 @@ export default function AnalyticsError({
 
   return (
     <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '48px 32px',
-        gap: 14,
-        textAlign: 'center',
-        background: 'var(--bg-glass)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 16,
-      }}
+      className="flex flex-col items-center justify-center gap-3.5 rounded-[16px] border border-border-subtle bg-bg-glass p-[48px_32px] text-center"
     >
-      <p style={{ margin: 0, fontSize: 14, color: 'var(--text-secondary)' }}>
+      <p className="m-0 text-sm text-text-secondary">
         Failed to load analytics data.
       </p>
       <Button variant="secondary" onClick={reset}>
