@@ -12,11 +12,10 @@ export default function SettingsLoading() {
         </div>
 
         {/* Section cards */}
-        {[180, 220, 160, 100].map((h, i) => (
+        {['h-[180px]', 'h-[220px]', 'h-[160px]', 'h-[100px]'].map((h, i) => (
           <div
             key={i}
-            className="bg-bg-card border border-border-subtle rounded-[16px] p-5"
-            style={{ height: h }}
+            className={`bg-bg-card border border-border-subtle rounded-[16px] p-5 ${h}`}
           >
             <div className="flex items-center gap-2 mb-5">
               <div className="shimmer h-[18px] w-[18px] rounded-[4px]" />
