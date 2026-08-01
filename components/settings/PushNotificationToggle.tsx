@@ -128,13 +128,11 @@ export default function PushNotificationToggle({ compact = false }: Props) {
         disabled={state === 'requesting'}
         aria-label={isOn ? 'Disable push notifications' : 'Enable push notifications'}
         title={isOn ? 'Notifications on — click to disable' : 'Enable habit reminders'}
-        className="relative flex h-[34px] w-[34px] items-center justify-center rounded-[9px] transition-all duration-150"
-        style={{
-          border: `1px solid ${isOn ? 'var(--border-accent)' : 'var(--border-default)'}`,
-          background: isOn ? 'var(--accent-glow)' : 'var(--bg-tertiary)',
-          color: isOn ? 'var(--accent-primary)' : 'var(--text-secondary)',
-          cursor: state === 'requesting' ? 'wait' : 'pointer',
-        }}
+        className={`relative flex h-[34px] w-[34px] items-center justify-center rounded-[9px] border transition-all duration-150 ${
+          isOn
+            ? 'border-border-accent bg-accent-glow text-accent-primary'
+            : 'border-border-default bg-bg-tertiary text-text-secondary'
+        } ${state === 'requesting' ? 'cursor-wait' : 'cursor-pointer'}`}
       >
         {state === 'requesting'
           ? <Loader2 size={15} className="spin" />
@@ -151,20 +149,20 @@ export default function PushNotificationToggle({ compact = false }: Props) {
   }
 
   // ── Full card variant (Settings page) ────────────────────────────────
-  const config: Record<State, { icon: React.ReactNode; title: string; desc: string; cta?: string; ctaFn?: () => void; tone: string }> = {
+  const config: Record<State, { icon: React.ReactNode; title: string; desc: string; cta?: string; ctaFn?: () => void; toneClass: string }> = {
     idle: {
       icon: <Bell size={18} />,
       title: 'Enable push notifications',
       desc: 'Get reminders when it\'s time to check in on your habits.',
       cta: 'Turn on notifications',
       ctaFn: subscribe,
-      tone: 'var(--accent-primary)',
+      toneClass: 'text-accent-primary',
     },
     requesting: {
       icon: <Loader2 size={18} className="spin" />,
       title: 'Requesting permission…',
       desc: 'Check your browser\'s permission prompt.',
-      tone: 'var(--text-muted)',
+      toneClass: 'text-text-muted',
     },
     subscribed: {
       icon: <BellRing size={18} />,
@@ -172,19 +170,19 @@ export default function PushNotificationToggle({ compact = false }: Props) {
       desc: 'You\'ll receive reminders at your habit\'s scheduled time.',
       cta: 'Turn off',
       ctaFn: unsubscribe,
-      tone: 'var(--accent-primary)',
+      toneClass: 'text-accent-primary',
     },
     denied: {
       icon: <BellOff size={18} />,
       title: 'Notifications blocked',
       desc: 'You\'ve blocked notifications for this site. Re-enable them in your browser settings.',
-      tone: 'var(--danger)',
+      toneClass: 'text-danger',
     },
     unsupported: {
       icon: <BellOff size={18} />,
       title: 'Not supported',
       desc: 'Your browser doesn\'t support push notifications. Try Chrome or Edge.',
-      tone: 'var(--text-muted)',
+      toneClass: 'text-text-muted',
     },
     error: {
       icon: <AlertCircle size={18} />,
@@ -192,7 +190,7 @@ export default function PushNotificationToggle({ compact = false }: Props) {
       desc: 'Push notifications require VAPID keys to be configured on the server.',
       cta: 'Try again',
       ctaFn: subscribe,
-      tone: 'var(--warm)',
+      toneClass: 'text-warm',
     },
   };
 
@@ -210,12 +208,11 @@ export default function PushNotificationToggle({ compact = false }: Props) {
       >
         {/* Icon chip */}
         <div
-          className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md"
-          style={{
-            background: state === 'subscribed' ? 'var(--accent-glow-md)' : 'var(--bg-tertiary)',
-            border: `1px solid ${state === 'subscribed' ? 'var(--border-accent)' : 'var(--border-subtle)'}`,
-            color: c.tone,
-          }}
+          className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border ${c.toneClass} ${
+            state === 'subscribed'
+              ? 'border-border-accent bg-accent-glow-md'
+              : 'border-border-subtle bg-bg-tertiary'
+          }`}
         >
           {c.icon}
         </div>
@@ -236,12 +233,11 @@ export default function PushNotificationToggle({ compact = false }: Props) {
           {c.cta && c.ctaFn && (
             <button
               onClick={c.ctaFn}
-              className="rounded-sm px-3.5 py-[7px] text-[13px] font-semibold cursor-pointer [font-family:inherit]"
-              style={{
-                background: state === 'subscribed' ? 'var(--bg-tertiary)' : 'var(--accent-primary)',
-                color: state === 'subscribed' ? 'var(--text-secondary)' : 'var(--accent-on-primary)',
-                border: state === 'subscribed' ? '1px solid var(--border-default)' : 'none',
-              }}
+              className={`rounded-sm border px-3.5 py-[7px] text-[13px] font-semibold cursor-pointer [font-family:inherit] ${
+                state === 'subscribed'
+                  ? 'border-border-default bg-bg-tertiary text-text-secondary'
+                  : 'border-transparent bg-accent-primary text-accent-on-primary'
+              }`}
             >
               {c.cta}
             </button>
