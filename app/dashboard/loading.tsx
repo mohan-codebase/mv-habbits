@@ -8,79 +8,49 @@ import DashboardShell from '@/components/dashboard/DashboardShell';
 export default function DashboardLoading() {
   return (
     <DashboardShell>
-      <div
-        style={{
-          padding: 'clamp(12px, 2.5vw, 32px) clamp(12px, 2.5vw, 32px) clamp(32px, 4vw, 48px)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 'clamp(16px, 2vw, 24px)',
-          maxWidth: 1280,
-          margin: '0 auto',
-        }}
-      >
+      <div className="[padding:clamp(12px,2.5vw,32px)_clamp(12px,2.5vw,32px)_clamp(32px,4vw,48px)] flex flex-col [gap:clamp(16px,2vw,24px)] max-w-[1280px] mx-auto">
         {/* Header Skeleton */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <div className="shimmer" style={{ height: 12, width: 140, borderRadius: 4 }} />
-          <div className="shimmer" style={{ height: 32, width: '60%', maxWidth: 400, borderRadius: 8 }} />
+        <div className="flex flex-col gap-3">
+          <div className="shimmer h-3 w-[140px] rounded-[4px]" />
+          <div className="shimmer h-8 w-[60%] max-w-[400px] rounded-sm" />
         </div>
 
         {/* Banner Skeleton */}
-        <div className="shimmer" style={{ height: 160, width: '100%', borderRadius: 24, opacity: 0.6 }} />
+        <div className="shimmer h-[160px] w-full rounded-[24px] opacity-60" />
 
         {/* Stats Grid Skeleton */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: 16,
-          }}
-        >
+        <div className="grid [grid-template-columns:repeat(auto-fit,minmax(200px,1fr))] gap-4">
           {[0, 1, 2, 3].map((i) => (
             <div
               key={i}
-              style={{
-                height: 124,
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: 'var(--r-xl)',
-                padding: '18px 20px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}
+              className="h-[124px] bg-bg-card border border-border-subtle rounded-xl px-5 py-[18px] flex flex-col justify-between"
             >
               <div>
-                <div className="shimmer" style={{ height: 10, width: '45%', borderRadius: 4, marginBottom: 20 }} />
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div className="shimmer" style={{ height: 40, width: 40, borderRadius: 'var(--r-md)', flexShrink: 0 }} />
-                  <div className="shimmer" style={{ height: 32, width: '40%', borderRadius: 8 }} />
+                <div className="shimmer h-2.5 w-[45%] rounded-[4px] mb-5" />
+                <div className="flex items-center gap-3">
+                  <div className="shimmer h-10 w-10 rounded-md flex-shrink-0" />
+                  <div className="shimmer h-8 w-[40%] rounded-sm" />
                 </div>
               </div>
-              <div className="shimmer" style={{ height: 12, width: '60%', borderRadius: 4, marginTop: 12 }} />
+              <div className="shimmer h-3 w-[60%] rounded-[4px] mt-3" />
             </div>
           ))}
         </div>
 
         {/* 2-Column Main Layout Skeleton */}
         <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 340px',
-            gap: 'clamp(16px, 2vw, 24px)',
-            alignItems: 'start',
-          }}
-          className="hf-dashboard-grid"
+          className="hf-dashboard-grid grid [grid-template-columns:1fr_340px] [gap:clamp(16px,2vw,24px)] items-start"
         >
           {/* Left Column: Habits + Chart */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 24px)' }}>
-            <div className="shimmer" style={{ height: 400, width: '100%', borderRadius: 24, opacity: 0.4 }} />
-            <div className="shimmer" style={{ height: 300, width: '100%', borderRadius: 24, opacity: 0.4 }} />
+          <div className="flex flex-col [gap:clamp(16px,2vw,24px)]">
+            <div className="shimmer h-[400px] w-full rounded-[24px] opacity-40" />
+            <div className="shimmer h-[300px] w-full rounded-[24px] opacity-40" />
           </div>
 
           {/* Right Column: Feed + Sidebar */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 24px)' }}>
-            <div className="shimmer" style={{ height: 260, width: '100%', borderRadius: 24, opacity: 0.5 }} />
-            <div className="shimmer" style={{ height: 340, width: '100%', borderRadius: 24, opacity: 0.5 }} />
+          <div className="flex flex-col [gap:clamp(16px,2vw,24px)]">
+            <div className="shimmer h-[260px] w-full rounded-[24px] opacity-50" />
+            <div className="shimmer h-[340px] w-full rounded-[24px] opacity-50" />
           </div>
         </div>
       </div>

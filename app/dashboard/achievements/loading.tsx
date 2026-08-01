@@ -4,52 +4,28 @@ import DashboardShell from '@/components/dashboard/DashboardShell';
 export default function AchievementsLoading() {
   return (
     <DashboardShell>
-      <div
-        style={{
-          padding: 'clamp(12px, 2.5vw, 32px)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 'clamp(16px, 2vw, 24px)',
-          maxWidth: 900,
-          margin: '0 auto',
-        }}
-      >
+      <div className="[padding:clamp(12px,2.5vw,32px)] flex flex-col [gap:clamp(16px,2vw,24px)] max-w-[900px] mx-auto">
         {/* Header */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <div className="shimmer" style={{ height: 12, width: 130, borderRadius: 4 }} />
-          <div className="shimmer" style={{ height: 32, width: 240, borderRadius: 8 }} />
+        <div className="flex flex-col gap-2.5">
+          <div className="shimmer h-3 w-[130px] rounded-[4px]" />
+          <div className="shimmer h-8 w-[240px] rounded-sm" />
         </div>
 
         {/* Achievement grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-            gap: 16,
-          }}
-        >
+        <div className="grid [grid-template-columns:repeat(auto-fill,minmax(260px,1fr))] gap-4">
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
-              style={{
-                height: 140,
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: 'var(--r-xl)',
-                padding: '20px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
-              }}
+              className="h-[140px] bg-bg-card border border-border-subtle rounded-xl p-5 flex flex-col gap-3"
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div className="shimmer" style={{ height: 44, width: 44, borderRadius: 'var(--r-md)', flexShrink: 0 }} />
-                <div style={{ flex: 1 }}>
-                  <div className="shimmer" style={{ height: 14, width: '70%', borderRadius: 4, marginBottom: 8 }} />
-                  <div className="shimmer" style={{ height: 10, width: '50%', borderRadius: 4 }} />
+              <div className="flex items-center gap-3">
+                <div className="shimmer h-11 w-11 rounded-md flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="shimmer h-3.5 w-[70%] rounded-[4px] mb-2" />
+                  <div className="shimmer h-2.5 w-[50%] rounded-[4px]" />
                 </div>
               </div>
-              <div className="shimmer" style={{ height: 6, width: '100%', borderRadius: 'var(--r-pill)' }} />
+              <div className="shimmer h-1.5 w-full rounded-full" />
             </div>
           ))}
         </div>
