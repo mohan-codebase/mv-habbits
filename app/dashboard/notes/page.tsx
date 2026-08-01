@@ -270,15 +270,7 @@ export default function CentralizedNotesPage() {
 
         <Button
           onClick={openNewNoteModal}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            borderRadius: 9999,
-            padding: '10px 20px',
-            fontSize: 14,
-            fontWeight: 700,
-          }}
+          className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold"
         >
           <Plus size={17} />
           Add Note
@@ -366,7 +358,7 @@ export default function CentralizedNotesPage() {
       {loading ? (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-5">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <Skeleton key={i} style={{ height: 180, borderRadius: 16 }} />
+            <Skeleton key={i} className="h-[180px] rounded-[16px]" />
           ))}
         </div>
       ) : filteredNotes.length === 0 ? (
@@ -385,8 +377,8 @@ export default function CentralizedNotesPage() {
             </p>
           </div>
           {!searchQuery && selectedHabitId === 'ALL' && (
-            <Button onClick={openNewNoteModal} style={{ borderRadius: 9999, marginTop: 8 }}>
-              <Plus size={16} style={{ marginRight: 6 }} />
+            <Button onClick={openNewNoteModal} className="rounded-full mt-2">
+              <Plus size={16} className="mr-1.5" />
               Create First Note
             </Button>
           )}
@@ -442,8 +434,7 @@ export default function CentralizedNotesPage() {
                   {/* Footer Bar: Completion Status & Actions */}
                   <div className="flex items-center justify-between border-t border-border-subtle pt-3">
                     <div
-                      className="flex items-center gap-1.5 text-xs font-semibold"
-                      style={{ color: note.is_completed ? '#22C55E' : 'var(--text-muted)' }}
+                      className={`flex items-center gap-1.5 text-xs font-semibold ${note.is_completed ? 'text-[#22C55E]' : 'text-text-muted'}`}
                     >
                       {note.is_completed ? (
                         <>
@@ -462,8 +453,7 @@ export default function CentralizedNotesPage() {
                       <button
                         onClick={() => handleCopyNote(note.id, note.notes)}
                         title="Copy note text"
-                        className="flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 transition-[background,color] duration-150 hover:bg-[var(--surface-tint)]"
-                        style={{ color: isCopied ? '#22C55E' : 'var(--text-muted)' }}
+                        className={`flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 transition-[background,color] duration-150 hover:bg-[var(--surface-tint)] ${isCopied ? 'text-[#22C55E]' : 'text-text-muted'}`}
                       >
                         {isCopied ? <Check size={15} /> : <Copy size={15} />}
                       </button>
@@ -595,7 +585,7 @@ export default function CentralizedNotesPage() {
             <Button
               onClick={handleDeleteNote}
               disabled={deleting}
-              style={{ background: '#EF4444', color: '#FFF' }}
+              className="bg-[#EF4444] text-white"
             >
               {deleting ? 'Deleting...' : 'Delete Note'}
             </Button>
