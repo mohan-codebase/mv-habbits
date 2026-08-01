@@ -496,14 +496,12 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
       {!loading && habits.length > 0 && (
         <div className="h-[5px] w-full overflow-hidden rounded-full bg-bg-tertiary">
           <div
-            className="h-full rounded-full transition-[width,background] duration-500 ease-[ease]"
-            style={{
-              width: `${habits.length > 0 ? Math.round((completedCount / habits.length) * 100) : 0}%`,
-              background: completedCount === habits.length
-                ? 'linear-gradient(90deg, var(--accent-primary), var(--accent-light))'
-                : 'var(--accent-primary)',
-              boxShadow: completedCount === habits.length ? '0 0 8px var(--accent-primary)' : 'none',
-            }}
+            className={`h-full rounded-full transition-[width,background] duration-500 ease-[ease] ${
+              completedCount === habits.length
+                ? 'bg-[linear-gradient(90deg,var(--accent-primary),var(--accent-light))] shadow-[0_0_8px_var(--accent-primary)]'
+                : 'bg-accent-primary shadow-none'
+            }`}
+            style={{ width: `${habits.length > 0 ? Math.round((completedCount / habits.length) * 100) : 0}%` }}
           />
         </div>
       )}
@@ -692,10 +690,12 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
 }
 
 function LiveIndicator({ status }: { status: 'connecting' | 'live' | 'offline' }) {
-  const color =
-    status === 'live' ? 'var(--accent-primary)'
-    : status === 'connecting' ? 'var(--warm)'
-    : 'var(--text-dimmed)';
+  const bgClass =
+    status === 'live' ? 'bg-accent-primary'
+    : status === 'connecting' ? 'bg-warm'
+    : 'bg-text-dimmed';
+  const shadowClass =
+    status === 'live' ? 'shadow-[0_0_6px_var(--accent-primary)]' : 'shadow-none';
   const label =
     status === 'live' ? 'Live'
     : status === 'connecting' ? 'Sync'
@@ -706,11 +706,7 @@ function LiveIndicator({ status }: { status: 'connecting' | 'live' | 'offline' }
       className="inline-flex items-center gap-[5px] rounded-full border border-border-default bg-bg-tertiary px-2 py-0.5 font-mono text-[10.5px] font-semibold tracking-[0.04em] text-text-muted"
     >
       <span
-        className={`inline-block h-1.5 w-1.5 shrink-0 rounded-full ${status === 'live' ? 'glow-pulse' : ''}`}
-        style={{
-          background: color,
-          boxShadow: status === 'live' ? `0 0 6px ${color}` : 'none',
-        }}
+        className={`inline-block h-1.5 w-1.5 shrink-0 rounded-full ${status === 'live' ? 'glow-pulse' : ''} ${bgClass} ${shadowClass}`}
       />
       <span className="hidden sm:inline">{label}</span>
     </span>
