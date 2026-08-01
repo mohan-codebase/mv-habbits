@@ -210,12 +210,7 @@ export default function CommandPalette({ isOpen, onClose }: Props) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             onClick={onClose}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0, 0, 0,0.6)',
-              zIndex: 100,
-            }}
+            className="fixed inset-0 bg-[rgba(0,0,0,0.6)] z-[100]"
           />
 
           {/* Palette */}
@@ -224,72 +219,32 @@ export default function CommandPalette({ isOpen, onClose }: Props) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -8 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            style={{
-              position: 'fixed',
-              top: '16vh',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '100%',
-              maxWidth: 560,
-              padding: '0 16px',
-              zIndex: 101,
-            }}
+            className="fixed top-[16vh] left-1/2 -translate-x-1/2 w-full max-w-[560px] px-4 z-[101]"
           >
-            <div
-              style={{
-                background: 'var(--bg-secondary)',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: 16,
-                boxShadow: 'none',
-                overflow: 'hidden',
-              }}
-            >
+            <div className="bg-bg-secondary border border-border-subtle rounded-2xl shadow-none overflow-hidden">
               {/* Search bar */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 12,
-                  padding: '14px 16px',
-                  borderBottom: '1px solid var(--border-subtle)',
-                }}
-              >
+              <div className="flex items-center gap-3 px-4 py-[14px] border-b border-border-subtle">
                 <Search size={17} color="var(--text-muted)" />
                 <input
                   ref={inputRef}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search commands or navigate..."
-                  style={{
-                    flex: 1,
-                    background: 'transparent',
-                    border: 'none',
-                    outline: 'none',
-                    fontSize: 15,
-                    color: 'var(--text-primary)',
-                    fontFamily: "'IBM Plex Sans', sans-serif",
-                  }}
+                  className="flex-1 bg-transparent border-none outline-none text-[15px] text-text-primary font-['IBM_Plex_Sans',sans-serif]"
                 />
                 <button
                   type="button"
                   onClick={onClose}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    cursor: 'pointer',
-                    color: 'var(--text-muted)',
-                    display: 'flex',
-                    padding: 2,
-                  }}
+                  className="bg-transparent border-none cursor-pointer text-text-muted flex p-0.5"
                 >
                   <X size={15} />
                 </button>
               </div>
 
               {/* Commands list */}
-              <div ref={listRef} style={{ maxHeight: 340, overflowY: 'auto', padding: 8 }}>
+              <div ref={listRef} className="max-h-[340px] overflow-y-auto p-2">
                 {filtered.length === 0 ? (
-                  <p style={{ textAlign: 'center', fontSize: 13, color: 'var(--text-muted)', padding: '24px 0', margin: 0 }}>
+                  <p className="text-center text-[13px] text-text-muted py-6 px-0 m-0">
                     No commands found
                   </p>
                 ) : (
@@ -302,59 +257,31 @@ export default function CommandPalette({ isOpen, onClose }: Props) {
                         data-idx={idx}
                         onMouseEnter={() => setSelected(idx)}
                         onClick={cmd.action}
-                        style={{
-                          width: '100%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 12,
-                          padding: '10px 12px',
-                          borderRadius: 10,
-                          border: 'none',
-                          background: isSelected ? 'var(--bg-tertiary)' : 'transparent',
-                          cursor: 'pointer',
-                          textAlign: 'left',
-                          transition: 'background 0.1s ease',
-                        }}
+                        className={`w-full flex items-center gap-3 px-3 py-[10px] rounded-md border-none cursor-pointer text-left transition-colors duration-100 ${
+                          isSelected ? 'bg-bg-tertiary' : 'bg-transparent'
+                        }`}
                       >
                         <div
-                          style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: 8,
-                            background: isSelected ? 'var(--accent-glow)' : 'var(--bg-tertiary)',
-                            border: isSelected ? '1px solid color-mix(in srgb, var(--accent-primary) 25%, transparent)' : '1px solid var(--border-subtle)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: isSelected ? 'var(--accent-primary)' : 'var(--text-muted)',
-                            flexShrink: 0,
-                            transition: 'all 0.1s ease',
-                          }}
+                          className={`w-8 h-8 rounded-sm flex items-center justify-center shrink-0 border transition-all duration-100 ${
+                            isSelected
+                              ? 'bg-[var(--accent-glow)] border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)] text-accent-primary'
+                              : 'bg-bg-tertiary border-border-subtle text-text-muted'
+                          }`}
                         >
                           {cmd.icon}
                         </div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <p style={{ margin: '0 0 1px', fontSize: 13, fontWeight: 600, color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
+                        <div className="flex-1 min-w-0">
+                          <p className={`mt-0 mx-0 mb-px text-[13px] font-semibold ${isSelected ? 'text-text-primary' : 'text-text-secondary'}`}>
                             {cmd.label}
                           </p>
                           {cmd.description && (
-                            <p style={{ margin: 0, fontSize: 12, color: 'var(--text-muted)' }}>
+                            <p className="m-0 text-xs text-text-muted">
                               {cmd.description}
                             </p>
                           )}
                         </div>
                         {isSelected && (
-                          <kbd
-                            style={{
-                              fontSize: 10,
-                              color: 'var(--text-muted)',
-                              background: 'var(--bg-secondary)',
-                              border: '1px solid var(--border-subtle)',
-                              borderRadius: 4,
-                              padding: '2px 6px',
-                              flexShrink: 0,
-                            }}
-                          >
+                          <kbd className="text-[10px] text-text-muted bg-bg-secondary border border-border-subtle rounded px-[6px] py-0.5 shrink-0">
                             ↵
                           </kbd>
                         )}
@@ -365,33 +292,17 @@ export default function CommandPalette({ isOpen, onClose }: Props) {
               </div>
 
               {/* Footer */}
-              <div
-                style={{
-                  padding: '8px 16px',
-                  borderTop: '1px solid var(--border-subtle)',
-                  display: 'flex',
-                  gap: 12,
-                }}
-              >
+              <div className="px-4 py-2 border-t border-border-subtle flex gap-3">
                 {[
                   { key: '↑↓', label: 'navigate' },
                   { key: '↵', label: 'select' },
                   { key: 'esc', label: 'close' },
                 ].map(({ key, label }) => (
-                  <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <kbd
-                      style={{
-                        fontSize: 10,
-                        color: 'var(--text-muted)',
-                        background: 'var(--bg-tertiary)',
-                        border: '1px solid var(--border-subtle)',
-                        borderRadius: 4,
-                        padding: '1px 5px',
-                      }}
-                    >
+                  <div key={key} className="flex items-center gap-1">
+                    <kbd className="text-[10px] text-text-muted bg-bg-tertiary border border-border-subtle rounded px-[5px] py-px">
                       {key}
                     </kbd>
-                    <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{label}</span>
+                    <span className="text-xs text-text-muted">{label}</span>
                   </div>
                 ))}
               </div>

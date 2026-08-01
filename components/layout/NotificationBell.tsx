@@ -100,54 +100,21 @@ export default function NotificationBell() {
   const count = items.length;
 
   return (
-    <div ref={ref} style={{ position: 'relative' }}>
+    <div ref={ref} className="relative">
       <button
         type="button"
         aria-label="Notifications"
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
-        style={{
-          position: 'relative',
-          width: 34,
-          height: 34,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 9,
-          border: '1px solid var(--border-default)',
-          background: open ? 'var(--bg-elevated)' : 'var(--bg-tertiary)',
-          color: 'var(--text-secondary)',
-          cursor: 'pointer',
-          transition: 'background 0.15s, border-color 0.15s',
-        }}
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)';
-        }}
-        onMouseLeave={(e) => {
-          if (!open) (e.currentTarget as HTMLElement).style.background = 'var(--bg-tertiary)';
-        }}
+        className={`relative w-[34px] h-[34px] flex items-center justify-center rounded-[9px] border border-border-default text-text-secondary cursor-pointer transition-[background,border-color] duration-150 hover:bg-bg-elevated ${
+          open ? 'bg-bg-elevated' : 'bg-bg-tertiary'
+        }`}
       >
         <Bell size={15} />
         {count > 0 && (
           <span
             aria-label={`${count} new`}
-            style={{
-              position: 'absolute',
-              top: 5,
-              right: 5,
-              minWidth: 14,
-              height: 14,
-              padding: '0 3px',
-              borderRadius: 7,
-              background: 'var(--accent-primary)',
-              color: '#fff',
-              fontSize: 9.5,
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              lineHeight: 1,
-            }}
+            className="absolute top-[5px] right-[5px] min-w-3.5 h-3.5 px-[3px] rounded-[7px] bg-accent-primary text-white text-[9.5px] font-bold flex items-center justify-center leading-none"
           >
             {count > 9 ? '9+' : count}
           </span>
@@ -161,46 +128,19 @@ export default function NotificationBell() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: -4 }}
             transition={{ duration: 0.15 }}
-            style={{
-              position: 'absolute',
-              right: 0,
-              top: 'calc(100% + 8px)',
-              width: 320,
-              background: 'var(--bg-secondary)',
-              border: '1px solid var(--border-default)',
-              borderRadius: 12,
-              boxShadow: 'none',
-              padding: 8,
-              zIndex: 50,
-            }}
+            className="absolute right-0 top-[calc(100%+8px)] w-80 bg-bg-secondary border border-border-default rounded-xl shadow-none p-2 z-50"
           >
-            <div
-              style={{
-                padding: '6px 8px 10px',
-                borderBottom: '1px solid var(--border-subtle)',
-                marginBottom: 6,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
+            <div className="px-2 pt-[6px] pb-[10px] border-b border-border-subtle mb-[6px] flex items-center justify-between">
+              <span className="text-[13px] font-semibold text-text-primary">
                 Notifications
               </span>
-              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+              <span className="text-xs text-text-muted">
                 {loading ? 'Loading…' : `${count} new`}
               </span>
             </div>
 
             {!loading && items.length === 0 && (
-              <div
-                style={{
-                  padding: '28px 12px',
-                  textAlign: 'center',
-                  color: 'var(--text-muted)',
-                  fontSize: 13,
-                }}
-              >
+              <div className="px-3 py-7 text-center text-text-muted text-[13px]">
                 You&apos;re all caught up.
               </div>
             )}
@@ -209,36 +149,22 @@ export default function NotificationBell() {
               items.map((n) => (
                 <div
                   key={n.id}
-                  style={{
-                    display: 'flex',
-                    gap: 10,
-                    padding: '9px 10px',
-                    borderRadius: 9,
-                    alignItems: 'flex-start',
-                  }}
+                  className="flex gap-[10px] px-[10px] py-[9px] rounded-[9px] items-start"
                 >
                   <div
-                    style={{
-                      width: 28,
-                      height: 28,
-                      borderRadius: 8,
-                      background:
-                        n.icon === 'streak' ? 'rgba(166, 166, 166,0.14)' : 'var(--accent-glow)',
-                      border: `1px solid ${n.icon === 'streak' ? 'rgba(166, 166, 166,0.3)' : 'color-mix(in srgb, var(--accent-primary) 25%, transparent)'}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                      color: n.icon === 'streak' ? '#a6a6a6' : 'var(--accent-primary)',
-                    }}
+                    className={`w-7 h-7 rounded-sm flex items-center justify-center shrink-0 border ${
+                      n.icon === 'streak'
+                        ? 'bg-[rgba(166,166,166,0.14)] border-[rgba(166,166,166,0.3)] text-[#a6a6a6]'
+                        : 'bg-[var(--accent-glow)] border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)] text-accent-primary'
+                    }`}
                   >
                     {n.icon === 'streak' ? <Flame size={13} /> : <Clock size={13} />}
                   </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
+                  <div className="flex-1 min-w-0">
+                    <p className="m-0 text-[13px] font-semibold text-text-primary">
                       {n.title}
                     </p>
-                    <p style={{ margin: '2px 0 0', fontSize: 12, color: 'var(--text-muted)' }}>
+                    <p className="mt-0.5 mb-0 text-xs text-text-muted">
                       {n.description}
                     </p>
                   </div>
