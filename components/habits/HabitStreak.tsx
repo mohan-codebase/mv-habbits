@@ -27,48 +27,30 @@ export default function HabitStreak({ streak, size = 'md' }: HabitStreakProps) {
   const isGolden = streak >= 7;
 
   return (
-    <div
-      style={{
-        display: 'inline-flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: cfg.gap,
-      }}
-    >
+    <div className="inline-flex flex-col items-center" style={{ gap: cfg.gap }}>
       <div
+        className="inline-flex items-center rounded-[var(--r-pill)]"
         style={{
-          display: 'inline-flex',
-          alignItems: 'center',
           gap: cfg.gap + 2,
           padding: cfg.padding,
-          borderRadius: 'var(--r-pill)',
           background: isActive
             ? `rgba(${isGolden ? '245,158,11' : streak > 3 ? '249,115,22' : '71,85,105'}, 0.12)`
             : 'transparent',
         }}
       >
         <span
-          className={isActive ? 'fire-glow' : ''}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            color,
-            flexShrink: 0,
-          }}
+          className={`flex shrink-0 items-center ${isActive ? 'fire-glow' : ''}`}
+          style={{ color }}
         >
           <Flame size={cfg.icon} fill={isActive ? color : 'none'} />
         </span>
 
         <span
-          className={isGolden ? 'glow-pulse' : ''}
+          className={`min-w-[1ch] text-center leading-none font-bold ${isGolden ? 'glow-pulse' : ''}`}
           style={{
             fontFamily: "'IBM Plex Mono', 'Courier New', monospace",
             fontSize: cfg.count,
-            fontWeight: 700,
             color,
-            lineHeight: 1,
-            minWidth: '1ch',
-            textAlign: 'center',
           }}
         >
           {streak}
@@ -76,12 +58,8 @@ export default function HabitStreak({ streak, size = 'md' }: HabitStreakProps) {
       </div>
 
       <span
-        style={{
-          fontSize: cfg.label,
-          color: 'var(--text-muted)',
-          lineHeight: 1,
-          letterSpacing: '0.02em',
-        }}
+        className="leading-none tracking-[0.02em] text-text-muted"
+        style={{ fontSize: cfg.label }}
       >
         day streak
       </span>

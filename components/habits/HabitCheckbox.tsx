@@ -84,21 +84,8 @@ export default function HabitCheckbox({
       role="checkbox"
       disabled={disabled}
       onClick={handleClick}
-      style={{
-        position: 'relative',
-        width: size,
-        height: size,
-        background: 'none',
-        border: 'none',
-        padding: 0,
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.5 : 1,
-        outline: 'none',
-        flexShrink: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
+      className={`relative flex shrink-0 items-center justify-center border-none bg-none p-0 outline-none ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer opacity-100'}`}
+      style={{ width: size, height: size }}
     >
       {/* Confetti particles */}
       {burst &&
@@ -106,21 +93,15 @@ export default function HabitCheckbox({
           <span
             key={i}
             aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 left-1/2 z-10 rounded-[2px] [animation:habit-confetti_0.6s_ease-out_forwards]"
             style={
               {
-                position: 'absolute',
                 width: Math.max(4, size * 0.1),
                 height: Math.max(4, size * 0.1),
-                borderRadius: '2px',
                 background: particleColors[i],
                 '--tx': p.tx,
                 '--ty': p.ty,
                 '--rot': p.rot,
-                animation: 'habit-confetti 0.6s ease-out forwards',
-                pointerEvents: 'none',
-                zIndex: 10,
-                top: '50%',
-                left: '50%',
                 marginTop: -(Math.max(4, size * 0.1)) / 2,
                 marginLeft: -(Math.max(4, size * 0.1)) / 2,
               } as React.CSSProperties
