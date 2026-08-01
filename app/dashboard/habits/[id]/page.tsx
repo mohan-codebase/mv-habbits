@@ -35,22 +35,12 @@ function hexToRgba(hex: string, alpha: number): string {
 
 function StatCard({ label, value, icon, color }: { label: string; value: string; icon: React.ReactNode; color?: string }) {
   return (
-    <div
-      style={{
-        background: 'var(--bg-glass)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 14,
-        padding: '16px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 8,
-      }}
-    >
+    <div className="flex flex-col gap-2 rounded-[14px] border border-border-subtle bg-bg-glass p-4">
       <div style={{ color: color ?? 'var(--accent-primary)' }}>{icon}</div>
-      <p style={{ margin: 0, fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Outfit'" }}>
+      <p className="m-0 text-[22px] font-bold text-text-primary [font-family:'Outfit']">
         {value}
       </p>
-      <p style={{ margin: 0, fontSize: 12, color: 'var(--text-muted)' }}>{label}</p>
+      <p className="m-0 text-[12px] text-text-muted">{label}</p>
     </div>
   );
 }
@@ -222,11 +212,11 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
 
   if (loading) {
     return (
-      <div className="hf-page" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div className="hf-page flex flex-col gap-5">
         <Skeleton variant="text" />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 14 }}>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-3.5">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} style={{ background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)', borderRadius: 14, padding: 16 }}>
+            <div key={i} className="rounded-[14px] border border-border-subtle bg-bg-glass p-4">
               <Skeleton variant="text" />
               <Skeleton variant="text" />
             </div>
@@ -239,9 +229,9 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
 
   if (!habit) {
     return (
-      <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)', paddingTop: 80 }}>
+      <div className="p-6 pt-20 text-center text-text-muted">
         <p>Habit not found.</p>
-        <Link href="/dashboard/habits" style={{ color: 'var(--accent-primary)', textDecoration: 'none', fontSize: 14 }}>
+        <Link href="/dashboard/habits" className="text-[14px] text-accent-primary no-underline">
           ← Back to habits
         </Link>
       </div>
@@ -253,68 +243,47 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="hf-page"
-      style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
+      className="hf-page flex flex-col gap-6"
     >
       {/* Back button */}
       <Link
         href="/dashboard/habits"
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 6,
-          fontSize: 13,
-          color: 'var(--text-muted)',
-          textDecoration: 'none',
-          width: 'fit-content',
-        }}
-        onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)'; }}
-        onMouseOut={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)'; }}
+        className="inline-flex w-fit items-center gap-1.5 text-[13px] text-text-muted no-underline hover:text-text-secondary"
       >
         <ArrowLeft size={14} />
         All Habits
       </Link>
 
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+      <div className="flex items-center gap-4">
         <div
           style={{
-            width: 56,
-            height: 56,
-            borderRadius: 16,
             background: hexToRgba(habit.color, 0.12),
             border: `1px solid ${hexToRgba(habit.color, 0.25)}`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            boxShadow: 'none',
           }}
+          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl shadow-none"
         >
           <DynamicIcon name={habit.icon} size={26} color={habit.color} />
         </div>
         <div>
-          <h1 style={{ margin: '0 0 4px', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Outfit'" }}>
+          <h1 className="mb-1 text-[22px] font-bold text-text-primary [font-family:'Outfit']">
             {habit.name}
           </h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+          <div className="flex flex-wrap items-center gap-2">
             {habit.category && (
               <span
                 style={{
-                  fontSize: 12,
-                  padding: '2px 8px',
-                  borderRadius: 20,
                   background: `${habit.category.color}20`,
                   border: `1px solid ${habit.category.color}40`,
                   color: habit.category.color,
-                  fontWeight: 600,
                 }}
+                className="rounded-[20px] px-2 py-0.5 text-[12px] font-semibold"
               >
                 {habit.category.name}
               </span>
             )}
-            <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{frequencyLabel}</span>
-            <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+            <span className="text-[12px] text-text-muted">{frequencyLabel}</span>
+            <span className="text-[12px] text-text-muted">
               Since {format(parseISO(habit.created_at), 'MMM d, yyyy')}
             </span>
           </div>
@@ -323,13 +292,13 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
 
       {/* Description */}
       {habit.description && (
-        <p style={{ margin: 0, fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+        <p className="m-0 text-[14px] leading-[1.7] text-text-secondary">
           {habit.description}
         </p>
       )}
 
       {/* Stats grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 12 }}>
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-3">
         <StatCard
           label="Current Streak"
           value={`${habit.current_streak}d`}
@@ -356,17 +325,10 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
       </div>
 
       {/* Calendar heatmap */}
-      <div
-        style={{
-          background: 'var(--bg-glass)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 16,
-          padding: '20px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
+      <div className="rounded-2xl border border-border-subtle bg-bg-glass p-5">
+        <div className="mb-5 flex items-center gap-2">
           <Calendar size={18} color="var(--accent-primary)" />
-          <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: "'Outfit'" }}>
+          <h2 className="m-0 text-[16px] font-semibold text-text-primary [font-family:'Outfit']">
             History
           </h2>
         </div>
@@ -374,17 +336,10 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
       </div>
 
       {/* Trend chart */}
-      <div
-        style={{
-          background: 'var(--bg-glass)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 16,
-          padding: '20px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
+      <div className="rounded-2xl border border-border-subtle bg-bg-glass p-5">
+        <div className="mb-5 flex items-center gap-2">
           <TrendingUp size={18} color="var(--accent-primary)" />
-          <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: "'Outfit'" }}>
+          <h2 className="m-0 text-[16px] font-semibold text-text-primary [font-family:'Outfit']">
             Completion Trend
           </h2>
         </div>
@@ -396,109 +351,52 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
       </div>
 
       {/* Recent entries log */}
-      <div
-        style={{
-          background: 'var(--bg-glass)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 16,
-          padding: '20px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
+      <div className="rounded-2xl border border-border-subtle bg-bg-glass p-5">
+        <div className="mb-5 flex items-center gap-2">
           <Clock size={18} color="var(--accent-primary)" />
-          <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', fontFamily: "'Outfit'" }}>
+          <h2 className="m-0 text-[16px] font-semibold text-text-primary [font-family:'Outfit']">
             Recent Entries
           </h2>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 320, overflowY: 'auto' }}>
+        <div className="flex max-h-80 flex-col gap-2 overflow-y-auto">
           {(habit.entries ?? []).slice(0, showAllEntries ? undefined : 20).map((entry) => (
             <button
               key={entry.id}
               type="button"
               onClick={() => openEditModal(entry)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '10px 14px',
-                background: 'var(--bg-tertiary)',
-                borderRadius: 10,
-                border: '1px solid var(--border-subtle)',
-                cursor: 'pointer',
-                textAlign: 'left',
-                width: '100%',
-                transition: 'background 0.15s ease, border-color 0.15s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'color-mix(in srgb, var(--accent-primary) 40%, transparent)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--border-subtle)';
-              }}
+              className="flex w-full cursor-pointer items-center justify-between rounded-[10px] border border-border-subtle bg-bg-tertiary p-[10px_14px] text-left transition-colors duration-150 ease-in-out hover:border-[color-mix(in_srgb,var(--accent-primary)_40%,transparent)]"
               title="Click to edit"
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+              <div className="flex min-w-0 items-center gap-2.5">
                 <div
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: '50%',
-                    background: entry.is_completed ? 'var(--accent-primary)' : 'var(--text-muted)',
-                    flexShrink: 0,
-                  }}
+                  style={{ background: entry.is_completed ? 'var(--accent-primary)' : 'var(--text-muted)' }}
+                  className="h-2 w-2 shrink-0 rounded-full"
                 />
-                <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+                <span className="text-[13px] text-text-secondary">
                   {format(parseISO(entry.entry_date), 'EEE, MMM d yyyy')}
                 </span>
                 {entry.notes && (
-                  <span
-                    style={{
-                      fontSize: 12,
-                      color: 'var(--text-muted)',
-                      fontStyle: 'italic',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
+                  <span className="truncate text-[12px] italic text-text-muted">
                     &ldquo;{entry.notes}&rdquo;
                   </span>
                 )}
                 {entry.video_path && (
-                  <span
-                    style={{
-                      fontSize: 11,
-                      color: 'var(--accent-primary)',
-                      background: 'var(--accent-glow)',
-                      padding: '2px 6px',
-                      borderRadius: 4,
-                      fontWeight: 600,
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 4,
-                      flexShrink: 0,
-                    }}
-                  >
+                  <span className="inline-flex shrink-0 items-center gap-1 rounded bg-accent-glow px-1.5 py-0.5 text-[11px] font-semibold text-accent-primary">
                     <Video size={12} /> Video Proof
                   </span>
                 )}
               </div>
               <span
-                style={{
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: entry.is_completed ? 'var(--accent-primary)' : 'var(--text-muted)',
-                  fontFamily: "'IBM Plex Mono'",
-                  flexShrink: 0,
-                }}
+                style={{ color: entry.is_completed ? 'var(--accent-primary)' : 'var(--text-muted)' }}
+                className="shrink-0 text-[12px] font-semibold [font-family:'IBM_Plex_Mono']"
               >
-                {entry.is_completed ? <Check size={14} style={{ display: 'inline', verticalAlign: 'middle' }} /> : '—'}
+                {entry.is_completed ? <Check size={14} className="inline align-middle" /> : '—'}
                 {entry.value != null ? ` ${entry.value}` : ''}
               </span>
             </button>
           ))}
           {(habit.entries ?? []).length === 0 && (
-            <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 14, padding: '24px 0' }}>
+            <p className="py-6 text-center text-[14px] text-text-muted">
               No entries yet.
             </p>
           )}
@@ -506,16 +404,7 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
             <button
               type="button"
               onClick={() => setShowAllEntries(true)}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--accent-primary)',
-                fontSize: 13,
-                fontWeight: 600,
-                cursor: 'pointer',
-                padding: '8px 0',
-                marginTop: '4px',
-              }}
+              className="mt-1 cursor-pointer border-none bg-transparent py-2 text-[13px] font-semibold text-accent-primary"
             >
               Show all {(habit.entries ?? []).length} entries
             </button>
@@ -532,19 +421,19 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
         closeOnOutsideClick={false}
       >
         {editEntry && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontSize: 14, color: 'var(--text-primary)' }}>
+          <div className="flex flex-col gap-4">
+            <label className="flex cursor-pointer items-center gap-2.5 text-[14px] text-text-primary">
               <input
                 type="checkbox"
                 checked={editCompleted}
                 onChange={(e) => setEditCompleted(e.target.checked)}
-                style={{ width: 18, height: 18, accentColor: 'var(--accent-primary)' }}
+                className="h-[18px] w-[18px] accent-accent-primary"
               />
               Mark as completed
             </label>
 
             <div>
-              <label style={{ display: 'block', fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6, fontWeight: 500 }}>
+              <label className="mb-1.5 block text-[13px] font-medium text-text-secondary">
                 Notes
               </label>
               <textarea
@@ -553,24 +442,13 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
                 placeholder="Optional notes for this day"
                 rows={3}
                 maxLength={1000}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  background: 'var(--bg-tertiary)',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: 10,
-                  color: 'var(--text-primary)',
-                  fontSize: 13.5,
-                  outline: 'none',
-                  resize: 'vertical',
-                  fontFamily: 'inherit',
-                }}
+                className="w-full resize-y rounded-[10px] border border-border-subtle bg-bg-tertiary p-[10px_12px] text-[13.5px] text-text-primary outline-none [font-family:inherit]"
               />
             </div>
 
 
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+            <div className="flex justify-end gap-2.5">
               <Button variant="ghost" onClick={closeEditModal} disabled={editSaving}>
                 Cancel
               </Button>
