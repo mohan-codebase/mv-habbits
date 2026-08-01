@@ -279,8 +279,7 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
                       <button
                         onClick={requestRevokeOthers}
                         disabled={actionInProgress !== null}
-                        style={{ cursor: actionInProgress !== null ? 'wait' : 'pointer' }}
-                        className={`inline-flex items-center gap-2 rounded-[10px] border border-[rgba(104,104,104,0.2)] bg-[rgba(104,104,104,0.08)] px-3.5 py-2 text-[12.5px] font-bold text-danger transition-all duration-150 ease-in-out${actionInProgress === null ? ' hover:bg-[rgba(104,104,104,0.14)]' : ''}`}
+                        className={`inline-flex items-center gap-2 rounded-[10px] border border-[rgba(104,104,104,0.2)] bg-[rgba(104,104,104,0.08)] px-3.5 py-2 text-[12.5px] font-bold text-danger transition-all duration-150 ease-in-out${actionInProgress === null ? ' cursor-pointer hover:bg-[rgba(104,104,104,0.14)]' : ' cursor-wait'}`}
                       >
                         <LogOut size={14} />
                         {actionInProgress === 'all' ? 'Revoking others...' : 'Log out of other devices'}
@@ -298,16 +297,11 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
                       return (
                         <div
                           key={session.id}
-                          style={{
-                            border: `1px solid ${isCurrent ? 'color-mix(in srgb, var(--accent-primary) 35%, var(--border-default))' : 'var(--border-default)'}`,
-                            boxShadow: isCurrent ? '0 0 12px rgba(85, 85, 85, 0.06)' : 'none',
-                          }}
-                          className="relative flex items-center gap-4 rounded-2xl bg-bg-secondary p-4"
+                          className={`relative flex items-center gap-4 rounded-2xl bg-bg-secondary p-4 border ${isCurrent ? 'border-[color-mix(in_srgb,var(--accent-primary)_35%,var(--border-default))] shadow-[0_0_12px_rgba(85,85,85,0.06)]' : 'border-border-default shadow-none'}`}
                         >
                           {/* Device Icon */}
                           <div
-                            style={{ background: isCurrent ? 'rgba(85, 85, 85, 0.12)' : 'rgba(127, 127, 127,0.08)' }}
-                            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${isCurrent ? 'text-accent-light' : 'text-text-muted'}`}
+                            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${isCurrent ? 'bg-[rgba(85,85,85,0.12)] text-accent-light' : 'bg-[rgba(127,127,127,0.08)] text-text-muted'}`}
                           >
                             <Icon size={22} />
                           </div>
@@ -344,8 +338,7 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
                               onClick={() => requestRevokeSession(session)}
                               disabled={actionInProgress !== null}
                               title="Log out this device"
-                              style={{ cursor: actionInProgress !== null ? 'wait' : 'pointer' }}
-                              className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-[10px] border-none bg-[rgba(104,104,104,0.08)] text-[#6a6a6a] transition-all duration-150 ease-in-out${actionInProgress === null ? ' hover:bg-[rgba(104,104,104,0.15)]' : ''}`}
+                              className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-[10px] border-none bg-[rgba(104,104,104,0.08)] text-[#6a6a6a] transition-all duration-150 ease-in-out${actionInProgress === null ? ' cursor-pointer hover:bg-[rgba(104,104,104,0.15)]' : ' cursor-wait'}`}
                             >
                               {isCurrentAction ? (
                                 <RefreshCw size={16} className="animate-spin" color="#6a6a6a" />

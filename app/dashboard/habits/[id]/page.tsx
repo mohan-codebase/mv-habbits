@@ -369,8 +369,7 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
             >
               <div className="flex min-w-0 items-center gap-2.5">
                 <div
-                  style={{ background: entry.is_completed ? 'var(--accent-primary)' : 'var(--text-muted)' }}
-                  className="h-2 w-2 shrink-0 rounded-full"
+                  className={`h-2 w-2 shrink-0 rounded-full ${entry.is_completed ? 'bg-accent-primary' : 'bg-[var(--text-muted)]'}`}
                 />
                 <span className="text-[13px] text-text-secondary">
                   {format(parseISO(entry.entry_date), 'EEE, MMM d yyyy')}
@@ -387,8 +386,7 @@ export default function HabitDetailPage({ params }: { params: Promise<{ id: stri
                 )}
               </div>
               <span
-                style={{ color: entry.is_completed ? 'var(--accent-primary)' : 'var(--text-muted)' }}
-                className="shrink-0 text-[12px] font-semibold [font-family:'IBM_Plex_Mono']"
+                className={`shrink-0 text-[12px] font-semibold [font-family:'IBM_Plex_Mono'] ${entry.is_completed ? 'text-accent-primary' : 'text-[var(--text-muted)]'}`}
               >
                 {entry.is_completed ? <Check size={14} className="inline align-middle" /> : '—'}
                 {entry.value != null ? ` ${entry.value}` : ''}
