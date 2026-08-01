@@ -45,22 +45,14 @@ function CustomTooltip({
   if (!active || !payload || !payload.length) return null;
   const d = payload[0].payload;
   return (
-    <div
-      style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-default)',
-        borderRadius: 14,
-        padding: '12px 16px',
-        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
-      }}
-    >
-      <p style={{ margin: '0 0 4px', fontSize: 12, color: 'var(--text-muted)', fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 500 }}>
+    <div className="bg-bg-card border border-border-default rounded-lg px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+      <p className="m-0 mb-1 text-[12px] text-text-muted [font-family:'IBM_Plex_Sans',sans-serif] font-medium">
         {label ? format(parseISO(label), 'MMM d, yyyy') : ''}
       </p>
-      <p style={{ margin: 0, fontSize: 20, fontWeight: 800, color: 'var(--accent-primary)', fontFamily: "'IBM Plex Mono', monospace" }}>
+      <p className="m-0 text-[20px] font-extrabold text-accent-primary [font-family:'IBM_Plex_Mono',monospace]">
         {d.percentage}%
       </p>
-      <p style={{ margin: '4px 0 0', fontSize: 12.5, fontWeight: 500, color: 'var(--text-secondary)' }}>
+      <p className="mt-1 text-sm font-medium text-text-secondary">
         {d.completed} / {d.total} habits
       </p>
     </div>
@@ -107,9 +99,9 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
   })();
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div className="flex flex-col gap-4">
       {/* Range selector */}
-      <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+      <div className="flex gap-1.5 justify-end">
         {RANGES.map(({ label, days }) => {
           const active = range === days;
           return (
@@ -117,16 +109,12 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
               key={days}
               type="button"
               onClick={() => handleRange(days)}
+              className="px-3.5 py-1.5 rounded-full text-[12px] cursor-pointer transition-all duration-200"
               style={{
-                padding: '6px 14px',
-                borderRadius: 9999,
                 border: active ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
                 background: active ? 'var(--accent-primary)' : 'var(--surface-tint)',
                 color: active ? 'var(--accent-on-primary)' : 'var(--text-muted)',
-                fontSize: 12,
                 fontWeight: active ? 700 : 500,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
                 boxShadow: active ? '0 0 12px color-mix(in srgb, var(--accent-primary) 35%, transparent)' : 'none',
               }}
             >
@@ -137,10 +125,10 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
       </div>
 
       {/* Chart */}
-      <motion.div 
-        animate={{ opacity: [0.85, 1, 0.85] }} 
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} 
-        style={{ width: '100%' }}
+      <motion.div
+        animate={{ opacity: [0.85, 1, 0.85] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        className="w-full"
       >
         <ResponsiveContainer width="100%" height={240}>
           <AreaChart data={data} margin={{ top: 8, right: 5, left: -20, bottom: 0 }}>

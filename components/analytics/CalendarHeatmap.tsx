@@ -88,38 +88,29 @@ const CalendarHeatmap = memo(function CalendarHeatmap({ data, color }: CalendarH
 
   if (weeks.length === 0) {
     return (
-      <div style={{ color: 'var(--text-muted)', fontSize: 14, textAlign: 'center', padding: '32px 0' }}>
+      <div className="text-text-muted text-[14px] text-center py-8">
         No data yet — start tracking habits to see your heatmap.
       </div>
     );
   }
-  const CELL_SIZE = 16;
-  const CELL_GAP = 4;
-  const DAY_LABEL_WIDTH = 32;
 
   return (
     <motion.div
       animate={{ opacity: [0.85, 1, 0.85] }}
       transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
     >
-      <div ref={scrollRef} style={{ overflowX: 'auto', paddingBottom: 8 }}>
+      <div ref={scrollRef} className="overflow-x-auto pb-2">
       <style>{`.hf-cal-cell { transition: all 0.2s ease; } .hf-cal-cell:hover { transform: scale(1.5); position: relative; z-index: 10; box-shadow: 0 2px 8px rgba(145, 145, 145,0.3); } @keyframes heatmapPulse { 0% { filter: brightness(1); } 50% { filter: brightness(1.2); } 100% { filter: brightness(1); } } .hf-cal-cell-active { animation: heatmapPulse 3s infinite ease-in-out; }`}</style>
-      <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 8, minWidth: 'max-content' }}>
+      <div className="inline-flex flex-col gap-2 min-w-max">
         {/* Month labels */}
-        <div style={{ display: 'flex', paddingLeft: DAY_LABEL_WIDTH, gap: CELL_GAP }}>
+        <div className="flex pl-8 gap-1">
           {weeks.map((_, wi) => {
             const label = monthLabels.find((m) => m.weekIndex === wi);
             return (
               <div
                 key={wi}
-                style={{
-                  width: CELL_SIZE,
-                  fontSize: 11,
-                  color: label ? 'var(--text-secondary)' : 'transparent',
-                  fontFamily: "'IBM Plex Sans', sans-serif",
-                  whiteSpace: 'nowrap',
-                  fontWeight: 600,
-                }}
+                className="w-4 text-xs [font-family:'IBM_Plex_Sans',sans-serif] whitespace-nowrap font-semibold"
+                style={{ color: label ? 'var(--text-secondary)' : 'transparent' }}
               >
                 {label?.label ?? ''}
               </div>
@@ -129,19 +120,11 @@ const CalendarHeatmap = memo(function CalendarHeatmap({ data, color }: CalendarH
 
         {/* Grid rows (Sun–Sat) */}
         {[0, 1, 2, 3, 4, 5, 6].map((dow) => (
-          <div key={dow} style={{ display: 'flex', alignItems: 'center', gap: CELL_GAP }}>
+          <div key={dow} className="flex items-center gap-1">
             {/* Day label */}
             <div
-              style={{
-                width: DAY_LABEL_WIDTH,
-                fontSize: 11,
-                color: dow % 2 === 1 ? 'var(--text-muted)' : 'transparent',
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                textAlign: 'right',
-                paddingRight: 6,
-                flexShrink: 0,
-                fontWeight: 500,
-              }}
+              className="w-8 text-xs [font-family:'IBM_Plex_Sans',sans-serif] text-right pr-1.5 flex-shrink-0 font-medium"
+              style={{ color: dow % 2 === 1 ? 'var(--text-muted)' : 'transparent' }}
             >
               {DAY_LABELS[dow]}
             </div>
@@ -152,22 +135,17 @@ const CalendarHeatmap = memo(function CalendarHeatmap({ data, color }: CalendarH
                 return (
                   <div
                     key={wi}
-                    style={{ width: CELL_SIZE, height: CELL_SIZE, borderRadius: 14, flexShrink: 0 }}
+                    className="w-4 h-4 rounded-[14px] flex-shrink-0"
                   />
                 );
               }
               return (
                 <div
                   key={wi}
-                  className={`hf-cal-cell ${cell.percentage > 0 ? 'hf-cal-cell-active' : ''}`}
+                  className={`hf-cal-cell w-4 h-4 rounded-[14px] flex-shrink-0 cursor-default ${cell.percentage > 0 ? 'hf-cal-cell-active' : ''}`}
                   title={`${cell.date}: ${cell.percentage}% complete`}
                   style={{
-                    width: CELL_SIZE,
-                    height: CELL_SIZE,
-                    borderRadius: 14,
                     background: getColor(cell.percentage, baseColor),
-                    flexShrink: 0,
-                    cursor: 'default',
                     border: cell.percentage > 0 ? '1px solid color-mix(in srgb, var(--text-primary) 10%, transparent)' : '1px solid var(--border-subtle)',
                     animationDelay: `${(wi + dow) * 0.05}s`,
                   }}
@@ -178,21 +156,19 @@ const CalendarHeatmap = memo(function CalendarHeatmap({ data, color }: CalendarH
         ))}
 
         {/* Legend */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4, paddingLeft: DAY_LABEL_WIDTH, marginTop: 6 }}>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)', marginRight: 6, fontWeight: 500 }}>Less</span>
+        <div className="flex items-center gap-1 pl-8 mt-1.5">
+          <span className="text-xs text-text-muted mr-1.5 font-medium">Less</span>
           {[0, 25, 50, 75, 100].map((pct) => (
             <div
               key={pct}
+              className="w-4 h-4 rounded-[14px]"
               style={{
-                width: CELL_SIZE,
-                height: CELL_SIZE,
-                borderRadius: 14,
                 background: getColor(pct, baseColor),
                 border: pct > 0 ? '1px solid color-mix(in srgb, var(--text-primary) 10%, transparent)' : '1px solid var(--border-subtle)',
               }}
             />
           ))}
-          <span style={{ fontSize: 11, color: 'var(--text-muted)', marginLeft: 6, fontWeight: 500 }}>More</span>
+          <span className="text-xs text-text-muted ml-1.5 font-medium">More</span>
         </div>
         </div>
       </div>
