@@ -31,19 +31,11 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Toolti
   if (!active || !payload || !payload.length) return null;
   const d = payload[0].payload;
   return (
-    <div
-      style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-default)',
-        borderRadius: 14,
-        padding: '12px 16px',
-        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)',
-      }}
-    >
-      <p style={{ margin: '0 0 4px', fontSize: 12, color: 'var(--text-muted)', fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 500 }}>
+    <div className="rounded-[14px] border border-border-default bg-bg-card py-3 px-4 shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+      <p className="mb-1 text-[12px] font-medium text-text-muted [font-family:'IBM_Plex_Sans',sans-serif]">
         {d.label} {d.dayNum}{d.isToday ? ' · Today' : ''}
       </p>
-      <p style={{ margin: 0, fontSize: 20, fontWeight: 800, color: 'var(--accent-primary)', fontFamily: "'IBM Plex Mono', monospace" }}>
+      <p className="m-0 text-[20px] font-extrabold text-accent-primary [font-family:'IBM_Plex_Mono',monospace]">
         {d.pct}%
       </p>
     </div>
@@ -82,7 +74,7 @@ const WeeklyReportChart = memo(function WeeklyReportChart({
   }, []);
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: CHART_HEIGHT }}>
+    <div ref={containerRef} className="h-[200px] w-full">
       {width > 0 ? (
         <motion.div animate={{ opacity: [0.85, 1, 0.85] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}>
           <AreaChart width={width} height={CHART_HEIGHT} data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>

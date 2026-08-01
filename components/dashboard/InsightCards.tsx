@@ -125,18 +125,12 @@ export default function InsightCards({ habits, heatmap, todayISO }: InsightCards
 
   return (
     <section>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--space-3)' }}>
+      <div className="mb-3 flex items-center gap-2">
         <Sparkles size={13} color="var(--accent-light)" />
-        <span className="eyebrow" style={{ letterSpacing: '0.12em' }}>Insights</span>
+        <span className="eyebrow tracking-[0.12em]">Insights</span>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: 'var(--space-3)',
-        }}
-      >
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3">
         {insights.map((insight, i) => {
           const t = toneMap[insight.tone];
           return (
@@ -145,62 +139,24 @@ export default function InsightCards({ habits, heatmap, todayISO }: InsightCards
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: i * 0.04 }}
-              style={{
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: 'var(--r-lg)',
-                padding: '14px 16px',
-                position: 'relative',
-                overflow: 'hidden',
-                boxShadow: 'none',
-              }}
+              className="relative overflow-hidden rounded-lg border border-border-subtle bg-bg-card py-3.5 px-4 shadow-none"
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+              <div className="mb-2.5 flex items-center gap-2">
                 <div
-                  style={{
-                    width: 26,
-                    height: 26,
-                    borderRadius: 'var(--r-sm)',
-                    background: t.glow,
-                    border: `1px solid ${t.border}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: t.color,
-                    flexShrink: 0,
-                  }}
+                  className="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-sm"
+                  style={{ background: t.glow, border: `1px solid ${t.border}`, color: t.color }}
                 >
                   {insight.icon}
                 </div>
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    color: 'var(--text-muted)',
-                    letterSpacing: '0.02em',
-                    textTransform: 'uppercase',
-                  }}
-                >
+                <span className="text-xs font-semibold tracking-[0.02em] text-text-muted uppercase">
                   {insight.label}
                 </span>
               </div>
 
-              <p
-                style={{
-                  fontSize: 17,
-                  fontWeight: 700,
-                  color: 'var(--text-primary)',
-                  fontFamily: "'Outfit'",
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.2,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
+              <p className="truncate font-['Outfit'] text-[17px] leading-[1.2] font-bold tracking-[-0.02em] text-text-primary">
                 {insight.value}
               </p>
-              <p style={{ fontSize: 11.5, color: 'var(--text-muted)', marginTop: 4, letterSpacing: '-0.005em' }}>
+              <p className="mt-1 text-[11.5px] tracking-[-0.005em] text-text-muted">
                 {insight.sub}
               </p>
             </motion.div>
