@@ -267,8 +267,9 @@ export default function FeedList({ currentUserId }: { currentUserId: string }) {
                   <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={() => toggleCheer(item.id)}
-                    className="flex items-center gap-1.5 bg-transparent border-none text-[13px] font-bold cursor-pointer transition-colors"
-                    style={{ color: hasCheered ? '#F43F5E' : 'var(--text-muted)' }}
+                    className={`flex items-center gap-1.5 bg-transparent border-none text-[13px] font-bold cursor-pointer transition-colors ${
+                      hasCheered ? 'text-[#F43F5E]' : 'text-text-muted'
+                    }`}
                   >
                     <HeartIcon size={18} fill={hasCheered ? '#F43F5E' : 'transparent'} color={hasCheered ? '#F43F5E' : 'currentColor'} />
                     {item.feed_reactions.length}
