@@ -5,6 +5,7 @@ import type { OverviewStats as OverviewStatsType } from '@/types/analytics';
 import type { HabitWithEntry } from '@/types/habit';
 import type { HabitEntry } from '@/types/entry';
 import DashboardApp from '@/components/dashboard/DashboardApp';
+import { computeBestStreak, computeLifetimeCompletions } from '@/lib/stats/habitStats';
 
 export default async function DashboardPage() {
   const supabase = await createServerClient();
@@ -118,25 +119,22 @@ export default async function DashboardPage() {
         (e) => goodHabitIds.has(e.habit_id) && e.is_completed
       ).length;
 
-      const bestHabit = goodHabits.reduce(
-        (best: { current_streak: number; name: string } | null, h) =>
-          !best || (h as any).current_streak > best.current_streak ? h : best,
-        null
-      ) as { current_streak: number; name: string } | null;
+      // habitsRaw is already filtered to non-archived habits by the query above;
+      // computeBestStreak/computeLifetimeCompletions additionally exclude "bad"
+      // (avoid) habits, matching the definition used on the Year-in-Review page.
+      const { bestStreak, bestStreakHabitName } = computeBestStreak(habitsRaw);
+      const lifetimeCompletions = computeLifetimeCompletions(habitsRaw);
 
       stats = {
         todayCompleted: completedToday,
         todayTotal: goodHabitCount,
         todayPercentage: Math.round((completedToday / goodHabitCount) * 100),
-        bestStreak: (bestHabit as any)?.current_streak ?? 0,
-        bestStreakHabitName: bestHabit?.name ?? '',
+        bestStreak,
+        bestStreakHabitName,
         weekPercentage: weekTotalPossible > 0
           ? Math.min(100, Math.round((weekTotalCompleted / weekTotalPossible) * 100))
           : 0,
-        totalCompletions: goodHabits.reduce(
-          (sum, h) => sum + ((h as any).total_completions ?? 0),
-          0
-        ),
+        totalCompletions: lifetimeCompletions,
       };
     }
   }

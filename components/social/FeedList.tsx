@@ -250,7 +250,7 @@ export default function FeedList({ currentUserId }: { currentUserId: string }) {
                 {item.profiles?.avatar_url ? (
                   <img src={item.profiles.avatar_url} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
-                  item.profiles?.full_name?.charAt(0) || 'U'
+                  item.profiles?.full_name?.trim()?.charAt(0)?.toUpperCase() || 'U'
                 )}
               </div>
               
@@ -307,7 +307,7 @@ export default function FeedList({ currentUserId }: { currentUserId: string }) {
                         {item.feed_comments.map(comment => (
                           <div key={comment.id} style={{ display: 'flex', gap: 10 }}>
                             <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--border-default)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700 }}>
-                              {comment.profiles?.full_name?.charAt(0) || 'U'}
+                              {comment.profiles?.full_name?.trim()?.charAt(0)?.toUpperCase() || 'U'}
                             </div>
                             <div style={{ background: 'var(--bg-secondary)', padding: '8px 12px', borderRadius: 16, borderTopLeftRadius: 4, flex: 1 }}>
                               <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{comment.profiles?.full_name || 'User'}</p>

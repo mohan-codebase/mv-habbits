@@ -36,21 +36,23 @@ export default async function AchievementsPage() {
     let progress = 0;
     let progressMax = 1;
 
-    if (!achievement) {
-      if (def.type.startsWith('streak_')) {
-        const target = parseInt(def.type.split('_')[1], 10);
-        progress = Math.min(maxStreak, target);
-        progressMax = target;
-      } else if (def.type.startsWith('total_')) {
-        const target = parseInt(def.type.split('_')[1], 10);
-        progress = Math.min(totalCompletions ?? 0, target);
-        progressMax = target;
-      }
+    // Calculate progress regardless of unlock state, so display is correct
+    // even if the persistence call (/api/achievements/check) never ran.
+    if (def.type.startsWith('streak_')) {
+      const target = parseInt(def.type.split('_')[1], 10);
+      progress = Math.min(maxStreak, target);
+      progressMax = target;
+    } else if (def.type.startsWith('total_')) {
+      const target = parseInt(def.type.split('_')[1], 10);
+      progress = Math.min(totalCompletions ?? 0, target);
+      progressMax = target;
     }
+
+    const unlocked = !!achievement || (progressMax > 0 && progress >= progressMax);
 
     return {
       ...def,
-      unlocked: !!achievement,
+      unlocked,
       unlockedAt: achievement?.unlocked_at ?? null,
       habitId: achievement?.habit_id ?? null,
       metadata: achievement?.metadata ?? {},

@@ -213,6 +213,10 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
         startTransition(() => {
           router.refresh();
         });
+        // Fire-and-forget: persist any newly-earned achievements
+        if (completed) {
+          fetch('/api/achievements/check', { method: 'POST' }).catch(() => {});
+        }
       }
     } catch {
       // Revert on network error

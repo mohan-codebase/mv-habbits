@@ -15,35 +15,47 @@ export default async function NetworkPage() {
     return null;
   }
 
-  // Fetch pending friend requests
-  const { data: pendingRequests } = await supabase
+  // Fetch pending friend requests (no embed: friends.requester_id/addressee_id
+  // reference auth.users, not public.profiles, so PostgREST can't auto-embed).
+  const { data: rawPendingRequests } = await supabase
     .from('friends')
-    .select(`
-      id,
-      requester_id,
-      profiles:requester_id (full_name, avatar_url)
-    `)
+    .select('id, requester_id')
     .eq('addressee_id', user.id)
     .eq('status', 'pending');
 
   // Fetch friends
-  const { data: friendsList } = await supabase
+  const { data: rawFriendsList } = await supabase
     .from('friends')
-    .select(`
-      id,
-      requester_id,
-      addressee_id,
-      requester:requester_id (full_name, avatar_url),
-      addressee:addressee_id (full_name, avatar_url)
-    `)
+    .select('id, requester_id, addressee_id')
     .eq('status', 'accepted')
     .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`);
 
-  const formattedFriends = friendsList?.map(f => {
+  // Collect all user ids we need profile info for, then fetch profiles in one query.
+  const relatedUserIds = Array.from(new Set([
+    ...(rawPendingRequests?.map(r => r.requester_id) || []),
+    ...(rawFriendsList?.flatMap(f => [f.requester_id, f.addressee_id]) || []),
+  ]));
+
+  const { data: relatedProfiles } = relatedUserIds.length
+    ? await supabase
+        .from('profiles')
+        .select('id, full_name, avatar_url')
+        .in('id', relatedUserIds)
+    : { data: [] as { id: string; full_name: string | null; avatar_url: string | null }[] };
+
+  const profileMap = new Map((relatedProfiles || []).map(p => [p.id, p]));
+
+  const pendingRequests = rawPendingRequests?.map(r => ({
+    id: r.id,
+    profiles: profileMap.get(r.requester_id) || null,
+  })) || [];
+
+  const formattedFriends = rawFriendsList?.map(f => {
     const isRequester = f.requester_id === user.id;
+    const friendId = isRequester ? f.addressee_id : f.requester_id;
     return {
       id: f.id,
-      friend: isRequester ? f.addressee : f.requester
+      friend: profileMap.get(friendId) || null,
     };
   }) || [];
 
@@ -144,7 +156,7 @@ export default async function NetworkPage() {
                       {f.friend?.avatar_url ? (
                         <img src={f.friend.avatar_url} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
-                        f.friend?.full_name?.charAt(0) || 'U'
+                        f.friend?.full_name?.trim()?.charAt(0)?.toUpperCase() || 'U'
                       )}
                     </div>
                     <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{f.friend?.full_name || 'Unknown'}</span>

@@ -70,6 +70,13 @@ export default async function YearInReviewPage() {
               <Stat label="Habits tracked" value={summary.totalHabits} />
             </div>
 
+            {/* Same definition as the dashboard Overview's "Best Streak" card
+                (lib/stats/habitStats.ts) — always matches that number exactly. */}
+            <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>
+              <Stat label="Best Streak" value={summary.bestStreak} />
+              <Stat label="Total Done" value={summary.lifetimeCompletions.toLocaleString()} />
+            </div>
+
             <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 12px' }}>By habit</h2>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13.5 }}>
               <thead>

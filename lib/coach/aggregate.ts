@@ -1,4 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { computeBestStreak, computeLifetimeCompletions } from '@/lib/stats/habitStats';
 
 /**
  * Compact, privacy-light summary of a user's habit history.
@@ -25,6 +26,13 @@ export interface CoachSummary {
   to: string;
   totalHabits: number;
   totalCompletions: number;
+  /** Lifetime completions across non-archived, non-bad habits — matches the
+   *  dashboard Overview's "Best Streak"/total definition exactly (see
+   *  lib/stats/habitStats.ts), unlike `totalCompletions` above which is
+   *  recounted from raw entries within `windowDays`. */
+  lifetimeCompletions: number;
+  bestStreak: number;
+  bestStreakHabitName: string;
   activeDays: number; // distinct days with ≥1 completion
   overallCompletionRate: number; // 0–100
   /** Completions by weekday, Sun..Sat. */
@@ -54,7 +62,7 @@ export async function buildCoachSummary(
   // Small: one row per habit.
   const { data: habits } = await supabase
     .from('habits')
-    .select('id, name, is_bad_habit, current_streak, longest_streak')
+    .select('id, name, is_bad_habit, is_archived, current_streak, longest_streak, total_completions')
     .eq('user_id', userId);
 
   if (!habits || habits.length === 0) return null;
@@ -114,12 +122,18 @@ export async function buildCoachSummary(
 
   const totalTracked = habitStats.reduce((sum, h) => sum + h.trackedDays, 0);
 
+  const { bestStreak, bestStreakHabitName } = computeBestStreak(habits);
+  const lifetimeCompletions = computeLifetimeCompletions(habits);
+
   return {
     windowDays,
     from: fromStr,
     to: toStr,
     totalHabits: habits.length,
     totalCompletions,
+    lifetimeCompletions,
+    bestStreak,
+    bestStreakHabitName,
     activeDays: activeDaySet.size,
     overallCompletionRate: totalTracked ? Math.round((totalCompletions / totalTracked) * 100) : 0,
     weekday,
