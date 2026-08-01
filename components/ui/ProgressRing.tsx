@@ -55,7 +55,7 @@ export default function ProgressRing({
         initial={{ strokeDashoffset: circumference }}
         animate={{ strokeDashoffset: offset }}
         transition={{ duration: 0.9, ease: 'easeOut' }}
-        style={{ transform: 'rotate(-90deg)', transformOrigin: 'center' }}
+        className="origin-center -rotate-90"
       />
       {/* Center label */}
       <text

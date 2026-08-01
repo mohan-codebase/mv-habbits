@@ -15,9 +15,9 @@ interface ModalProps {
 }
 
 const sizeMap: Record<ModalSize, string> = {
-  sm: '400px',
-  md: '560px',
-  lg: '720px',
+  sm: 'max-w-[400px]',
+  md: 'max-w-[560px]',
+  lg: 'max-w-[720px]',
 };
 
 const CloseIcon: React.FC = () => (
@@ -121,17 +121,7 @@ export default function Modal({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           onClick={closeOnOutsideClick ? onClose : undefined}
-          className="hf-modal-backdrop"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0, 0, 0, 0.6)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 50,
-            padding: '16px',
-          }}
+          className="hf-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
         >
           <motion.div
             key="modal-panel"
@@ -145,66 +135,18 @@ export default function Modal({
             exit={{ opacity: 0, y: 20, scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 340, damping: 30 }}
             onClick={(e) => e.stopPropagation()}
-            className="hf-modal-panel"
-            style={{
-              background: 'var(--glass-bg)',
-              boxShadow: 'none',
-              borderRadius: 18,
-              width: '100%',
-              maxWidth: sizeMap[size],
-              maxHeight: '90vh',
-              overflowY: 'auto',
-              outline: 'none',
-            }}
+            className={`hf-modal-panel w-full max-h-[90vh] overflow-y-auto rounded-xl bg-[var(--glass-bg)] shadow-none outline-none ${sizeMap[size]}`}
           >
             {/* Header */}
             {(title !== undefined) && (
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '20px 24px 16px',
-                  borderBottom: '1px solid var(--border-subtle)',
-                }}
-              >
-                <h2
-                  id="modal-title"
-                  style={{
-                    margin: 0,
-                    fontSize: '17px',
-                    fontWeight: 600,
-                    color: 'var(--text-primary)',
-                    fontFamily: "'Outfit', sans-serif",
-                  }}
-                >
+              <div className="flex items-center justify-between border-b border-border-subtle pt-5 px-6 pb-4">
+                <h2 id="modal-title" className="m-0 text-[17px] font-semibold text-text-primary">
                   {title}
                 </h2>
                 <button
                   onClick={onClose}
                   aria-label="Close modal"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    background: 'transparent',
-                    color: 'var(--text-muted)',
-                    cursor: 'pointer',
-                    transition: 'background 0.15s ease, color 0.15s ease',
-                    flexShrink: 0,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'var(--bg-tertiary)';
-                    e.currentTarget.style.color = 'var(--text-primary)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = 'var(--text-muted)';
-                  }}
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm border-none bg-transparent text-text-muted transition-colors duration-150 cursor-pointer hover:bg-bg-tertiary hover:text-text-primary"
                 >
                   <CloseIcon />
                 </button>
@@ -212,7 +154,7 @@ export default function Modal({
             )}
 
             {/* Body */}
-            <div style={{ padding: title !== undefined ? '20px 24px 24px' : '24px' }}>
+            <div className={title !== undefined ? 'pt-5 px-6 pb-6' : 'p-6'}>
               {children}
             </div>
           </motion.div>
