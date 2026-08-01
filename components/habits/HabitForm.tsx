@@ -68,16 +68,7 @@ function SegmentedControl<T extends string>({
   onChange,
 }: SegmentedControlProps<T>) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        background: 'var(--bg-tertiary)',
-        borderRadius: 10,
-        padding: 3,
-        gap: 2,
-        flexWrap: 'wrap',
-      }}
-    >
+    <div className="flex bg-bg-tertiary rounded-md p-[3px] gap-0.5 flex-wrap">
       {options.map((opt) => {
         const active = value === opt;
         return (
@@ -85,20 +76,11 @@ function SegmentedControl<T extends string>({
             key={opt}
             type="button"
             onClick={() => onChange(opt)}
+            className="flex-1 min-w-0 px-2.5 py-1.5 rounded-[7px] border-none text-[13px] cursor-pointer transition-all duration-150 shadow-none whitespace-nowrap"
             style={{
-              flex: 1,
-              minWidth: 0,
-              padding: '6px 10px',
-              borderRadius: 7,
-              border: 'none',
               background: active ? 'var(--bg-secondary)' : 'transparent',
               color: active ? 'var(--text-primary)' : 'var(--text-muted)',
-              fontSize: 13,
               fontWeight: active ? 600 : 400,
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-              boxShadow: 'none',
-              whiteSpace: 'nowrap',
             }}
           >
             {labels[opt]}
@@ -190,33 +172,8 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
     }
   };
 
-  const fieldStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 6,
-  };
-
-  const labelStyle: React.CSSProperties = {
-    fontSize: 13,
-    fontWeight: 500,
-    color: 'var(--text-secondary)',
-  };
-
-  const textareaStyle: React.CSSProperties = {
-    width: '100%',
-    background: 'var(--bg-tertiary)',
-    color: 'var(--text-primary)',
-    border: `1px solid ${errors.description ? 'var(--danger)' : 'var(--border-subtle)'}`,
-    borderRadius: 10,
-    padding: '10px 14px',
-    fontSize: 14,
-    resize: 'vertical',
-    outline: 'none',
-    minHeight: 72,
-    fontFamily: 'inherit',
-    transition: 'border-color 0.15s ease',
-    boxSizing: 'border-box',
-  };
+  const fieldClass = 'flex flex-col gap-1.5';
+  const labelClass = 'text-[13px] font-medium text-text-secondary';
 
   return (
     <Modal
@@ -227,14 +184,14 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
       closeOnOutsideClick={false}
     >
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div className="flex flex-col gap-5">
 
           {/* Habit Type — Good vs Bad */}
           <Controller
             name="is_bad_habit"
             control={control}
             render={({ field }) => (
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div className="flex gap-2">
                 {([false, true] as const).map((isBad) => {
                   const active = field.value === isBad;
                   return (
@@ -248,14 +205,8 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
                           setValue('icon', isBad ? 'ban' : 'circle-check');
                         }
                       }}
+                      className="flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-[12px] text-[13px] cursor-pointer transition-all duration-150"
                       style={{
-                        flex: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: 8,
-                        padding: '10px 14px',
-                        borderRadius: 12,
                         border: `1.5px solid ${active ? (isBad ? '#6a6a6a' : 'var(--accent-primary)') : 'var(--border-default)'}`,
                         background: active
                           ? isBad ? 'rgba(104, 104, 104,0.10)' : 'var(--accent-glow-md)'
@@ -263,10 +214,7 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
                         color: active
                           ? isBad ? '#6a6a6a' : 'var(--accent-primary)'
                           : 'var(--text-muted)',
-                        fontSize: 13,
                         fontWeight: active ? 700 : 500,
-                        cursor: 'pointer',
-                        transition: 'all 0.15s ease',
                       }}
                     >
                       {isBad ? <Ban size={16} /> : <CheckCircle2 size={16} />}
@@ -280,16 +228,8 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
 
           {/* Bad habit contextual hint */}
           {watchIsBadHabit && (
-            <div style={{
-              padding: '10px 14px',
-              borderRadius: 10,
-              background: 'rgba(104, 104, 104,0.08)',
-              border: '1px solid rgba(104, 104, 104,0.22)',
-              fontSize: 12.5,
-              color: '#8e8e8e',
-              lineHeight: 1.5,
-            }}>
-              <strong style={{ display: 'block', marginBottom: 2 }}>Avoidance tracking</strong>
+            <div className="px-3.5 py-2.5 rounded-md bg-[rgba(104,104,104,0.08)] border border-[rgba(104,104,104,0.22)] text-[12.5px] text-[#8e8e8e] leading-[1.5]">
+              <strong className="block mb-0.5">Avoidance tracking</strong>
               Each day you check this off means you <em>avoided</em> the bad habit. Your streak = consecutive days clean.
             </div>
           )}
@@ -304,41 +244,39 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
           />
 
           {/* Description */}
-          <div style={fieldStyle}>
-            <label style={labelStyle}>
+          <div className={fieldClass}>
+            <label className={labelClass}>
               Description
-              <span style={{ color: 'var(--text-muted)', fontWeight: 400, marginLeft: 4 }}>
+              <span className="text-text-muted font-normal ml-1">
                 (optional)
               </span>
             </label>
             <textarea
               {...register('description')}
               placeholder="What's this habit about?"
-              style={textareaStyle}
+              className={`w-full bg-bg-tertiary text-text-primary rounded-md px-3.5 py-2.5 text-[14px] resize-y outline-none min-h-[72px] [font-family:inherit] transition-colors box-border ${errors.description ? 'border border-danger' : 'border border-border-subtle focus:border-border-active'}`}
               maxLength={500}
-              onFocus={(e) => { e.target.style.borderColor = 'var(--border-active)'; }}
-              onBlur={(e) => { e.target.style.borderColor = 'var(--border-subtle)'; }}
             />
-            <span style={{ fontSize: 11, color: 'var(--text-muted)', textAlign: 'right' }}>
+            <span className="text-xs text-text-muted text-right">
               {watchDescription.length} / 500
             </span>
             {errors.description && (
-              <span style={{ fontSize: 12, color: 'var(--danger)' }}>
+              <span className="text-[12px] text-danger">
                 {errors.description.message}
               </span>
             )}
           </div>
 
           {/* Color + Icon row */}
-          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+          <div className="flex gap-4 flex-wrap">
             {/* Color picker */}
-            <div style={{ ...fieldStyle, flex: 2, minWidth: 180 }}>
-              <label style={labelStyle}>Color</label>
+            <div className={`${fieldClass} flex-[2] min-w-[180px]`}>
+              <label className={labelClass}>Color</label>
               <Controller
                 name="color"
                 control={control}
                 render={({ field }) => (
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+                  <div className="flex gap-2 flex-wrap items-center">
                     {PRESET_COLORS.map((c) => {
                       const selected = field.value === c;
                       return (
@@ -347,10 +285,8 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
                           type="button"
                           onClick={() => field.onChange(c)}
                           aria-label={`Color ${c}`}
+                          className="w-7 h-7 rounded-full cursor-pointer transition-all duration-150"
                           style={{
-                            width: 28,
-                            height: 28,
-                            borderRadius: '50%',
                             background: c,
                             border: selected
                               ? `2px solid white`
@@ -358,41 +294,23 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
                             boxShadow: selected
                               ? `0 0 0 2px ${c}, 0 0 10px ${hexToRgba(c, 0.5)}`
                               : 'none',
-                            cursor: 'pointer',
-                            transition: 'transform 0.15s ease, filter 0.15s ease, background 0.15s ease, opacity 0.15s ease, border-color 0.15s ease',
                             transform: selected ? 'scale(1.15)' : 'scale(1)',
                           }}
                         />
                       );
                     })}
                     {/* Custom hex input */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <div className="flex items-center gap-1.5">
                       <div
-                        style={{
-                          width: 24,
-                          height: 24,
-                          borderRadius: 6,
-                          background: watchColor,
-                          border: '1px solid var(--border-subtle)',
-                          flexShrink: 0,
-                        }}
+                        className="w-6 h-6 rounded-xs border border-border-subtle flex-shrink-0"
+                        style={{ background: watchColor }}
                       />
                       <input
                         type="text"
                         value={field.value}
                         onChange={(e) => field.onChange(e.target.value)}
                         placeholder="var(--accent-primary)"
-                        style={{
-                          width: 90,
-                          background: 'var(--bg-tertiary)',
-                          color: 'var(--text-secondary)',
-                          border: '1px solid var(--border-subtle)',
-                          borderRadius: 8,
-                          padding: '4px 8px',
-                          fontSize: 12,
-                          fontFamily: "'IBM Plex Mono', monospace",
-                          outline: 'none',
-                        }}
+                        className="w-[90px] bg-bg-tertiary text-text-secondary border border-border-subtle rounded-sm px-2 py-1 text-[12px] outline-none [font-family:'IBM_Plex_Mono',monospace]"
                       />
                     </div>
                   </div>
@@ -401,8 +319,8 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
             </div>
 
             {/* Icon */}
-            <div style={{ ...fieldStyle, flex: 1.5, minWidth: 260 }}>
-              <label style={labelStyle}>Icon</label>
+            <div className={`${fieldClass} flex-[1.5] min-w-[260px]`}>
+              <label className={labelClass}>Icon</label>
               <Controller
                 name="icon"
                 control={control}
@@ -415,7 +333,7 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
                 )}
               />
               {errors.icon && (
-                <span style={{ fontSize: 12, color: 'var(--danger)', marginTop: 4 }}>
+                <span className="text-[12px] text-danger mt-1">
                   {errors.icon.message}
                 </span>
               )}
@@ -423,8 +341,8 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
           </div>
 
           {/* Category */}
-          <div style={fieldStyle}>
-            <label style={labelStyle}>Category</label>
+          <div className={fieldClass}>
+            <label className={labelClass}>Category</label>
             <Controller
               name="category_id"
               control={control}
@@ -445,22 +363,13 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
               }}
             />
             {categoryError && (
-              <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--danger)' }}>
+              <div className="mt-2 flex items-center gap-2 text-[12px] text-danger">
                 <span>Couldn&apos;t load categories.</span>
                 {onRetryCategories && (
                   <button
                     type="button"
                     onClick={onRetryCategories}
-                    style={{
-                      background: 'rgba(104, 104, 104,0.12)',
-                      color: 'var(--danger)',
-                      border: '1px solid rgba(104, 104, 104,0.25)',
-                      padding: '2px 10px',
-                      borderRadius: 'var(--r-pill)',
-                      fontSize: 11.5,
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                    }}
+                    className="bg-[rgba(104,104,104,0.12)] text-danger border border-[rgba(104,104,104,0.25)] px-2.5 py-0.5 rounded-full text-[11.5px] font-semibold cursor-pointer"
                   >
                     Retry
                   </button>
@@ -470,8 +379,8 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
           </div>
 
           {/* Frequency */}
-          <div style={fieldStyle}>
-            <label style={labelStyle}>Frequency</label>
+          <div className={fieldClass}>
+            <label className={labelClass}>Frequency</label>
             <Controller
               name="frequency.type"
               control={control}
@@ -494,7 +403,7 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
             {/* Specific Days toggles */}
             {watchFrequencyType === 'weekly' && (
               <div>
-                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', paddingTop: 4 }}>
+                <div className="flex gap-1.5 flex-wrap pt-1">
                   {DAY_LABELS.map((label, idx) => {
                     const active = watchFrequencyDays.includes(idx);
                     return (
@@ -504,17 +413,12 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
                         aria-label={DAY_FULL_LABELS[idx]}
                         aria-pressed={active}
                         onClick={() => toggleDay(idx)}
+                        className="w-9 h-9 rounded-full text-[13px] cursor-pointer transition-all duration-150"
                         style={{
-                          width: 36,
-                          height: 36,
-                          borderRadius: '50%',
                           border: `1px solid ${active ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
                           background: active ? 'var(--accent-primary)' : 'transparent',
                           color: active ? 'var(--accent-on-primary)' : 'var(--text-secondary)',
-                          fontSize: 13,
                           fontWeight: active ? 700 : 500,
-                          cursor: 'pointer',
-                          transition: 'all 0.15s ease',
                         }}
                       >
                         {label}
@@ -523,7 +427,7 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
                   })}
                 </div>
                 {errors.frequency && (errors.frequency as Record<string, {message?: string}>)['days']?.message && (
-                  <span style={{ fontSize: 12, color: 'var(--danger)', marginTop: 4, display: 'block' }}>
+                  <span className="text-[12px] text-danger mt-1 block">
                     {(errors.frequency as Record<string, {message?: string}>)['days']!.message}
                   </span>
                 )}
@@ -532,14 +436,14 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
 
             {/* Per Week / Per Month count */}
             {(watchFrequencyType === 'x_per_week' || watchFrequencyType === 'x_per_month') && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 4 }}>
+              <div className="flex items-center gap-2.5 pt-1">
                 <Input
                   type="number"
                   placeholder="3"
                   error={errors.frequency?.count?.message}
                   {...register('frequency.count', { valueAsNumber: true })}
                 />
-                <span style={{ fontSize: 13, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                <span className="text-[13px] text-text-muted whitespace-nowrap">
                   times {watchFrequencyType === 'x_per_week' ? 'per week' : 'per month'}
                 </span>
               </div>
@@ -547,8 +451,8 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
           </div>
 
           {/* Target */}
-          <div style={fieldStyle}>
-            <label style={labelStyle}>Target type</label>
+          <div className={fieldClass}>
+            <label className={labelClass}>Target type</label>
             <Controller
               name="target_type"
               control={control}
@@ -567,7 +471,7 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
             />
 
             {watchTargetType === 'numeric' && (
-              <div style={{ display: 'flex', gap: 10, paddingTop: 4 }}>
+              <div className="flex gap-2.5 pt-1">
                 <Input
                   type="number"
                   placeholder="8"
@@ -585,7 +489,7 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
             )}
 
             {watchTargetType === 'duration' && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 4 }}>
+              <div className="flex items-center gap-2.5 pt-1">
                 <Input
                   type="number"
                   placeholder="30"
@@ -593,7 +497,7 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
                   error={errors.target_value?.message}
                   {...register('target_value', { valueAsNumber: true })}
                 />
-                <span style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 22, whiteSpace: 'nowrap' }}>
+                <span className="text-[13px] text-text-muted mt-[22px] whitespace-nowrap">
                   minutes
                 </span>
               </div>
@@ -612,21 +516,14 @@ export default function HabitForm({ habit, categories, categoryError, onRetryCat
           {serverError && (
             <div
               role="alert"
-              style={{
-                padding: '10px 14px',
-                borderRadius: 10,
-                background: 'color-mix(in srgb, var(--accent-primary) 10%, transparent)',
-                border: '1px solid color-mix(in srgb, var(--accent-primary) 25%, transparent)',
-                color: 'var(--danger, var(--accent-primary))',
-                fontSize: 13,
-              }}
+              className="px-3.5 py-2.5 rounded-md bg-[color-mix(in_srgb,var(--accent-primary)_10%,transparent)] border border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)] text-[13px] text-[var(--danger,var(--accent-primary))]"
             >
               {serverError}
             </div>
           )}
 
           {/* Actions */}
-          <div style={{ display: 'flex', gap: 10, paddingTop: 4 }}>
+          <div className="flex gap-2.5 pt-1">
             <Button
               variant="secondary"
               fullWidth

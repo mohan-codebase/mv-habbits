@@ -47,10 +47,6 @@ export default function FeedList({ currentUserId }: { currentUserId: string }) {
   const [activeCommentEntryId, setActiveCommentEntryId] = useState<string | null>(null);
   const [commentText, setCommentText] = useState('');
 
-  useEffect(() => {
-    fetchFeed();
-  }, []);
-
   const fetchFeed = async () => {
     try {
       const res = await fetch('/api/social/feed');
@@ -120,12 +116,17 @@ export default function FeedList({ currentUserId }: { currentUserId: string }) {
     }
   };
 
+  useEffect(() => {
+    fetchFeed();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const toggleCheer = async (entryId: string) => {
     // Optimistic update
     setItems(current => current.map(item => {
       if (item.id === entryId) {
         const hasCheered = item.feed_reactions.some(r => r.user_id === currentUserId);
-        const newReactions = hasCheered 
+        const newReactions = hasCheered
           ? item.feed_reactions.filter(r => r.user_id !== currentUserId)
           : [...item.feed_reactions, { id: 'temp', user_id: currentUserId }];
         return { ...item, feed_reactions: newReactions };
@@ -136,13 +137,13 @@ export default function FeedList({ currentUserId }: { currentUserId: string }) {
     try {
       // Mock Data Handling: If this is a mock item, don't hit the API
       if (entryId.startsWith('mock-')) {
-        return; 
+        return;
       }
 
       // Find if we already cheered
       const item = items.find(i => i.id === entryId);
       const hasCheered = item?.feed_reactions.some(r => r.user_id === currentUserId);
-      
+
       if (hasCheered) {
         await fetch(`/api/social/reactions?entry_id=${entryId}`, { method: 'DELETE' });
       } else {
@@ -151,7 +152,7 @@ export default function FeedList({ currentUserId }: { currentUserId: string }) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ entry_id: entryId })
         });
-        
+
         // Throw some confetti logic could go here
       }
     } catch (err) {
@@ -164,20 +165,20 @@ export default function FeedList({ currentUserId }: { currentUserId: string }) {
     if (!commentText.trim()) return;
     const text = commentText.trim();
     setCommentText('');
-    
+
     // Mock Data Handling: If this is a mock item, just add it to state directly
     if (entryId.startsWith('mock-')) {
       setItems(current => current.map(item => {
         if (item.id === entryId) {
-          return { 
-            ...item, 
+          return {
+            ...item,
             feed_comments: [...item.feed_comments, {
               id: Date.now().toString(),
               user_id: currentUserId,
               content: text,
               created_at: new Date().toISOString(),
               profiles: { full_name: 'You', avatar_url: '' }
-            }] 
+            }]
           };
         }
         return item;
@@ -192,7 +193,7 @@ export default function FeedList({ currentUserId }: { currentUserId: string }) {
         body: JSON.stringify({ entry_id: entryId, content: text })
       });
       const json = await res.json();
-      
+
       if (json.success) {
         setItems(current => current.map(item => {
           if (item.id === entryId) {
@@ -207,134 +208,117 @@ export default function FeedList({ currentUserId }: { currentUserId: string }) {
   };
 
   if (loading) {
-    return <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>Loading activity feed...</div>;
+    return <div className="text-center p-10 text-text-muted">Loading activity feed...</div>;
   }
 
   if (items.length === 0) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
-        <Activity size={48} style={{ opacity: 0.2, margin: '0 auto 16px' }} />
-        <p style={{ margin: 0, fontWeight: 500, fontSize: 16 }}>No activity to show yet.</p>
-        <p style={{ margin: '4px 0 0', fontSize: 14 }}>When your friends complete habits, they will appear here!</p>
+      <div className="text-center py-10 text-text-muted">
+        <Activity size={48} className="opacity-20 mx-auto mb-4" />
+        <p className="m-0 font-medium text-lg">No activity to show yet.</p>
+        <p className="mt-1 text-[14px]">When your friends complete habits, they will appear here!</p>
       </div>
     );
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div className="flex flex-col gap-4">
       {items.map((item) => {
         const hasCheered = item.feed_reactions.some(r => r.user_id === currentUserId);
         const timeAgo = new Date(item.completed_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        
+
         return (
-          <motion.div 
-            key={item.id} 
+          <motion.div
+            key={item.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            style={{
-              background: 'var(--bg-card)',
-              borderRadius: 24,
-              border: '1px solid var(--border-default)',
-              padding: 24,
-              boxShadow: 'none',
-            }}
+            className="bg-bg-card rounded-[24px] border border-border-default p-6"
           >
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-              <div style={{
-                width: 48, height: 48, borderRadius: '50%', flexShrink: 0,
-                background: 'color-mix(in srgb, var(--accent-primary) 15%, transparent)',
-                color: 'var(--accent-primary)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontWeight: 800, fontSize: 18, overflow: 'hidden'
-              }}>
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-full flex-shrink-0 bg-[color-mix(in_srgb,var(--accent-primary)_15%,transparent)] text-accent-primary flex items-center justify-center font-extrabold text-[18px] overflow-hidden">
                 {item.profiles?.avatar_url ? (
-                  <img src={item.profiles.avatar_url} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={item.profiles.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
                   item.profiles?.full_name?.trim()?.charAt(0)?.toUpperCase() || 'U'
                 )}
               </div>
-              
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+
+              <div className="flex-1">
+                <div className="flex justify-between items-start">
                   <div>
-                    <p style={{ margin: 0, fontSize: 15, color: 'var(--text-primary)', lineHeight: 1.4 }}>
-                      <span style={{ fontWeight: 700 }}>{item.profiles?.full_name || 'Someone'}</span>{' '}
-                      <span style={{ color: 'var(--text-secondary)' }}>completed</span>{' '}
-                      <span style={{ fontWeight: 700, color: item.habits?.color || 'var(--accent-primary)' }}>{item.habits?.name || 'a habit'}</span>
+                    <p className="m-0 text-[15px] text-text-primary leading-[1.4]">
+                      <span className="font-bold">{item.profiles?.full_name || 'Someone'}</span>{' '}
+                      <span className="text-text-secondary">completed</span>{' '}
+                      <span className="font-bold" style={{ color: item.habits?.color || 'var(--accent-primary)' }}>{item.habits?.name || 'a habit'}</span>
                     </p>
-                    <p style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--text-muted)', fontWeight: 500 }}>
+                    <p className="mt-1 text-[12px] text-text-muted font-medium">
                       {new Date(item.completed_at).toLocaleDateString()} at {timeAgo}
                     </p>
                   </div>
                 </div>
 
                 {item.notes && (
-                  <div style={{ marginTop: 12, padding: 12, background: 'var(--bg-secondary)', borderRadius: 12, fontSize: 14, color: 'var(--text-primary)', border: '1px solid var(--border-subtle)' }}>
-                    "{item.notes}"
+                  <div className="mt-3 p-3 bg-bg-secondary rounded-[12px] text-[14px] text-text-primary border border-border-subtle">
+                    {`"${item.notes}"`}
                   </div>
                 )}
 
-                <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 24 }}>
-                  <motion.button 
+                <div className="mt-5 flex items-center gap-6">
+                  <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={() => toggleCheer(item.id)}
-                    style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'transparent', border: 'none', color: hasCheered ? '#F43F5E' : 'var(--text-muted)', fontSize: 13, fontWeight: 700, cursor: 'pointer', transition: 'color 0.2s' }}
+                    className="flex items-center gap-1.5 bg-transparent border-none text-[13px] font-bold cursor-pointer transition-colors"
+                    style={{ color: hasCheered ? '#F43F5E' : 'var(--text-muted)' }}
                   >
                     <HeartIcon size={18} fill={hasCheered ? '#F43F5E' : 'transparent'} color={hasCheered ? '#F43F5E' : 'currentColor'} />
                     {item.feed_reactions.length}
                   </motion.button>
-                  <button 
+                  <button
                     onClick={() => setActiveCommentEntryId(activeCommentEntryId === item.id ? null : item.id)}
-                    style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'color 0.2s' }}
+                    className="flex items-center gap-1.5 bg-transparent border-none text-text-muted text-[13px] font-semibold cursor-pointer transition-colors"
                   >
                     <MessageSquare size={18} />
                     {item.feed_comments.length}
                   </button>
-                  <button style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6, background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                  <button className="ml-auto flex items-center gap-1.5 bg-transparent border-none text-text-muted text-[13px] font-semibold cursor-pointer">
                     <Share2 size={18} />
                   </button>
                 </div>
 
                 <AnimatePresence>
                   {activeCommentEntryId === item.id && (
-                    <motion.div 
-                      initial={{ opacity: 0, height: 0 }} 
-                      animate={{ opacity: 1, height: 'auto' }} 
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      style={{ marginTop: 16, overflow: 'hidden' }}
+                      className="mt-4 overflow-hidden"
                     >
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 12 }}>
+                      <div className="flex flex-col gap-3 mb-3">
                         {item.feed_comments.map(comment => (
-                          <div key={comment.id} style={{ display: 'flex', gap: 10 }}>
-                            <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--border-default)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700 }}>
+                          <div key={comment.id} className="flex gap-2.5">
+                            <div className="w-7 h-7 rounded-full bg-border-default flex-shrink-0 flex items-center justify-center text-[12px] font-bold">
                               {comment.profiles?.full_name?.trim()?.charAt(0)?.toUpperCase() || 'U'}
                             </div>
-                            <div style={{ background: 'var(--bg-secondary)', padding: '8px 12px', borderRadius: 16, borderTopLeftRadius: 4, flex: 1 }}>
-                              <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{comment.profiles?.full_name || 'User'}</p>
-                              <p style={{ margin: '2px 0 0', fontSize: 14, color: 'var(--text-primary)' }}>{comment.content}</p>
+                            <div className="bg-bg-secondary px-3 py-2 rounded-[16px] rounded-tl-[4px] flex-1">
+                              <p className="m-0 text-[13px] font-bold text-text-primary">{comment.profiles?.full_name || 'User'}</p>
+                              <p className="mt-0.5 text-[14px] text-text-primary">{comment.content}</p>
                             </div>
                           </div>
                         ))}
                       </div>
 
-                      <div style={{ display: 'flex', gap: 8 }}>
-                        <input 
-                          type="text" 
-                          placeholder="Write a comment..." 
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="Write a comment..."
                           value={commentText}
                           onChange={e => setCommentText(e.target.value)}
                           onKeyDown={e => e.key === 'Enter' && submitComment(item.id)}
-                          style={{
-                            flex: 1, background: 'var(--bg-secondary)', border: '1px solid var(--border-default)',
-                            borderRadius: 9999, padding: '8px 16px', fontSize: 14, color: 'var(--text-primary)', outline: 'none'
-                          }}
+                          className="flex-1 bg-bg-secondary border border-border-default rounded-full px-4 py-2 text-[14px] text-text-primary outline-none"
                         />
-                        <button 
+                        <button
                           onClick={() => submitComment(item.id)}
-                          style={{
-                            width: 38, height: 38, borderRadius: '50%', background: 'var(--accent-primary)', color: 'var(--accent-on-primary)',
-                            border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
-                          }}
+                          className="w-[38px] h-[38px] rounded-full bg-accent-primary text-accent-on-primary border-none flex items-center justify-center cursor-pointer"
                         >
                           <Send size={16} />
                         </button>
