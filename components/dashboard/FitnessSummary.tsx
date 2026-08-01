@@ -85,29 +85,30 @@ function CircularProgress({
     <DashCard
       title="Today's Progress"
       action={
-        <div style={{
-          padding: '4px 12px',
-          borderRadius: 9999,
-          background: `color-mix(in srgb, ${accentHex} 14%, transparent)`,
-          border: `1px solid color-mix(in srgb, ${accentHex} 30%, transparent)`,
-        }}>
-          <span style={{ fontSize: 13, fontWeight: 800, color: accentHex }}>{pct}%</span>
+        <div
+          className="rounded-full px-3 py-1"
+          style={{
+            background: `color-mix(in srgb, ${accentHex} 14%, transparent)`,
+            border: `1px solid color-mix(in srgb, ${accentHex} 30%, transparent)`,
+          }}
+        >
+          <span className="text-[13px] font-extrabold" style={{ color: accentHex }}>{pct}%</span>
         </div>
       }
     >
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 16, width: '100%' }}>
-          <span style={{ fontSize: 24, fontWeight: 850, color: TEXT_DARK, letterSpacing: '-0.03em', fontFamily: "'Outfit', sans-serif" }}>
+      <div className="flex w-full flex-col items-center">
+        <div className="mb-4 flex w-full items-baseline gap-1.5">
+          <span className="font-[Outfit] text-2xl font-[850] tracking-[-0.03em] text-text-primary">
             {completed} of {total}
           </span>
-          <span style={{ fontSize: 14, fontWeight: 600, color: TEXT_MUTED }}>
+          <span className="text-sm font-semibold text-text-muted">
             habits completed
           </span>
         </div>
 
         {/* Ring */}
-        <div style={{ position: 'relative', width: size, height: size, margin: '8px 0 16px' }}>
-          <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+        <div className="relative my-2 mb-4" style={{ width: size, height: size }}>
+          <svg width={size} height={size} className="-rotate-90">
             {/* Track */}
             <circle
               cx={size / 2}
@@ -133,19 +134,11 @@ function CircularProgress({
             />
           </svg>
           {/* Centre label */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 2,
-          }}>
-            <span style={{ fontSize: 38, fontWeight: 850, color: TEXT_DARK, letterSpacing: '-0.04em', lineHeight: 1, fontFamily: "'Outfit', sans-serif" }}>
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5">
+            <span className="font-[Outfit] text-[38px] font-[850] leading-none tracking-[-0.04em] text-text-primary">
               {pct}%
             </span>
-            <span style={{ fontSize: 12, fontWeight: 600, color: TEXT_MUTED, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+            <span className="text-xs font-semibold uppercase tracking-[0.04em] text-text-muted">
               complete
             </span>
           </div>
@@ -153,20 +146,17 @@ function CircularProgress({
 
         {/* Per-habit dots */}
         {total > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', width: '100%', marginTop: 12 }}>
+          <div className="mt-3 flex w-full flex-wrap justify-center gap-2">
             {Array.from({ length: total }, (_, i) => (
               <motion.div
                 key={i}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.2, delay: 0.3 + i * 0.04 }}
+                className="h-[11px] w-[11px] rounded-full shadow-none"
                 style={{
-                  width: 11,
-                  height: 11,
-                  borderRadius: '50%',
                   background: i < completed ? accentHex : 'transparent',
                   border: `2px solid ${i < completed ? accentHex : `color-mix(in srgb, ${accentHex} 35%, transparent)`}`,
-                  boxShadow: 'none',
                 }}
               />
             ))}
@@ -218,12 +208,8 @@ function HabitRow({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.22, delay: index * 0.03 }}
+      className="relative box-border flex w-full cursor-pointer flex-col gap-2.5 overflow-hidden rounded-[20px] p-[14px_16px] shadow-none transition-all duration-[220ms] ease-in-out"
       style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 10,
-        padding: '14px 16px',
         background: done
           ? (bad
               ? 'rgba(248, 113, 113, 0.07)'
@@ -234,49 +220,28 @@ function HabitRow({
             ? (bad ? 'rgba(248, 113, 113, 0.3)' : `color-mix(in srgb, ${accentHex} 30%, transparent)`)
             : 'var(--border-default)'
         }`,
-        borderRadius: 20,
-        width: '100%',
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-        transition: 'all 0.22s ease',
-        boxShadow: 'none',
-        cursor: 'pointer',
       }}
       onClick={() => onOpen(habit.id)}
     >
       {/* Top Row: Icon + Name + Streak */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div className="flex items-center gap-3">
         {/* Icon Circle */}
         <div
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all duration-200 ease-in-out"
           style={{
-            width: 40,
-            height: 40,
-            borderRadius: 9999,
             background: done ? accentHex : accentLight,
             color: done ? '#FFFFFF' : accentHex,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            transition: 'all 0.2s ease',
           }}
         >
           <DynamicIcon name={icon} size={19} color={done ? '#FFFFFF' : accentHex} />
         </div>
 
         {/* Text */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-[7px]">
             <p
+              className="m-0 truncate text-[14.5px] font-bold tracking-[-0.01em] text-text-primary"
               style={{
-                margin: 0,
-                fontSize: 14.5,
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-                letterSpacing: '-0.01em',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
                 textDecoration: done && !bad ? 'line-through' : 'none',
                 opacity: done && !bad ? 0.75 : 1,
               }}
@@ -284,37 +249,12 @@ function HabitRow({
               {habit.name}
             </p>
             {streak > 0 && (
-              <span
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 3,
-                  fontSize: 10.5,
-                  fontWeight: 750,
-                  padding: '2px 6px',
-                  borderRadius: 9999,
-                  background: 'rgba(245, 158, 11, 0.12)',
-                  border: '1px solid rgba(245, 158, 11, 0.28)',
-                  color: '#f59e0b',
-                  lineHeight: 1,
-                  flexShrink: 0,
-                }}
-              >
-                <Flame size={11} style={{ display: 'inline', marginRight: 1 }} />{streak}d
+              <span className="inline-flex shrink-0 items-center gap-[3px] rounded-full bg-[rgba(245,158,11,0.12)] border border-[rgba(245,158,11,0.28)] p-[2px_6px] text-[10.5px] font-[750] leading-none text-[#f59e0b]">
+                <Flame size={11} className="inline mr-px" />{streak}d
               </span>
             )}
           </div>
-          <p
-            style={{
-              margin: '2px 0 0',
-              fontSize: 11.5,
-              fontWeight: 500,
-              color: 'var(--text-muted)',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
+          <p className="m-0 mt-0.5 truncate text-[11.5px] font-medium text-text-muted">
             {subtitle}
           </p>
         </div>
@@ -344,35 +284,31 @@ function StatPill({ label, value, accent, color }: { label: string; value: strin
 
   return (
     <motion.div
+      className="relative overflow-hidden rounded-3xl p-[14px_20px] shadow-none [backdrop-filter:blur(10px)]"
       style={{
-        position: 'relative',
-        borderRadius: 24,
-        padding: '14px 20px',
         background: accent
           ? `linear-gradient(135deg, color-mix(in srgb, ${c} 18%, transparent) 0%, color-mix(in srgb, ${c} 6%, transparent) 100%), var(--bg-card)`
           : 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.008) 100%), var(--bg-card)',
         border: accent
           ? `1px solid color-mix(in srgb, ${c} 40%, transparent)`
           : '1px solid var(--border-default)',
-        boxShadow: 'none',
-        backdropFilter: 'blur(10px)',
-        overflow: 'hidden',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-        <p style={{ margin: 0, fontSize: 10.5, fontWeight: 750, color: TEXT_MUTED, letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', paddingRight: 4 }}>
+      <div className="mb-1 flex items-center justify-between">
+        <p className="m-0 truncate pr-1 text-[10.5px] font-[750] uppercase tracking-[0.06em] text-text-muted">
           {label}
         </p>
-        <div style={{
-          width: 26, height: 26, borderRadius: 8,
-          background: `color-mix(in srgb, ${c} 15%, transparent)`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: c,
-        }}>
+        <div
+          className="flex h-[26px] w-[26px] items-center justify-center rounded-lg"
+          style={{
+            background: `color-mix(in srgb, ${c} 15%, transparent)`,
+            color: c,
+          }}
+        >
           <IconComp size={14} />
         </div>
       </div>
-      <p style={{ margin: 0, fontSize: 24, fontWeight: 850, color: accent ? c : TEXT_DARK, letterSpacing: '-0.03em', fontFamily: "'Outfit', sans-serif" }}>
+      <p className="m-0 font-[Outfit] text-2xl font-[850] tracking-[-0.03em]" style={{ color: accent ? c : TEXT_DARK }}>
         {value}
       </p>
     </motion.div>
@@ -665,93 +601,71 @@ function HabitDetailSheet({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(0, 0, 0,0.45)' }}
+        className="fixed inset-0 z-[200] bg-[rgba(0,0,0,0.45)]"
       />
 
       {/* Floating card */}
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 201,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: 16, pointerEvents: 'none',
-      }}>
+      <div className="pointer-events-none fixed inset-0 z-[201] flex items-center justify-center p-4">
         <motion.div
-          className="hf-modal-panel"
+          className="hf-modal-panel pointer-events-auto relative w-full max-w-[490px] max-h-[90dvh] overflow-y-auto rounded-[28px] p-[26px_22px_34px] shadow-none [font-family:system-ui,-apple-system,sans-serif]"
           initial={{ opacity: 0, scale: 0.94, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: 12 }}
           transition={{ type: 'spring', damping: 28, stiffness: 340 }}
           onClick={(e) => e.stopPropagation()}
           style={{
-            position: 'relative',
-            pointerEvents: 'auto',
-            width: '100%', maxWidth: 490,
             background: 'var(--bg-card)',
             backdropFilter: 'none',
             WebkitBackdropFilter: 'none',
             border: `1px solid color-mix(in srgb, ${PURPLE} 35%, transparent)`,
-            borderRadius: 28,
-            maxHeight: '90dvh',
-            overflowY: 'auto',
-            padding: '26px 22px 34px',
-            fontFamily: "system-ui, -apple-system, sans-serif",
-            boxShadow: 'none',
           }}
         >
           {/* Header */}
-          <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: 14, marginTop: 0, marginBottom: 22 }}>
+          <div className="relative z-[1] mt-0 mb-[22px] flex items-center gap-3.5">
             <motion.div
               whileHover={{ scale: 1.05 }}
+              className="flex h-[58px] w-[58px] shrink-0 items-center justify-center overflow-hidden rounded-xl shadow-none"
               style={{
-                width: 58, height: 58, borderRadius: 18,
                 background: `linear-gradient(135deg, ${PURPLE} 0%, color-mix(in srgb, ${PURPLE} 75%, black) 100%)`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0, overflow: 'hidden',
-                boxShadow: 'none',
               }}
             >
               <DynamicIcon name={editMode ? editIcon : (habit.icon ?? 'circle-check')} size={28} color="#FFFFFF" />
             </motion.div>
-            <div style={{ flex: 1, minWidth: 0 }}>
+            <div className="min-w-0 flex-1">
               {editMode ? (
                 <input
                   autoFocus
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
+                  className="box-border w-full rounded-xl p-[8px_14px] text-lg font-extrabold text-text-primary outline-none font-[Outfit]"
                   style={{
-                    width: '100%', boxSizing: 'border-box',
                     background: 'var(--input-bg)', border: `1.5px solid ${PURPLE}`,
-                    borderRadius: 12, padding: '8px 14px',
-                    fontSize: 18, fontWeight: 800, color: TEXT_DARK,
-                    outline: 'none', fontFamily: "'Outfit', sans-serif",
                     boxShadow: `0 0 12px color-mix(in srgb, ${PURPLE} 30%, transparent)`,
                   }}
                 />
               ) : (
                 <>
-                  <h2 style={{ margin: 0, fontSize: 22, fontWeight: 850, color: TEXT_DARK, letterSpacing: '-0.025em', fontFamily: "'Outfit', sans-serif", whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                  <h2 className="m-0 truncate text-[22px] font-[850] tracking-[-0.025em] text-text-primary font-[Outfit]">
                     {habit.name}
                   </h2>
-                  <p style={{ margin: '3px 0 0', fontSize: 13, color: TEXT_MUTED, fontWeight: 500, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                  <p className="m-0 mt-[3px] truncate text-[13px] font-medium text-text-muted">
                     {habit.description ?? (habit.frequency?.type === 'daily' ? 'Daily habit' : 'Habit')}
                   </p>
                 </>
               )}
             </div>
-            <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+            <div className="flex shrink-0 gap-2">
               {!editMode && (
                 <>
                   <motion.button
                     whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.92 }}
                     onClick={() => generateHabitReport(habit, rate, monthDone, monthRate)}
+                    className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
                     style={{
-                      width: 36, height: 36, borderRadius: '50%',
                       background: PURPLE_LIGHT,
                       border: `1px solid color-mix(in srgb, ${PURPLE} 25%, transparent)`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      cursor: 'pointer',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                     }}
                     title="Download PDF Report"
                   >
@@ -761,13 +675,10 @@ function HabitDetailSheet({
                     whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.92 }}
                     onClick={() => { setEditName(habit.name); setEditIcon(habit.icon ?? 'circle-check'); setEditColor(habit.color || '#555555'); setEditNotes(habit.description ?? ''); setEditMode(true); }}
+                    className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
                     style={{
-                      width: 36, height: 36, borderRadius: '50%',
                       background: PURPLE_LIGHT,
                       border: `1px solid color-mix(in srgb, ${PURPLE} 25%, transparent)`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      cursor: 'pointer',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                     }}
                   >
                     <DynamicIcon name="pencil" size={16} color={PURPLE} />
@@ -778,13 +689,11 @@ function HabitDetailSheet({
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.92 }}
                 onClick={editMode ? () => setEditMode(false) : onClose}
+                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-lg font-bold shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
                 style={{
-                  width: 36, height: 36, borderRadius: '50%',
                   background: PURPLE_MID,
                   border: `1px solid color-mix(in srgb, ${PURPLE} 30%, transparent)`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  cursor: 'pointer', color: PURPLE, fontWeight: 700, fontSize: 18,
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                  color: PURPLE,
                 }}
               >
                 ×
@@ -794,43 +703,46 @@ function HabitDetailSheet({
 
           {/* Edit mode — icon picker + save */}
           {editMode && (
-            <div style={{ ...GLASS_NESTED_PURPLE, borderRadius: 18, padding: '16px', marginBottom: 16 }}>
-              <p style={{ margin: '0 0 10px', fontSize: 12, fontWeight: 700, color: TEXT_MUTED, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+            <div className="mb-4 rounded-xl p-4" style={{ ...GLASS_NESTED_PURPLE }}>
+              <p className="m-0 mb-2.5 text-xs font-bold uppercase tracking-[0.07em] text-text-muted">
                 Choose icon
               </p>
-              <div className="hf-icon-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, minmax(0, 1fr))', gap: 8, marginBottom: 16, maxHeight: 200, overflowY: 'auto', paddingRight: 2 }}>
+              <div className="hf-icon-grid mb-4 grid max-h-[200px] grid-cols-6 gap-2 overflow-y-auto pr-0.5">
                 {HABIT_ICONS.map((ic) => {
                   const active = editIcon === ic;
                   return (
-                    <button key={ic} onClick={() => setEditIcon(ic)} title={ic} style={{
-                      width: '100%', aspectRatio: '1', borderRadius: 12, border: `2px solid ${active ? PURPLE : 'transparent'}`,
-                      background: PURPLE_LIGHT,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      cursor: 'pointer',
-                      boxShadow: active ? `0 2px 10px ${PURPLE_LIGHT}` : 'none',
-                      transition: 'all 0.15s', transform: active ? 'scale(1.1)' : 'scale(1)',
-                    }}>
+                    <button
+                      key={ic}
+                      onClick={() => setEditIcon(ic)}
+                      title={ic}
+                      className="flex aspect-square w-full cursor-pointer items-center justify-center rounded-xl transition-all duration-150"
+                      style={{
+                        border: `2px solid ${active ? PURPLE : 'transparent'}`,
+                        background: PURPLE_LIGHT,
+                        boxShadow: active ? `0 2px 10px ${PURPLE_LIGHT}` : 'none',
+                        transform: active ? 'scale(1.1)' : 'scale(1)',
+                      }}
+                    >
                       <DynamicIcon name={ic} size={20} color={active ? PURPLE : TEXT_MUTED} />
                     </button>
                   );
                 })}
               </div>
-              <p style={{ margin: '0 0 10px', fontSize: 12, fontWeight: 700, color: TEXT_MUTED, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+              <p className="m-0 mb-2.5 text-xs font-bold uppercase tracking-[0.07em] text-text-muted">
                 Color
               </p>
-              <div style={{ marginBottom: 16 }}>
+              <div className="mb-4">
                 <ColorPicker value={editColor} onChange={setEditColor} />
               </div>
-              {saveError && <p style={{ margin: '0 0 10px', fontSize: 12, color: '#6a6a6a' }}>{saveError}</p>}
+              {saveError && <p className="m-0 mb-2.5 text-xs text-[#6a6a6a]">{saveError}</p>}
               <button
                 onClick={saveEdit}
                 disabled={saving}
+                className="w-full rounded-2xl border-none p-[13px_0] text-[15px] font-bold shadow-none"
                 style={{
-                  width: '100%', padding: '13px 0', borderRadius: 14, border: 'none',
                   background: saving ? 'var(--accent-light)' : PURPLE,
-                  color: 'var(--accent-on-primary)', fontSize: 15, fontWeight: 700,
+                  color: 'var(--accent-on-primary)',
                   cursor: saving ? 'default' : 'pointer',
-                  boxShadow: 'none',
                 }}
               >
                 {saving ? 'Saving…' : 'Save Changes'}
@@ -839,7 +751,7 @@ function HabitDetailSheet({
           )}
 
           {/* Stat pills */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16 }}>
+          <div className="mb-4 grid grid-cols-2 gap-2.5">
             <StatPill label="Current Streak" value={`${habit.current_streak}d`} accent color={PURPLE} />
             <StatPill label="Longest Streak" value={`${habit.longest_streak}d`} />
             <StatPill label="30-day Rate" value={`${rate}%`} accent color={PURPLE} />
@@ -847,39 +759,38 @@ function HabitDetailSheet({
           </div>
 
           {/* Weekly report — this habit, last 7 days */}
-          <div style={{ ...GLASS_NESTED, borderRadius: 18, padding: '14px 12px 10px', marginBottom: 14 }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', padding: '0 4px', marginBottom: 6 }}>
-              <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: TEXT_MUTED, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+          <div className="mb-3.5 rounded-xl p-[14px_12px_10px]" style={{ ...GLASS_NESTED }}>
+            <div className="mb-1.5 flex items-baseline justify-between px-1">
+              <p className="m-0 text-xs font-bold uppercase tracking-[0.07em] text-text-muted">
                 Weekly report
               </p>
-              <span style={{ fontSize: 12, fontWeight: 700, color: PURPLE }}>{weekChartAvg}% avg</span>
+              <span className="text-xs font-bold" style={{ color: PURPLE }}>{weekChartAvg}% avg</span>
             </div>
             {loading
-              ? <p style={{ margin: 0, fontSize: 13, color: TEXT_MUTED, textAlign: 'center', padding: '24px 0' }}>Loading…</p>
+              ? <p className="m-0 p-[24px_0] text-center text-[13px] text-text-muted">Loading…</p>
               : <WeeklyReportChart data={weekChart} avg={weekChartAvg} color={PURPLE} />}
           </div>
 
           {/* Calendar */}
-          <div style={{ ...GLASS_NESTED, borderRadius: 18, padding: '16px 14px', marginBottom: 14 }}>
+          <div className="mb-3.5 rounded-xl p-[16px_14px]" style={{ ...GLASS_NESTED }}>
             {/* Month header + navigation */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+            <div className="mb-3.5 flex items-center justify-between">
               <button
                 onClick={() => setMonthOffset((o) => o - 1)}
                 disabled={!canGoBack}
+                className="flex h-8 w-8 items-center justify-center rounded-full border-none text-lg font-bold"
                 style={{
-                  width: 32, height: 32, borderRadius: '50%',
                   background: canGoBack ? PURPLE_LIGHT : 'transparent',
-                  border: 'none', cursor: canGoBack ? 'pointer' : 'default',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: canGoBack ? PURPLE : 'var(--drag-handle)', fontSize: 18, fontWeight: 700,
+                  cursor: canGoBack ? 'pointer' : 'default',
+                  color: canGoBack ? PURPLE : 'var(--drag-handle)',
                 }}
               >‹</button>
 
-              <div style={{ textAlign: 'center' }}>
-                <p style={{ margin: 0, fontSize: 15, fontWeight: 800, color: TEXT_DARK, letterSpacing: '-0.01em' }}>
+              <div className="text-center">
+                <p className="m-0 text-[15px] font-extrabold tracking-[-0.01em] text-text-primary">
                   {MONTHS[calMonth]} {calYear}
                 </p>
-                <p style={{ margin: '2px 0 0', fontSize: 11, color: TEXT_MUTED }}>
+                <p className="m-0 mt-0.5 text-[11px] text-text-muted">
                   {monthDone} done · {monthRate}% this month
                 </p>
               </div>
@@ -908,15 +819,11 @@ function HabitDetailSheet({
               const rowStyle: React.CSSProperties = { display: 'flex', gap: '4px', width: '100%' };
 
               return (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '100%' }}>
+                <div className="flex w-full flex-col gap-1">
                   {/* Day-of-week headers */}
                   <div style={rowStyle}>
                     {DOW_LABELS.map((d, i) => (
-                      <div key={i} style={{
-                        flex: '1 1 0', textAlign: 'center',
-                        fontSize: 10, fontWeight: 700, color: TEXT_MUTED,
-                        paddingBottom: 4,
-                      }}>
+                      <div key={i} className="flex-1 pb-1 text-center text-[10px] font-bold text-text-muted">
                         {d}
                       </div>
                     ))}
@@ -927,7 +834,7 @@ function HabitDetailSheet({
                     <div key={wi} style={rowStyle}>
                       {week.map((cell, di) => {
                         if (!cell) {
-                          return <div key={di} style={{ flex: '1 1 0', height: CELL_H }} />;
+                          return <div key={di} className="flex-1" style={{ height: CELL_H }} />;
                         }
                         const bg = cell.isFuture
                           ? 'transparent'
@@ -940,43 +847,31 @@ function HabitDetailSheet({
                         const isSelected = cell.date === activeLogDate;
                         const hasVideo = entryVideoMap.get(cell.date);
                         return (
-                          <div key={di} style={{ flex: '1 1 0', display: 'flex', justifyContent: 'center', minWidth: 0 }}>
+                          <div key={di} className="flex min-w-0 flex-1 justify-center">
                             <motion.div
                               onClick={interactive && !isSaving ? () => setActiveLogDate(cell.date) : undefined}
                               title={interactive ? (cell.completed ? 'Tap to view details/unmark' : 'Tap to view details/mark done') : undefined}
+                              className="flex aspect-square w-full max-w-10 items-center justify-center rounded-full text-[11.5px] shadow-none transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] [-webkit-tap-highlight-color:transparent]"
                               style={{
-                                width: '100%',
-                                maxWidth: 40,
-                                aspectRatio: '1 / 1',
-                                borderRadius: '50%',
                               background: bg,
                               border: isSelected
                                 ? '2px solid #ffffff'
                                 : cell.isToday
                                   ? `2px solid ${PURPLE_HEX}`
                                   : '1px solid transparent',
-                              boxShadow: 'none',
-                              display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              fontSize: 11.5,
                               fontWeight: cell.isToday || isSelected || cell.completed ? 850 : 500,
                               color: txtColor,
                               cursor: interactive ? 'pointer' : 'default',
                               opacity: isSaving ? 0.5 : 1,
-                              transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
-                                WebkitTapHighlightColor: 'transparent',
                               }}
                             >
-                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', position: 'relative', width: '100%' }}>
+                              <div className="relative flex h-full w-full flex-col items-center justify-center">
                                 <span>{cell.day}</span>
                               {hasVideo && (
-                                <div style={{
-                                  position: 'absolute',
-                                  bottom: 3,
-                                  width: 4,
-                                  height: 4,
-                                  borderRadius: '50%',
-                                  background: cell.completed ? '#fff' : PURPLE,
-                                }} />
+                                <div
+                                  className="absolute bottom-[3px] h-1 w-1 rounded-full"
+                                  style={{ background: cell.completed ? '#fff' : PURPLE }}
+                                />
                                 )}
                               </div>
                             </motion.div>
@@ -987,22 +882,21 @@ function HabitDetailSheet({
                   ))}
 
                   {/* Legend */}
-                  <div style={{ display: 'flex', gap: 10, marginTop: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <div className="mt-3 flex flex-wrap justify-center gap-2.5">
                     {[
                       { bg: PURPLE, label: 'Done', txt: '#fff' },
                       { bg: PURPLE_LIGHT, label: 'Missed', txt: TEXT_MUTED },
                       { bg: 'transparent', label: 'Today', txt: PURPLE_HEX, border: `2px solid ${PURPLE_HEX}` },
                     ].map(({ bg, label, txt, border }) => (
-                      <div key={label} style={{
-                        display: 'flex', alignItems: 'center', gap: 6,
-                        padding: '4px 10px', borderRadius: 9999,
-                        background: 'var(--bg-tertiary)', border: '1px solid var(--border-subtle)',
-                      }}>
-                        <div style={{
-                          width: 8, height: 8, borderRadius: '50%',
-                          background: bg, border: border ?? 'none',
-                        }} />
-                        <span style={{ fontSize: 11.5, fontWeight: 650, color: 'var(--text-secondary)' }}>{label}</span>
+                      <div
+                        key={label}
+                        className="flex items-center gap-1.5 rounded-full border border-border-subtle bg-bg-tertiary p-[4px_10px]"
+                      >
+                        <div
+                          className="h-2 w-2 rounded-full"
+                          style={{ background: bg, border: border ?? 'none' }}
+                        />
+                        <span className="text-[11.5px] font-[650] text-text-secondary">{label}</span>
                       </div>
                     ))}
                   </div>
@@ -1012,13 +906,13 @@ function HabitDetailSheet({
           </div>
 
           {/* Daily Log & Video Proof Card */}
-          <div style={{ ...GLASS_NESTED, borderRadius: 20, padding: '18px 16px', marginBottom: 14 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 750, color: TEXT_DARK, display: 'flex', alignItems: 'center', gap: 7 }}>
+          <div className="mb-3.5 rounded-[20px] p-[18px_16px]" style={{ ...GLASS_NESTED }}>
+            <div className="mb-3.5 flex items-center justify-between">
+              <h3 className="m-0 flex items-center gap-[7px] text-sm font-[750] text-text-primary">
                 <CalendarCheck size={17} color={PURPLE} />
                 Log: {activeLogDate === todayLocal ? 'Today' : activeLogDate}
               </h3>
-              
+
               {/* Custom Animated Pill Toggle Button */}
               <motion.button
                 type="button"
@@ -1026,12 +920,8 @@ function HabitDetailSheet({
                 whileTap={{ scale: 0.96 }}
                 disabled={savingDay === activeLogDate}
                 onClick={() => markDay(activeLogDate, activeEntry?.is_completed ?? false)}
+                className="inline-flex items-center gap-1.5 rounded-full p-[6px_14px] text-[12.5px] font-[750] shadow-none transition-all duration-[180ms]"
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '6px 14px',
-                  borderRadius: 9999,
                   border: activeEntry?.is_completed
                     ? `1px solid ${PURPLE}`
                     : '1px solid var(--border-default)',
@@ -1039,11 +929,7 @@ function HabitDetailSheet({
                     ? `color-mix(in srgb, ${PURPLE} 16%, var(--bg-card))`
                     : 'var(--bg-tertiary)',
                   color: activeEntry?.is_completed ? PURPLE : 'var(--text-muted)',
-                  fontSize: 12.5,
-                  fontWeight: 750,
                   cursor: 'pointer',
-                  transition: 'all 0.18s ease',
-                  boxShadow: 'none',
                 }}
               >
                 <CheckCircle2 size={15} color={activeEntry?.is_completed ? PURPLE : 'var(--text-muted)'} />
@@ -1052,30 +938,22 @@ function HabitDetailSheet({
             </div>
 
             {/* Notes input */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 14 }}>
-              <span style={{ fontSize: 11, fontWeight: 750, color: TEXT_MUTED, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+            <div className="mb-3.5 flex flex-col gap-1.5">
+              <span className="text-[11px] font-[750] uppercase tracking-[0.07em] text-text-muted">
                 Entry Notes
               </span>
-              <div style={{
-                display: 'flex', gap: 8, alignItems: 'center',
-                background: 'var(--input-bg)', border: '1px solid var(--input-border)',
-                borderRadius: 12, padding: '4px 6px 4px 12px',
-                transition: 'border-color 0.15s ease',
-              }}>
+              <div
+                className="flex items-center gap-2 rounded-xl p-[4px_6px_4px_12px] transition-[border-color] duration-150 ease-linear"
+                style={{
+                  background: 'var(--input-bg)', border: '1px solid var(--input-border)',
+                }}
+              >
                 <input
                   type="text"
                   value={notesInput}
                   onChange={(e) => setNotesInput(e.target.value)}
                   placeholder="What did you achieve today?"
-                  style={{
-                    flex: 1,
-                    background: 'transparent',
-                    border: 'none',
-                    fontSize: 13,
-                    color: TEXT_DARK,
-                    outline: 'none',
-                    fontFamily: 'inherit',
-                  }}
+                  className="flex-1 border-none bg-transparent text-[13px] text-text-primary outline-none [font-family:inherit]"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
@@ -1089,16 +967,11 @@ function HabitDetailSheet({
                   whileTap={{ scale: 0.97 }}
                   onClick={saveActiveNotes}
                   disabled={savingNotes || notesInput === (activeEntry?.notes ?? '')}
+                  className="rounded-full border-none p-[7px_14px] text-xs font-bold transition-all duration-150 ease-linear"
                   style={{
-                    padding: '7px 14px',
-                    borderRadius: 9999,
-                    border: 'none',
                     background: notesInput === (activeEntry?.notes ?? '') ? 'var(--bg-tertiary)' : PURPLE,
                     color: notesInput === (activeEntry?.notes ?? '') ? 'var(--text-muted)' : 'var(--accent-on-primary)',
-                    fontSize: 12,
-                    fontWeight: 700,
                     cursor: notesInput === (activeEntry?.notes ?? '') ? 'default' : 'pointer',
-                    transition: 'all 0.15s ease',
                   }}
                 >
                   {savingNotes ? 'Saving…' : 'Save'}
@@ -1108,28 +981,29 @@ function HabitDetailSheet({
           </div>
 
           {/* Completion rate bar */}
-          <div style={{ ...GLASS_NESTED, borderRadius: 18, padding: '16px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: TEXT_DARK }}>
+          <div className="rounded-xl p-4" style={{ ...GLASS_NESTED }}>
+            <div className="mb-2.5 flex justify-between">
+              <p className="m-0 text-[13px] font-bold text-text-primary">
                 {MONTHS[calMonth]} Completion
               </p>
-              <span style={{ fontSize: 13, fontWeight: 700, color: PURPLE }}>{monthRate}%</span>
+              <span className="text-[13px] font-bold" style={{ color: PURPLE }}>{monthRate}%</span>
             </div>
-            <div style={{ height: 10, borderRadius: 5, background: PURPLE_LIGHT, overflow: 'hidden' }}>
+            <div className="h-2.5 overflow-hidden rounded-[5px]" style={{ background: PURPLE_LIGHT }}>
               <motion.div
                 key={`${calYear}-${calMonth}`}
                 initial={{ width: 0 }}
                 animate={{ width: `${monthRate}%` }}
                 transition={{ duration: 0.7, ease: 'easeOut' }}
-                style={{ height: '100%', background: `linear-gradient(90deg, ${PURPLE}, color-mix(in srgb, ${PURPLE} 65%, #fff))`, borderRadius: 5 }}
+                className="h-full rounded-[5px]"
+                style={{ background: `linear-gradient(90deg, ${PURPLE}, color-mix(in srgb, ${PURPLE} 65%, #fff))` }}
               />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', margin: '8px 0 0', gap: 12 }}>
-              <p style={{ margin: 0, fontSize: 12, color: TEXT_MUTED }}>
-                <span style={{ fontWeight: 700, color: TEXT_DARK }}>{monthDone}</span> of {daysElapsed} days completed
+            <div className="mt-2 flex items-baseline justify-between gap-3">
+              <p className="m-0 text-xs text-text-muted">
+                <span className="font-bold text-text-primary">{monthDone}</span> of {daysElapsed} days completed
               </p>
-              <p style={{ margin: 0, fontSize: 12, color: TEXT_MUTED, whiteSpace: 'nowrap' }}>
-                <span style={{ fontWeight: 700, color: TEXT_DARK }}>{daysRemaining}</span> {daysRemaining === 1 ? 'day' : 'days'} left
+              <p className="m-0 whitespace-nowrap text-xs text-text-muted">
+                <span className="font-bold text-text-primary">{daysRemaining}</span> {daysRemaining === 1 ? 'day' : 'days'} left
               </p>
             </div>
           </div>
@@ -1138,38 +1012,28 @@ function HabitDetailSheet({
           {!confirmDelete ? (
             <button
               onClick={() => setConfirmDelete(true)}
-              style={{
-                marginTop: 16, width: '100%', padding: '14px 0', borderRadius: 16, border: 'none',
-                background: 'rgba(239, 68, 68, 0.1)',
-                color: '#EF4444', fontSize: 14, fontWeight: 700,
-                cursor: 'pointer', fontFamily: 'inherit',
-              }}
+              className="mt-4 w-full rounded-2xl border-none bg-[rgba(239,68,68,0.1)] p-[14px_0] text-sm font-bold text-[#EF4444] cursor-pointer [font-family:inherit]"
             >
               Delete Habit
             </button>
           ) : (
-            <div style={{ marginTop: 16, background: 'rgba(104, 104, 104,0.08)', borderRadius: 16, padding: '16px' }}>
-              <p style={{ margin: '0 0 12px', fontSize: 13, color: '#6a6a6a', fontWeight: 600, textAlign: 'center' }}>
+            <div className="mt-4 rounded-2xl bg-[rgba(104,104,104,0.08)] p-4">
+              <p className="m-0 mb-3 text-center text-[13px] font-semibold text-[#6a6a6a]">
                 Delete &quot;{habit.name}&quot;? This removes all history and cannot be undone.
               </p>
-              <div style={{ display: 'flex', gap: 10 }}>
+              <div className="flex gap-2.5">
                 <button
                   onClick={() => setConfirmDelete(false)}
-                  style={{
-                    flex: 1, padding: '12px 0', borderRadius: 12, border: 'none',
-                    background: 'rgba(104, 104, 104, 0.08)', color: '#6a6a6a', fontSize: 14, fontWeight: 700,
-                    cursor: 'pointer', fontFamily: 'inherit',
-                  }}
+                  className="flex-1 rounded-xl border-none bg-[rgba(104,104,104,0.08)] p-[12px_0] text-sm font-bold text-[#6a6a6a] cursor-pointer [font-family:inherit]"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
                   disabled={deleting}
+                  className="flex-1 rounded-xl border-none bg-[#EF4444] p-[12px_0] text-sm font-bold text-white [font-family:inherit]"
                   style={{
-                    flex: 1, padding: '12px 0', borderRadius: 12, border: 'none',
-                    background: '#EF4444', color: '#fff', fontSize: 14, fontWeight: 700,
-                    cursor: deleting ? 'default' : 'pointer', fontFamily: 'inherit',
+                    cursor: deleting ? 'default' : 'pointer',
                     opacity: deleting ? 0.7 : 1,
                   }}
                 >
@@ -1210,14 +1074,9 @@ const orbGloss = (c: string) =>
    reachable. Shared by the add + edit sheets so they stay identical. */
 function ColorPicker({ value, onChange }: { value: string; onChange: (c: string) => void }) {
   const isCustom = !HABIT_COLORS.includes(value);
-  const orbBase: React.CSSProperties = {
-    width: 38, height: 38, borderRadius: '50%', padding: 0, border: 'none',
-    cursor: 'pointer', flexShrink: 0,
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    transition: 'transform 0.15s ease, box-shadow 0.15s ease',
-  };
+  const orbBaseClass = "flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full border-none p-0 cursor-pointer transition-[transform,box-shadow] duration-150 ease-linear";
   return (
-    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+    <div className="flex flex-wrap gap-3">
       {HABIT_COLORS.map((c) => {
         const active = value === c;
         return (
@@ -1228,8 +1087,8 @@ function ColorPicker({ value, onChange }: { value: string; onChange: (c: string)
             title={c}
             aria-label={`Color ${c}`}
             aria-pressed={active}
+            className={orbBaseClass}
             style={{
-              ...orbBase,
               background: orbGloss(c),
               boxShadow: active
                 ? `inset 0 1px 1px rgba(255, 255, 255,0.45), 0 0 0 2px var(--glass-bg-sheet), 0 0 0 4px ${c}`
@@ -1246,9 +1105,8 @@ function ColorPicker({ value, onChange }: { value: string; onChange: (c: string)
       <label
         title="Custom color"
         aria-label="Pick a custom color"
+        className={orbBaseClass + " relative overflow-hidden"}
         style={{
-          ...orbBase,
-          position: 'relative', overflow: 'hidden',
           background: isCustom
             ? orbGloss(value)
             : 'conic-gradient(from 90deg, #6a6a6a, #a6a6a6, #b2b2b2, #9b9b9b, #939393, #7b7b7b, #707070, #717171, #6a6a6a)',
@@ -1262,9 +1120,9 @@ function ColorPicker({ value, onChange }: { value: string; onChange: (c: string)
           type="color"
           value={isCustom ? value : '#555555'}
           onChange={(e) => onChange(e.target.value)}
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0, cursor: 'pointer', border: 'none', padding: 0 }}
+          className="absolute inset-0 h-full w-full cursor-pointer border-none p-0 opacity-0"
         />
-        {isCustom ? <CheckIcon /> : <Plus size={18} color="#fff" strokeWidth={2.6} style={{ filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0,0.35))' }} />}
+        {isCustom ? <CheckIcon /> : <Plus size={18} color="#fff" strokeWidth={2.6} className="[filter:drop-shadow(0_1px_1px_rgba(0,0,0,0.35))]" />}
       </label>
     </div>
   );
@@ -1275,14 +1133,14 @@ type TargetType = 'boolean' | 'duration';
 
 function SectionCard({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ ...GLASS_NESTED, borderRadius: 18, padding: '16px 16px', marginBottom: 14 }}>
+    <div className="mb-3.5 rounded-xl p-4" style={{ ...GLASS_NESTED }}>
       {children}
     </div>
   );
 }
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
-  return <p style={{ margin: '0 0 10px', fontSize: 12, fontWeight: 700, color: TEXT_MUTED, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{children}</p>;
+  return <p className="m-0 mb-2.5 text-xs font-bold uppercase tracking-[0.07em] text-text-muted">{children}</p>;
 }
 
 function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: (h: Habit) => void; onClose: () => void; initialBad?: boolean }) {
@@ -1347,72 +1205,54 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
   ];
 
   const inputStyle: React.CSSProperties = {
-    width: '100%', boxSizing: 'border-box',
     background: 'var(--input-bg)', border: `1.5px solid var(--input-border)`,
-    borderRadius: 12, padding: '13px 16px',
-    fontSize: 16, fontWeight: 600, color: TEXT_DARK,
-    outline: 'none', fontFamily: 'inherit',
-    transition: 'border-color 0.15s',
   };
+  const inputClass = "box-border w-full rounded-xl p-[13px_16px] text-base font-semibold text-text-primary outline-none [font-family:inherit] transition-[border-color] duration-150 ease-linear";
 
   return (
     <>
       <motion.div
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
         onClick={onClose}
-        style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(0, 0, 0,0.45)' }}
+        className="fixed inset-0 z-[200] bg-[rgba(0,0,0,0.45)]"
       />
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 201,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: 16, pointerEvents: 'none',
-      }}>
+      <div className="pointer-events-none fixed inset-0 z-[201] flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 8 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 8 }}
           transition={{ type: 'spring', damping: 30, stiffness: 360 }}
           onClick={(e) => e.stopPropagation()}
+          className="pointer-events-auto w-full max-w-[480px] rounded-3xl p-[24px_16px_32px] [font-family:system-ui,-apple-system,sans-serif] shadow-[0_24px_64px_rgba(31,31,31,0.40),inset_0_1px_0_rgba(255,255,255,0.12)]"
           style={{
-            pointerEvents: 'auto',
-            width: '100%', maxWidth: 480,
             background: 'var(--glass-bg-sheet)',
-            borderRadius: 24,
             maxHeight: '90dvh', overflowY: 'auto',
-            padding: '24px 16px 32px',
-            fontFamily: "system-ui, -apple-system, sans-serif",
-            boxShadow: '0 24px 64px rgba(31, 31, 31,0.40), inset 0 1px 0 rgba(255, 255, 255,0.12)',
           }}
         >
           {/* Header */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 0, marginBottom: 16 }}>
+          <div className="mt-0 mb-4 flex items-center justify-between">
             <div>
-              <h2 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: TEXT_DARK, letterSpacing: '-0.02em' }}>
+              <h2 className="m-0 text-[22px] font-extrabold tracking-[-0.02em] text-text-primary">
                 {isBadHabit ? 'Track Bad Habit' : 'New Habit'}
               </h2>
-              <p style={{ margin: '2px 0 0', fontSize: 13, color: TEXT_MUTED }}>
+              <p className="m-0 mt-0.5 text-[13px] text-text-muted">
                 {isBadHabit ? 'Check off days you successfully avoided it' : 'Build a streak that sticks'}
               </p>
             </div>
-            <button onClick={onClose} style={{
-              width: 34, height: 34, borderRadius: '50%', background: PURPLE_MID,
-              border: 'none', cursor: 'pointer', color: PURPLE, fontWeight: 700, fontSize: 20,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-            }}>×</button>
+            <button onClick={onClose} className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border-none text-xl font-bold" style={{ background: PURPLE_MID, cursor: 'pointer', color: PURPLE }}>×</button>
           </div>
 
           {/* Good / Bad toggle */}
-          <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+          <div className="mb-5 flex gap-2">
             <button
               type="button"
               onClick={() => { setIsBadHabit(false); if (isBadHabit) { setIcon('circle-check'); setColor(accentHex); } }}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-2xl border-none p-[10px_0] text-[13px] transition-all duration-200"
               style={{
-                flex: 1, padding: '10px 0', borderRadius: 14, border: 'none',
                 background: !isBadHabit ? accentHex : 'var(--bg-elevated)',
                 color: !isBadHabit ? '#fff' : TEXT_MUTED,
-                fontSize: 13, fontWeight: !isBadHabit ? 700 : 500,
-                cursor: 'pointer', transition: 'all 0.2s',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                fontWeight: !isBadHabit ? 700 : 500,
+                cursor: 'pointer',
                 boxShadow: !isBadHabit ? `0 2px 12px color-mix(in srgb, ${accentHex} 35%, transparent)` : 'none',
               }}
             >
@@ -1422,13 +1262,12 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
             <button
               type="button"
               onClick={() => { setIsBadHabit(true); if (!isBadHabit) { setIcon('ban'); setColor(RED); } }}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-2xl border-none p-[10px_0] text-[13px] transition-all duration-200"
               style={{
-                flex: 1, padding: '10px 0', borderRadius: 14, border: 'none',
                 background: isBadHabit ? RED : 'var(--bg-elevated)',
                 color: isBadHabit ? '#fff' : TEXT_MUTED,
-                fontSize: 13, fontWeight: isBadHabit ? 700 : 500,
-                cursor: 'pointer', transition: 'all 0.2s',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                fontWeight: isBadHabit ? 700 : 500,
+                cursor: 'pointer',
                 boxShadow: isBadHabit ? '0 2px 12px rgba(248,113,113,0.35)' : 'none',
               }}
             >
@@ -1445,12 +1284,13 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
               value={name}
               onChange={(e) => { setName(e.target.value); setError(null); }}
               placeholder="e.g. Morning Run"
+              className={inputClass}
               style={{ ...inputStyle, border: `1.5px solid ${error && !name.trim() ? '#6a6a6a' : 'var(--input-border)'}` }}
               onFocus={(e) => { e.target.style.borderColor = PURPLE; }}
               onBlur={(e) => { e.target.style.borderColor = 'var(--input-border)'; }}
             />
 
-            <div style={{ marginTop: 14 }}>
+            <div className="mt-3.5">
               <FieldLabel>Notes (optional)</FieldLabel>
               <textarea
                 value={notes}
@@ -1458,7 +1298,8 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
                 placeholder="Why this matters, how you'll do it…"
                 maxLength={500}
                 rows={3}
-                style={{ ...inputStyle, resize: 'vertical', minHeight: 64, lineHeight: 1.5, border: '1.5px solid var(--input-border)' }}
+                className={inputClass + " min-h-16 resize-y leading-[1.5]"}
+                style={{ ...inputStyle, border: '1.5px solid var(--input-border)' }}
                 onFocus={(e) => { e.target.style.borderColor = PURPLE; }}
                 onBlur={(e) => { e.target.style.borderColor = 'var(--input-border)'; }}
               />
@@ -1468,19 +1309,21 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
           {/* ── Icon + Color ── */}
           <SectionCard>
             <FieldLabel>Icon</FieldLabel>
-            <div className="hf-icon-grid" style={{
-              display: 'grid', gridTemplateColumns: 'repeat(6, minmax(0, 1fr))', gap: 8, marginBottom: 12,
-            }}>
+            <div className="hf-icon-grid mb-3 grid grid-cols-6 gap-2">
               {(showAllIcons ? HABIT_ICONS : HABIT_ICONS.slice(0, 6)).map((ic) => {
                 const active = icon === ic;
                 return (
-                  <button key={ic} onClick={() => setIcon(ic)} title={ic} style={{
-                    width: '100%', aspectRatio: '1', borderRadius: 12,
-                    border: `1.5px solid ${active ? PURPLE : 'transparent'}`,
-                    background: active ? 'var(--surface-tint-mid)' : PURPLE_LIGHT,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer', transition: 'background 0.15s, border-color 0.15s',
-                  }}>
+                  <button
+                    key={ic}
+                    onClick={() => setIcon(ic)}
+                    title={ic}
+                    className="flex aspect-square w-full items-center justify-center rounded-xl transition-[background,border-color] duration-150 ease-linear"
+                    style={{
+                      border: `1.5px solid ${active ? PURPLE : 'transparent'}`,
+                      background: active ? 'var(--surface-tint-mid)' : PURPLE_LIGHT,
+                      cursor: 'pointer',
+                    }}
+                  >
                     <DynamicIcon name={ic} size={20} color={active ? PURPLE : TEXT_MUTED} />
                   </button>
                 );
@@ -1489,11 +1332,8 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
             <button
               type="button"
               onClick={() => setShowAllIcons((v) => !v)}
-              style={{
-                border: 'none', background: 'transparent', color: PURPLE,
-                fontSize: 13, fontWeight: 700, cursor: 'pointer', padding: '2px 0',
-                marginBottom: 18,
-              }}
+              className="mb-[18px] border-none bg-transparent p-[2px_0] text-[13px] font-bold cursor-pointer"
+              style={{ color: PURPLE }}
             >
               {showAllIcons ? 'Show less' : `View more (${HABIT_ICONS.length - 6})`}
             </button>
@@ -1504,53 +1344,53 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
           {/* ── Frequency ── */}
           <SectionCard>
             <FieldLabel>How often</FieldLabel>
-            <div style={{ display: 'flex', background: 'var(--surface-tint)', borderRadius: 12, padding: 3, gap: 3, marginBottom: 14 }}>
+            <div className="mb-3.5 flex gap-[3px] rounded-xl bg-[var(--surface-tint)] p-[3px]">
               {freqTabs.map(({ key, label }) => (
-                <button key={key} onClick={() => setFreqType(key)} style={{
-                  flex: 1, padding: '8px 4px', borderRadius: 9, border: 'none',
-                  background: freqType === key ? PURPLE : 'transparent',
-                  color: freqType === key ? '#fff' : TEXT_MUTED,
-                  fontSize: 12, fontWeight: freqType === key ? 700 : 500,
-                  cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap',
-                }}>{label}</button>
+                <button
+                  key={key}
+                  onClick={() => setFreqType(key)}
+                  className="flex-1 whitespace-nowrap rounded-[9px] border-none p-[8px_4px] text-xs transition-all duration-150"
+                  style={{
+                    background: freqType === key ? PURPLE : 'transparent',
+                    color: freqType === key ? '#fff' : TEXT_MUTED,
+                    fontWeight: freqType === key ? 700 : 500,
+                    cursor: 'pointer',
+                  }}
+                >{label}</button>
               ))}
             </div>
 
             {freqType === 'weekly' && (
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div className="flex justify-between">
                 {DAY_LABELS.map((label, idx) => {
                   const active = days.includes(idx);
                   return (
-                    <button key={idx} onClick={() => toggleDay(idx)} style={{
-                      width: 38, height: 38, borderRadius: '50%', border: 'none',
-                      background: active ? color : 'var(--bg-elevated)',
-                      color: active ? '#fff' : TEXT_MUTED,
-                      fontSize: 13, fontWeight: active ? 700 : 500, cursor: 'pointer',
-                      transition: 'all 0.15s',
-                      boxShadow: active ? `0 2px 8px color-mix(in srgb, ${color} 30%, transparent)` : 'none',
-                    }}>{label}</button>
+                    <button
+                      key={idx}
+                      onClick={() => toggleDay(idx)}
+                      className="h-[38px] w-[38px] rounded-full border-none text-[13px] transition-all duration-150"
+                      style={{
+                        background: active ? color : 'var(--bg-elevated)',
+                        color: active ? '#fff' : TEXT_MUTED,
+                        fontWeight: active ? 700 : 500,
+                        cursor: 'pointer',
+                        boxShadow: active ? `0 2px 8px color-mix(in srgb, ${color} 30%, transparent)` : 'none',
+                      }}
+                    >{label}</button>
                   );
                 })}
               </div>
             )}
 
             {freqType === 'x_per_week' && (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <p style={{ margin: 0, fontSize: 14, color: TEXT_DARK, fontWeight: 600 }}>
+              <div className="flex items-center justify-between">
+                <p className="m-0 text-sm font-semibold text-text-primary">
                   {perWeek}× per week
                 </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <button onClick={() => setPerWeek((n) => Math.max(1, n - 1))} style={{
-                    width: 36, height: 36, borderRadius: '50%', border: 'none',
-                    background: 'var(--surface-tint)', color: PURPLE, fontSize: 22, fontWeight: 700,
-                    cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>−</button>
-                  <span style={{ width: 28, textAlign: 'center', fontSize: 20, fontWeight: 800, color: TEXT_DARK }}>{perWeek}</span>
-                  <button onClick={() => setPerWeek((n) => Math.min(7, n + 1))} style={{
-                    width: 36, height: 36, borderRadius: '50%', border: 'none',
-                    background: PURPLE, color: '#fff', fontSize: 22, fontWeight: 700,
-                    cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>+</button>
+                <div className="flex items-center gap-1.5">
+                  <button onClick={() => setPerWeek((n) => Math.max(1, n - 1))} className="flex h-9 w-9 items-center justify-center rounded-full border-none bg-[var(--surface-tint)] text-[22px] font-bold cursor-pointer" style={{ color: PURPLE }}>−</button>
+                  <span className="w-7 text-center text-xl font-extrabold text-text-primary">{perWeek}</span>
+                  <button onClick={() => setPerWeek((n) => Math.min(7, n + 1))} className="flex h-9 w-9 items-center justify-center rounded-full border-none text-[22px] font-bold text-white cursor-pointer" style={{ background: PURPLE }}>+</button>
                 </div>
               </div>
             )}
@@ -1559,36 +1399,32 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
           {/* ── Target / Timer ── */}
           <SectionCard>
             <FieldLabel>Target type</FieldLabel>
-            <div style={{ display: 'flex', gap: 10, marginBottom: targetType === 'duration' ? 16 : 0 }}>
+            <div className="flex gap-2.5" style={{ marginBottom: targetType === 'duration' ? 16 : 0 }}>
               {(['boolean', 'duration'] as TargetType[]).map((t) => (
-                <button key={t} onClick={() => setTargetType(t)} style={{
-                  flex: 1, padding: '10px 0', borderRadius: 12, border: 'none',
-                  background: targetType === t ? color : 'var(--bg-elevated)',
-                  color: targetType === t ? '#fff' : TEXT_MUTED,
-                  fontSize: 13, fontWeight: targetType === t ? 700 : 500,
-                  cursor: 'pointer', transition: 'all 0.15s',
-                  boxShadow: targetType === t ? `0 2px 10px color-mix(in srgb, ${color} 25%, transparent)` : 'none',
-                }}>
+                <button
+                  key={t}
+                  onClick={() => setTargetType(t)}
+                  className="flex-1 rounded-xl border-none p-[10px_0] text-[13px] transition-all duration-150"
+                  style={{
+                    background: targetType === t ? color : 'var(--bg-elevated)',
+                    color: targetType === t ? '#fff' : TEXT_MUTED,
+                    fontWeight: targetType === t ? 700 : 500,
+                    cursor: 'pointer',
+                    boxShadow: targetType === t ? `0 2px 10px color-mix(in srgb, ${color} 25%, transparent)` : 'none',
+                  }}
+                >
                   {t === 'boolean' ? 'Check-off' : 'Duration'}
                 </button>
               ))}
             </div>
 
             {targetType === 'duration' && (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 4 }}>
-                <p style={{ margin: 0, fontSize: 14, color: TEXT_DARK, fontWeight: 600 }}>{duration} minutes</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <button onClick={() => setDuration((n) => Math.max(5, n - 5))} style={{
-                    width: 36, height: 36, borderRadius: '50%', border: 'none',
-                    background: 'var(--surface-tint)', color: PURPLE, fontSize: 22, fontWeight: 700,
-                    cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>−</button>
-                  <span style={{ width: 40, textAlign: 'center', fontSize: 20, fontWeight: 800, color: TEXT_DARK }}>{duration}</span>
-                  <button onClick={() => setDuration((n) => Math.min(240, n + 5))} style={{
-                    width: 36, height: 36, borderRadius: '50%', border: 'none',
-                    background: PURPLE, color: '#fff', fontSize: 22, fontWeight: 700,
-                    cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>+</button>
+              <div className="flex items-center justify-between pt-1">
+                <p className="m-0 text-sm font-semibold text-text-primary">{duration} minutes</p>
+                <div className="flex items-center gap-1.5">
+                  <button onClick={() => setDuration((n) => Math.max(5, n - 5))} className="flex h-9 w-9 items-center justify-center rounded-full border-none bg-[var(--surface-tint)] text-[22px] font-bold cursor-pointer" style={{ color: PURPLE }}>−</button>
+                  <span className="w-10 text-center text-xl font-extrabold text-text-primary">{duration}</span>
+                  <button onClick={() => setDuration((n) => Math.min(240, n + 5))} className="flex h-9 w-9 items-center justify-center rounded-full border-none text-[22px] font-bold text-white cursor-pointer" style={{ background: PURPLE }}>+</button>
                 </div>
               </div>
             )}
@@ -1596,8 +1432,8 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
 
           {/* Error */}
           {error && (
-            <div style={{ padding: '10px 14px', borderRadius: 12, background: 'rgba(104, 104, 104,0.08)', border: '1px solid rgba(104, 104, 104,0.2)', marginBottom: 14 }}>
-              <p style={{ margin: 0, fontSize: 13, color: '#6a6a6a', fontWeight: 600 }}>{error}</p>
+            <div className="mb-3.5 rounded-xl bg-[rgba(104,104,104,0.08)] p-[10px_14px] border border-[rgba(104,104,104,0.2)]">
+              <p className="m-0 text-[13px] font-semibold text-[#6a6a6a]">{error}</p>
             </div>
           )}
 
@@ -1605,13 +1441,11 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
           <button
             onClick={submit}
             disabled={loading}
+            className="w-full rounded-full border-none p-[16px_0] text-base font-bold shadow-none transition-all duration-150"
             style={{
-              width: '100%', padding: '16px 0', borderRadius: 9999, border: 'none',
               background: loading ? 'var(--accent-light)' : 'var(--accent-primary)',
-              color: 'var(--accent-on-primary)', fontSize: 16, fontWeight: 700,
+              color: 'var(--accent-on-primary)',
               cursor: loading ? 'default' : 'pointer',
-              boxShadow: 'none',
-              transition: 'all 0.15s',
             }}
           >
             {loading ? 'Saving…' : 'Create Habit'}
@@ -1630,33 +1464,22 @@ function KpiCard({
   icon: React.ReactNode; label: string; value: string | number; suffix?: string; sub?: string;
 }) {
   return (
-    <div style={{
-      background: 'var(--bg-card)',
-      border: '1px solid var(--border-default)',
-      borderRadius: 18,
-      padding: '18px 20px',
-      display: 'flex', flexDirection: 'column', gap: 16,
-      minWidth: 0,
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-        <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+    <div className="flex min-w-0 flex-col gap-4 rounded-xl border border-border-default bg-bg-card p-[18px_20px]">
+      <div className="flex items-center justify-between gap-2">
+        <span className="truncate text-[10.5px] font-bold uppercase tracking-[0.12em] text-text-muted">
           {label}
         </span>
-        <div style={{
-          width: 34, height: 34, borderRadius: 10, flexShrink: 0,
-          background: 'var(--surface-tint)', border: '1px solid var(--border-subtle)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)',
-        }}>
+        <div className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[10px] border border-border-subtle bg-[var(--surface-tint)] text-text-primary">
           {icon}
         </div>
       </div>
-      <div style={{ minWidth: 0 }}>
-        <p style={{ margin: 0, fontSize: 30, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.03em', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
+      <div className="min-w-0">
+        <p className="m-0 text-3xl font-extrabold leading-none tracking-[-0.03em] text-text-primary [font-variant-numeric:tabular-nums]">
           {value}
-          {suffix && <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-dimmed)', marginLeft: 2 }}>{suffix}</span>}
+          {suffix && <span className="ml-0.5 text-[15px] font-semibold text-text-dimmed">{suffix}</span>}
         </p>
         {sub && (
-          <p style={{ margin: '7px 0 0', fontSize: 12, color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          <p className="m-0 mt-[7px] truncate text-xs text-text-muted">
             {sub}
           </p>
         )}
@@ -1672,17 +1495,10 @@ function DashCard({
   title?: string; action?: React.ReactNode; children: React.ReactNode; style?: React.CSSProperties;
 }) {
   return (
-    <div style={{
-      background: 'var(--bg-card)',
-      border: '1px solid var(--border-default)',
-      borderRadius: 20,
-      padding: 20,
-      minWidth: 0,
-      ...style,
-    }}>
+    <div className="min-w-0 rounded-[20px] border border-border-default bg-bg-card p-5" style={style}>
       {title && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginBottom: 16 }}>
-          <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>{title}</h3>
+        <div className="mb-4 flex items-center justify-between gap-2.5">
+          <h3 className="m-0 text-lg font-extrabold tracking-[-0.02em] text-text-primary">{title}</h3>
           {action}
         </div>
       )}
@@ -1700,18 +1516,17 @@ function NavItem({
   return (
     <button
       onClick={onClick}
+      className="flex w-full items-center gap-3 rounded-full border-none p-[11px_14px] text-left text-sm [font-family:inherit] transition-[background,color] duration-150 ease-linear"
       style={{
-        width: '100%', display: 'flex', alignItems: 'center', gap: 12,
-        padding: '11px 14px', borderRadius: 9999, border: 'none', cursor: 'pointer',
         background: active ? 'var(--accent-primary)' : 'transparent',
         color: active ? 'var(--accent-on-primary)' : 'var(--text-secondary)',
-        fontSize: 14, fontWeight: active ? 700 : 600, fontFamily: 'inherit', textAlign: 'left',
-        transition: 'background 0.15s ease, color 0.15s ease',
+        fontWeight: active ? 700 : 600,
+        cursor: 'pointer',
       }}
       onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = 'var(--surface-tint)'; }}
       onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = 'transparent'; }}
     >
-      <span style={{ display: 'flex', flexShrink: 0 }}>{icon}</span>
+      <span className="flex shrink-0">{icon}</span>
       {label}
     </button>
   );
@@ -1728,28 +1543,20 @@ function NavGroup({
   children: React.ReactNode;
 }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+    <div className="flex flex-col gap-px">
       {/* White pill header button */}
       <button
         onClick={onToggle}
-        style={{
-          width: '100%', display: 'flex', alignItems: 'center', gap: 10,
-          padding: '10px 14px', borderRadius: 9999, border: 'none', cursor: 'pointer',
-          background: '#ffffff',
-          color: '#1a1a1a',
-          fontSize: 13.5, fontWeight: 700, fontFamily: 'inherit', textAlign: 'left',
-          boxShadow: '0 1px 4px rgba(0,0,0,0.18)',
-          transition: 'opacity 0.15s',
-        }}
+        className="flex w-full items-center gap-2.5 rounded-full border-none bg-white p-[10px_14px] text-left text-[13.5px] font-bold text-[#1a1a1a] [font-family:inherit] shadow-[0_1px_4px_rgba(0,0,0,0.18)] transition-opacity duration-150 cursor-pointer"
         onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.88'; }}
         onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
       >
-        <span style={{ display: 'flex', flexShrink: 0, color: '#1a1a1a' }}>{icon}</span>
-        <span style={{ flex: 1 }}>{label}</span>
+        <span className="flex shrink-0 text-[#1a1a1a]">{icon}</span>
+        <span className="flex-1">{label}</span>
         <motion.span
           animate={{ rotate: expanded ? 180 : 0 }}
           transition={{ duration: 0.22 }}
-          style={{ display: 'flex', alignItems: 'center' }}
+          className="flex items-center"
         >
           <ChevronDown size={15} color="var(--text-muted)" />
         </motion.span>
@@ -1764,16 +1571,9 @@ function NavGroup({
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.22, ease: 'easeInOut' }}
-            style={{ overflow: 'hidden' }}
+            className="overflow-hidden"
           >
-            <div style={{
-              display: 'flex', flexDirection: 'column', gap: 0,
-              paddingLeft: 14,
-              borderLeft: '2px solid rgba(255,255,255,0.12)',
-              marginLeft: 10,
-              marginTop: 2,
-              marginBottom: 4,
-            }}>
+            <div className="mt-0.5 mb-1 ml-2.5 flex flex-col gap-0 border-l-2 border-l-[rgba(255,255,255,0.12)] pl-3.5">
               {children}
             </div>
           </motion.div>
@@ -1792,18 +1592,16 @@ function SubNavItem({
   return (
     <button
       onClick={onClick}
+      className="flex w-full items-center gap-2.5 rounded-full border-none p-[8px_10px] text-left text-[13px] [font-family:inherit] transition-all duration-150 cursor-pointer"
       style={{
-        width: '100%', display: 'flex', alignItems: 'center', gap: 10,
-        padding: '8px 10px', borderRadius: 9999, border: 'none', cursor: 'pointer',
         background: active ? 'rgba(255,255,255,0.10)' : 'transparent',
         color: active ? 'var(--text-primary)' : 'var(--text-muted)',
-        fontSize: 13, fontWeight: active ? 600 : 400, fontFamily: 'inherit', textAlign: 'left',
-        transition: 'all 0.15s',
+        fontWeight: active ? 600 : 400,
       }}
       onMouseEnter={(e) => { if (!active) { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.color = 'var(--text-primary)'; } }}
       onMouseLeave={(e) => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; } }}
     >
-      <span style={{ display: 'flex', flexShrink: 0 }}>{icon}</span>
+      <span className="flex shrink-0">{icon}</span>
       {label}
     </button>
   );
@@ -1992,69 +1790,47 @@ export default function FitnessSummary({
 
 
   return (
-    <div style={{
-      background: 'var(--bg-primary)',
-      fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-      overflowX: 'hidden',
-      position: 'relative',
-      minHeight: '100dvh',
-    }}>
+    <div
+      className="relative min-h-[100dvh] overflow-x-hidden [font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif]"
+      style={{ background: 'var(--bg-primary)' }}
+    >
       {/* Desktop Sidebar is rendered by layout.tsx */}
 
       {/* ───────────────── Main ───────────────── */}
       <div>
         <div
-          className="hf-dashboard-main-container"
-          style={{
-            maxWidth: 1280, margin: '0 auto',
-            padding: 'clamp(18px, 2.5vw, 32px) clamp(16px, 2.5vw, 32px) 72px',
-            display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)',
-          }}
+          className="hf-dashboard-main-container mx-auto flex max-w-[1280px] flex-col p-[clamp(18px,2.5vw,32px)_clamp(16px,2.5vw,32px)_72px] gap-[clamp(16px,2vw,22px)]"
         >
           {/* ── Top Hero Greeting Banner ── */}
           <motion.div
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
+            className="relative flex flex-wrap items-center justify-between gap-5 overflow-hidden rounded-3xl border border-border-default p-[24px_28px] shadow-[0_12px_32px_rgba(0,0,0,0.15)]"
             style={{
               background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-primary) 12%, var(--bg-card)) 0%, var(--bg-card) 100%)',
-              border: '1px solid var(--border-default)',
-              borderRadius: 24,
-              padding: '24px 28px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 20,
-              flexWrap: 'wrap',
-              boxShadow: '0 12px 32px rgba(0, 0, 0, 0.15)',
-              position: 'relative',
-              overflow: 'hidden',
             }}
           >
             {/* Ambient background glow */}
-            <div style={{
-              position: 'absolute', top: '-40%', right: '-10%', width: 300, height: 300,
-              borderRadius: '50%', background: 'radial-gradient(circle, var(--accent-glow-lg) 0%, transparent 70%)',
-              pointerEvents: 'none', filter: 'blur(30px)',
-            }} />
+            <div
+              className="pointer-events-none absolute -top-[40%] -right-[10%] h-[300px] w-[300px] rounded-full blur-[30px]"
+              style={{ background: 'radial-gradient(circle, var(--accent-glow-lg) 0%, transparent 70%)' }}
+            />
 
-            <div style={{ minWidth: 0, zIndex: 1, flex: '1 1 300px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            <div className="z-[1] min-w-0 flex-[1_1_300px]">
+              <div className="mb-3 flex flex-wrap items-center gap-2.5">
+                <span className="text-[13px] font-bold uppercase tracking-[0.06em] text-text-secondary">
                   {dateStr}
                 </span>
-                <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--border-medium)' }} />
-                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>
-                  <span style={{ color: 'var(--accent-primary)', fontWeight: 700 }}>{completedCount}</span>/{totalCount} Completed Today
+                <span className="h-1 w-1 rounded-full bg-[var(--border-medium)]" />
+                <span className="text-[13px] font-semibold text-text-secondary">
+                  <span className="font-bold text-[var(--accent-primary)]">{completedCount}</span>/{totalCount} Completed Today
                 </span>
               </div>
-              <h1 style={{
-                margin: 0, fontSize: 'clamp(26px, 4vw, 34px)', fontWeight: 800,
-                color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1, fontFamily: "'Outfit', sans-serif",
-              }}>
+              <h1 className="m-0 text-[clamp(26px,4vw,34px)] font-extrabold leading-[1.1] tracking-[-0.02em] text-text-primary font-[Outfit]">
                 {greeting}, {displayName.split(' ')[0]}
               </h1>
-              <p style={{ margin: '8px 0 0', fontSize: 15, color: 'var(--text-secondary)', fontWeight: 500 }}>
+              <p className="m-0 mt-2 text-[15px] font-medium text-text-secondary">
                 {todayPct === 100
                   ? 'Amazing job! All habits completed for today.'
                   : todayPct >= 50
@@ -2063,19 +1839,11 @@ export default function FitnessSummary({
               </p>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, zIndex: 1 }}>
+            <div className="z-[1] flex items-center gap-3">
               <button
-                className="hf-add-habit-btn"
+                className="hf-add-habit-btn inline-flex shrink-0 items-center gap-2 rounded-full border-none p-[12px_24px] text-sm font-bold [font-family:inherit] shadow-[0_8px_24px_color-mix(in_srgb,var(--accent-primary)_35%,transparent)] transition-[transform,box-shadow] duration-150 ease-linear cursor-pointer"
                 onClick={() => setAddOpen(true)}
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 8,
-                  padding: '12px 24px', borderRadius: 9999, border: 'none', cursor: 'pointer',
-                  background: 'var(--accent-primary)', color: 'var(--accent-on-primary)',
-                  fontSize: 14, fontWeight: 700, fontFamily: 'inherit',
-                  boxShadow: '0 8px 24px color-mix(in srgb, var(--accent-primary) 35%, transparent)',
-                  transition: 'transform 0.15s ease, boxShadow 0.15s ease',
-                  flexShrink: 0,
-                }}
+                style={{ background: 'var(--accent-primary)', color: 'var(--accent-on-primary)' }}
                 onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; }}
               >
@@ -2083,16 +1851,9 @@ export default function FitnessSummary({
                 <span className="hf-dash-btn-label">Add Habit</span>
               </button>
               <Link
-                className="hf-profile-link"
+                className="hf-profile-link flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full border border-border-subtle bg-[var(--surface-tint)] text-text-primary transition-[background,transform] duration-150 ease-linear cursor-pointer"
                 href="/dashboard/settings"
                 aria-label="Open profile settings"
-                style={{
-                  width: 46, height: 46, borderRadius: '50%',
-                  background: 'var(--surface-tint)', border: '1px solid var(--border-subtle)',
-                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: 'var(--text-primary)', transition: 'background 0.15s ease, transform 0.15s ease',
-                  flexShrink: 0,
-                }}
                 onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; }}
               >
@@ -2105,24 +1866,19 @@ export default function FitnessSummary({
           <div className="hf-kpi-grid">
             {/* Card 1: Today's Completion */}
             <motion.div
-              className="hf-kpi-card"
+              className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.05 }}
-              style={{
-                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 16, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 6,
-                transition: 'transform 0.15s ease, border-color 0.15s ease',
-              }}
               whileHover={{ y: -2 }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
+              <div className="flex items-center gap-1.5 text-text-muted">
                 <Target size={14} color="var(--accent-primary)" />
-                <span className="hf-kpi-card-title" style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Today Progress</span>
+                <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Today Progress</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
-                <div className="hf-kpi-card-val" style={{ fontSize: 22, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+              <div className="flex flex-wrap items-baseline gap-1.5">
+                <div className="hf-kpi-card-val text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
                   {todayPct}%
                 </div>
-                <p className="hf-kpi-card-sub" style={{ margin: 0, fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                <p className="hf-kpi-card-sub m-0 text-[11.5px] font-medium text-text-muted">
                   {completedCount}/{totalCount} done
                 </p>
               </div>
@@ -2130,24 +1886,19 @@ export default function FitnessSummary({
 
             {/* Card 2: Active Streak */}
             <motion.div
-              className="hf-kpi-card"
+              className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}
-              style={{
-                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 16, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 6,
-                transition: 'transform 0.15s ease, border-color 0.15s ease',
-              }}
               whileHover={{ y: -2 }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
+              <div className="flex items-center gap-1.5 text-text-muted">
                 <Flame size={14} color="#FB923C" />
-                <span className="hf-kpi-card-title" style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Best Streak</span>
+                <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Best Streak</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, minWidth: 0 }}>
-                <div className="hf-kpi-card-val" style={{ fontSize: 22, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1, flexShrink: 0 }}>
-                  {stats?.bestStreak ?? 0}<span style={{ fontSize: 14, fontWeight: 650, color: 'var(--text-muted)' }}>d</span>
+              <div className="flex min-w-0 items-baseline gap-1.5">
+                <div className="hf-kpi-card-val shrink-0 text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
+                  {stats?.bestStreak ?? 0}<span className="text-sm font-[650] text-text-muted">d</span>
                 </div>
-                <p className="hf-kpi-card-sub" style={{ margin: 0, fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>
+                <p className="hf-kpi-card-sub m-0 min-w-0 truncate text-[11.5px] font-medium text-text-muted">
                   {stats?.bestStreakHabitName ? `in "${stats.bestStreakHabitName}"` : 'momentum'}
                 </p>
               </div>
@@ -2155,24 +1906,19 @@ export default function FitnessSummary({
 
             {/* Card 3: Consistency Score */}
             <motion.div
-              className="hf-kpi-card"
+              className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.15 }}
-              style={{
-                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 16, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 6,
-                transition: 'transform 0.15s ease, border-color 0.15s ease',
-              }}
               whileHover={{ y: -2 }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
+              <div className="flex items-center gap-1.5 text-text-muted">
                 <TrendingUp size={14} color="#38BDF8" />
-                <span className="hf-kpi-card-title" style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Consistency</span>
+                <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Consistency</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
-                <div className="hf-kpi-card-val" style={{ fontSize: 22, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+              <div className="flex flex-wrap items-baseline gap-1.5">
+                <div className="hf-kpi-card-val text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
                   {avgPct}%
                 </div>
-                <p className="hf-kpi-card-sub" style={{ margin: 0, fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                <p className="hf-kpi-card-sub m-0 text-[11.5px] font-medium text-text-muted">
                   7-day avg
                 </p>
               </div>
@@ -2180,24 +1926,19 @@ export default function FitnessSummary({
 
             {/* Card 4: Total Done */}
             <motion.div
-              className="hf-kpi-card"
+              className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}
-              style={{
-                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: 16, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 6,
-                transition: 'transform 0.15s ease, border-color 0.15s ease',
-              }}
               whileHover={{ y: -2 }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)' }}>
+              <div className="flex items-center gap-1.5 text-text-muted">
                 <Trophy size={14} color="#A855F7" />
-                <span className="hf-kpi-card-title" style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Done</span>
+                <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Total Done</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
-                <div className="hf-kpi-card-val" style={{ fontSize: 22, fontWeight: 850, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1 }}>
+              <div className="flex flex-wrap items-baseline gap-1.5">
+                <div className="hf-kpi-card-val text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
                   {stats?.totalCompletions ?? 0}
                 </div>
-                <p className="hf-kpi-card-sub" style={{ margin: 0, fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)' }}>
+                <p className="hf-kpi-card-sub m-0 text-[11.5px] font-medium text-text-muted">
                   lifetime
                 </p>
               </div>
@@ -2207,7 +1948,7 @@ export default function FitnessSummary({
           {/* ── 2-column widget grid ── */}
           <div className="hf-dashboard-grid">
             {/* LEFT COLUMN */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)', minWidth: 0 }}>
+            <div className="flex min-w-0 flex-col gap-[clamp(16px,2vw,22px)]">
 
           {/* ── Week day selector ── */}
           <DashCard
@@ -2216,16 +1957,16 @@ export default function FitnessSummary({
               !isViewingToday ? (
                 <button
                   onClick={() => selectDate(todayString())}
-                  style={{ background: 'var(--surface-tint)', border: '1px solid var(--border-default)', borderRadius: 9999, padding: '5px 14px', fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', cursor: 'pointer', fontFamily: 'inherit' }}
+                  className="rounded-full border border-border-default bg-[var(--surface-tint)] p-[5px_14px] text-xs font-bold text-text-primary [font-family:inherit] cursor-pointer"
                 >
                   Jump to today
                 </button>
               ) : (
-                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-muted)' }}>{dateStr}</span>
+                <span className="text-[13px] font-bold text-text-muted">{dateStr}</span>
               )
             }
           >
-            <div className="hf-weekly-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: 6 }}>
+            <div className="hf-weekly-grid grid grid-cols-7 gap-1.5">
               {weekDates.map(({ date, dayNum, dayLabel, isToday, pct }) => {
                 const R = 19, CIRC = 2 * Math.PI * R;
                 const isSelected = date === selectedDate;
@@ -2233,29 +1974,27 @@ export default function FitnessSummary({
                   <div
                     key={date}
                     onClick={() => selectDate(date)}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: 'pointer' }}
+                    className="flex cursor-pointer flex-col items-center gap-1.5"
                   >
-                    <span style={{ fontSize: 11, fontWeight: 600, color: isSelected ? 'var(--accent-primary)' : 'var(--text-muted)' }}>
+                    <span className="text-[11px] font-semibold" style={{ color: isSelected ? 'var(--accent-primary)' : 'var(--text-muted)' }}>
                       {dayLabel}
                     </span>
-                    <div style={{ position: 'relative', width: 42, height: 42 }}>
-                      <svg width="42" height="42" style={{ position: 'absolute', inset: 0 }}>
+                    <div className="relative h-[42px] w-[42px]">
+                      <svg width="42" height="42" className="absolute inset-0">
                         <circle cx="21" cy="21" r={R} fill="none" style={{ stroke: `color-mix(in srgb, ${accentHex} 22%, transparent)` }} strokeWidth="2.5" />
                         <circle cx="21" cy="21" r={R} fill="none" stroke={accentHex}
                           strokeWidth="2.5" strokeLinecap="round"
                           strokeDasharray={CIRC}
                           strokeDashoffset={CIRC * (1 - (isToday ? todayPct : pct) / 100)}
                           transform="rotate(-90 21 21)"
-                          style={{ transition: 'stroke-dashoffset 0.6s ease' }}
+                          className="transition-[stroke-dashoffset] duration-[600ms] ease-linear"
                         />
                       </svg>
-                      <div style={{
-                        position: 'absolute', inset: 5, borderRadius: '50%',
-                        background: isSelected ? 'var(--accent-primary)' : 'transparent',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        transition: 'background 0.18s ease',
-                      }}>
-                        <span style={{ fontSize: 13, fontWeight: isSelected ? 700 : 600, color: isSelected ? 'var(--accent-on-primary)' : 'var(--text-primary)' }}>
+                      <div
+                        className="absolute inset-[5px] flex items-center justify-center rounded-full transition-[background] duration-[180ms] ease-linear"
+                        style={{ background: isSelected ? 'var(--accent-primary)' : 'transparent' }}
+                      >
+                        <span className="text-[13px]" style={{ fontWeight: isSelected ? 700 : 600, color: isSelected ? 'var(--accent-on-primary)' : 'var(--text-primary)' }}>
                           {dayNum}
                         </span>
                       </div>
@@ -2270,23 +2009,24 @@ export default function FitnessSummary({
               <DashCard
                 title={isViewingToday ? "Today's Habits" : new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                 action={
-                  <span style={{ fontSize: 13, fontWeight: 600, color: loadingDate ? 'var(--text-muted)' : 'var(--text-primary)' }}>
+                  <span className="text-[13px] font-semibold" style={{ color: loadingDate ? 'var(--text-muted)' : 'var(--text-primary)' }}>
                     {loadingDate ? 'Loading…' : `${completedCount}/${totalCount} done`}
                   </span>
                 }
               >
                 {displayHabits.length === 0 ? (
-                  <div style={{ padding: '32px 20px', textAlign: 'center', border: '1px dashed var(--border-default)', borderRadius: 18 }}>
-                    <p style={{ margin: '0 0 14px', fontSize: 14, color: 'var(--text-muted)' }}>No active habits yet.</p>
+                  <div className="rounded-xl border border-dashed border-border-default p-[32px_20px] text-center">
+                    <p className="m-0 mb-3.5 text-sm text-text-muted">No active habits yet.</p>
                     <button
                       onClick={() => setAddOpen(true)}
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 20px', borderRadius: 9999, border: 'none', background: 'var(--accent-primary)', color: 'var(--accent-on-primary)', fontSize: 13.5, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}
+                      className="inline-flex items-center gap-1.5 rounded-full border-none p-[10px_20px] text-[13.5px] font-bold [font-family:inherit] cursor-pointer"
+                      style={{ background: 'var(--accent-primary)', color: 'var(--accent-on-primary)' }}
                     >
                       <Plus size={16} strokeWidth={2.6} /> Add your first habit
                     </button>
                   </div>
                 ) : (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  <div className="flex flex-col gap-3">
                     {displayHabits.map((h, i) => (
                       <HabitRow key={h.id} habit={h} index={i} onToggle={handleToggle} onOpen={setSelectedId} />
                     ))}
@@ -2295,25 +2035,9 @@ export default function FitnessSummary({
                         whileHover={{ scale: 1.015, y: -1 }}
                         whileTap={{ scale: 0.985 }}
                         onClick={() => setShowAllGoodHabits(!showAllGoodHabits)}
+                        className="mt-1.5 flex w-full items-center justify-center gap-2 rounded-full border border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)] p-[12px_20px] text-[13.5px] font-bold text-text-primary [font-family:inherit] shadow-none [backdrop-filter:blur(10px)] transition-all duration-200 cursor-pointer"
                         style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          gap: 8,
-                          padding: '12px 20px',
-                          borderRadius: 9999,
-                          border: '1px solid color-mix(in srgb, var(--accent-primary) 25%, transparent)',
                           background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-primary) 12%, var(--bg-tertiary)) 0%, var(--bg-tertiary) 100%)',
-                          color: 'var(--text-primary)',
-                          fontSize: 13.5,
-                          fontWeight: 700,
-                          cursor: 'pointer',
-                          fontFamily: 'inherit',
-                          width: '100%',
-                          marginTop: 6,
-                          backdropFilter: 'blur(10px)',
-                          boxShadow: 'none',
-                          transition: 'all 0.2s ease',
                         }}
                       >
                         <span>{showAllGoodHabits ? 'Show less' : `Show all habits (${displayHabitsFull.length})`}</span>
@@ -2348,41 +2072,39 @@ export default function FitnessSummary({
             </div>
 
             {/* RIGHT COLUMN */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px, 2vw, 22px)', minWidth: 0 }}>
+            <div className="flex min-w-0 flex-col gap-[clamp(16px,2vw,22px)]">
               <DashCard
                 title="Consistency Score"
-                action={avgPct > 0 ? <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{avgPct}%</span> : null}
+                action={avgPct > 0 ? <span className="text-[13px] font-bold text-text-primary">{avgPct}%</span> : null}
               >
-                <div style={{ position: 'relative' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 5 }}>
+                <div className="relative">
+                  <div className="flex items-end justify-between gap-[5px]">
                     {weekBars.map(({ date, dayLabel, dayNum, pct, isToday }, i) => {
                       const TRACK_H = 88;
                       const barH = Math.max(pct > 0 ? 8 : 0, Math.round((pct / 100) * TRACK_H));
                       return (
-                        <div key={date} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
-                          <div style={{
-                            width: '100%', height: TRACK_H, borderRadius: 9999,
-                            background: 'var(--surface-tint)',
-                            position: 'relative', overflow: 'hidden',
-                          }}>
+                        <div key={date} className="flex flex-1 flex-col items-center gap-[5px]">
+                          <div
+                            className="relative w-full overflow-hidden rounded-full bg-[var(--surface-tint)]"
+                            style={{ height: TRACK_H }}
+                          >
                             <motion.div
                               initial={{ height: 0 }}
                               animate={{ height: barH }}
                               transition={{ duration: 0.5, delay: 0.08 + i * 0.05, ease: 'easeOut' }}
+                              className="absolute inset-x-0 bottom-0 rounded-full"
                               style={{
-                                position: 'absolute', bottom: 0, left: 0, right: 0,
-                                borderRadius: 9999,
                                 background: isToday
                                   ? 'var(--accent-primary)'
                                   : 'color-mix(in srgb, var(--accent-primary) 52%, transparent)',
                               }}
                             />
                           </div>
-                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-                            <span style={{ fontSize: 9, fontWeight: 500, color: isToday ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+                          <div className="flex flex-col items-center gap-px">
+                            <span className="text-[9px] font-medium" style={{ color: isToday ? 'var(--text-primary)' : 'var(--text-muted)' }}>
                               {dayLabel}
                             </span>
-                            <span style={{ fontSize: 11, fontWeight: isToday ? 800 : 500, color: isToday ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
+                            <span className="text-[11px]" style={{ fontWeight: isToday ? 800 : 500, color: isToday ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
                               {dayNum}
                             </span>
                           </div>
@@ -2391,17 +2113,11 @@ export default function FitnessSummary({
                     })}
                   </div>
                   {avgPct > 0 && (
-                    <div style={{
-                      position: 'absolute', left: 0, right: 0,
-                      top: 88 - Math.round((avgPct / 100) * 88),
-                      borderTop: '1.5px dashed var(--border-medium)',
-                      pointerEvents: 'none', zIndex: 2,
-                    }}>
-                      <span style={{
-                        position: 'absolute', left: 0, top: -9,
-                        fontSize: 10, fontWeight: 700, color: 'var(--text-muted)',
-                        background: 'var(--bg-card)', padding: '1px 5px', borderRadius: 4,
-                      }}>
+                    <div
+                      className="pointer-events-none absolute inset-x-0 z-[2] border-t-[1.5px] border-dashed border-[var(--border-medium)]"
+                      style={{ top: 88 - Math.round((avgPct / 100) * 88) }}
+                    >
+                      <span className="absolute left-0 -top-[9px] rounded-[4px] bg-bg-card p-[1px_5px] text-[10px] font-bold text-text-muted">
                         Avg.{avgPct}%
                       </span>
                     </div>
@@ -2415,25 +2131,16 @@ export default function FitnessSummary({
                 title="Bad Habits Avoided"
                 action={
                   displayBadHabits.length > 0 ? (
-                    <div style={{
-                      padding: '4px 12px',
-                      borderRadius: 9999,
-                      background: 'rgba(248, 113, 113, 0.12)',
-                      border: '1px solid rgba(248, 113, 113, 0.3)',
-                    }}>
-                      <span style={{ fontSize: 12.5, fontWeight: 750, color: RED_SOFT }}>
+                    <div className="rounded-full bg-[rgba(248,113,113,0.12)] p-[4px_12px] border border-[rgba(248,113,113,0.3)]">
+                      <span className="text-[12.5px] font-[750]" style={{ color: RED_SOFT }}>
                         {loadingDate ? 'Loading…' : `${avoidedCount}/${displayBadHabits.length} avoided`}
                       </span>
                     </div>
                   ) : (
                     <button
                       onClick={() => { setAddBadDefault(true); setAddOpen(true); }}
-                      style={{
-                        padding: '5px 12px', borderRadius: 9999, border: 'none',
-                        background: RED_LIGHT, color: RED_SOFT,
-                        fontSize: 12, fontWeight: 700, cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', gap: 5,
-                      }}
+                      className="flex items-center gap-[5px] rounded-full border-none p-[5px_12px] text-xs font-bold cursor-pointer"
+                      style={{ background: RED_LIGHT, color: RED_SOFT }}
                     >
                       <Plus size={13} /> Add
                     </button>
@@ -2441,33 +2148,27 @@ export default function FitnessSummary({
                 }
               >
                 {displayBadHabits.length === 0 ? (
-                  <div style={{ textAlign: 'center', padding: '20px 12px 8px' }}>
-                    <div style={{
-                      width: 44, height: 44, borderRadius: '50%', background: RED_LIGHT,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      margin: '0 auto 12px',
-                    }}>
+                  <div className="p-[20px_12px_8px] text-center">
+                    <div
+                      className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full"
+                      style={{ background: RED_LIGHT }}
+                    >
                       <Ban size={22} color={RED_SOFT} />
                     </div>
-                    <p style={{ margin: '0 0 4px', fontSize: 14, fontWeight: 700, color: TEXT_DARK }}>No bad habits tracked</p>
-                    <p style={{ margin: '0 0 16px', fontSize: 12, color: TEXT_MUTED, lineHeight: 1.4 }}>
+                    <p className="m-0 mb-1 text-sm font-bold text-text-primary">No bad habits tracked</p>
+                    <p className="m-0 mb-4 text-xs leading-[1.4] text-text-muted">
                       Add habits you want to break — check off each day you resist them
                     </p>
                     <button
                       onClick={() => { setAddBadDefault(true); setAddOpen(true); }}
-                      style={{
-                        padding: '9px 20px', borderRadius: 9999, border: 'none',
-                        background: RED, color: '#fff',
-                        fontSize: 13, fontWeight: 700, cursor: 'pointer',
-                        display: 'inline-flex', alignItems: 'center', gap: 6,
-                        boxShadow: '0 2px 10px rgba(248,113,113,0.35)',
-                      }}
+                      className="inline-flex items-center gap-1.5 rounded-full border-none p-[9px_20px] text-sm font-bold text-white cursor-pointer shadow-[0_2px_10px_rgba(248,113,113,0.35)]"
+                      style={{ background: RED }}
                     >
                       <Plus size={14} /> Track a bad habit
                     </button>
                   </div>
                 ) : (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <div className="flex flex-col gap-2.5">
                     {displayBadHabits.map((h, i) => (
                       <HabitRow key={h.id} habit={h} index={i} onToggle={handleToggle} onOpen={setSelectedId} bad />
                     ))}
@@ -2477,47 +2178,31 @@ export default function FitnessSummary({
 
               {/* ── Quick Action Shortcuts ── */}
               <DashCard title="Quick Actions">
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
+                <div className="grid grid-cols-2 gap-2.5">
                   <Link
                     href="/dashboard/analytics"
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
-                      borderRadius: 14, background: 'var(--surface-tint)', color: 'var(--text-primary)',
-                      textDecoration: 'none', fontSize: 13, fontWeight: 700, transition: 'background 0.15s ease',
-                    }}
+                    className="flex items-center gap-2.5 rounded-[14px] bg-[var(--surface-tint)] p-[12px_14px] text-[13px] font-bold text-text-primary no-underline transition-[background] duration-150 ease-linear"
                   >
                     <BarChart3 size={18} color="var(--accent-primary)" />
                     Analytics
                   </Link>
                   <Link
                     href="/dashboard/achievements"
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
-                      borderRadius: 14, background: 'var(--surface-tint)', color: 'var(--text-primary)',
-                      textDecoration: 'none', fontSize: 13, fontWeight: 700, transition: 'background 0.15s ease',
-                    }}
+                    className="flex items-center gap-2.5 rounded-[14px] bg-[var(--surface-tint)] p-[12px_14px] text-[13px] font-bold text-text-primary no-underline transition-[background] duration-150 ease-linear"
                   >
                     <Trophy size={18} color="#FB923C" />
                     Trophies
                   </Link>
                   <Link
                     href="/dashboard/year-in-review"
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
-                      borderRadius: 14, background: 'var(--surface-tint)', color: 'var(--text-primary)',
-                      textDecoration: 'none', fontSize: 13, fontWeight: 700, transition: 'background 0.15s ease',
-                    }}
+                    className="flex items-center gap-2.5 rounded-[14px] bg-[var(--surface-tint)] p-[12px_14px] text-[13px] font-bold text-text-primary no-underline transition-[background] duration-150 ease-linear"
                   >
                     <Sparkles size={18} color="#A855F7" />
                     Year Review
                   </Link>
                   <Link
                     href="/dashboard/settings"
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
-                      borderRadius: 14, background: 'var(--surface-tint)', color: 'var(--text-primary)',
-                      textDecoration: 'none', fontSize: 13, fontWeight: 700, transition: 'background 0.15s ease',
-                    }}
+                    className="flex items-center gap-2.5 rounded-[14px] bg-[var(--surface-tint)] p-[12px_14px] text-[13px] font-bold text-text-primary no-underline transition-[background] duration-150 ease-linear"
                   >
                     <Settings size={18} color="var(--text-muted)" />
                     Settings
