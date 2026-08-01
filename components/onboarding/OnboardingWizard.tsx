@@ -77,7 +77,7 @@ function Confetti() {
     delay: `${i * 0.03}s`,
   }));
   return (
-    <div style={{ position: 'absolute', top: '40%', left: '50%', pointerEvents: 'none', zIndex: 10 }}>
+    <div className="pointer-events-none absolute top-[40%] left-1/2 z-10">
       {particles.map((p, i) => (
         <span
           key={i}
@@ -98,16 +98,17 @@ function Confetti() {
 /* ─── Step indicator ────────────────────────────────────────── */
 function StepDots({ current, total }: { current: number; total: number }) {
   return (
-    <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginBottom: 28 }}>
+    <div className="mb-7 flex justify-center gap-1.5">
       {Array.from({ length: total }).map((_, i) => (
-        <div key={i} style={{
-          width: i === current ? 20 : 6,
-          height: 6,
-          borderRadius: 'var(--r-pill)',
-          background: i === current ? 'var(--accent-primary)' : i < current ? 'var(--accent-glow-md)' : 'var(--border-default)',
-          transition: 'all 0.3s ease',
-          border: i < current && i !== current ? '1px solid var(--accent-primary)' : 'none',
-        }} />
+        <div
+          key={i}
+          className="h-1.5 rounded-[var(--r-pill)] transition-all duration-300 ease-linear"
+          style={{
+            width: i === current ? 20 : 6,
+            background: i === current ? 'var(--accent-primary)' : i < current ? 'var(--accent-glow-md)' : 'var(--border-default)',
+            border: i < current && i !== current ? '1px solid var(--accent-primary)' : 'none',
+          }}
+        />
       ))}
     </div>
   );
@@ -185,51 +186,29 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
       role="dialog"
       aria-modal="true"
       aria-label="Welcome to Productivity Master"
-      style={{
-        position: 'fixed', inset: 0, zIndex: 60,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: 16,
-        background: 'rgba(0, 0, 0,0.65)',
-      }}
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(0,0,0,0.65)] p-4"
     >
       <motion.div
         initial={{ opacity: 0, y: 24, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-        style={{
-          position: 'relative',
-          width: '100%', maxWidth: 520,
-          background: 'var(--bg-elevated)',
-          border: '1px solid var(--border-default)',
-          borderRadius: 22,
-          boxShadow: 'none',
-          overflow: 'hidden',
-        }}
+        className="relative w-full max-w-[520px] overflow-hidden rounded-[22px] border border-border-default bg-bg-elevated shadow-none"
       >
         {/* Dismiss — skip on final step */}
         {step < 4 && (
           <button
             onClick={onDismiss}
             aria-label="Skip onboarding"
-            style={{
-              position: 'absolute', top: 14, right: 14, zIndex: 2,
-              width: 30, height: 30, borderRadius: 8,
-              background: 'var(--bg-tertiary)', border: '1px solid var(--border-subtle)',
-              color: 'var(--text-muted)', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}
+            className="absolute top-3.5 right-3.5 z-[2] flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-lg border border-border-subtle bg-bg-tertiary text-text-muted"
           >
             <X size={15} />
           </button>
         )}
 
         {/* Top accent line */}
-        <div style={{
-          height: 3,
-          background: 'linear-gradient(90deg, var(--accent-primary), var(--cyan))',
-        }} />
+        <div className="h-[3px] bg-[linear-gradient(90deg,var(--accent-primary),var(--cyan))]" />
 
-        <div style={{ padding: '28px 28px 32px' }}>
+        <div className="p-[28px_28px_32px]">
           <StepDots current={step} total={STEPS} />
 
           <AnimatePresence mode="wait" custom={dir}>
@@ -244,29 +223,17 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
             >
               {/* ── Step 0: Welcome ───────────────────────────────── */}
               {step === 0 && (
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{
-                    display: 'flex', justifyContent: 'center', marginBottom: 16,
-                  }}><Zap size={48} color="var(--accent-primary)" /></div>
-                  <h2 style={{
-                    fontSize: 24, fontWeight: 800, fontFamily: "'Outfit'",
-                    letterSpacing: '-0.03em', color: 'var(--text-primary)', margin: '0 0 10px',
-                  }}>
+                <div className="text-center">
+                  <div className="mb-4 flex justify-center"><Zap size={48} color="var(--accent-primary)" /></div>
+                  <h2 className="m-0 mb-2.5 text-2xl font-extrabold text-text-primary [font-family:'Outfit'] [letter-spacing:-0.03em]">
                     Welcome{userName ? `, ${userName.split(' ')[0]}` : ''}!
                   </h2>
-                  <p style={{ fontSize: 14.5, color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 28px', maxWidth: 360, marginLeft: 'auto', marginRight: 'auto' }}>
+                  <p className="mx-auto mb-7 max-w-[360px] text-[14.5px] leading-[1.6] text-text-secondary">
                     Productivity Master turns daily check-ins into unstoppable streaks. Let&apos;s create your very first habit — it takes about 60 seconds.
                   </p>
                   <button
                     onClick={() => go(1)}
-                    style={{
-                      width: '100%', padding: '13px',
-                      borderRadius: 12, background: 'var(--accent-primary)',
-                      color: 'var(--accent-on-primary)', fontSize: 15, fontWeight: 700,
-                      border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                      boxShadow: 'none',
-                    }}
+                    className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border-none bg-accent-primary p-[13px] [font-family:inherit] text-[15px] font-bold text-accent-on-primary shadow-none"
                   >
                     Let&apos;s go <ArrowRight size={16} />
                   </button>
@@ -276,28 +243,26 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
               {/* ── Step 1: Category ─────────────────────────────── */}
               {step === 1 && (
                 <div>
-                  <h2 style={{ fontSize: 20, fontWeight: 800, fontFamily: "'Outfit'", letterSpacing: '-0.02em', color: 'var(--text-primary)', margin: '0 0 6px' }}>
+                  <h2 className="m-0 mb-1.5 text-xl font-extrabold text-text-primary [font-family:'Outfit'] [letter-spacing:-0.02em]">
                     What do you want to improve?
                   </h2>
-                  <p style={{ fontSize: 13.5, color: 'var(--text-muted)', margin: '0 0 20px' }}>
+                  <p className="m-0 mb-5 text-[13.5px] text-text-muted">
                     Pick an area — we&apos;ll suggest habits for it.
                   </p>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 20 }}>
+                  <div className="mb-5 grid grid-cols-2 gap-2.5">
                     {CATEGORIES.map(cat => (
                       <button
                         key={cat.id}
                         onClick={() => { setCategoryId(cat.id); go(2); }}
+                        className="cursor-pointer rounded-xl border p-[14px_12px] text-left [font-family:inherit] transition-all duration-150 ease-in-out"
                         style={{
-                          padding: '14px 12px', borderRadius: 12, cursor: 'pointer',
                           background: categoryId === cat.id ? 'var(--accent-glow-md)' : 'var(--bg-tertiary)',
-                          border: `1px solid ${categoryId === cat.id ? 'var(--border-accent)' : 'var(--border-subtle)'}`,
-                          textAlign: 'left', fontFamily: 'inherit',
-                          transition: 'all 0.15s ease',
+                          borderColor: categoryId === cat.id ? 'var(--border-accent)' : 'var(--border-subtle)',
                         }}
                       >
-                        <div style={{ marginBottom: 5, color: 'var(--accent-primary)' }}><OWIcon name={cat.icon} size={22} color="var(--accent-primary)" /></div>
-                        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 2px' }}>{cat.label}</p>
-                        <p style={{ fontSize: 11, color: 'var(--text-muted)', margin: 0 }}>{cat.desc}</p>
+                        <div className="mb-[5px] text-accent-primary"><OWIcon name={cat.icon} size={22} color="var(--accent-primary)" /></div>
+                        <p className="m-0 mb-0.5 text-[13px] font-bold text-text-primary">{cat.label}</p>
+                        <p className="m-0 text-[11px] text-text-muted">{cat.desc}</p>
                       </button>
                     ))}
                   </div>
@@ -307,39 +272,29 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
               {/* ── Step 2: Template ─────────────────────────────── */}
               {step === 2 && (
                 <div>
-                  <h2 style={{ fontSize: 20, fontWeight: 800, fontFamily: "'Outfit'", letterSpacing: '-0.02em', color: 'var(--text-primary)', margin: '0 0 6px' }}>
+                  <h2 className="m-0 mb-1.5 text-xl font-extrabold text-text-primary [font-family:'Outfit'] [letter-spacing:-0.02em]">
                     Choose a habit to start
                   </h2>
-                  <p style={{ fontSize: 13.5, color: 'var(--text-muted)', margin: '0 0 20px' }}>
+                  <p className="m-0 mb-5 text-[13.5px] text-text-muted">
                     Pick one — you can add more later.
                   </p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
+                  <div className="mb-5 flex flex-col gap-2.5">
                     {(TEMPLATES[categoryId] ?? []).map(t => (
                       <button
                         key={t.name}
                         onClick={() => pickTemplate(t)}
-                        style={{
-                          display: 'flex', alignItems: 'center', gap: 12,
-                          padding: '12px 14px', borderRadius: 12, cursor: 'pointer',
-                          background: 'var(--bg-tertiary)',
-                          border: '1px solid var(--border-subtle)',
-                          textAlign: 'left', fontFamily: 'inherit',
-                          transition: 'all 0.15s ease',
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--border-medium)'; e.currentTarget.style.background = 'var(--bg-elevated)'; }}
-                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.background = 'var(--bg-tertiary)'; }}
+                        className="flex cursor-pointer items-center gap-3 rounded-xl border border-border-subtle bg-bg-tertiary p-[12px_14px] text-left [font-family:inherit] transition-all duration-150 ease-in-out hover:border-border-medium hover:bg-bg-elevated"
                       >
-                        <div style={{
-                          width: 38, height: 38, borderRadius: 10, flexShrink: 0,
-                          background: `${t.color}20`, border: `1px solid ${t.color}40`,
-                          display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        }}><OWIcon name={t.icon} size={18} color={t.color} /></div>
-                        <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{t.name}</span>
-                        <ArrowRight size={14} color="var(--text-dimmed)" style={{ marginLeft: 'auto', flexShrink: 0 }} />
+                        <div
+                          className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-[10px]"
+                          style={{ background: `${t.color}20`, border: `1px solid ${t.color}40` }}
+                        ><OWIcon name={t.icon} size={18} color={t.color} /></div>
+                        <span className="text-[14px] font-semibold text-text-primary">{t.name}</span>
+                        <ArrowRight size={14} color="var(--text-dimmed)" className="ml-auto shrink-0" />
                       </button>
                     ))}
                   </div>
-                  <button onClick={() => go(1)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <button onClick={() => go(1)} className="flex cursor-pointer items-center gap-[5px] border-none bg-none text-[13px] text-text-muted">
                     <ArrowLeft size={13} /> Back
                   </button>
                 </div>
@@ -348,16 +303,16 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
               {/* ── Step 3: Customize ────────────────────────────── */}
               {step === 3 && (
                 <div>
-                  <h2 style={{ fontSize: 20, fontWeight: 800, fontFamily: "'Outfit'", letterSpacing: '-0.02em', color: 'var(--text-primary)', margin: '0 0 6px' }}>
+                  <h2 className="m-0 mb-1.5 text-xl font-extrabold text-text-primary [font-family:'Outfit'] [letter-spacing:-0.02em]">
                     Make it yours
                   </h2>
-                  <p style={{ fontSize: 13.5, color: 'var(--text-muted)', margin: '0 0 20px' }}>
+                  <p className="m-0 mb-5 text-[13.5px] text-text-muted">
                     Tweak the name and pick a colour.
                   </p>
 
                   {/* Name field */}
-                  <div style={{ marginBottom: 18 }}>
-                    <label style={{ display: 'block', fontSize: 12.5, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 6, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                  <div className="mb-[18px]">
+                    <label className="mb-1.5 block text-[12.5px] font-semibold tracking-[0.04em] text-text-secondary uppercase">
                       Habit name
                     </label>
                     <input
@@ -365,35 +320,26 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
                       onChange={e => setHabitName(e.target.value)}
                       placeholder="e.g. Morning Run"
                       maxLength={80}
-                      style={{
-                        width: '100%', padding: '11px 14px', borderRadius: 10,
-                        background: 'var(--bg-tertiary)',
-                        border: `1px solid ${error ? 'var(--danger)' : 'var(--border-subtle)'}`,
-                        color: 'var(--text-primary)', fontSize: 14,
-                        outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
-                      }}
-                      onFocus={e => { e.target.style.borderColor = 'var(--border-active)'; }}
-                      onBlur={e => { e.target.style.borderColor = error ? 'var(--danger)' : 'var(--border-subtle)'; }}
+                      className="box-border w-full rounded-[10px] bg-bg-tertiary p-[11px_14px] text-[14px] text-text-primary outline-none [font-family:inherit] focus:border-[var(--border-active)]"
+                      style={{ border: `1px solid ${error ? 'var(--danger)' : 'var(--border-subtle)'}` }}
                     />
-                    {error && <p style={{ fontSize: 12, color: 'var(--danger)', margin: '5px 0 0' }}>{error}</p>}
+                    {error && <p className="m-0 mt-[5px] text-xs text-danger">{error}</p>}
                   </div>
 
                   {/* Color picker */}
-                  <div style={{ marginBottom: 24 }}>
-                    <label style={{ display: 'block', fontSize: 12.5, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 10, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                  <div className="mb-6">
+                    <label className="mb-2.5 block text-[12.5px] font-semibold tracking-[0.04em] text-text-secondary uppercase">
                       Colour
                     </label>
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    <div className="flex flex-wrap gap-2">
                       {PRESET_COLORS.map(c => (
                         <button
                           key={c}
                           type="button"
                           onClick={() => setHabitColor(c)}
+                          className="h-[30px] w-[30px] cursor-pointer rounded-full shadow-none transition-transform duration-[120ms] ease-in-out"
                           style={{
-                            width: 30, height: 30, borderRadius: '50%',
                             background: c, border: habitColor === c ? '2px solid white' : '2px solid transparent',
-                            boxShadow: 'none',
-                            cursor: 'pointer', transition: 'transform 0.12s ease',
                             transform: habitColor === c ? 'scale(1.18)' : 'scale(1)',
                           }}
                           aria-label={`Color ${c}`}
@@ -403,48 +349,33 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
                   </div>
 
                   {/* Preview */}
-                  <div style={{
-                    display: 'flex', alignItems: 'center', gap: 12,
-                    padding: '12px 14px', borderRadius: 12,
-                    background: `${habitColor}12`, border: `1px solid ${habitColor}30`,
-                    marginBottom: 20,
-                  }}>
-                    <div style={{
-                      width: 36, height: 36, borderRadius: 9, flexShrink: 0,
-                      background: `${habitColor}25`, border: `1px solid ${habitColor}50`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}>
+                  <div
+                    className="mb-5 flex items-center gap-3 rounded-xl p-[12px_14px]"
+                    style={{ background: `${habitColor}12`, border: `1px solid ${habitColor}30` }}
+                  >
+                    <div
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px]"
+                      style={{ background: `${habitColor}25`, border: `1px solid ${habitColor}50` }}
+                    >
                       {template?.icon ? <OWIcon name={template.icon} size={18} color={habitColor} /> : <Zap size={18} color={habitColor} />}
                     </div>
-                    <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
+                    <span className="text-[14px] font-semibold text-text-primary">
                       {habitName || 'Your habit'}
                     </span>
                   </div>
 
-                  <div style={{ display: 'flex', gap: 10 }}>
+                  <div className="flex gap-2.5">
                     <button
                       onClick={() => go(2)}
-                      style={{
-                        flex: '0 0 auto', padding: '12px 16px', borderRadius: 10,
-                        background: 'var(--bg-tertiary)', border: '1px solid var(--border-subtle)',
-                        color: 'var(--text-secondary)', fontSize: 14, fontWeight: 600,
-                        cursor: 'pointer', fontFamily: 'inherit',
-                        display: 'flex', alignItems: 'center', gap: 5,
-                      }}
+                      className="flex flex-none cursor-pointer items-center gap-[5px] rounded-[10px] border border-border-subtle bg-bg-tertiary p-[12px_16px] text-[14px] font-semibold text-text-secondary [font-family:inherit]"
                     >
                       <ArrowLeft size={14} /> Back
                     </button>
                     <button
                       onClick={handleSave}
                       disabled={saving}
-                      style={{
-                        flex: 1, padding: '12px', borderRadius: 10,
-                        background: 'var(--accent-primary)', color: 'var(--accent-on-primary)',
-                        fontSize: 14, fontWeight: 700, border: 'none',
-                        cursor: saving ? 'not-allowed' : 'pointer',
-                        fontFamily: 'inherit', opacity: saving ? 0.7 : 1,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
-                      }}
+                      className="flex flex-1 items-center justify-center gap-[7px] rounded-[10px] border-none bg-accent-primary p-3 text-[14px] font-bold text-accent-on-primary [font-family:inherit]"
+                      style={{ cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1 }}
                     >
                       {saving ? 'Creating…' : <><Check size={15} /> Create habit</>}
                     </button>
@@ -454,41 +385,27 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
 
               {/* ── Step 4: Celebrate ────────────────────────────── */}
               {step === 4 && (
-                <div style={{ textAlign: 'center', position: 'relative' }}>
+                <div className="relative text-center">
                   {showConfetti && <Confetti />}
-                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}><PartyPopper size={52} color="var(--accent-primary)" /></div>
-                  <h2 style={{
-                    fontSize: 24, fontWeight: 800, fontFamily: "'Outfit'",
-                    letterSpacing: '-0.03em', color: 'var(--text-primary)', margin: '0 0 10px',
-                  }}>
+                  <div className="mb-4 flex justify-center"><PartyPopper size={52} color="var(--accent-primary)" /></div>
+                  <h2 className="m-0 mb-2.5 text-2xl font-extrabold text-text-primary [font-family:'Outfit'] [letter-spacing:-0.03em]">
                     Your first habit is live!
                   </h2>
-                  <p style={{ fontSize: 14.5, color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 8px' }}>
-                    <strong style={{ color: 'var(--accent-primary)' }}>{createdHabit?.name}</strong> has been added to your dashboard.
+                  <p className="m-0 mb-2 text-[14.5px] leading-[1.6] text-text-secondary">
+                    <strong className="text-accent-primary">{createdHabit?.name}</strong> has been added to your dashboard.
                   </p>
-                  <p style={{ fontSize: 13.5, color: 'var(--text-muted)', margin: '0 0 28px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                  <p className="m-0 mb-7 flex items-center justify-center gap-1.5 text-[13.5px] text-text-muted">
                     Check it off today to start your streak! <Flame size={16} color="var(--accent-primary)" />
                   </p>
-                  <div style={{
-                    padding: '10px 14px', borderRadius: 12, marginBottom: 24,
-                    background: 'var(--accent-glow)', border: '1px solid var(--border-accent)',
-                    display: 'inline-flex', alignItems: 'center', gap: 8,
-                  }}>
+                  <div className="mb-6 inline-flex items-center gap-2 rounded-xl border border-border-accent bg-[var(--accent-glow)] p-[10px_14px]">
                     <Sparkles size={14} color="var(--accent-primary)" />
-                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent-primary)' }}>
+                    <span className="text-[13px] font-semibold text-accent-primary">
                       Tip: You can add more habits anytime with the + button.
                     </span>
                   </div>
                   <button
                     onClick={finish}
-                    style={{
-                      width: '100%', padding: '13px',
-                      borderRadius: 12, background: 'var(--accent-primary)',
-                      color: 'var(--accent-on-primary)', fontSize: 15, fontWeight: 700,
-                      border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                      boxShadow: 'none',
-                    }}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border-none bg-accent-primary p-[13px] text-[15px] font-bold text-accent-on-primary shadow-none [font-family:inherit]"
                   >
                     Go to dashboard <ArrowRight size={16} />
                   </button>
