@@ -35,7 +35,13 @@ const DISMISS_AFTER_MS = 4000;
 
 const typeConfig: Record<
   ToastType,
-  { icon: React.ReactNode; color: string; bg: string; border: string }
+  {
+    icon: React.ReactNode;
+    textClass: string;
+    chipBgClass: string;
+    borderClass: string;
+    barClass: string;
+  }
 > = {
   success: {
     icon: (
@@ -44,9 +50,10 @@ const typeConfig: Record<
         <path d="M5 8l2.5 2.5L11 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    color: 'var(--accent-primary)',
-    bg: 'color-mix(in srgb, var(--accent-primary) 10%, transparent)',
-    border: 'color-mix(in srgb, var(--accent-primary) 25%, transparent)',
+    textClass: 'text-accent-primary',
+    chipBgClass: 'bg-[color-mix(in_srgb,var(--accent-primary)_10%,transparent)]',
+    borderClass: 'border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)]',
+    barClass: 'bg-accent-primary',
   },
   error: {
     icon: (
@@ -55,9 +62,10 @@ const typeConfig: Record<
         <path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
-    color: 'var(--accent-primary)',
-    bg: 'color-mix(in srgb, var(--accent-primary) 10%, transparent)',
-    border: 'color-mix(in srgb, var(--accent-primary) 25%, transparent)',
+    textClass: 'text-accent-primary',
+    chipBgClass: 'bg-[color-mix(in_srgb,var(--accent-primary)_10%,transparent)]',
+    borderClass: 'border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)]',
+    barClass: 'bg-accent-primary',
   },
   info: {
     icon: (
@@ -67,9 +75,10 @@ const typeConfig: Record<
         <circle cx="8" cy="5" r="0.75" fill="currentColor" />
       </svg>
     ),
-    color: '#9c9c9c',
-    bg: 'rgba(150, 150, 150,0.1)',
-    border: 'rgba(150, 150, 150,0.25)',
+    textClass: 'text-[#9c9c9c]',
+    chipBgClass: 'bg-[rgba(150,150,150,0.1)]',
+    borderClass: 'border-[rgba(150,150,150,0.25)]',
+    barClass: 'bg-[#9c9c9c]',
   },
   warning: {
     icon: (
@@ -79,9 +88,10 @@ const typeConfig: Record<
         <circle cx="8" cy="11.5" r="0.75" fill="currentColor" />
       </svg>
     ),
-    color: '#a6a6a6',
-    bg: 'rgba(166, 166, 166,0.1)',
-    border: 'rgba(166, 166, 166,0.25)',
+    textClass: 'text-[#a6a6a6]',
+    chipBgClass: 'bg-[rgba(166,166,166,0.1)]',
+    borderClass: 'border-[rgba(166,166,166,0.25)]',
+    barClass: 'bg-[#a6a6a6]',
   },
 };
 
@@ -128,15 +138,13 @@ function ToastCard({ item, onDismiss }: ToastCardProps) {
       transition={{ type: 'spring', stiffness: 340, damping: 28 }}
       role="alert"
       aria-live="polite"
-      className="min-w-[280px] max-w-[360px] overflow-hidden rounded-[12px] bg-bg-secondary shadow-none [pointer-events:all]"
-      style={{ border: `1px solid ${cfg.border}` }}
+      className={`min-w-[280px] max-w-[360px] overflow-hidden rounded-[12px] border bg-bg-secondary shadow-none [pointer-events:all] ${cfg.borderClass}`}
     >
       {/* Content row */}
       <div className="flex items-start gap-2.5 py-3 px-3.5">
         {/* Icon */}
         <span
-          className="mt-px flex shrink-0 items-center rounded-[6px] p-1"
-          style={{ color: cfg.color, background: cfg.bg }}
+          className={`mt-px flex shrink-0 items-center rounded-[6px] p-1 ${cfg.textClass} ${cfg.chipBgClass}`}
         >
           {cfg.icon}
         </span>
@@ -161,8 +169,8 @@ function ToastCard({ item, onDismiss }: ToastCardProps) {
       {/* Progress bar */}
       <div className="h-[2px] bg-border-subtle">
         <div
-          className="h-full transition-[width] duration-100 ease-linear"
-          style={{ width: `${progress}%`, background: cfg.color }}
+          className={`h-full transition-[width] duration-100 ease-linear ${cfg.barClass}`}
+          style={{ width: `${progress}%` }}
         />
       </div>
     </motion.div>
