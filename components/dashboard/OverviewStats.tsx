@@ -210,8 +210,7 @@ export default function OverviewStats({ stats, loading }: OverviewStatsProps) {
                 initial={{ width: 0 }}
                 animate={{ width: `${(stats.totalCompletions % 50) * 2}%` }}
                 transition={{ duration: 1, ease: 'easeOut' }}
-                className="h-full rounded-[2px]"
-                style={{ background: 'linear-gradient(90deg, var(--cyan), var(--indigo))' }}
+                className="h-full rounded-[2px] bg-[linear-gradient(90deg,var(--cyan),var(--indigo))]"
               />
             </div>
           </div>

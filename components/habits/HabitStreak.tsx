@@ -46,9 +46,8 @@ export default function HabitStreak({ streak, size = 'md' }: HabitStreakProps) {
         </span>
 
         <span
-          className={`min-w-[1ch] text-center leading-none font-bold ${isGolden ? 'glow-pulse' : ''}`}
+          className={`min-w-[1ch] text-center leading-none font-bold font-['IBM_Plex_Mono','Courier_New',monospace] ${isGolden ? 'glow-pulse' : ''}`}
           style={{
-            fontFamily: "'IBM Plex Mono', 'Courier New', monospace",
             fontSize: cfg.count,
             color,
           }}
