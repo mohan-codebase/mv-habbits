@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { entrySchema } from '@/lib/validations/entry';
-import { toLocalDateString } from '@/lib/utils/dates';
-import { formatInTimeZone } from 'date-fns-tz';
 import { safeErrorMessage } from '@/lib/utils/api';
 
 function ok<T>(data: T, status = 200) {

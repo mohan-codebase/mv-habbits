@@ -2,7 +2,6 @@
 
 import { useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Lock, Eye, EyeOff, AlertCircle, CheckCircle2, ArrowRight, Sparkles, ShieldCheck, Zap } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';

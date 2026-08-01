@@ -78,14 +78,10 @@ const CalendarHeatmap = memo(function CalendarHeatmap({ data, color }: CalendarH
     return { weeks, monthLabels: monthLabelsList };
   }, [data]);
 
-  const CELL_SIZE = 16;
-  const CELL_GAP = 4;
-  const DAY_LABEL_WIDTH = 32;
-
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    if (scrollRef.current) {
+    if (weeks.length > 0 && scrollRef.current) {
       scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
     }
   }, [weeks]);
@@ -97,6 +93,9 @@ const CalendarHeatmap = memo(function CalendarHeatmap({ data, color }: CalendarH
       </div>
     );
   }
+  const CELL_SIZE = 16;
+  const CELL_GAP = 4;
+  const DAY_LABEL_WIDTH = 32;
 
   return (
     <motion.div

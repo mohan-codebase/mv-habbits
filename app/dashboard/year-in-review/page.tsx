@@ -4,6 +4,15 @@ import PrintButton from '@/components/dashboard/PrintButton';
 
 export const metadata = { title: 'Year in Review · Productivity Master' };
 
+function Stat({ label, value }: { label: string; value: string | number }) {
+  return (
+    <div style={{ flex: 1, textAlign: 'center', padding: '14px 8px', border: '1px solid #e3e3e3', borderRadius: 14 }}>
+      <div style={{ fontSize: 26, fontWeight: 800, color: '#555555' }}>{value}</div>
+      <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#888888', marginTop: 4 }}>{label}</div>
+    </div>
+  );
+}
+
 // Printable, light-themed (so the PDF is clean regardless of app theme).
 export default async function YearInReviewPage() {
   const supabase = await createServerClient();
@@ -15,13 +24,6 @@ export default async function YearInReviewPage() {
   const partOfDayTop = summary
     ? (Object.entries(summary.partOfDay).sort((a, b) => b[1] - a[1])[0] ?? ['—', 0])
     : ['—', 0];
-
-  const Stat = ({ label, value }: { label: string; value: string | number }) => (
-    <div style={{ flex: 1, textAlign: 'center', padding: '14px 8px', border: '1px solid #e3e3e3', borderRadius: 14 }}>
-      <div style={{ fontSize: 26, fontWeight: 800, color: '#555555' }}>{value}</div>
-      <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#888888', marginTop: 4 }}>{label}</div>
-    </div>
-  );
 
   return (
     <div style={{ background: '#fff', color: '#191919', minHeight: '100vh', padding: '32px 20px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>

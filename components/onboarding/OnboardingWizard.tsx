@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Sparkles, Check, X, Zap, PartyPopper, Flame } from 'lucide-react';
 import { DynamicIcon as OWIcon } from '@/lib/icons';
@@ -70,9 +70,10 @@ const PRESET_COLORS = ['var(--accent-primary)','#7b7b7b','#8a8a8a','#717171','#a
 function Confetti() {
   const particles = Array.from({ length: 14 }, (_, i) => ({
     color: PRESET_COLORS[i % PRESET_COLORS.length],
-    tx: `${(Math.random() - 0.5) * 120}px`,
-    ty: `${-(Math.random() * 80 + 20)}px`,
-    rot: `${Math.random() * 360}deg`,
+    // Deterministic positions keep rendering pure while still creating a burst.
+    tx: `${((i * 47) % 120) - 60}px`,
+    ty: `${-((i * 29) % 80 + 20)}px`,
+    rot: `${(i * 79) % 360}deg`,
     delay: `${i * 0.03}s`,
   }));
   return (
