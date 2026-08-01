@@ -176,8 +176,8 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Devices & Sessions" size="md">
-      <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", color: 'var(--text-primary)', minHeight: 180 }}>
-        
+      <div className="[font-family:system-ui,-apple-system,sans-serif] text-text-primary min-h-[180px]">
+
         <AnimatePresence mode="wait">
           {confirmTarget ? (
             <motion.div
@@ -186,41 +186,20 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98, y: -8 }}
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-              style={{
-                background: 'rgba(104, 104, 104, 0.04)',
-                border: '1.5px solid rgba(104, 104, 104, 0.22)',
-                borderRadius: 20,
-                padding: '24px 20px',
-                textAlign: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: 16,
-              }}
+              className="flex flex-col items-center gap-4 rounded-[20px] border-[1.5px] border-[rgba(104,104,104,0.22)] bg-[rgba(104,104,104,0.04)] p-[24px_20px] text-center"
             >
-              <div
-                style={{
-                  width: 52,
-                  height: 52,
-                  borderRadius: '50%',
-                  background: 'rgba(104, 104, 104, 0.12)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#6a6a6a',
-                }}
-              >
+              <div className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[rgba(104,104,104,0.12)] text-[#6a6a6a]">
                 <AlertTriangle size={24} />
               </div>
 
               <div>
-                <h3 style={{ margin: 0, fontSize: 17, fontWeight: 800, fontFamily: "'Outfit', sans-serif" }}>
+                <h3 className="m-0 text-[17px] font-extrabold [font-family:'Outfit',sans-serif]">
                   {confirmTarget.type === 'single' ? 'Log Out of Device?' : 'Log Out of Other Devices?'}
                 </h3>
-                <p style={{ margin: '8px 0 0', fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                <p className="mt-2 mb-0 text-[13px] leading-[1.5] text-text-secondary">
                   {confirmTarget.type === 'single' ? (
                     <>
-                      Are you sure you want to log out of <strong style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{confirmTarget.label}</strong>? 
+                      Are you sure you want to log out of <strong className="font-bold text-text-primary">{confirmTarget.label}</strong>?
                       The user on that device will be signed out immediately.
                     </>
                   ) : (
@@ -229,24 +208,11 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
                 </p>
               </div>
 
-              <div style={{ display: 'flex', gap: 12, width: '100%', marginTop: 8 }}>
+              <div className="mt-2 flex w-full gap-3">
                 <button
                   type="button"
                   onClick={() => setConfirmTarget(null)}
-                  style={{
-                    flex: 1,
-                    padding: '12px 0',
-                    borderRadius: 12,
-                    border: '1.5px solid var(--border-default)',
-                    background: 'var(--bg-tertiary)',
-                    color: 'var(--text-secondary)',
-                    fontSize: 14,
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease',
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-elevated)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'var(--bg-tertiary)'}
+                  className="flex-1 cursor-pointer rounded-xl border-[1.5px] border-border-default bg-bg-tertiary py-3 text-[14px] font-bold text-text-secondary transition-all duration-150 ease-in-out hover:bg-bg-elevated"
                 >
                   Cancel
                 </button>
@@ -259,21 +225,7 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
                       executeRevokeOthers();
                     }
                   }}
-                  style={{
-                    flex: 1,
-                    padding: '12px 0',
-                    borderRadius: 12,
-                    border: 'none',
-                    background: '#6a6a6a',
-                    color: '#FFF',
-                    fontSize: 14,
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(104, 104, 104, 0.2)',
-                    transition: 'all 0.15s ease',
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = '#4d4d4d'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = '#6a6a6a'}
+                  className="flex-1 cursor-pointer rounded-xl border-none bg-[#6a6a6a] py-3 text-[14px] font-bold text-white shadow-[0_4px_12px_rgba(104,104,104,0.2)] transition-all duration-150 ease-in-out hover:bg-[#4d4d4d]"
                 >
                   Log Out
                 </button>
@@ -288,49 +240,27 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
               transition={{ duration: 0.15 }}
             >
               {/* Info Alert */}
-              <div
-                style={{
-                  background: 'rgba(85, 85, 85, 0.08)',
-                  border: '1px solid rgba(85, 85, 85, 0.16)',
-                  borderRadius: 14,
-                  padding: 16,
-                  marginBottom: 20,
-                  display: 'flex',
-                  gap: 12,
-                  alignItems: 'flex-start',
-                }}
-              >
-                <Shield size={20} color="var(--accent-light)" style={{ flexShrink: 0, marginTop: 2 }} />
-                <div style={{ fontSize: 13, lineHeight: 1.5, color: 'var(--text-secondary)' }}>
-                  <strong style={{ color: 'var(--text-primary)', fontWeight: 700 }}>Security Information:</strong>
-                  <p style={{ margin: '4px 0 0' }}>
+              <div className="mb-5 flex items-start gap-3 rounded-[14px] border border-[rgba(85,85,85,0.16)] bg-[rgba(85,85,85,0.08)] p-4">
+                <Shield size={20} color="var(--accent-light)" className="mt-[2px] shrink-0" />
+                <div className="text-[13px] leading-[1.5] text-text-secondary">
+                  <strong className="font-bold text-text-primary">Security Information:</strong>
+                  <p className="mt-1 mb-0">
                     These are the devices currently logged into your account. If you see any unrecognized login details, you should immediately revoke the session and update your password.
                   </p>
                 </div>
               </div>
 
               {error && (
-                <div
-                  style={{
-                    background: 'rgba(104, 104, 104, 0.08)',
-                    border: '1px solid rgba(104, 104, 104, 0.16)',
-                    borderRadius: 12,
-                    padding: 14,
-                    marginBottom: 20,
-                    display: 'flex',
-                    gap: 10,
-                    alignItems: 'center',
-                  }}
-                >
-                  <AlertTriangle size={18} color="#6a6a6a" style={{ flexShrink: 0 }} />
-                  <p style={{ margin: 0, fontSize: 13, color: '#8e8e8e', fontWeight: 600 }}>{error}</p>
+                <div className="mb-5 flex items-center gap-2.5 rounded-xl border border-[rgba(104,104,104,0.16)] bg-[rgba(104,104,104,0.08)] p-[14px]">
+                  <AlertTriangle size={18} color="#6a6a6a" className="shrink-0" />
+                  <p className="m-0 text-[13px] font-semibold text-[#8e8e8e]">{error}</p>
                 </div>
               )}
 
               {loading ? (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 0', gap: 12 }}>
+                <div className="flex flex-col items-center justify-center gap-3 py-10">
                   <RefreshCw size={24} color="var(--accent-primary)" className="animate-spin" />
-                  <span style={{ fontSize: 14, color: 'var(--text-muted)' }}>Retrieving active sessions...</span>
+                  <span className="text-[14px] text-text-muted">Retrieving active sessions...</span>
                   <style jsx global>{`
                     @keyframes spin {
                       from { transform: rotate(0deg); }
@@ -345,32 +275,12 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
                 <>
                   {/* Action Bar */}
                   {sessions.length > 1 && (
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 16 }}>
+                    <div className="mb-4 flex justify-end">
                       <button
                         onClick={requestRevokeOthers}
                         disabled={actionInProgress !== null}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: 8,
-                          background: 'rgba(104, 104, 104, 0.08)',
-                          border: '1px solid rgba(104, 104, 104, 0.2)',
-                          borderRadius: 10,
-                          padding: '8px 14px',
-                          fontSize: 12.5,
-                          fontWeight: 700,
-                          color: 'var(--danger)',
-                          cursor: actionInProgress !== null ? 'wait' : 'pointer',
-                          transition: 'all 0.15s ease',
-                        }}
-                        onMouseEnter={(e) => {
-                          if (actionInProgress === null) {
-                            e.currentTarget.style.background = 'rgba(104, 104, 104, 0.14)';
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'rgba(104, 104, 104, 0.08)';
-                        }}
+                        style={{ cursor: actionInProgress !== null ? 'wait' : 'pointer' }}
+                        className={`inline-flex items-center gap-2 rounded-[10px] border border-[rgba(104,104,104,0.2)] bg-[rgba(104,104,104,0.08)] px-3.5 py-2 text-[12.5px] font-bold text-danger transition-all duration-150 ease-in-out${actionInProgress === null ? ' hover:bg-[rgba(104,104,104,0.14)]' : ''}`}
                       >
                         <LogOut size={14} />
                         {actionInProgress === 'all' ? 'Revoking others...' : 'Log out of other devices'}
@@ -379,7 +289,7 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
                   )}
 
                   {/* Sessions List */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  <div className="flex flex-col gap-3">
                     {sessions.map((session) => {
                       const { os, browser, osIcon: Icon } = parseUserAgent(session.user_agent);
                       const isCurrent = session.is_current;
@@ -389,67 +299,40 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
                         <div
                           key={session.id}
                           style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 16,
-                            padding: 16,
-                            background: 'var(--bg-secondary)',
                             border: `1px solid ${isCurrent ? 'color-mix(in srgb, var(--accent-primary) 35%, var(--border-default))' : 'var(--border-default)'}`,
-                            borderRadius: 16,
-                            position: 'relative',
                             boxShadow: isCurrent ? '0 0 12px rgba(85, 85, 85, 0.06)' : 'none',
                           }}
+                          className="relative flex items-center gap-4 rounded-2xl bg-bg-secondary p-4"
                         >
                           {/* Device Icon */}
                           <div
-                            style={{
-                              width: 44,
-                              height: 44,
-                              borderRadius: 12,
-                              background: isCurrent ? 'rgba(85, 85, 85, 0.12)' : 'rgba(127, 127, 127,0.08)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              color: isCurrent ? 'var(--accent-light)' : 'var(--text-muted)',
-                              flexShrink: 0,
-                            }}
+                            style={{ background: isCurrent ? 'rgba(85, 85, 85, 0.12)' : 'rgba(127, 127, 127,0.08)' }}
+                            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${isCurrent ? 'text-accent-light' : 'text-text-muted'}`}
                           >
                             <Icon size={22} />
                           </div>
 
                           {/* Session Info */}
-                          <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                              <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-[15px] font-bold text-text-primary">
                                 {os} · {browser}
                               </span>
                               {isCurrent && (
-                                <span
-                                  style={{
-                                    fontSize: 10,
-                                    fontWeight: 700,
-                                    background: 'var(--accent-primary)',
-                                    color: 'var(--accent-on-primary)',
-                                    padding: '2px 8px',
-                                    borderRadius: 8,
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: 4,
-                                  }}
-                                >
+                                <span className="inline-flex items-center gap-1 rounded-lg bg-accent-primary px-2 py-0.5 text-[10px] font-bold text-accent-on-primary">
                                   <CheckCircle size={10} />
                                   This device
                                 </span>
                               )}
                             </div>
 
-                            <div style={{ display: 'flex', gap: 16, marginTop: 4, flexWrap: 'wrap' }}>
-                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, color: 'var(--text-muted)' }}>
-                                <Globe size={13} style={{ opacity: 0.8 }} />
+                            <div className="mt-1 flex flex-wrap gap-4">
+                              <span className="inline-flex items-center gap-[5px] text-[12.5px] text-text-muted">
+                                <Globe size={13} className="opacity-80" />
                                 {session.ip || 'Unknown IP'}
                               </span>
-                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, color: 'var(--text-muted)' }}>
-                                <Clock size={13} style={{ opacity: 0.8 }} />
+                              <span className="inline-flex items-center gap-[5px] text-[12.5px] text-text-muted">
+                                <Clock size={13} className="opacity-80" />
                                 {isCurrent ? 'Active now' : formatRelativeTime(session.updated_at)}
                               </span>
                             </div>
@@ -461,28 +344,8 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
                               onClick={() => requestRevokeSession(session)}
                               disabled={actionInProgress !== null}
                               title="Log out this device"
-                              style={{
-                                width: 38,
-                                height: 38,
-                                borderRadius: 10,
-                                border: 'none',
-                                background: 'rgba(104, 104, 104, 0.08)',
-                                color: '#6a6a6a',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: actionInProgress !== null ? 'wait' : 'pointer',
-                                transition: 'all 0.15s ease',
-                                flexShrink: 0,
-                              }}
-                              onMouseEnter={(e) => {
-                                if (actionInProgress === null) {
-                                  e.currentTarget.style.background = 'rgba(104, 104, 104, 0.15)';
-                                }
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'rgba(104, 104, 104, 0.08)';
-                              }}
+                              style={{ cursor: actionInProgress !== null ? 'wait' : 'pointer' }}
+                              className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-[10px] border-none bg-[rgba(104,104,104,0.08)] text-[#6a6a6a] transition-all duration-150 ease-in-out${actionInProgress === null ? ' hover:bg-[rgba(104,104,104,0.15)]' : ''}`}
                             >
                               {isCurrentAction ? (
                                 <RefreshCw size={16} className="animate-spin" color="#6a6a6a" />
@@ -498,7 +361,7 @@ export default function DevicesModal({ isOpen, onClose }: DevicesModalProps) {
 
                   {/* Empty State */}
                   {sessions.length === 0 && (
-                    <div style={{ textAlign: 'center', padding: '32px 0', color: 'var(--text-muted)' }}>
+                    <div className="py-8 text-center text-text-muted">
                       No active sessions found.
                     </div>
                   )}
