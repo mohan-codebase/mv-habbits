@@ -89,7 +89,7 @@ export default function HabitList({
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }} aria-busy="true">
+      <div className="flex flex-col gap-2.5" aria-busy="true">
         {[0, 1, 2, 3].map((i) => (
           <SkeletonCard key={i} />
         ))}
@@ -104,7 +104,7 @@ export default function HabitList({
   const hasBadHabits = badHabits.length > 0;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div className="flex flex-col gap-4">
       {/* Pending habits (Draggable) */}
       {pending.length > 0 && (
         <DragDropContext onDragEnd={onDragEnd}>
@@ -113,14 +113,7 @@ export default function HabitList({
               <ul
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                style={{
-                  listStyle: 'none',
-                  margin: 0,
-                  padding: 0,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 10,
-                }}
+                className="list-none m-0 p-0 flex flex-col gap-2.5"
                 aria-label="Pending habits"
               >
                 {pending.map((habit, index) => (
@@ -134,21 +127,14 @@ export default function HabitList({
                           opacity: snapshot.isDragging ? 0.9 : 1,
                         }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <div className="flex items-center gap-1.5">
                           <div
                             {...dragProvided.dragHandleProps}
-                            style={{
-                              color: 'var(--text-muted)',
-                              cursor: 'grab',
-                              padding: '0 2px',
-                              opacity: 0.5,
-                            }}
-                            onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                            onMouseLeave={(e) => e.currentTarget.style.opacity = '0.5'}
+                            className="text-text-muted cursor-grab px-0.5 opacity-50 hover:opacity-100 transition-opacity"
                           >
                             <GripVertical size={16} />
                           </div>
-                          <div style={{ flex: 1 }}>
+                          <div className="flex-1">
                             <HabitCard
                               habit={habit}
                               onToggle={onToggle}
@@ -171,9 +157,9 @@ export default function HabitList({
 
       {/* Completed habits (Static, no reorder for completed to avoid confusion) */}
       {completed.length > 0 && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div className="flex flex-col gap-2.5">
           <SectionDivider label={`Completed · ${completed.length}`} color="var(--border-subtle)" textColor="var(--text-muted)" />
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }} aria-label="Completed habits">
+          <ul className="list-none m-0 p-0 flex flex-col gap-2.5" aria-label="Completed habits">
             {completed.map((habit) => (
               <li key={habit.id}>
                 <HabitCard habit={habit} onToggle={onToggle} onEdit={onEdit} onArchive={onArchive} onDelete={onDelete} />
@@ -185,29 +171,20 @@ export default function HabitList({
 
       {/* Bad habits section */}
       {hasBadHabits && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div className="flex flex-col gap-2.5">
           {/* Red divider with label */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ flex: 1, height: 1, background: 'rgba(104, 104, 104,0.25)' }} />
-            <span style={{
-              fontSize: 11, fontWeight: 700,
-              color: '#8e8e8e',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              whiteSpace: 'nowrap',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 5,
-            }}>
+          <div className="flex items-center gap-2.5">
+            <div className="flex-1 h-px bg-[rgba(104,104,104,0.25)]" />
+            <span className="text-xs font-bold text-[#8e8e8e] tracking-[0.08em] uppercase whitespace-nowrap flex items-center gap-[5px]">
               <Ban size={11} />
               Bad Habits · {badAvoided.length}/{badHabits.length} avoided
             </span>
-            <div style={{ flex: 1, height: 1, background: 'rgba(104, 104, 104,0.25)' }} />
+            <div className="flex-1 h-px bg-[rgba(104,104,104,0.25)]" />
           </div>
 
           {/* Not yet avoided today */}
           {badPending.length > 0 && (
-            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }} aria-label="Bad habits not yet avoided">
+            <ul className="list-none m-0 p-0 flex flex-col gap-2.5" aria-label="Bad habits not yet avoided">
               {badPending.map((habit) => (
                 <li key={habit.id}>
                   <HabitCard habit={habit} onToggle={onToggle} onEdit={onEdit} onArchive={onArchive} onDelete={onDelete} />
@@ -222,7 +199,7 @@ export default function HabitList({
               {badPending.length > 0 && (
                 <SectionDivider label={`Avoided · ${badAvoided.length}`} color="rgba(104, 104, 104,0.3)" textColor="#8e8e8e" />
               )}
-              <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }} aria-label="Avoided bad habits">
+              <ul className="list-none m-0 p-0 flex flex-col gap-2.5" aria-label="Avoided bad habits">
                 {badAvoided.map((habit) => (
                   <li key={habit.id}>
                     <HabitCard habit={habit} onToggle={onToggle} onEdit={onEdit} onArchive={onArchive} onDelete={onDelete} />
@@ -239,33 +216,23 @@ export default function HabitList({
 
 function SectionDivider({ label, color = 'var(--border-subtle)', textColor = 'var(--text-muted)' }: { label: string; color?: string; textColor?: string }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-      <div style={{ flex: 1, height: 1, background: color }} />
-      <span style={{ fontSize: 11, fontWeight: 600, color: textColor, letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+    <div className="flex items-center gap-2.5">
+      <div className="flex-1 h-px" style={{ background: color }} />
+      <span className="text-xs font-semibold tracking-[0.08em] uppercase whitespace-nowrap" style={{ color: textColor }}>
         {label}
       </span>
-      <div style={{ flex: 1, height: 1, background: color }} />
+      <div className="flex-1 h-px" style={{ background: color }} />
     </div>
   );
 }
 
 function SkeletonCard() {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 12,
-        background: 'var(--bg-glass)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 16,
-        padding: '12px 16px',
-      }}
-    >
+    <div className="flex items-center gap-3 bg-bg-glass border border-border-subtle rounded-[16px] px-4 py-3">
       <Skeleton variant="circle" />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div className="flex-1 flex flex-col gap-2">
         <Skeleton variant="text" />
-        <div style={{ width: '60%' }}>
+        <div className="w-[60%]">
           <Skeleton variant="text" />
         </div>
       </div>
