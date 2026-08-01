@@ -25,7 +25,12 @@ function barColor(pct: number): string {
 }
 
 const CHART_H = 88;
-const GRID_LINES = [25, 50, 75, 100];
+const GRID_LINES = [
+  { pct: 25, bottomClass: 'bottom-[50px]' },
+  { pct: 50, bottomClass: 'bottom-[72px]' },
+  { pct: 75, bottomClass: 'bottom-[94px]' },
+  { pct: 100, bottomClass: 'bottom-[116px]' },
+];
 
 export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }) {
   const [hov, setHov] = useState<number | null>(null);
@@ -70,9 +75,8 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
         {/* Horizontal grid lines */}
         {GRID_LINES.map((line) => (
           <div
-            key={line}
-            className="pointer-events-none absolute inset-x-0 h-px bg-border-subtle opacity-50"
-            style={{ bottom: 28 + (line / 100) * CHART_H }}
+            key={line.pct}
+            className={`pointer-events-none absolute inset-x-0 h-px bg-border-subtle opacity-50 ${line.bottomClass}`}
           />
         ))}
 
@@ -94,8 +98,7 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
                   <motion.div
                     initial={{ opacity: 0, y: 4, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    className="pointer-events-none absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-[10px] border border-border-default bg-bg-elevated p-[8px_12px]"
-                    style={{ bottom: 'calc(100% + 8px)' }}
+                    className="pointer-events-none absolute left-1/2 z-10 -translate-x-1/2 bottom-[calc(100%+8px)] whitespace-nowrap rounded-[10px] border border-border-default bg-bg-elevated p-[8px_12px]"
                   >
                     <p className="mb-0.5 text-[11px] text-text-muted">{fullDate(day.date)}</p>
                     <p className="m-0 text-sm font-bold text-text-primary">{day.percentage}%</p>
@@ -103,15 +106,12 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
                 )}
 
                 {/* Bar chart column */}
-                <div className="relative flex w-full flex-col items-center justify-end" style={{ height: CHART_H }}>
+                <div className="relative flex w-full h-[88px] flex-col items-center justify-end">
                   {/* Percentage label above bar */}
                   {day.percentage > 0 && (
                     <span
-                      className="absolute whitespace-nowrap font-mono text-[9px] font-bold tracking-[-0.01em]"
-                      style={{
-                        bottom: barH + 4,
-                        color: day.isToday ? 'var(--accent-primary)' : 'var(--text-dimmed)',
-                      }}
+                      className={`absolute whitespace-nowrap font-mono text-[9px] font-bold tracking-[-0.01em] ${day.isToday ? 'text-accent-primary' : 'text-text-dimmed'}`}
+                      style={{ bottom: barH + 4 }}
                     >
                       {day.percentage}
                     </span>
@@ -120,26 +120,24 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
                     initial={{ height: 0 }}
                     animate={{ height: barH }}
                     transition={{ duration: 0.55, ease: 'easeOut', delay: i * 0.06 }}
-                    className="w-[80%] min-h-[3px] rounded-[4px_4px_2px_2px] transition-[background,box-shadow] duration-200"
+                    className={`w-[80%] min-h-[3px] rounded-[4px_4px_2px_2px] transition-[background,box-shadow] duration-200 ${
+                      day.isToday && day.percentage > 0
+                        ? 'shadow-[0_0_12px_color-mix(in_srgb,var(--accent-primary)_35%,transparent)] opacity-100'
+                        : isHov
+                          ? 'shadow-[0_0_8px_rgba(255,255,255,0.08)] opacity-100'
+                          : 'shadow-none opacity-80'
+                    }`}
                     style={{
                       background: day.isToday && day.percentage > 0
                         ? `linear-gradient(180deg, var(--accent-light), var(--accent-primary))`
                         : color,
-                      boxShadow: day.isToday && day.percentage > 0
-                        ? '0 0 12px color-mix(in srgb, var(--accent-primary) 35%, transparent)'
-                        : isHov ? '0 0 8px rgba(255, 255, 255,0.08)' : 'none',
-                      opacity: isHov ? 1 : day.isToday ? 1 : 0.8,
                     }}
                   />
                 </div>
 
                 {/* Day label */}
                 <span
-                  className="text-[10.5px] tracking-[0.02em]"
-                  style={{
-                    fontWeight: day.isToday ? 700 : 500,
-                    color: day.isToday ? 'var(--accent-primary)' : 'var(--text-muted)',
-                  }}
+                  className={`text-[10.5px] tracking-[0.02em] ${day.isToday ? 'font-bold text-accent-primary' : 'font-medium text-text-muted'}`}
                 >
                   {dayLabel(day.date)}
                 </span>
