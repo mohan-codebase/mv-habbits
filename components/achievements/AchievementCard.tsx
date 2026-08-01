@@ -37,41 +37,25 @@ export default function AchievementCard({ achievement, onNewUnlock = false }: Pr
       initial={onNewUnlock ? { scale: 0.8, opacity: 0 } : false}
       animate={onNewUnlock ? { scale: 1, opacity: 1 } : undefined}
       transition={{ type: 'spring', stiffness: 260, damping: 18 }}
+      className="rounded-[16px] px-4 py-[18px] flex flex-col gap-3 relative overflow-hidden transition-all duration-200"
       style={{
         background: isUnlocked
           ? `radial-gradient(ellipse at top left, ${rarityStyle.glow}, var(--bg-tertiary))`
           : 'var(--bg-glass)',
         border: `1px solid ${isUnlocked ? rarityStyle.border : 'var(--border-subtle)'}`,
-        borderRadius: 16,
-        padding: '18px 16px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 12,
         opacity: isUnlocked ? 1 : 0.55,
         filter: isUnlocked ? 'none' : 'grayscale(0.6)',
-        position: 'relative',
-        overflow: 'hidden',
-        transition: 'all 0.2s ease',
         boxShadow: isUnlocked ? `0 0 24px ${rarityStyle.glow}` : 'none',
       }}
       whileHover={isUnlocked ? { y: -2, boxShadow: 'none' } : { opacity: 0.7 }}
     >
       {/* Rarity badge */}
       <div
+        className="absolute top-2.5 right-2.5 text-[9px] font-bold uppercase tracking-[0.08em] [font-family:'IBM_Plex_Sans'] px-1.5 py-0.5 rounded-[20px]"
         style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          fontSize: 9,
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.08em',
           color: rarityStyle.label,
-          fontFamily: "'IBM Plex Sans'",
-          padding: '2px 6px',
           background: `${rarityStyle.glow}`,
           border: `1px solid ${rarityStyle.border}`,
-          borderRadius: 20,
         }}
       >
         {achievement.rarity}
@@ -79,19 +63,14 @@ export default function AchievementCard({ achievement, onNewUnlock = false }: Pr
 
       {/* Icon */}
       <div
+        className="w-[52px] h-[52px] rounded-lg flex items-center justify-center"
         style={{
-          width: 52,
-          height: 52,
-          borderRadius: 14,
           background: isUnlocked
             ? `radial-gradient(circle, ${achievement.color}22, ${achievement.color}08)`
             : 'var(--bg-tertiary)',
           border: isUnlocked
             ? `1px solid ${achievement.color}44`
             : '1px solid var(--border-subtle)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
           boxShadow: isUnlocked ? `0 0 20px ${achievement.color}33` : 'none',
         }}
       >
@@ -103,19 +82,14 @@ export default function AchievementCard({ achievement, onNewUnlock = false }: Pr
       </div>
 
       {/* Title + description */}
-      <div style={{ flex: 1 }}>
+      <div className="flex-1">
         <p
-          style={{
-            margin: '0 0 4px',
-            fontSize: 14,
-            fontWeight: 700,
-            color: isUnlocked ? 'var(--text-primary)' : 'var(--text-secondary)',
-            fontFamily: "'Outfit'",
-          }}
+          className="m-0 mb-1 text-[14px] font-bold [font-family:'Outfit']"
+          style={{ color: isUnlocked ? 'var(--text-primary)' : 'var(--text-secondary)' }}
         >
           {achievement.title}
         </p>
-        <p style={{ margin: 0, fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5 }}>
+        <p className="m-0 text-[12px] text-text-muted leading-[1.5]">
           {achievement.description}
         </p>
       </div>
@@ -123,29 +97,25 @@ export default function AchievementCard({ achievement, onNewUnlock = false }: Pr
       {/* Progress or unlocked date */}
       {isUnlocked ? (
         achievement.unlockedAt && (
-          <p style={{ margin: 0, fontSize: 11, color: rarityStyle.label, fontFamily: "'IBM Plex Mono'" }}>
+          <p className="m-0 text-[11px] [font-family:'IBM_Plex_Mono']" style={{ color: rarityStyle.label }}>
             Unlocked {format(new Date(achievement.unlockedAt), 'MMM d, yyyy')}
           </p>
         )
       ) : (
         achievement.progressMax > 1 && (
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Progress</span>
-              <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: "'IBM Plex Mono'" }}>
+            <div className="flex justify-between mb-[5px]">
+              <span className="text-[11px] text-text-muted">Progress</span>
+              <span className="text-[11px] text-text-muted [font-family:'IBM_Plex_Mono']">
                 {achievement.progress} / {achievement.progressMax}
               </span>
             </div>
-            <div
-              style={{ height: 4, background: 'var(--border-subtle)', borderRadius: 2, overflow: 'hidden' }}
-            >
+            <div className="h-1 bg-border-subtle rounded-[2px] overflow-hidden">
               <div
+                className="h-full rounded-[2px] transition-[width] duration-500 ease-in-out"
                 style={{
-                  height: '100%',
                   width: `${achievement.progressPct}%`,
                   background: achievement.color,
-                  borderRadius: 2,
-                  transition: 'width 0.5s ease',
                 }}
               />
             </div>

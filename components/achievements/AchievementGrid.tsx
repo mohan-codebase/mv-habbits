@@ -40,10 +40,10 @@ export default function AchievementGrid({ achievements }: Props) {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+    <div className="flex flex-col gap-5">
       {/* Filter tabs + summary */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-        <div style={{ display: 'flex', gap: 6 }}>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex gap-1.5">
           {tabs.map(({ key, label, count }) => {
             const active = filter === key;
             return (
@@ -51,28 +51,18 @@ export default function AchievementGrid({ achievements }: Props) {
                 key={key}
                 type="button"
                 onClick={() => setFilter(key)}
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[13px] cursor-pointer transition-all duration-150"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '6px 14px',
-                  borderRadius: 'var(--r-pill)',
                   border: active ? '1px solid color-mix(in srgb, var(--accent-primary) 35%, transparent)' : '1px solid var(--border-subtle)',
                   background: active ? 'var(--accent-glow)' : 'transparent',
                   color: active ? 'var(--accent-primary)' : 'var(--text-secondary)',
-                  fontSize: 13,
                   fontWeight: active ? 600 : 400,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
                 }}
               >
                 {label}
                 <span
+                  className="text-[11px] font-semibold px-1.5 py-px rounded-[20px]"
                   style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    padding: '1px 6px',
-                    borderRadius: 20,
                     background: active ? 'color-mix(in srgb, var(--accent-primary) 20%, transparent)' : 'var(--bg-tertiary)',
                     color: active ? 'var(--accent-primary)' : 'var(--text-muted)',
                   }}
@@ -84,8 +74,8 @@ export default function AchievementGrid({ achievements }: Props) {
           })}
         </div>
 
-        <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>
-          <span style={{ color: '#b2b2b2', fontWeight: 700, fontFamily: "'IBM Plex Mono'" }}>{unlockedCount}</span>
+        <span className="text-[13px] text-text-muted">
+          <span className="text-[#b2b2b2] font-bold [font-family:'IBM_Plex_Mono']">{unlockedCount}</span>
           {' / '}
           {achievements.length} earned
         </span>
@@ -96,11 +86,7 @@ export default function AchievementGrid({ achievements }: Props) {
         initial="hidden"
         animate="visible"
         variants={{ animate: { transition: { staggerChildren: 0.04 } } }}
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-          gap: 14,
-        }}
+        className="grid [grid-template-columns:repeat(auto-fill,minmax(240px,1fr))] gap-3.5"
       >
         {filtered.map((achievement) => (
           <motion.div
@@ -116,7 +102,7 @@ export default function AchievementGrid({ achievements }: Props) {
       </motion.div>
 
       {filtered.length === 0 && (
-        <div style={{ gridColumn: '1 / -1' }}>
+        <div className="col-span-full">
           <EmptyState
             icon={filter === 'unlocked' ? <Trophy size={34} color="var(--accent-primary)" /> : <Lock size={34} color="var(--accent-primary)" />}
             title={filter === 'unlocked' ? 'No badges yet' : 'All achievements unlocked!'}
