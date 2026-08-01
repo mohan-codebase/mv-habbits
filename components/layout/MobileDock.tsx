@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BarChart3, Plus, Trophy, Settings, Users } from 'lucide-react';
+import { LayoutDashboard, BarChart3, Plus, Settings } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface MobileDockProps {
@@ -15,60 +15,76 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
 
   const isOverview = pathname === '/dashboard';
   const isAnalytics = pathname === '/dashboard/analytics';
-  const isAchievements = pathname === '/dashboard/achievements';
-  const isNetwork = pathname === '/dashboard/network';
   const isSettings = pathname === '/dashboard/settings';
 
   const triggerAddHabit = (e: React.MouseEvent) => {
     if (onAddHabit) {
       e.preventDefault();
       onAddHabit();
+    } else if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('productivity-master:open-add'));
     }
   };
 
   return (
     <div
-      className="hf-mobile-nav no-print fixed bottom-4 left-4 right-4 z-[90] flex justify-center pointer-events-none"
+      className="hf-mobile-nav no-print fixed bottom-4 left-4 right-4 z-50 flex justify-center pointer-events-none sm:hidden"
     >
       <motion.nav
-        initial={{ y: 20, opacity: 0 }}
+        initial={{ y: 24, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-        className="pointer-events-auto w-full max-w-[420px] bg-bg-glass-strong border border-border-default rounded-full px-3 py-1.5 flex items-center justify-around shadow-none"
+        transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+        className="pointer-events-auto w-full max-w-sm bg-[var(--bg-glass-strong)] backdrop-blur-xl border border-[var(--border-medium)] rounded-full px-3 py-2 flex items-center justify-between shadow-2xl shadow-purple-950/20"
       >
-        {/* Overview */}
+        {/* Home / Overview */}
         <Link
           href="/dashboard"
           aria-label="Overview"
-          className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-full no-underline transition-all duration-200 ${
-            isOverview ? 'text-accent-on-primary bg-accent-primary' : 'text-text-muted bg-transparent'
+          className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+            isOverview
+              ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30'
+              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
           }`}
         >
-          <LayoutDashboard size={19} strokeWidth={isOverview ? 2.5 : 2} />
-          <span className={`text-[10px] ${isOverview ? 'font-bold' : 'font-medium'}`}>Home</span>
+          <LayoutDashboard size={18} strokeWidth={isOverview ? 2.5 : 2} />
+          <span className="text-[10px]">Home</span>
         </Link>
 
+        {/* Analytics */}
+        <Link
+          href="/dashboard/analytics"
+          aria-label="Analytics"
+          className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+            isAnalytics
+              ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30'
+              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
+          }`}
+        >
+          <BarChart3 size={18} strokeWidth={isAnalytics ? 2.5 : 2} />
+          <span className="text-[10px]">Analytics</span>
+        </Link>
 
-        {/* Quick Add Center Button */}
+        {/* Quick Add Plus Button */}
         <button
           onClick={triggerAddHabit}
           aria-label="Add Habit"
-          className="w-11 h-11 rounded-full border-none bg-[linear-gradient(135deg,var(--accent-primary)_0%,var(--accent-hover)_100%)] text-accent-on-primary flex items-center justify-center cursor-pointer shadow-none mx-0.5 transition-transform duration-150 ease-out active:scale-[0.92]"
+          className="w-11 h-11 rounded-full bg-gradient-to-tr from-purple-500 via-indigo-500 to-purple-400 text-white flex items-center justify-center shadow-lg shadow-purple-600/40 border border-white/20 active:scale-90 transition-transform cursor-pointer -mt-1"
         >
           <Plus size={22} strokeWidth={2.8} />
         </button>
-
 
         {/* Settings */}
         <Link
           href="/dashboard/settings"
           aria-label="Settings"
-          className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-full no-underline transition-all duration-200 ${
-            isSettings ? 'text-accent-on-primary bg-accent-primary' : 'text-text-muted bg-transparent'
+          className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+            isSettings
+              ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30'
+              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
           }`}
         >
-          <Settings size={19} strokeWidth={isSettings ? 2.5 : 2} />
-          <span className={`text-[10px] ${isSettings ? 'font-bold' : 'font-medium'}`}>Settings</span>
+          <Settings size={18} strokeWidth={isSettings ? 2.5 : 2} />
+          <span className="text-[10px]">Settings</span>
         </Link>
       </motion.nav>
     </div>

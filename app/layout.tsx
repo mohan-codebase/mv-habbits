@@ -3,6 +3,7 @@ import { Inter, Outfit, IBM_Plex_Mono } from 'next/font/google';
 import "./globals.css";
 import AppProviders from "@/components/ui/AppProviders";
 import ServiceWorkerRegistrar from "@/components/ui/ServiceWorkerRegistrar";
+import InstallPwaPrompt from "@/components/ui/InstallPwaPrompt";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
@@ -29,6 +30,15 @@ export const metadata: Metadata = {
   title: "Productivity Master — Build daily habits that actually stick",
   description: "Premium habit tracker for routines, streaks, and self-growth. Track, analyze, and stay consistent — beautifully.",
   manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "Productivity Master",
     description: "Premium habit tracker for routines, streaks, and self-growth.",
@@ -45,6 +55,7 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "Productivity Master",
+    startupImage: ["/icons/icon-512.png"],
   },
 };
 
@@ -76,6 +87,7 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
     >
       <head>
+        <meta name="mobile-web-app-capable" content="yes" />
         <script
           // Prevent flash of wrong theme — runs before paint.
           dangerouslySetInnerHTML={{
@@ -87,9 +99,11 @@ export default function RootLayout({
         <Suspense fallback={<ProvidersFallback />}>
           <AppProviders>{children}</AppProviders>
         </Suspense>
+        <InstallPwaPrompt />
         <ServiceWorkerRegistrar />
         <SpeedInsights />
       </body>
     </html>
   );
 }
+

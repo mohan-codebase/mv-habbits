@@ -530,16 +530,16 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
           />
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1.5">
           <HabitList
-            habits={showAllHabits ? habits : habits.slice(0, 2)}
+            habits={showAllHabits ? habits : habits.slice(0, 10)}
             loading={loading}
             onToggle={handleToggle}
             onEdit={handleEdit}
             onArchive={handleArchive}
             onDelete={handleDelete}
           />
-          {habits.length > 2 && (
+          {habits.length > 10 && (
             <Button
               variant="secondary"
               size="sm"

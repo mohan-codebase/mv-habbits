@@ -26,6 +26,13 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// ── Fetch: network fetch handler for PWA compliance ───────────────────────
+self.addEventListener('fetch', (event) => {
+  // Pass-through fetch handler for Android PWA install eligibility
+  // Leaves document navigation and streaming RSC requests to browser network layer.
+});
+
+
 // ── Push: show notification ───────────────────────────────────────────────
 self.addEventListener('push', (event) => {
   let data = {

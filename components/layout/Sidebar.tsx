@@ -37,10 +37,10 @@ function NavItem({
     <Link
       href={href}
       onClick={onClick}
-      className={`w-full flex items-center gap-3 px-[14px] py-[10px] rounded-full border-none cursor-pointer text-[14px] font-[inherit] text-left no-underline transition-[background,color] duration-150 ease-in-out ${
+      className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm transition-all duration-150 no-underline ${
         active
-          ? 'bg-accent-primary text-accent-on-primary font-bold'
-          : 'bg-transparent text-text-secondary font-semibold hover:bg-[var(--surface-tint)]'
+          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold shadow-md shadow-purple-600/30'
+          : 'text-slate-700 dark:text-slate-300 hover:bg-purple-500/10 hover:text-purple-600 dark:hover:text-purple-400 font-semibold'
       }`}
     >
       {icon && <span className="flex shrink-0 items-center">{icon}</span>}
@@ -60,10 +60,10 @@ function NavGroup({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-px">
+    <div className="flex flex-col gap-0.5">
       <button
         onClick={onToggle}
-        className="w-full flex items-center gap-[10px] px-[14px] py-[10px] rounded-full border-none cursor-pointer bg-accent-primary text-accent-on-primary text-base font-bold font-[inherit] text-left transition-opacity duration-150 hover:opacity-[0.88]"
+        className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold transition-opacity cursor-pointer text-left shadow-sm"
       >
         <span className="flex-1">{label}</span>
         <motion.span
@@ -85,7 +85,7 @@ function NavGroup({
             transition={{ duration: 0.22, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <div className="flex flex-col gap-0 pl-[14px] border-l-2 border-[rgba(255,255,255,0.12)] ml-[10px] mt-0.5 mb-1">
+            <div className="flex flex-col gap-0 pl-3.5 border-l-2 border-purple-500/20 ml-2.5 mt-0.5 mb-1">
               {children}
             </div>
           </motion.div>
@@ -105,10 +105,10 @@ function SubNavItem({
     <Link
       href={href}
       onClick={onClick}
-      className={`w-full flex items-center gap-[10px] px-[10px] py-2 rounded-full border-none cursor-pointer text-[13px] font-[inherit] text-left no-underline transition-all duration-150 ${
+      className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-full text-xs transition-all duration-150 no-underline ${
         active
-          ? 'bg-[rgba(255,255,255,0.10)] text-text-primary font-semibold'
-          : 'bg-transparent text-text-muted font-normal hover:bg-[rgba(255,255,255,0.07)] hover:text-text-primary'
+          ? 'bg-purple-500/15 text-purple-600 dark:text-purple-400 font-semibold'
+          : 'text-slate-400 hover:bg-purple-500/10 hover:text-slate-200 font-normal'
       }`}
     >
       {icon}
@@ -179,7 +179,7 @@ export default function Sidebar() {
       {isCollapsed && (
         <button
           onClick={() => setIsCollapsed(false)}
-          className="hf-desktop-sidebar-toggle fixed top-5 left-5 z-[60] w-[42px] h-[42px] rounded-full bg-bg-card border border-border-default shadow-none cursor-pointer text-text-primary items-center justify-center hidden"
+          className="hf-desktop-sidebar-toggle fixed top-5 left-5 z-[60] w-10 h-10 rounded-full bg-slate-900/90 border border-purple-500/20 text-white cursor-pointer items-center justify-center hidden hover:bg-slate-800 transition-colors shadow-lg"
           title="Show Sidebar"
         >
           <Menu size={20} />
@@ -187,54 +187,54 @@ export default function Sidebar() {
       )}
 
       <aside
-        className="hf-desktop-sidebar no-print fixed top-4 left-4 bottom-4 h-[calc(100vh-32px)] w-[240px] z-50 flex flex-col bg-bg-card border border-border-default rounded-2xl shadow-none px-[14px] pt-5 pb-4 overflow-y-auto transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        className="hf-desktop-sidebar no-print fixed top-4 left-4 bottom-4 h-[calc(100vh-32px)] w-[240px] z-50 flex flex-col bg-[var(--bg-glass-strong)] border border-[var(--border-default)] backdrop-blur-xl rounded-3xl shadow-2xl p-4 overflow-y-auto transition-transform duration-300"
       >
-        <div className="px-2 pt-0.5 pb-[22px]">
-          <Link href="/dashboard" className="flex items-center gap-[11px] no-underline">
+        <div className="px-2 pt-0.5 pb-5">
+          <Link href="/dashboard" className="flex items-center gap-3 no-underline">
             <AppLogo width={32} height={32} />
             <div className="min-w-0">
-              <p className="m-0 text-lg font-extrabold text-text-primary tracking-[-0.02em] font-['Outfit',sans-serif]">Productivity Master</p>
-              <p className="mt-px mb-0 text-xs text-text-muted font-semibold">by Mohan</p>
+              <p className="m-0 text-base font-extrabold text-slate-900 dark:text-white tracking-tight font-sans">Productivity Master</p>
+              <p className="m-0 mt-0.5 text-[11px] text-purple-500 dark:text-purple-400 font-semibold">by Mohan</p>
             </div>
           </Link>
         </div>
 
         <button
           onClick={() => setPaletteOpen(true)}
-          className="flex items-center gap-[10px] w-full px-3 py-[9px] rounded-full mb-[14px] border border-border-default bg-bg-card text-text-muted cursor-pointer font-[inherit] text-[13px] font-semibold"
+          className="flex items-center gap-2.5 w-full px-3 py-2 rounded-full mb-3.5 border border-[var(--border-default)] bg-[var(--bg-tertiary)] hover:bg-[var(--bg-elevated)] text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer font-medium text-xs transition-all"
         >
           <Search size={16} />
           <span className="flex-1 text-left">Search</span>
-          <span className="text-xs font-bold text-text-dimmed">⌘K</span>
+          <span className="text-[11px] font-bold text-slate-500">⌘K</span>
         </button>
 
-        <nav className="flex flex-col gap-[3px]">
-          <p className="mt-1 mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Habit Tracker</p>
+        <nav className="flex flex-col gap-1">
+          <p className="my-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">Habit Tracker</p>
           <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={(e) => { if (isOverviewActive) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }} />
           <NavItem icon={<NotebookPen size={17} />} label="Notes" active={isNotesActive} href="/dashboard/notes" />
           <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" />
           <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" />
           <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" />
 
-          <p className="mt-[14px] mx-0 mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Social</p>
+          <p className="mt-3.5 mb-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">Social</p>
           <NavItem icon={<Users size={17} />} label="Network" active={isNetworkActive} href="/dashboard/network" />
           <NavItem icon={<Activity size={17} />} label="Feed" active={isFeedActive} href="/dashboard/feed" />
 
-          <p className="mt-[14px] mx-0 mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Settings</p>
+          <p className="mt-3.5 mb-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">Settings</p>
           <NavItem icon={<Settings size={17} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" />
         </nav>
 
-        <div className="mt-auto flex flex-col gap-[6px] pt-[18px]">
+        <div className="mt-auto flex flex-col gap-1.5 pt-4">
           <button
             onClick={() => setIsCollapsed(true)}
-            className="flex items-center gap-3 w-full px-[14px] py-[11px] rounded-full border-none cursor-pointer bg-transparent text-text-secondary text-[14px] font-semibold font-[inherit] text-left transition-colors duration-150 hover:bg-[var(--surface-tint)]"
+            className="flex items-center gap-3 w-full px-3.5 py-2.5 rounded-full border-0 cursor-pointer bg-transparent text-slate-400 hover:text-white hover:bg-white/5 text-sm font-semibold transition-colors text-left"
           >
             <span className="flex shrink-0"><Menu size={18} /></span>
             Hide sidebar
           </button>
           <button
             onClick={toggle}
-            className="flex items-center gap-3 w-full px-[14px] py-[11px] rounded-full border-none cursor-pointer bg-transparent text-text-secondary text-[14px] font-semibold font-[inherit] text-left transition-colors duration-150 hover:bg-[var(--surface-tint)]"
+            className="flex items-center gap-3 w-full px-3.5 py-2.5 rounded-full border-0 cursor-pointer bg-transparent text-slate-400 hover:text-white hover:bg-white/5 text-sm font-semibold transition-colors text-left"
           >
             <span className="flex shrink-0">{isDark ? <Sun size={18} /> : <Moon size={18} />}</span>
             {isDark ? 'Light mode' : 'Dark mode'}
@@ -243,19 +243,19 @@ export default function Sidebar() {
           {user && (
             <Link
               href="/dashboard/settings"
-              className="flex items-center gap-[11px] w-full px-3 py-[10px] rounded-full mt-[6px] border border-border-default bg-bg-card cursor-pointer font-[inherit] text-left no-underline"
+              className="flex items-center gap-2.5 w-full p-2.5 rounded-2xl mt-1.5 border border-[var(--border-default)] bg-[var(--bg-tertiary)] hover:bg-[var(--bg-elevated)] cursor-pointer text-left no-underline transition-all"
             >
-              <div className="w-9 h-9 rounded-full shrink-0 bg-accent-primary text-accent-on-primary flex items-center justify-center text-[14px] font-extrabold">{initials}</div>
+              <div className="w-9 h-9 rounded-full shrink-0 bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center text-xs font-extrabold shadow-sm">
+                {initials}
+              </div>
               <div className="flex-1 min-w-0">
-                <p className="m-0 text-[13px] font-bold text-text-primary whitespace-nowrap overflow-hidden text-ellipsis">{displayName}</p>
-                <p className="m-0 text-xs text-text-muted whitespace-nowrap overflow-hidden text-ellipsis">{user.email}</p>
+                <p className="m-0 text-xs font-bold text-slate-900 dark:text-white truncate">{displayName}</p>
+                <p className="m-0 text-[11px] text-slate-400 truncate">{user.email}</p>
               </div>
             </Link>
           )}
         </div>
       </aside>
-
-
 
       <AnimatePresence>
         {mobileOpen && (
@@ -266,26 +266,26 @@ export default function Sidebar() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setMobileOpen(false)}
-              className="hf-mobile-nav fixed inset-0 z-[99] bg-[rgba(0,0,0,0.5)]"
+              className="hf-mobile-nav fixed inset-0 z-[99] bg-black/60 backdrop-blur-sm"
             />
             <motion.div
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="hf-mobile-nav fixed top-0 left-0 bottom-0 w-[240px] z-[100] bg-bg-tertiary border-r border-border-default px-4 py-5 flex flex-col overflow-y-auto"
+              className="hf-mobile-nav fixed top-0 left-0 bottom-0 w-[260px] z-[100] bg-[var(--bg-secondary)] border-r border-[var(--border-default)] p-5 flex flex-col overflow-y-auto shadow-2xl"
             >
               <div className="flex items-center justify-between mb-5">
-                <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="flex items-center gap-[10px] no-underline">
+                <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5 no-underline">
                   <AppLogo width={34} height={34} />
-                  <div className="flex flex-col leading-[1.15]">
-                    <span className="text-[14px] font-extrabold text-text-primary font-['Outfit',sans-serif]">Productivity Master</span>
-                    <span className="text-[10px] text-text-muted font-semibold">by Mohan</span>
+                  <div className="flex flex-col leading-tight">
+                    <span className="text-sm font-extrabold text-[var(--text-primary)] font-sans">Productivity Master</span>
+                    <span className="text-[10px] text-purple-400 font-semibold">by Mohan</span>
                   </div>
                 </Link>
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="w-8 h-8 rounded-full bg-[rgba(255,255,255,0.08)] border-none flex items-center justify-center cursor-pointer text-text-primary"
+                  className="w-8 h-8 rounded-full bg-[var(--bg-tertiary)] border-0 flex items-center justify-center cursor-pointer text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] transition-colors"
                 >
                   <X size={16} />
                 </button>
@@ -293,33 +293,33 @@ export default function Sidebar() {
 
               <button
                 onClick={() => { setPaletteOpen(true); setMobileOpen(false); }}
-                className="flex items-center gap-[10px] w-full px-3 py-[9px] rounded-full mb-[14px] border border-border-default bg-bg-card text-text-muted cursor-pointer font-[inherit] text-[13px] font-semibold"
+                className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-full mb-3.5 border border-purple-500/20 bg-white/5 hover:bg-white/10 text-slate-400 cursor-pointer text-xs font-semibold"
               >
                 <Search size={16} />
                 <span className="flex-1 text-left">Search</span>
-                <span className="text-xs font-bold text-text-dimmed">⌘K</span>
+                <span className="text-[11px] font-bold text-slate-500">⌘K</span>
               </button>
 
-              <nav className="flex flex-col gap-[3px]">
-                <p className="mt-1 mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Habit Tracker</p>
+              <nav className="flex flex-col gap-1">
+                <p className="my-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500">Habit Tracker</p>
                 <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<NotebookPen size={17} />} label="Notes" active={isNotesActive} href="/dashboard/notes" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" onClick={() => setMobileOpen(false)} />
 
-                <p className="mt-[14px] mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Social</p>
+                <p className="mt-3.5 mb-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500">Social</p>
                 <NavItem icon={<Users size={17} />} label="Network" active={isNetworkActive} href="/dashboard/network" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<Activity size={17} />} label="Feed" active={isFeedActive} href="/dashboard/feed" onClick={() => setMobileOpen(false)} />
 
-                <p className="mt-[14px] mb-[6px] px-3 text-[10px] font-bold tracking-[0.14em] uppercase text-text-dimmed">Settings</p>
+                <p className="mt-3.5 mb-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500">Settings</p>
                 <NavItem icon={<Settings size={17} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" onClick={() => setMobileOpen(false)} />
               </nav>
 
-              <div className="mt-auto flex flex-col gap-[6px] pt-[18px]">
+              <div className="mt-auto flex flex-col gap-1.5 pt-4">
                 <button
                   onClick={() => { toggle(); setMobileOpen(false); }}
-                  className="flex items-center gap-3 w-full px-[14px] py-[11px] rounded-full border-none cursor-pointer bg-transparent text-text-secondary text-[14px] font-semibold font-[inherit] text-left transition-colors duration-150 hover:bg-[var(--surface-tint)]"
+                  className="flex items-center gap-3 w-full px-3.5 py-2.5 rounded-full border-0 cursor-pointer bg-transparent text-slate-400 hover:text-white hover:bg-white/5 text-sm font-semibold transition-colors text-left"
                 >
                   <span className="flex shrink-0">{isDark ? <Sun size={18} /> : <Moon size={18} />}</span>
                   {isDark ? 'Light mode' : 'Dark mode'}
@@ -329,12 +329,14 @@ export default function Sidebar() {
                   <Link
                     href="/dashboard/settings"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-[11px] w-full px-3 py-[10px] rounded-full mt-[6px] border border-border-default bg-bg-card cursor-pointer font-[inherit] text-left no-underline"
+                    className="flex items-center gap-2.5 w-full p-2.5 rounded-2xl mt-1.5 border border-[var(--border-default)] bg-[var(--bg-tertiary)] hover:bg-[var(--bg-elevated)] cursor-pointer text-left no-underline transition-all"
                   >
-                    <div className="w-9 h-9 rounded-full shrink-0 bg-accent-primary text-accent-on-primary flex items-center justify-center text-[14px] font-extrabold">{initials}</div>
+                    <div className="w-9 h-9 rounded-full shrink-0 bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center text-xs font-extrabold shadow-sm">
+                      {initials}
+                    </div>
                     <div className="flex-1 min-w-0">
-                      <p className="m-0 text-[13px] font-bold text-text-primary whitespace-nowrap overflow-hidden text-ellipsis">{displayName}</p>
-                      <p className="m-0 text-xs text-text-muted whitespace-nowrap overflow-hidden text-ellipsis">{user.email}</p>
+                      <p className="m-0 text-xs font-bold text-[var(--text-primary)] truncate">{displayName}</p>
+                      <p className="m-0 text-[11px] text-slate-400 truncate">{user.email}</p>
                     </div>
                   </Link>
                 )}

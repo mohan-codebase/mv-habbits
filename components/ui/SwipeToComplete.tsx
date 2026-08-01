@@ -103,7 +103,7 @@ export default function SwipeToComplete({
         height,
         background: completed
           ? `linear-gradient(135deg, ${color} 0%, color-mix(in srgb, ${color} 72%, #000) 100%)`
-          : 'rgba(50, 48, 45, 0.58)',
+          : 'var(--bg-elevated)',
         border: completed
           ? `1.5px solid rgba(255,255,255,0.28)`
           : '1.5px solid rgba(255, 255, 255, 0.18)',

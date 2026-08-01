@@ -90,10 +90,10 @@ function SignupContent() {
 
       {/* Form Header */}
       <div className="mb-6 text-center sm:text-left">
-        <h2 className="text-2xl font-bold font-['Outfit'] text-white tracking-tight">
+        <h2 className="text-2xl font-bold font-['Outfit'] text-[var(--text-primary)] tracking-tight">
           Create your account
         </h2>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1">
+        <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
           Start tracking habits and building streak momentum today
         </p>
       </div>
@@ -102,15 +102,15 @@ function SignupContent() {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center py-8 px-4 rounded-2xl bg-white/[0.03] border border-white/10"
+          className="text-center py-8 px-4 rounded-2xl bg-[var(--bg-tertiary)] border border-[var(--border-default)]"
         >
           <div className="w-12 h-12 rounded-full inline-flex items-center justify-center mb-3 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
             <CheckCircle2 size={24} strokeWidth={2.5} />
           </div>
-          <h3 className="text-lg font-bold text-white mb-1 font-['Outfit'] tracking-tight">
+          <h3 className="text-lg font-bold text-[var(--text-primary)] mb-1 font-['Outfit'] tracking-tight">
             Account Created!
           </h3>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[var(--text-secondary)]">
             Redirecting to your habit dashboard…
           </p>
         </motion.div>
@@ -169,7 +169,8 @@ function SignupContent() {
                   placeholder="Alex Morgan"
                   autoComplete="name"
                   required
-                  className="auth-input w-full h-12 pl-12 pr-4 bg-white/[0.05] hover:bg-white/[0.08] focus:bg-white/[0.09] border border-white/10 focus:border-indigo-500/80 rounded-2xl text-white text-xs sm:text-sm placeholder:text-slate-500 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                  style={{ paddingLeft: '48px', paddingRight: '16px' }}
+                  className="auth-input w-full h-12 bg-[var(--input-bg)] hover:bg-[var(--bg-tertiary)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-2xl text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
                 />
               </div>
             </div>
@@ -188,7 +189,8 @@ function SignupContent() {
                   placeholder="alex@example.com"
                   autoComplete="email"
                   required
-                  className="auth-input w-full h-12 pl-12 pr-4 bg-white/[0.05] hover:bg-white/[0.08] focus:bg-white/[0.09] border border-white/10 focus:border-indigo-500/80 rounded-2xl text-white text-xs sm:text-sm placeholder:text-slate-500 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                  style={{ paddingLeft: '48px', paddingRight: '16px' }}
+                  className="auth-input w-full h-12 bg-[var(--input-bg)] hover:bg-[var(--bg-tertiary)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-2xl text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
                 />
               </div>
             </div>
@@ -208,12 +210,13 @@ function SignupContent() {
                   autoComplete="new-password"
                   required
                   minLength={8}
-                  className="auth-input-pw w-full h-12 pl-12 pr-12 bg-white/[0.05] hover:bg-white/[0.08] focus:bg-white/[0.09] border border-white/10 focus:border-indigo-500/80 rounded-2xl text-white text-xs sm:text-sm placeholder:text-slate-500 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                  style={{ paddingLeft: '48px', paddingRight: '48px' }}
+                  className="auth-input-pw w-full h-12 bg-[var(--input-bg)] hover:bg-[var(--bg-tertiary)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-2xl text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPw(!showPw)}
-                  className="absolute right-3.5 z-10 p-1 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  className="absolute right-3.5 z-10 p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
                   aria-label={showPw ? 'Hide password' : 'Show password'}
                 >
                   {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -257,11 +260,11 @@ function SignupContent() {
 
           {/* Divider */}
           <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px bg-white/10" />
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-500 font-semibold">
+            <div className="flex-1 h-px bg-[var(--border-default)]" />
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-[var(--text-muted)] font-semibold">
               Or signup with
             </span>
-            <div className="flex-1 h-px bg-white/10" />
+            <div className="flex-1 h-px bg-[var(--border-default)]" />
           </div>
 
           {/* Social OAuth Buttons */}
@@ -275,7 +278,7 @@ function SignupContent() {
       )}
 
       {/* Security Badge */}
-      <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-center gap-3 text-slate-400 text-[11px] sm:text-xs">
+      <div className="mt-6 pt-4 border-t border-[var(--border-default)] flex items-center justify-center gap-3 text-[var(--text-muted)] text-[11px] sm:text-xs">
         <span className="flex items-center gap-1.5">
           <ShieldCheck size={14} className="text-emerald-400" /> Free Forever Plan
         </span>
@@ -288,7 +291,7 @@ function SignupContent() {
 
 export default function SignupPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#07090E]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-[var(--bg-primary)]" />}>
       <SignupContent />
     </Suspense>
   );
