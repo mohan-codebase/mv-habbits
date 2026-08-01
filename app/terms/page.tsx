@@ -8,24 +8,11 @@ const EFFECTIVE_DATE = 'April 28, 2026';
 
 function PageHero({ badge, title, subtitle }: { badge: string; title: string; subtitle: React.ReactNode }) {
   return (
-    <div style={{
-      borderBottom: '1px solid var(--border-subtle)',
-      background: 'linear-gradient(to bottom, var(--bg-secondary), var(--bg-primary))',
-      padding: 'clamp(80px, 10vw, 120px) clamp(16px, 5vw, 64px) clamp(36px, 5vw, 56px)',
-      textAlign: 'center',
-    }}>
-      <div style={{ maxWidth: 720, margin: '0 auto' }}>
-        <span style={{
-          display: 'inline-block', fontSize: 11, fontWeight: 600, letterSpacing: '0.14em',
-          textTransform: 'uppercase', color: 'var(--accent-primary)', fontFamily: "'IBM Plex Mono', monospace",
-          padding: '5px 14px', borderRadius: 100, border: '1px solid var(--border-accent)',
-          background: 'var(--accent-glow)', marginBottom: 20,
-        }}>{badge}</span>
-        <h1 style={{
-          fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, color: 'var(--text-primary)',
-          fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.03em', lineHeight: 1.2, margin: '0 0 14px',
-        }}>{title}</h1>
-        <p style={{ fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>{subtitle}</p>
+    <div className="border-b border-border-subtle bg-[linear-gradient(to_bottom,var(--bg-secondary),var(--bg-primary))] [padding:clamp(80px,10vw,120px)_clamp(16px,5vw,64px)_clamp(36px,5vw,56px)] text-center">
+      <div className="max-w-[720px] mx-auto">
+        <span className="inline-block text-xs font-semibold tracking-[0.14em] uppercase text-accent-primary [font-family:'IBM_Plex_Mono',monospace] px-3.5 py-[5px] rounded-[100px] border border-border-accent bg-accent-glow mb-5">{badge}</span>
+        <h1 className="[font-size:clamp(28px,4vw,44px)] font-extrabold text-text-primary [font-family:'Outfit',sans-serif] tracking-[-0.03em] leading-[1.2] m-0 mb-3.5">{title}</h1>
+        <p className="text-[15px] text-text-secondary leading-[1.6] m-0">{subtitle}</p>
       </div>
     </div>
   );
@@ -36,31 +23,21 @@ function Section({ id, title, content, items, footer }: {
   items?: { subtitle: string; text: string }[]; footer?: string;
 }) {
   return (
-    <section id={id} style={{ scrollMarginTop: 88 }}>
-      <h2 style={{
-        fontSize: 'clamp(17px, 2vw, 20px)', fontWeight: 700, color: 'var(--text-primary)',
-        fontFamily: "'Outfit', sans-serif", letterSpacing: '-0.02em', margin: '0 0 14px',
-      }}>{title}</h2>
-      {content && <p style={{ fontSize: 14.5, color: 'var(--text-secondary)', lineHeight: 1.75, margin: items ? '0 0 16px' : 0 }}>{content}</p>}
+    <section id={id} className="scroll-mt-[88px]">
+      <h2 className="[font-size:clamp(17px,2vw,20px)] font-bold text-text-primary [font-family:'Outfit',sans-serif] tracking-[-0.02em] m-0 mb-3.5">{title}</h2>
+      {content && <p className={`text-[14.5px] text-text-secondary leading-[1.75] ${items ? 'm-0 mb-4' : 'm-0'}`}>{content}</p>}
       {items && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div className="flex flex-col gap-3">
           {items.map(item => (
-            <div key={item.subtitle} style={{
-              padding: '14px 18px', background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-              borderRadius: 'var(--r-lg)', borderLeft: '3px solid var(--indigo)',
-            }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Outfit', sans-serif", margin: '0 0 5px' }}>{item.subtitle}</p>
-              <p style={{ fontSize: 13.5, color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>{item.text}</p>
+            <div key={item.subtitle} className="px-[18px] py-3.5 bg-bg-card border border-border-subtle rounded-lg border-l-[3px] border-l-indigo">
+              <p className="text-[13px] font-bold text-text-primary [font-family:'Outfit',sans-serif] m-0 mb-[5px]">{item.subtitle}</p>
+              <p className="text-[13.5px] text-text-secondary leading-[1.65] m-0">{item.text}</p>
             </div>
           ))}
         </div>
       )}
       {footer && (
-        <p style={{
-          fontSize: 13.5, color: 'var(--text-muted)', lineHeight: 1.65, marginTop: 14,
-          padding: '10px 14px', background: 'var(--bg-tertiary)', borderRadius: 'var(--r-md)',
-          border: '1px solid var(--border-subtle)',
-        }}>{footer}</p>
+        <p className="text-[13.5px] text-text-muted leading-[1.65] mt-3.5 px-3.5 py-2.5 bg-bg-tertiary rounded-md border border-border-subtle">{footer}</p>
       )}
     </section>
   );
@@ -140,30 +117,21 @@ export default function TermsPage() {
   return (
     <>
       <Navbar />
-      <main style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+      <main className="min-h-screen bg-bg-primary">
         <PageHero
           badge="Legal"
           title="Terms of Service"
-          subtitle={<>Effective date: <strong style={{ color: 'var(--text-primary)' }}>{EFFECTIVE_DATE}</strong></>}
+          subtitle={<>Effective date: <strong className="text-text-primary">{EFFECTIVE_DATE}</strong></>}
         />
 
-        <div style={{
-          maxWidth: 800, margin: '0 auto',
-          padding: 'clamp(40px, 6vw, 72px) clamp(16px, 5vw, 40px)',
-          display: 'flex', flexDirection: 'column', gap: 48,
-        }}>
+        <div className="max-w-[800px] mx-auto [padding:clamp(40px,6vw,72px)_clamp(16px,5vw,40px)] flex flex-col gap-12">
           {/* TOC */}
-          <nav aria-label="Contents" style={{
-            background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-            borderRadius: 'var(--r-xl)', padding: '22px 26px', boxShadow: 'none',
-          }}>
-            <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)', fontFamily: "'IBM Plex Mono', monospace", margin: '0 0 12px' }}>Contents</p>
-            <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <nav aria-label="Contents" className="bg-bg-card border border-border-subtle rounded-xl px-[26px] py-[22px] shadow-none">
+            <p className="text-xs font-semibold tracking-[0.1em] uppercase text-text-muted [font-family:'IBM_Plex_Mono',monospace] m-0 mb-3">Contents</p>
+            <ol className="list-none p-0 m-0 flex flex-col gap-2">
               {TERMS_SECTIONS.map(s => (
                 <li key={s.id}>
-                  <a href={`#${s.id}`} style={{ fontSize: 13.5, color: 'var(--text-secondary)', textDecoration: 'none', transition: 'color 0.15s' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = 'var(--indigo)')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-secondary)')}>{s.title}</a>
+                  <a href={`#${s.id}`} className="text-[13.5px] text-text-secondary no-underline transition-colors hover:text-indigo">{s.title}</a>
                 </li>
               ))}
             </ol>
@@ -172,11 +140,9 @@ export default function TermsPage() {
           {TERMS_SECTIONS.map(s => <Section key={s.id} {...s} />)}
 
           {/* Footer nav */}
-          <div style={{ paddingTop: 16, borderTop: '1px solid var(--border-subtle)', display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-            <Link href="/" style={{ fontSize: 13.5, color: 'var(--accent-primary)', textDecoration: 'none', fontWeight: 600 }}>← Back to home</Link>
-            <Link href="/privacy" style={{ fontSize: 13.5, color: 'var(--text-muted)', textDecoration: 'none' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-primary)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}>Privacy Policy →</Link>
+          <div className="pt-4 border-t border-border-subtle flex gap-5 flex-wrap">
+            <Link href="/" className="text-[13.5px] text-accent-primary no-underline font-semibold">← Back to home</Link>
+            <Link href="/privacy" className="text-[13.5px] text-text-muted no-underline transition-colors hover:text-text-primary">Privacy Policy →</Link>
           </div>
         </div>
       </main>
