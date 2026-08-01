@@ -415,17 +415,11 @@ export default function DashboardApp({
           className="box-border w-full max-w-[390px] rounded-[28px] border border-[color-mix(in_srgb,var(--text-primary)_10%,transparent)] bg-bg-secondary p-[34px_26px_24px] text-center shadow-[0_22px_70px_rgba(0,0,0,0.30),inset_0_1px_0_rgba(255,255,255,0.06)]"
         >
           <div
-            className="mb-[22px] inline-flex items-center justify-center text-text-primary"
-            style={{
-              width: canUseFaceId ? 104 : 70,
-              height: canUseFaceId ? 104 : 70,
-              borderRadius: canUseFaceId ? 30 : '50%',
-              background: canUseFaceId
-                ? 'linear-gradient(180deg, color-mix(in srgb, var(--text-primary) 12%, transparent), color-mix(in srgb, var(--text-primary) 4%, transparent))'
-                : 'color-mix(in srgb, var(--text-primary) 9%, transparent)',
-              border: '1px solid color-mix(in srgb, var(--text-primary) 10%, transparent)',
-              boxShadow: canUseFaceId ? '0 14px 34px rgba(0, 0, 0, 0.18)' : 'none',
-            }}
+            className={`mb-[22px] inline-flex items-center justify-center border border-[color-mix(in_srgb,var(--text-primary)_10%,transparent)] text-text-primary ${
+              canUseFaceId
+                ? 'w-[104px] h-[104px] rounded-[30px] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--text-primary)_12%,transparent),color-mix(in_srgb,var(--text-primary)_4%,transparent))] shadow-[0_14px_34px_rgba(0,0,0,0.18)]'
+                : 'w-[70px] h-[70px] rounded-full bg-[color-mix(in_srgb,var(--text-primary)_9%,transparent)] shadow-none'
+            }`}
           >
             {canUseFaceId ? <FaceIdGlyph size={70} /> : lockScreenMode === 'create' ? <Lock size={28} /> : <Unlock size={28} />}
           </div>
@@ -454,8 +448,9 @@ export default function DashboardApp({
                   type="button"
                   disabled={biometricBusy}
                   onClick={handleBiometricUnlock}
-                  className="flex w-full items-center justify-center gap-[9px] rounded-2xl border-none bg-text-primary py-3.5 text-[15px] font-[760] text-bg-primary shadow-[0_10px_24px_rgba(0,0,0,0.18)] transition-[transform,filter,opacity] duration-150 ease-[ease] disabled:cursor-wait"
-                  style={{ cursor: biometricBusy ? 'wait' : 'pointer', opacity: biometricBusy ? 0.72 : 1 }}
+                  className={`flex w-full items-center justify-center gap-[9px] rounded-2xl border-none bg-text-primary py-3.5 text-[15px] font-[760] text-bg-primary shadow-[0_10px_24px_rgba(0,0,0,0.18)] transition-[transform,filter,opacity] duration-150 ease-[ease] disabled:cursor-wait ${
+                    biometricBusy ? 'cursor-wait opacity-[0.72]' : 'cursor-pointer opacity-100'
+                  }`}
                 >
                   <FaceIdGlyph size={22} />
                   {biometricBusy ? 'Looking for Face ID...' : 'Use Face ID'}
@@ -510,13 +505,11 @@ export default function DashboardApp({
             <div className="mt-2 flex flex-col gap-2.5">
               <button
                 type="submit"
-                className="w-full cursor-pointer rounded-2xl border-none py-[13px] text-[15px] font-[760] transition-all duration-150 ease-[ease]"
-                style={{
-                  background: canUseFaceId
-                    ? 'color-mix(in srgb, var(--text-primary) 8%, transparent)'
-                    : 'var(--text-primary)',
-                  color: canUseFaceId ? 'var(--text-primary)' : 'var(--bg-primary)',
-                }}
+                className={`w-full cursor-pointer rounded-2xl border-none py-[13px] text-[15px] font-[760] transition-all duration-150 ease-[ease] ${
+                  canUseFaceId
+                    ? 'bg-[color-mix(in_srgb,var(--text-primary)_8%,transparent)] text-text-primary'
+                    : 'bg-text-primary text-bg-primary'
+                }`}
               >
                 {lockScreenMode === 'create' ? 'Save and Unlock' : canUseFaceId ? 'Unlock with Passcode' : 'Unlock'}
               </button>
