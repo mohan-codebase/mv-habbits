@@ -109,14 +109,11 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
               key={days}
               type="button"
               onClick={() => handleRange(days)}
-              className="px-3.5 py-1.5 rounded-full text-[12px] cursor-pointer transition-all duration-200"
-              style={{
-                border: active ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
-                background: active ? 'var(--accent-primary)' : 'var(--surface-tint)',
-                color: active ? 'var(--accent-on-primary)' : 'var(--text-muted)',
-                fontWeight: active ? 700 : 500,
-                boxShadow: active ? '0 0 12px color-mix(in srgb, var(--accent-primary) 35%, transparent)' : 'none',
-              }}
+              className={`px-3.5 py-1.5 rounded-full border text-[12px] cursor-pointer transition-all duration-200 ${
+                active
+                  ? 'border-accent-primary bg-accent-primary text-accent-on-primary font-bold shadow-[0_0_12px_color-mix(in_srgb,var(--accent-primary)_35%,transparent)]'
+                  : 'border-border-subtle bg-[var(--surface-tint)] text-text-muted font-medium shadow-none'
+              }`}
             >
               {label}
             </button>
