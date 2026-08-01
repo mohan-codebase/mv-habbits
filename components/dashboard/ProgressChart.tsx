@@ -28,12 +28,13 @@ function DeltaPill({ value, positive }: { value: number; positive: boolean }) {
   const zero = value === 0;
   return (
     <span
-      className="inline-flex items-center gap-[3px] rounded-full px-[7px] py-0.5 font-mono text-[10.5px] font-semibold tracking-[-0.01em]"
-      style={{
-        color: zero ? 'var(--text-muted)' : positive ? 'var(--accent-light)' : 'var(--danger)',
-        background: zero ? 'var(--bg-tertiary)' : positive ? 'var(--accent-glow-md)' : 'var(--danger-glow)',
-        border: `1px solid ${zero ? 'var(--border-default)' : positive ? 'color-mix(in srgb, var(--accent-primary) 24%, transparent)' : 'rgba(140, 140, 140,0.24)'}`,
-      }}
+      className={`inline-flex items-center gap-[3px] rounded-full px-[7px] py-0.5 font-mono text-[10.5px] font-semibold tracking-[-0.01em] border ${
+        zero
+          ? 'text-text-muted bg-bg-tertiary border-border-default'
+          : positive
+            ? 'text-accent-light bg-[var(--accent-glow-md)] border-[color-mix(in_srgb,var(--accent-primary)_24%,transparent)]'
+            : 'text-danger bg-danger-glow border-[rgba(140,140,140,0.24)]'
+      }`}
     >
       {zero ? <Minus size={9} /> : positive ? <TrendingUp size={9} /> : <TrendingDown size={9} />}
       {positive && !zero ? '+' : ''}{value}%
@@ -92,12 +93,11 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
             Progress Trends
           </h3>
           <span
-            className="inline-flex items-center gap-[5px] rounded-full px-[9px] py-[3px] text-[11px] font-semibold"
-            style={{
-              background: onTrack ? 'var(--accent-glow-md)' : 'var(--warm-glow)',
-              border: `1px solid ${onTrack ? 'color-mix(in srgb, var(--accent-primary) 28%, transparent)' : 'rgba(187, 187, 187,0.28)'}`,
-              color: onTrack ? 'var(--accent-light)' : 'var(--warm)',
-            }}
+            className={`inline-flex items-center gap-[5px] rounded-full px-[9px] py-[3px] text-[11px] font-semibold border ${
+              onTrack
+                ? 'bg-[var(--accent-glow-md)] border-[color-mix(in_srgb,var(--accent-primary)_28%,transparent)] text-accent-light'
+                : 'bg-[var(--warm-glow)] border-[rgba(187,187,187,0.28)] text-[var(--warm)]'
+            }`}
           >
             <Check size={11} strokeWidth={3} />
             {onTrack ? 'On track' : 'Needs work'}
@@ -113,14 +113,11 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
                 key={r}
                 type="button"
                 onClick={() => setRange(r)}
-                className="cursor-pointer rounded-full px-3 py-[5px] text-xs transition-all duration-200 ease-[ease]"
-                style={{
-                  border: active ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
-                  background: active ? 'var(--accent-primary)' : 'var(--surface-tint)',
-                  color: active ? 'var(--accent-on-primary)' : 'var(--text-muted)',
-                  fontWeight: active ? 700 : 500,
-                  boxShadow: active ? '0 0 12px color-mix(in srgb, var(--accent-primary) 35%, transparent)' : 'none',
-                }}
+                className={`cursor-pointer rounded-full px-3 py-[5px] text-xs transition-all duration-200 ease-[ease] border ${
+                  active
+                    ? 'border-accent-primary bg-accent-primary text-accent-on-primary font-bold shadow-[0_0_12px_color-mix(in_srgb,var(--accent-primary)_35%,transparent)]'
+                    : 'border-border-subtle bg-[var(--surface-tint)] text-text-muted font-medium shadow-none'
+                }`}
               >
                 {r.toUpperCase()}
               </button>
@@ -233,7 +230,7 @@ function KpiTile({
         {label}
       </span>
       <div className="flex items-center gap-2">
-        <p className="text-[22px] font-bold leading-none tracking-[-0.02em] text-text-primary [font-variant-numeric:tabular-nums]" style={{ fontFamily: "'Outfit'" }}>
+        <p className="text-[22px] font-bold leading-none tracking-[-0.02em] text-text-primary [font-variant-numeric:tabular-nums] [font-family:'Outfit']">
           {value}
         </p>
         <DeltaPill value={delta} positive={positive} />
