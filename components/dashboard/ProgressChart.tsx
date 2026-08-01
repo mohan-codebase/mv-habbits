@@ -28,16 +28,8 @@ function DeltaPill({ value, positive }: { value: number; positive: boolean }) {
   const zero = value === 0;
   return (
     <span
+      className="inline-flex items-center gap-[3px] rounded-full px-[7px] py-0.5 font-mono text-[10.5px] font-semibold tracking-[-0.01em]"
       style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 3,
-        padding: '2px 7px',
-        borderRadius: 'var(--r-pill)',
-        fontSize: 10.5,
-        fontWeight: 600,
-        fontFamily: "'IBM Plex Mono', monospace",
-        letterSpacing: '-0.01em',
         color: zero ? 'var(--text-muted)' : positive ? 'var(--accent-light)' : 'var(--danger)',
         background: zero ? 'var(--bg-tertiary)' : positive ? 'var(--accent-glow-md)' : 'var(--danger-glow)',
         border: `1px solid ${zero ? 'var(--border-default)' : positive ? 'color-mix(in srgb, var(--accent-primary) 24%, transparent)' : 'rgba(140, 140, 140,0.24)'}`,
@@ -92,42 +84,19 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
   const onTrack = completionDelta >= 0 && completionPct >= 50;
 
   return (
-    <section
-      style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 16,
-        padding: 20,
-        boxShadow: 'none',
-      }}
-    >
+    <section className="rounded-[16px] border border-border-subtle bg-bg-card p-5 shadow-none">
       {/* Header: title + status + range tabs */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <h3
-            style={{
-              fontSize: 17,
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              fontFamily: "'Outfit', sans-serif",
-              letterSpacing: '-0.02em',
-              margin: 0,
-            }}
-          >
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <h3 className="m-0 font-[Outfit,sans-serif] text-[17px] font-bold tracking-[-0.02em] text-text-primary">
             Progress Trends
           </h3>
           <span
+            className="inline-flex items-center gap-[5px] rounded-full px-[9px] py-[3px] text-[11px] font-semibold"
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 5,
-              padding: '3px 9px',
-              borderRadius: 9999,
               background: onTrack ? 'var(--accent-glow-md)' : 'var(--warm-glow)',
               border: `1px solid ${onTrack ? 'color-mix(in srgb, var(--accent-primary) 28%, transparent)' : 'rgba(187, 187, 187,0.28)'}`,
               color: onTrack ? 'var(--accent-light)' : 'var(--warm)',
-              fontSize: 11,
-              fontWeight: 600,
             }}
           >
             <Check size={11} strokeWidth={3} />
@@ -136,7 +105,7 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
         </div>
 
         {/* Range tabs */}
-        <div style={{ display: 'flex', gap: 6 }}>
+        <div className="flex gap-1.5">
           {(['7d', '30d', '90d'] as Range[]).map((r) => {
             const active = range === r;
             return (
@@ -144,16 +113,12 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
                 key={r}
                 type="button"
                 onClick={() => setRange(r)}
+                className="cursor-pointer rounded-full px-3 py-[5px] text-xs transition-all duration-200 ease-[ease]"
                 style={{
-                  padding: '5px 12px',
-                  borderRadius: 9999,
                   border: active ? '1px solid var(--accent-primary)' : '1px solid var(--border-subtle)',
                   background: active ? 'var(--accent-primary)' : 'var(--surface-tint)',
                   color: active ? 'var(--accent-on-primary)' : 'var(--text-muted)',
-                  fontSize: 12,
                   fontWeight: active ? 700 : 500,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
                   boxShadow: active ? '0 0 12px color-mix(in srgb, var(--accent-primary) 35%, transparent)' : 'none',
                 }}
               >
@@ -165,14 +130,7 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
       </div>
 
       {/* KPI tiles */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 12,
-          marginBottom: 16,
-        }}
-      >
+      <div className="mb-4 grid grid-cols-2 gap-3">
         <KpiTile
           label="Completion rate"
           value={`${completionPct}%`}
@@ -189,7 +147,7 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
       </div>
 
       {/* Recharts Glowing Monotone Area Chart */}
-      <motion.div animate={{ opacity: [0.85, 1, 0.85] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} style={{ width: '100%' }}>
+      <motion.div animate={{ opacity: [0.85, 1, 0.85] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} className="w-full">
         <ResponsiveContainer width="100%" height={220}>
           <AreaChart data={chartData} margin={{ top: 8, right: 5, left: -20, bottom: 0 }}>
             <defs>
@@ -220,22 +178,14 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
                 if (!active || !payload || !payload.length) return null;
                 const d = payload[0].payload;
                 return (
-                  <div
-                    style={{
-                      background: 'var(--bg-card)',
-                      border: '1px solid var(--border-default)',
-                      borderRadius: 14,
-                      padding: '10px 14px',
-                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
-                    }}
-                  >
-                    <p style={{ margin: '0 0 4px', fontSize: 11.5, color: 'var(--text-muted)', fontWeight: 500 }}>
+                  <div className="rounded-[14px] border border-border-default bg-bg-card p-[10px_14px] shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+                    <p className="m-0 mb-1 text-[11.5px] font-medium text-text-muted">
                       {typeof label === 'string' ? format(parseISO(label), 'MMM d, yyyy') : label ?? ''}
                     </p>
-                    <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: accentHex, fontFamily: "'IBM Plex Mono', monospace" }}>
-                      {d.count} <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>check-in{d.count === 1 ? '' : 's'}</span>
+                    <p className="m-0 font-mono text-lg font-extrabold" style={{ color: accentHex }}>
+                      {d.count} <span className="text-xs font-medium text-text-muted">check-in{d.count === 1 ? '' : 's'}</span>
                     </p>
-                    <p style={{ margin: '3px 0 0', fontSize: 11.5, color: 'var(--text-secondary)' }}>
+                    <p className="m-0 mt-[3px] text-[11.5px] text-text-secondary">
                       {d.percentage}% completion
                     </p>
                   </div>
@@ -278,48 +228,18 @@ function KpiTile({
   sub?: string;
 }) {
   return (
-    <div
-      style={{
-        background: 'var(--bg-tertiary)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 'var(--r-md)',
-        padding: '12px 14px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 6,
-        boxShadow: 'none',
-      }}
-    >
-      <span
-        style={{
-          fontSize: 10.5,
-          fontWeight: 500,
-          color: 'var(--text-muted)',
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          fontFamily: "'IBM Plex Mono', monospace",
-        }}
-      >
+    <div className="flex flex-col gap-1.5 rounded-md border border-border-subtle bg-bg-tertiary p-[12px_14px] shadow-none">
+      <span className="font-mono text-[10.5px] font-medium uppercase tracking-[0.08em] text-text-muted">
         {label}
       </span>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <p
-          style={{
-            fontSize: 22,
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            fontFamily: "'Outfit'",
-            letterSpacing: '-0.02em',
-            fontVariantNumeric: 'tabular-nums',
-            lineHeight: 1,
-          }}
-        >
+      <div className="flex items-center gap-2">
+        <p className="text-[22px] font-bold leading-none tracking-[-0.02em] text-text-primary [font-variant-numeric:tabular-nums]" style={{ fontFamily: "'Outfit'" }}>
           {value}
         </p>
         <DeltaPill value={delta} positive={positive} />
       </div>
       {sub && (
-        <span style={{ fontSize: 11, color: 'var(--text-muted)', letterSpacing: '-0.005em', marginTop: 2 }}>
+        <span className="mt-0.5 text-[11px] tracking-[-0.005em] text-text-muted">
           {sub}
         </span>
       )}

@@ -33,49 +33,37 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
   const avgPct = Math.round(weekData.reduce((s, d) => s + d.percentage, 0) / (weekData.length || 1));
 
   return (
-    <div
-      style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 16,
-        padding: '20px 20px 16px',
-      }}
-    >
+    <div className="rounded-[16px] border border-border-subtle bg-bg-card p-[20px_20px_16px]">
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
+      <div className="mb-5 flex items-center justify-between">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[13px] font-bold tracking-[-0.01em] text-text-primary">
             7-Day Overview
           </span>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+          <span className="text-[11px] text-text-muted">
             {weekData[0] ? `${fullDate(weekData[0].date)} – ${fullDate(weekData[weekData.length - 1].date)}` : 'This week'}
           </span>
         </div>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          padding: '4px 10px',
-          background: avgPct >= 70 ? 'var(--accent-glow)' : avgPct >= 40 ? 'var(--indigo-glow)' : 'var(--bg-tertiary)',
-          border: `1px solid ${avgPct >= 70 ? 'color-mix(in srgb, var(--accent-primary) 25%, transparent)' : 'var(--border-subtle)'}`,
-          borderRadius: 8,
-        }}>
-          <span style={{
-            fontSize: 15,
-            fontWeight: 700,
-            color: avgPct >= 70 ? 'var(--accent-primary)' : avgPct >= 40 ? 'var(--indigo)' : 'var(--text-secondary)',
-            fontFamily: "'IBM Plex Mono'",
-            letterSpacing: '-0.02em',
-          }}>
+        <div
+          className="flex items-center gap-1.5 rounded-lg px-2.5 py-1"
+          style={{
+            background: avgPct >= 70 ? 'var(--accent-glow)' : avgPct >= 40 ? 'var(--indigo-glow)' : 'var(--bg-tertiary)',
+            border: `1px solid ${avgPct >= 70 ? 'color-mix(in srgb, var(--accent-primary) 25%, transparent)' : 'var(--border-subtle)'}`,
+          }}
+        >
+          <span
+            className="font-mono text-[15px] font-bold tracking-[-0.02em]"
+            style={{ color: avgPct >= 70 ? 'var(--accent-primary)' : avgPct >= 40 ? 'var(--indigo)' : 'var(--text-secondary)' }}
+          >
             {avgPct}%
           </span>
-          <span style={{ fontSize: 10.5, color: 'var(--text-muted)', fontWeight: 500 }}>avg</span>
+          <span className="text-[10.5px] font-medium text-text-muted">avg</span>
         </div>
       </div>
 
       {/* Chart area with grid lines */}
-      <motion.div 
-        style={{ position: 'relative' }}
+      <motion.div
+        className="relative"
         animate={{ opacity: [0.85, 1, 0.85] }}
         transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
       >
@@ -83,20 +71,12 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
         {GRID_LINES.map((line) => (
           <div
             key={line}
-            style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              bottom: 28 + (line / 100) * CHART_H,
-              height: 1,
-              background: 'var(--border-subtle)',
-              opacity: 0.5,
-              pointerEvents: 'none',
-            }}
+            className="pointer-events-none absolute inset-x-0 h-px bg-border-subtle opacity-50"
+            style={{ bottom: 28 + (line / 100) * CHART_H }}
           />
         ))}
 
-        <div className="hf-weekly-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6 }}>
+        <div className="hf-weekly-grid grid grid-cols-7 gap-1.5">
           {weekData.map((day, i) => {
             const color    = barColor(day.percentage);
             const barH     = day.percentage === 0 ? 3 : Math.max(6, Math.round((day.percentage / 100) * CHART_H));
@@ -105,7 +85,7 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
             return (
               <div
                 key={day.date}
-                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, position: 'relative', cursor: 'default' }}
+                className="relative flex cursor-default flex-col items-center gap-1"
                 onMouseEnter={() => setHov(i)}
                 onMouseLeave={() => setHov(null)}
               >
@@ -114,39 +94,25 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
                   <motion.div
                     initial={{ opacity: 0, y: 4, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    style={{
-                      position: 'absolute',
-                      bottom: 'calc(100% + 8px)',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      background: 'var(--bg-elevated)',
-                      border: '1px solid var(--border-default)',
-                      borderRadius: 10,
-                      padding: '8px 12px',
-                      whiteSpace: 'nowrap',
-                      zIndex: 10,
-                      pointerEvents: 'none',
-                    }}
+                    className="pointer-events-none absolute left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-[10px] border border-border-default bg-bg-elevated p-[8px_12px]"
+                    style={{ bottom: 'calc(100% + 8px)' }}
                   >
-                    <p style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 2 }}>{fullDate(day.date)}</p>
-                    <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>{day.percentage}%</p>
+                    <p className="mb-0.5 text-[11px] text-text-muted">{fullDate(day.date)}</p>
+                    <p className="m-0 text-sm font-bold text-text-primary">{day.percentage}%</p>
                   </motion.div>
                 )}
 
                 {/* Bar chart column */}
-                <div style={{ width: '100%', height: CHART_H, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center', position: 'relative' }}>
+                <div className="relative flex w-full flex-col items-center justify-end" style={{ height: CHART_H }}>
                   {/* Percentage label above bar */}
                   {day.percentage > 0 && (
-                    <span style={{
-                      position: 'absolute',
-                      bottom: barH + 4,
-                      fontSize: 9,
-                      fontWeight: 700,
-                      color: day.isToday ? 'var(--accent-primary)' : 'var(--text-dimmed)',
-                      fontFamily: "'IBM Plex Mono'",
-                      letterSpacing: '-0.01em',
-                      whiteSpace: 'nowrap',
-                    }}>
+                    <span
+                      className="absolute whitespace-nowrap font-mono text-[9px] font-bold tracking-[-0.01em]"
+                      style={{
+                        bottom: barH + 4,
+                        color: day.isToday ? 'var(--accent-primary)' : 'var(--text-dimmed)',
+                      }}
+                    >
                       {day.percentage}
                     </span>
                   )}
@@ -154,17 +120,14 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
                     initial={{ height: 0 }}
                     animate={{ height: barH }}
                     transition={{ duration: 0.55, ease: 'easeOut', delay: i * 0.06 }}
+                    className="w-[80%] min-h-[3px] rounded-[4px_4px_2px_2px] transition-[background,box-shadow] duration-200"
                     style={{
-                      width: '80%',
-                      minHeight: 3,
-                      borderRadius: '4px 4px 2px 2px',
                       background: day.isToday && day.percentage > 0
                         ? `linear-gradient(180deg, var(--accent-light), var(--accent-primary))`
                         : color,
                       boxShadow: day.isToday && day.percentage > 0
                         ? '0 0 12px color-mix(in srgb, var(--accent-primary) 35%, transparent)'
                         : isHov ? '0 0 8px rgba(255, 255, 255,0.08)' : 'none',
-                      transition: 'background 0.2s, box-shadow 0.2s',
                       opacity: isHov ? 1 : day.isToday ? 1 : 0.8,
                     }}
                   />
@@ -172,11 +135,10 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
 
                 {/* Day label */}
                 <span
+                  className="text-[10.5px] tracking-[0.02em]"
                   style={{
-                    fontSize: 10.5,
                     fontWeight: day.isToday ? 700 : 500,
                     color: day.isToday ? 'var(--accent-primary)' : 'var(--text-muted)',
-                    letterSpacing: '0.02em',
                   }}
                 >
                   {dayLabel(day.date)}
@@ -184,7 +146,7 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
 
                 {/* Today dot */}
                 {day.isToday && (
-                  <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--accent-primary)', marginTop: -2 }} />
+                  <div className="-mt-0.5 h-1 w-1 rounded-full bg-[var(--accent-primary)]" />
                 )}
               </div>
             );
