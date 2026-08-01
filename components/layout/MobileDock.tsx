@@ -28,57 +28,24 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
 
   return (
     <div
-      className="hf-mobile-nav no-print"
-      style={{
-        position: 'fixed',
-        bottom: 16,
-        left: 16,
-        right: 16,
-        zIndex: 90,
-        display: 'flex',
-        justifyContent: 'center',
-        pointerEvents: 'none',
-      }}
+      className="hf-mobile-nav no-print fixed bottom-4 left-4 right-4 z-[90] flex justify-center pointer-events-none"
     >
       <motion.nav
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-        style={{
-          pointerEvents: 'auto',
-          width: '100%',
-          maxWidth: 420,
-          background: 'var(--bg-glass-strong)',
-          backdropFilter: 'none',
-          WebkitBackdropFilter: 'none',
-          border: '1px solid var(--border-default)',
-          borderRadius: 9999,
-          padding: '6px 12px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          boxShadow: 'none',
-        }}
+        className="pointer-events-auto w-full max-w-[420px] bg-bg-glass-strong border border-border-default rounded-full px-3 py-1.5 flex items-center justify-around shadow-none"
       >
         {/* Overview */}
         <Link
           href="/dashboard"
           aria-label="Overview"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 2,
-            padding: '8px 12px',
-            borderRadius: 9999,
-            textDecoration: 'none',
-            color: isOverview ? 'var(--accent-on-primary)' : 'var(--text-muted)',
-            background: isOverview ? 'var(--accent-primary)' : 'transparent',
-            transition: 'all 0.2s ease',
-          }}
+          className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-full no-underline transition-all duration-200 ${
+            isOverview ? 'text-accent-on-primary bg-accent-primary' : 'text-text-muted bg-transparent'
+          }`}
         >
           <LayoutDashboard size={19} strokeWidth={isOverview ? 2.5 : 2} />
-          <span style={{ fontSize: 10, fontWeight: isOverview ? 700 : 500 }}>Home</span>
+          <span className={`text-[10px] ${isOverview ? 'font-bold' : 'font-medium'}`}>Home</span>
         </Link>
 
 
@@ -86,23 +53,7 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
         <button
           onClick={triggerAddHabit}
           aria-label="Add Habit"
-          style={{
-            width: 44,
-            height: 44,
-            borderRadius: '50%',
-            border: 'none',
-            background: 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 100%)',
-            color: 'var(--accent-on-primary)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            boxShadow: 'none',
-            margin: '0 2px',
-            transition: 'transform 0.15s ease',
-          }}
-          onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.92)'; }}
-          onMouseUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+          className="w-11 h-11 rounded-full border-none bg-[linear-gradient(135deg,var(--accent-primary)_0%,var(--accent-hover)_100%)] text-accent-on-primary flex items-center justify-center cursor-pointer shadow-none mx-0.5 transition-transform duration-150 ease-out active:scale-[0.92]"
         >
           <Plus size={22} strokeWidth={2.8} />
         </button>
@@ -112,21 +63,12 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
         <Link
           href="/dashboard/settings"
           aria-label="Settings"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 2,
-            padding: '8px 12px',
-            borderRadius: 9999,
-            textDecoration: 'none',
-            color: isSettings ? 'var(--accent-on-primary)' : 'var(--text-muted)',
-            background: isSettings ? 'var(--accent-primary)' : 'transparent',
-            transition: 'all 0.2s ease',
-          }}
+          className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-full no-underline transition-all duration-200 ${
+            isSettings ? 'text-accent-on-primary bg-accent-primary' : 'text-text-muted bg-transparent'
+          }`}
         >
           <Settings size={19} strokeWidth={isSettings ? 2.5 : 2} />
-          <span style={{ fontSize: 10, fontWeight: isSettings ? 700 : 500 }}>Settings</span>
+          <span className={`text-[10px] ${isSettings ? 'font-bold' : 'font-medium'}`}>Settings</span>
         </Link>
       </motion.nav>
     </div>

@@ -19,33 +19,20 @@ export default function SubNav() {
     exact ? pathname === href : pathname.startsWith(href);
 
   return (
-    <div style={{
-      height: 44,
-      padding: '0 16px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 2,
-      background: 'var(--bg-secondary)',
-      borderBottom: '1px solid var(--border-subtle)',
-      overflowX: 'auto',
-      scrollbarWidth: 'none',
-    }}>
+    <div className="h-11 px-4 flex items-center gap-0.5 bg-bg-secondary border-b border-border-subtle overflow-x-auto [scrollbar-width:none]">
       {PAGES.map(({ label, href, icon: Icon, exact }) => {
         const active = isActive(href, exact);
         return (
-          <Link key={href} href={href} style={{ textDecoration: 'none', flexShrink: 0 }}>
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: 5,
-              padding: '5px 11px', borderRadius: 8, cursor: 'pointer',
-              transition: 'all 0.15s',
-              background: active ? 'var(--accent-glow-md)' : 'transparent',
-              color: active ? 'var(--accent-primary)' : 'var(--text-muted)',
-              fontWeight: active ? 700 : 500,
-              borderBottom: active ? '2px solid var(--accent-primary)' : '2px solid transparent',
-              whiteSpace: 'nowrap',
-            }}>
+          <Link key={href} href={href} className="no-underline shrink-0">
+            <div
+              className={`flex items-center gap-[5px] px-[11px] py-[5px] rounded-sm cursor-pointer transition-all duration-150 whitespace-nowrap border-b-2 ${
+                active
+                  ? 'bg-[var(--accent-glow-md)] text-accent-primary font-bold border-accent-primary'
+                  : 'bg-transparent text-text-muted font-medium border-transparent'
+              }`}
+            >
               <Icon size={13} strokeWidth={active ? 2.4 : 1.8} />
-              <span style={{ fontSize: 12 }}>{label}</span>
+              <span className="text-[12px]">{label}</span>
             </div>
           </Link>
         );

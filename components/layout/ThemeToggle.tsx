@@ -14,27 +14,7 @@ export default function ThemeToggle() {
       onClick={toggle}
       aria-label={`Switch to ${isLight ? 'dark' : 'light'} theme`}
       title={`Switch to ${isLight ? 'dark' : 'light'} theme`}
-      style={{
-        width: 34,
-        height: 34,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 9,
-        border: '1px solid var(--border-default)',
-        background: 'var(--bg-tertiary)',
-        color: 'var(--text-secondary)',
-        cursor: 'pointer',
-        transition: 'background 0.15s, color 0.15s, transform 0.2s',
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)';
-        (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)';
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.background = 'var(--bg-tertiary)';
-        (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)';
-      }}
+      className="w-[34px] h-[34px] flex items-center justify-center rounded-[9px] border border-border-default bg-bg-tertiary text-text-secondary cursor-pointer transition-[background,color,transform] duration-150 hover:bg-bg-elevated hover:text-text-primary"
     >
       {isLight ? <Moon size={15} /> : <Sun size={15} />}
     </button>
