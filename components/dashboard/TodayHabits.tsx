@@ -584,16 +584,16 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
           />
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
           <HabitList
-            habits={showAllHabits ? habits : habits.slice(0, 2)}
+            habits={showAllHabits ? habits : habits.slice(0, 10)}
             loading={loading}
             onToggle={handleToggle}
             onEdit={handleEdit}
             onArchive={handleArchive}
             onDelete={handleDelete}
           />
-          {habits.length > 2 && (
+          {habits.length > 10 && (
             <Button
               variant="secondary"
               size="sm"

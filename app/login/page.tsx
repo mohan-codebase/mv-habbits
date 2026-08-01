@@ -58,11 +58,11 @@ function LoginContent() {
       <AuthTabSwitcher activeTab="login" />
 
       {/* Form Header */}
-      <div className="mb-6 text-center sm:text-left">
-        <h2 className="text-2xl font-bold font-['Outfit'] text-white tracking-tight">
+      <div className="mb-5 text-center sm:text-left">
+        <h2 className="text-xl sm:text-2xl font-bold font-['Outfit'] text-[var(--text-primary)] tracking-tight">
           Welcome back
         </h2>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1">
+        <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1">
           Enter your credentials to access your habit dashboard
         </p>
       </div>
@@ -110,11 +110,11 @@ function LoginContent() {
       <form onSubmit={handleLogin} className="flex flex-col gap-4">
         {/* Email Field */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs sm:text-[13px] font-semibold text-slate-300 px-0.5">
+          <label className="text-xs sm:text-[13px] font-semibold text-[var(--text-secondary)] px-0.5">
             Email Address
           </label>
           <div className="relative flex items-center">
-            <Mail size={17} className="absolute left-3.5 z-10 text-slate-400 pointer-events-none" />
+            <Mail size={17} className="absolute left-3.5 z-10 text-[var(--text-muted)] pointer-events-none" />
             <input
               type="email"
               value={email}
@@ -122,8 +122,8 @@ function LoginContent() {
               placeholder="you@example.com"
               autoComplete="email"
               required
-              style={{ paddingLeft: '48px', paddingRight: '16px' }}
-              className="auth-input w-full h-12 bg-white/[0.05] hover:bg-white/[0.08] focus:bg-white/[0.09] border border-white/10 focus:border-indigo-500/80 rounded-2xl text-white text-xs sm:text-sm placeholder:text-slate-500 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+              style={{ paddingLeft: '44px', paddingRight: '16px' }}
+              className="w-full h-12 bg-[var(--input-bg)] hover:bg-[var(--bg-tertiary)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-2xl text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
             />
           </div>
         </div>
@@ -131,7 +131,7 @@ function LoginContent() {
         {/* Password Field */}
         <div className="flex flex-col gap-1.5">
           <div className="flex justify-between items-center px-0.5">
-            <label className="text-xs sm:text-[13px] font-semibold text-slate-300">
+            <label className="text-xs sm:text-[13px] font-semibold text-[var(--text-secondary)]">
               Password
             </label>
             <Link
@@ -142,7 +142,7 @@ function LoginContent() {
             </Link>
           </div>
           <div className="relative flex items-center">
-            <Lock size={17} className="absolute left-3.5 z-10 text-slate-400 pointer-events-none" />
+            <Lock size={17} className="absolute left-3.5 z-10 text-[var(--text-muted)] pointer-events-none" />
             <input
               type={showPw ? 'text' : 'password'}
               value={password}
@@ -150,13 +150,13 @@ function LoginContent() {
               placeholder="Enter your password"
               autoComplete="current-password"
               required
-              style={{ paddingLeft: '48px', paddingRight: '48px' }}
-              className="auth-input-pw w-full h-12 bg-white/[0.05] hover:bg-white/[0.08] focus:bg-white/[0.09] border border-white/10 focus:border-indigo-500/80 rounded-2xl text-white text-xs sm:text-sm placeholder:text-slate-500 outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+              style={{ paddingLeft: '44px', paddingRight: '44px' }}
+              className="w-full h-12 bg-[var(--input-bg)] hover:bg-[var(--bg-tertiary)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-2xl text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
             />
             <button
               type="button"
               onClick={() => setShowPw(!showPw)}
-              className="absolute right-3.5 z-10 p-1 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              className="absolute right-3.5 z-10 p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
               aria-label={showPw ? 'Hide password' : 'Show password'}
             >
               {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -168,7 +168,7 @@ function LoginContent() {
         <button
           type="submit"
           disabled={loading}
-          className="auth-card-btn mt-1 w-full h-12 flex items-center justify-center gap-2 rounded-2xl text-white font-semibold text-xs sm:text-sm bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 hover:from-indigo-400 hover:to-purple-500 border border-white/20 shadow-[0_4px_20px_rgba(79,70,229,0.35)] hover:shadow-[0_6px_24px_rgba(79,70,229,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+          className="mt-1 w-full h-12 flex items-center justify-center gap-2 rounded-2xl text-white font-semibold text-xs sm:text-sm bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 hover:from-indigo-400 hover:to-purple-500 border border-white/20 shadow-[0_4px_20px_rgba(79,70,229,0.35)] hover:shadow-[0_6px_24px_rgba(79,70,229,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
         >
           {loading ? (
             <span className="flex items-center gap-2">
@@ -185,18 +185,18 @@ function LoginContent() {
 
       {/* Divider */}
       <div className="flex items-center gap-3 my-5">
-        <div className="flex-1 h-px bg-white/10" />
-        <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-500 font-semibold">
+        <div className="flex-1 h-px bg-[var(--border-default)]" />
+        <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-[var(--text-muted)] font-semibold">
           Or continue with
         </span>
-        <div className="flex-1 h-px bg-white/10" />
+        <div className="flex-1 h-px bg-[var(--border-default)]" />
       </div>
 
       {/* Social OAuth Buttons */}
       <SocialAuth loading={loading} setLoading={setLoading} />
 
       {/* Security & Privacy Footer */}
-      <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-center gap-3 text-slate-400 text-[11px] sm:text-xs">
+      <div className="mt-5 pt-3.5 border-t border-[var(--border-default)] flex items-center justify-center gap-3 text-[var(--text-muted)] text-[11px] sm:text-xs">
         <span className="flex items-center gap-1.5">
           <ShieldCheck size={14} className="text-emerald-400" /> 256-bit Encrypted
         </span>
@@ -209,7 +209,7 @@ function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#07090E]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-[var(--bg-primary)]" />}>
       <LoginContent />
     </Suspense>
   );

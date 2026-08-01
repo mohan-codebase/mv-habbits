@@ -78,60 +78,26 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSidebarOpen(false)}
-              style={{
-                position: 'fixed',
-                inset: 0,
-                background: 'rgba(0, 0, 0,0.6)',
-                zIndex: 100,
-              }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
             />
             <motion.div
               initial={{ x: -300, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -300, opacity: 0 }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              style={{
-                position: 'fixed',
-                left: 0,
-                top: 0,
-                bottom: 0,
-                width: 300,
-                background: 'var(--bg-primary)',
-                borderRight: '1px solid var(--border-default)',
-                zIndex: 101,
-                display: 'flex',
-                flexDirection: 'column',
-                padding: 20,
-                paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
-              }}
+              className="fixed left-0 top-0 bottom-0 w-[300px] bg-[var(--bg-secondary)] border-r border-[var(--border-default)] z-[101] flex flex-col p-5 pb-[calc(20px+env(safe-area-inset-bottom,0px))] shadow-2xl"
             >
               {/* Sidebar Header */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <AppLogo width={28} height={28} />
-                  <span
-                    style={{
-                      fontSize: 18,
-                      fontWeight: 800,
-                      fontFamily: "'Outfit', sans-serif",
-                    }}
-                  >
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2.5">
+                  <AppLogo width={28} height={28} />
+                  <span className="text-lg font-extrabold text-[var(--text-primary)] font-sans">
                     Productivity Master
                   </span>
                 </div>
                 <button
                   onClick={() => setSidebarOpen(false)}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 9999,
-                    border: '1px solid var(--border-default)',
-                    background: 'var(--bg-tertiary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                  }}
+                  className="w-10 h-10 rounded-full border border-[var(--border-default)] bg-[var(--bg-tertiary)] flex items-center justify-center cursor-pointer text-[var(--text-primary)] hover:bg-[var(--border-subtle)] transition-colors"
                 >
                   <X size={20} />
                 </button>
@@ -139,59 +105,26 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
 
               {/* User Profile */}
               {user && (
-                <div style={{
-                  background: 'var(--bg-card)',
-                  border: '1px solid var(--border-default)',
-                  borderRadius: 16,
-                  padding: 16,
-                  marginBottom: 20,
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 9999,
-                        background: 'var(--bg-elevated)',
-                        border: '1px solid var(--border-default)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 16,
-                        fontWeight: 700,
-                      }}
-                    >
+                <div className="bg-[var(--bg-tertiary)] border border-[var(--border-default)] rounded-2xl p-4 mb-5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 border border-white/20 flex items-center justify-center text-sm font-extrabold text-white">
                       {initials}
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: 14, fontWeight: 700, margin: 0 }}>{displayName}</p>
-                      <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: '2px 0 0' }}>{user.email}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-[var(--text-primary)] m-0 truncate">{displayName}</p>
+                      <p className="text-xs text-[var(--text-muted)] m-0 mt-0.5 truncate">{user.email}</p>
                     </div>
                   </div>
                 </div>
               )}
 
               {/* Quick Actions */}
-              <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+              <div className="flex gap-2 mb-5">
                 <ThemeToggle />
                 <NotificationBell />
                 <button
                   onClick={handleAddHabit}
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                    padding: '10px 14px',
-                    borderRadius: 9999,
-                    border: 'none',
-                    background: 'var(--accent-primary)',
-                    color: 'var(--accent-on-primary)',
-                    cursor: 'pointer',
-                    fontSize: 13,
-                    fontWeight: 700,
-                  }}
+                  className="flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-full border-0 bg-gradient-to-r from-purple-600 to-indigo-600 text-white cursor-pointer text-xs font-bold shadow-md shadow-purple-600/30 hover:from-purple-500 hover:to-indigo-500 transition-all active:scale-95"
                 >
                   <Plus size={18} />
                   Add Habit
@@ -199,25 +132,19 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
               </div>
 
               {/* All nav pages */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, overflowY: 'auto' }}>
-                <p style={{ margin: '4px 0 6px', padding: '0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-dimmed)' }}>Habit Tracker</p>
+              <div className="flex flex-col gap-1 flex-1 overflow-y-auto">
+                <p className="my-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500">Habit Tracker</p>
                 {HABIT_SUB_NAV.map(({ label, tab, icon: Icon }) => {
                   const active = activeTab === tab;
                   return (
                     <button
                       key={tab}
                       onClick={() => { onTabChange?.(tab); setSidebarOpen(false); }}
-                      style={{
-                        display: 'flex', alignItems: 'center', gap: 10,
-                        padding: '10px 14px', borderRadius: 9999, cursor: 'pointer',
-                        background: active ? 'var(--accent-primary)' : 'transparent',
-                        border: 'none',
-                        color: active ? 'var(--accent-on-primary)' : 'var(--text-secondary)',
-                        fontSize: 14,
-                        fontWeight: active ? 700 : 600,
-                        width: '100%', textAlign: 'left',
-                        transition: 'all 0.15s',
-                      }}
+                      className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-full cursor-pointer border-0 text-sm w-full text-left transition-all ${
+                        active
+                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold shadow-sm'
+                          : 'text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] hover:text-[var(--text-primary)] font-semibold'
+                      }`}
                     >
                       <Icon size={16} />
                       <span>{label}</span>
@@ -227,40 +154,17 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
               </div>
 
               {/* Search & Logout at Bottom */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div className="flex flex-col gap-2.5 mt-auto pt-4">
                 <button
                   onClick={() => { setPalette(true); setSidebarOpen(false); }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    padding: '12px 14px',
-                    borderRadius: 9999,
-                    border: '1px solid var(--border-default)',
-                    background: 'var(--bg-tertiary)',
-                    color: 'var(--text-muted)',
-                    cursor: 'pointer',
-                    fontSize: 14,
-                  }}
+                  className="flex items-center gap-2.5 px-3.5 py-3 rounded-full border border-purple-500/20 bg-white/5 text-slate-400 cursor-pointer text-sm font-semibold hover:bg-white/10 transition-colors"
                 >
                   <Search size={18} />
                   Search (⌘K)
                 </button>
                 <button
                   onClick={handleLogout}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    padding: '12px 14px',
-                    borderRadius: 9999,
-                    border: '1px solid rgba(104, 104, 104,0.3)',
-                    background: 'var(--danger-glow)',
-                    color: 'var(--danger)',
-                    cursor: 'pointer',
-                    fontSize: 14,
-                    fontWeight: 600,
-                  }}
+                  className="flex items-center gap-2.5 px-3.5 py-3 rounded-full border border-red-500/20 bg-red-500/10 text-red-400 cursor-pointer text-sm font-semibold hover:bg-red-500/20 transition-colors"
                 >
                   <LogOut size={18} />
                   Sign Out
@@ -272,68 +176,34 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
       </AnimatePresence>
 
       <header
-        className="flex items-center justify-between shrink-0"
-        style={{
-          height: 64,
-          padding: '0 24px',
-          background: 'var(--bg-card)',
-          borderBottom: '1px solid color-mix(in srgb, var(--border-default) 70%, transparent)',
-          position: 'sticky',
-          top: 0,
-          zIndex: 40,
-        }}
+        className="flex items-center justify-between shrink-0 h-16 px-6 bg-[#0F111A]/90 dark:bg-[#0F111A]/90 bg-white/90 border-b border-purple-500/20 backdrop-blur-xl sticky top-0 z-40"
       >
         {/* Left: Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-            <AppLogo width={32} height={32} />
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span
-              style={{
-                fontSize: 20,
-                fontWeight: 800,
-                fontFamily: "'Outfit', sans-serif",
-                letterSpacing: '-0.4px',
-              }}
-            >
+        <div className="flex items-center gap-3 shrink-0">
+          <AppLogo width={32} height={32} />
+          <div className="flex flex-col leading-tight">
+            <span className="text-lg font-extrabold text-slate-900 dark:text-white font-sans tracking-tight">
               Productivity Master
             </span>
-            <span
-              style={{
-                fontSize: 12,
-                color: 'var(--text-muted)',
-                fontWeight: 500,
-                marginTop: 1,
-              }}
-            >
+            <span className="text-xs text-purple-500 dark:text-purple-400 font-semibold">
               by Mohan
             </span>
           </div>
         </div>
 
         {/* Center: All feature tabs (desktop only) */}
-        <nav
-          className="hidden lg:flex"
-          style={{
-            alignItems: 'center', gap: 12, flex: 1,
-            margin: '0 24px',
-          }}
-        >
+        <nav className="hidden lg:flex items-center gap-2 flex-1 mx-6">
           {HABIT_SUB_NAV.map(({ label, tab, icon: Icon }) => {
             const active = activeTab === tab;
             return (
               <button
                 key={tab}
                 onClick={() => onTabChange?.(tab)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 6,
-                  padding: '8px 14px', borderRadius: 9999, cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                  background: active ? 'rgba(85, 85, 85, 0.08)' : 'transparent',
-                  border: `1px solid ${active ? 'rgba(85, 85, 85, 0.25)' : 'transparent'}`,
-                  color: active ? 'var(--text-primary)' : 'var(--text-muted)',
-                  fontWeight: active ? 700 : 600,
-                  fontSize: 13,
-                }}
+                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full cursor-pointer text-xs transition-all ${
+                  active
+                    ? 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/30 font-bold shadow-sm'
+                    : 'text-slate-500 dark:text-slate-400 hover:bg-white/5 hover:text-slate-200 border border-transparent font-semibold'
+                }`}
               >
                 <Icon size={15} />
                 <span>{label}</span>
@@ -343,65 +213,28 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
         </nav>
 
         {/* Right: Desktop actions (lg+ only) + Mobile hamburger menu */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+        <div className="flex items-center gap-3 shrink-0">
           {/* Desktop actions (ONLY visible on lg screens and larger!) */}
-          <div style={{ display: 'none', alignItems: 'center', gap: 8 }} className="lg:flex">
+          <div className="hidden lg:flex items-center gap-2">
             <ThemeToggle />
             <NotificationBell />
             <button
               onClick={handleAddHabit}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '10px 16px',
-                borderRadius: 9999,
-                border: 'none',
-                background: 'var(--accent-primary)',
-                color: 'var(--accent-on-primary)',
-                cursor: 'pointer',
-                fontSize: 14,
-                fontWeight: 700,
-                transition: 'all 0.2s ease',
-              }}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-full border-0 bg-gradient-to-r from-purple-600 to-indigo-600 text-white cursor-pointer text-xs font-bold shadow-md shadow-purple-600/30 hover:from-purple-500 hover:to-indigo-500 transition-all active:scale-95"
             >
               <Plus size={18} />
               Add Habit
             </button>
             <button
               onClick={() => setPalette(true)}
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 9999,
-                border: '1px solid var(--border-default)',
-                background: 'var(--bg-tertiary)',
-                color: 'var(--text-secondary)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-              }}
+              className="w-10 h-10 rounded-full border border-purple-500/20 bg-white/5 text-slate-400 hover:text-white flex items-center justify-center cursor-pointer transition-colors"
             >
               <Search size={18} />
             </button>
             {user && (
               <div
                 title={displayName}
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 9999,
-                  background: 'var(--bg-elevated)',
-                  border: '1px solid var(--border-default)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 14,
-                  fontWeight: 700,
-                  color: 'var(--text-primary)',
-                  cursor: 'pointer',
-                }}
+                className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 border border-white/20 flex items-center justify-center text-xs font-extrabold text-white cursor-pointer shadow-sm"
               >
                 {initials}
               </div>
@@ -409,18 +242,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
             <button
               onClick={handleLogout}
               title="Sign out"
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 9999,
-                border: '1px solid rgba(104, 104, 104,0.3)',
-                background: 'var(--danger-glow)',
-                color: 'var(--danger)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-              }}
+              className="w-10 h-10 rounded-full border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 flex items-center justify-center cursor-pointer transition-colors"
             >
               <LogOut size={18} />
             </button>
@@ -429,34 +251,10 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
           {/* Mobile hamburger menu (ONLY visible on mobile!) */}
           <button
             onClick={() => setSidebarOpen(true)}
-            style={{
-              width: 48,
-              height: 44,
-              borderRadius: 9999,
-              border: 'none',
-              background: 'transparent',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              gap: 6,
-              padding: 0,
-            }}
-            className="flex lg:hidden"
+            className="flex lg:hidden w-12 h-11 rounded-full border-0 bg-transparent flex-col items-center justify-center cursor-pointer gap-1.5 p-0"
           >
-            <div style={{
-              width: 32,
-              height: 3,
-              background: 'var(--text-primary)',
-              borderRadius: 2,
-            }} />
-            <div style={{
-              width: 32,
-              height: 3,
-              background: 'var(--accent-primary)',
-              borderRadius: 2,
-            }} />
+            <div className="w-7 h-0.5 bg-slate-900 dark:bg-white rounded-full" />
+            <div className="w-7 h-0.5 bg-purple-500 rounded-full" />
           </button>
         </div>
       </header>

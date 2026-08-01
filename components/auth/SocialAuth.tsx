@@ -42,7 +42,7 @@ export default function SocialAuth({ loading, setLoading }: SocialAuthProps) {
         type="button"
         onClick={() => handleOAuth('google')}
         disabled={loading}
-        className="auth-social-btn group relative flex items-center justify-center gap-2.5 h-11 px-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] text-zinc-200 font-medium text-xs sm:text-sm border border-white/10 hover:border-indigo-500/40 hover:shadow-[0_0_15px_rgba(99,102,241,0.15)] transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className="auth-social-btn group relative flex items-center justify-center gap-2.5 h-11 px-3 rounded-xl bg-[var(--bg-tertiary)] hover:bg-[var(--bg-elevated)] active:bg-[var(--bg-elevated)] text-[var(--text-primary)] font-medium text-xs sm:text-sm border border-[var(--border-default)] hover:border-indigo-500/40 hover:shadow-[0_0_15px_rgba(99,102,241,0.15)] transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" className="shrink-0 transition-transform duration-200 group-hover:scale-110">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -58,7 +58,7 @@ export default function SocialAuth({ loading, setLoading }: SocialAuthProps) {
         type="button"
         onClick={() => handleOAuth('apple')}
         disabled={loading}
-        className="auth-social-btn group relative flex items-center justify-center gap-2.5 h-11 px-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] text-zinc-200 font-medium text-xs sm:text-sm border border-white/10 hover:border-slate-400/40 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className="auth-social-btn group relative flex items-center justify-center gap-2.5 h-11 px-3 rounded-xl bg-[var(--bg-tertiary)] hover:bg-[var(--bg-elevated)] active:bg-[var(--bg-elevated)] text-[var(--text-primary)] font-medium text-xs sm:text-sm border border-[var(--border-default)] hover:border-slate-400/40 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" className="shrink-0 transition-transform duration-200 group-hover:scale-110 text-white">
           <path fill="currentColor" d="M16.365 21.439c-1.396.942-2.894 1.905-4.437 1.905s-3.056-.991-4.485-1.928c-4.453-2.903-7.443-8.875-7.443-13.626 0-3.328 2.115-5.32 4.494-5.32 1.487 0 2.879 1.056 4.316 1.056 1.547 0 3.013-1.127 4.549-1.127 1.636 0 3.323.754 4.354 2.174-3.791 2.22-3.13 7.842.822 9.388-.934 2.826-2.585 5.565-4.479 7.477h-.002zm-3.238-16.142c-.201 2.226-2.025 4.093-4.185 4.22-.243-2.316 1.831-4.22 4.041-4.423.048-.004.097-.006.144-.006.275 0 .534.053.778.148z"/>
@@ -71,7 +71,7 @@ export default function SocialAuth({ loading, setLoading }: SocialAuthProps) {
         type="button"
         onClick={() => handleOAuth('twitter')}
         disabled={loading}
-        className="auth-social-btn group relative flex items-center justify-center gap-2.5 h-11 px-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] text-zinc-200 font-medium text-xs sm:text-sm border border-white/10 hover:border-sky-500/40 hover:shadow-[0_0_15px_rgba(56,189,248,0.15)] transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className="auth-social-btn group relative flex items-center justify-center gap-2.5 h-11 px-3 rounded-xl bg-[var(--bg-tertiary)] hover:bg-[var(--bg-elevated)] active:bg-[var(--bg-elevated)] text-[var(--text-primary)] font-medium text-xs sm:text-sm border border-[var(--border-default)] hover:border-sky-500/40 hover:shadow-[0_0_15px_rgba(56,189,248,0.15)] transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         <svg width="17" height="17" viewBox="0 0 24 24" className="shrink-0 transition-transform duration-200 group-hover:scale-110 text-sky-400">
           <path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -84,7 +84,7 @@ export default function SocialAuth({ loading, setLoading }: SocialAuthProps) {
         type="button"
         onClick={() => handleOAuth('instagram' as any)}
         disabled={loading}
-        className="auth-social-btn group relative flex items-center justify-center gap-2.5 h-11 px-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] active:bg-white/[0.12] text-zinc-200 font-medium text-xs sm:text-sm border border-white/10 hover:border-pink-500/40 hover:shadow-[0_0_15px_rgba(236,72,153,0.15)] transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className="auth-social-btn group relative flex items-center justify-center gap-2.5 h-11 px-3 rounded-xl bg-[var(--bg-tertiary)] hover:bg-[var(--bg-elevated)] active:bg-[var(--bg-elevated)] text-[var(--text-primary)] font-medium text-xs sm:text-sm border border-[var(--border-default)] hover:border-pink-500/40 hover:shadow-[0_0_15px_rgba(236,72,153,0.15)] transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         <svg width="17" height="17" viewBox="0 0 24 24" className="shrink-0 transition-transform duration-200 group-hover:scale-110 text-pink-400">
           <path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm7.846-10.405a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z"/>

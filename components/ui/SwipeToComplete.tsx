@@ -106,7 +106,7 @@ export default function SwipeToComplete({
         borderRadius: 9999,
         background: completed
           ? `linear-gradient(135deg, ${color} 0%, color-mix(in srgb, ${color} 72%, #000) 100%)`
-          : 'rgba(50, 48, 45, 0.58)',
+          : 'var(--bg-elevated)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         border: completed
