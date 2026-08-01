@@ -40,31 +40,31 @@ export default function AnalyticsPage() {
 
   if (loading && heatmap.length === 0) {
     return (
-      <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 24, width: '100%' }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800 }}>Global Analytics</h1>
-        <div style={{ height: 200, background: 'var(--bg-glass)', borderRadius: 16, animation: 'pulse 2s infinite' }} />
-        <div style={{ height: 300, background: 'var(--bg-glass)', borderRadius: 16, animation: 'pulse 2s infinite' }} />
+      <div className="flex w-full flex-col gap-6 p-6">
+        <h1 className="text-[28px] font-extrabold">Global Analytics</h1>
+        <div className="h-[200px] animate-pulse rounded-[16px] bg-bg-glass" />
+        <div className="h-[300px] animate-pulse rounded-[16px] bg-bg-glass" />
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '24px 16px 120px', display: 'flex', flexDirection: 'column', gap: 32, width: '100%', maxWidth: 1000, margin: '0 auto' }}>
+    <div className="mx-auto flex w-full max-w-[1000px] flex-col gap-8 px-4 pt-6 pb-[120px]">
       <div>
-        <h1 style={{ fontSize: 28, fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>Global Analytics</h1>
-        <p style={{ margin: '4px 0 0', color: 'var(--text-muted)' }}>Overview of your habit completions across all routines.</p>
+        <h1 className="m-0 text-[28px] font-extrabold text-text-primary">Global Analytics</h1>
+        <p className="mt-1 mb-0 text-text-muted">Overview of your habit completions across all routines.</p>
       </div>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 16, padding: 20 }}>
-          <h3 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 700, color: 'var(--text-primary)' }}>Activity Heatmap (Last 12 Months)</h3>
+        <div className="rounded-[16px] border border-border-subtle bg-bg-card p-5">
+          <h3 className="m-0 mb-4 text-base font-bold text-text-primary">Activity Heatmap (Last 12 Months)</h3>
           <CalendarHeatmap data={heatmap} />
         </div>
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
-        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)', borderRadius: 16, padding: 20 }}>
-          <h3 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 700, color: 'var(--text-primary)' }}>Completion Trends</h3>
+        <div className="rounded-[16px] border border-border-subtle bg-bg-card p-5">
+          <h3 className="m-0 mb-4 text-base font-bold text-text-primary">Completion Trends</h3>
           <CompletionChart data={trends} currentRange={trendDays} onRangeChange={setTrendDays} />
         </div>
       </motion.div>

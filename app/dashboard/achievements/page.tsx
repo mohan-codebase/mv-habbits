@@ -63,12 +63,12 @@ export default async function AchievementsPage() {
   });
 
   return (
-    <div style={{ maxWidth: 1000, margin: '0 auto', width: '100%', paddingBottom: 60, padding: '24px 20px' }}>
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: 800, margin: '0 0 8px', letterSpacing: '-0.02em', color: 'var(--text-primary)', fontFamily: "'Outfit', sans-serif" }}>
+    <div className="mx-auto w-full max-w-[1000px] px-5 pt-6 pb-[60px]">
+      <div className="mb-8">
+        <h1 className="mb-2 text-[clamp(24px,4vw,32px)] font-extrabold tracking-[-0.02em] text-text-primary">
           Achievements
         </h1>
-        <p style={{ fontSize: 15, color: 'var(--text-muted)', margin: 0, lineHeight: 1.5 }}>
+        <p className="m-0 text-[15px] leading-[1.5] text-text-muted">
           Earn badges by building consistent habits and reaching milestones.
         </p>
       </div>
