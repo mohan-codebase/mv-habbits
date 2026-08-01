@@ -51,21 +51,19 @@ export default function AchievementGrid({ achievements }: Props) {
                 key={key}
                 type="button"
                 onClick={() => setFilter(key)}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[13px] cursor-pointer transition-all duration-150"
-                style={{
-                  border: active ? '1px solid color-mix(in srgb, var(--accent-primary) 35%, transparent)' : '1px solid var(--border-subtle)',
-                  background: active ? 'var(--accent-glow)' : 'transparent',
-                  color: active ? 'var(--accent-primary)' : 'var(--text-secondary)',
-                  fontWeight: active ? 600 : 400,
-                }}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-[13px] cursor-pointer transition-all duration-150 ${
+                  active
+                    ? 'border-[color-mix(in_srgb,var(--accent-primary)_35%,transparent)] bg-accent-glow text-accent-primary font-semibold'
+                    : 'border-border-subtle bg-transparent text-text-secondary font-normal'
+                }`}
               >
                 {label}
                 <span
-                  className="text-[11px] font-semibold px-1.5 py-px rounded-[20px]"
-                  style={{
-                    background: active ? 'color-mix(in srgb, var(--accent-primary) 20%, transparent)' : 'var(--bg-tertiary)',
-                    color: active ? 'var(--accent-primary)' : 'var(--text-muted)',
-                  }}
+                  className={`text-[11px] font-semibold px-1.5 py-px rounded-[20px] ${
+                    active
+                      ? 'bg-[color-mix(in_srgb,var(--accent-primary)_20%,transparent)] text-accent-primary'
+                      : 'bg-bg-tertiary text-text-muted'
+                  }`}
                 >
                   {count}
                 </span>
