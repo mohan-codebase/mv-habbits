@@ -6,9 +6,9 @@ export const metadata = { title: 'Year in Review · Productivity Master' };
 
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
-    <div style={{ flex: 1, textAlign: 'center', padding: '14px 8px', border: '1px solid #e3e3e3', borderRadius: 14 }}>
-      <div style={{ fontSize: 26, fontWeight: 800, color: '#555555' }}>{value}</div>
-      <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#888888', marginTop: 4 }}>{label}</div>
+    <div className="flex-1 text-center py-[14px] px-2 border border-[#e3e3e3] rounded-lg">
+      <div className="text-[26px] font-extrabold text-[#555555]">{value}</div>
+      <div className="text-xs font-semibold tracking-[0.06em] uppercase text-[#888888] mt-1">{label}</div>
     </div>
   );
 }
@@ -17,7 +17,7 @@ function Stat({ label, value }: { label: string; value: string | number }) {
 export default async function YearInReviewPage() {
   const supabase = await createServerClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return <div style={{ padding: 40 }}>Please sign in.</div>;
+  if (!user) return <div className="p-10">Please sign in.</div>;
 
   const summary = await buildCoachSummary(supabase, user.id, 365);
 
@@ -26,25 +26,21 @@ export default async function YearInReviewPage() {
     : ['—', 0];
 
   return (
-    <div style={{ background: '#fff', color: '#191919', minHeight: '100vh', padding: '32px 20px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div className="bg-white text-[#191919] min-h-screen px-5 py-8 font-[system-ui,-apple-system,sans-serif]">
       <style>{`@media print { .no-print { display: none !important; } @page { margin: 16mm; } body { background: #fff; } }`}</style>
 
-      <div style={{ maxWidth: 640, margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+      <div className="max-w-[640px] mx-auto">
+        <div className="flex justify-between items-start mb-6">
           <div>
-            <h1 style={{ margin: 0, fontSize: 30, fontWeight: 800, letterSpacing: '-0.02em' }}>Year in Review</h1>
-            <p style={{ margin: '4px 0 0', fontSize: 13, color: '#888888' }}>
+            <h1 className="m-0 text-3xl font-extrabold tracking-[-0.02em]">Year in Review</h1>
+            <p className="mt-1 text-[13px] text-[#888888]">
               {summary ? `${summary.from} → ${summary.to}` : 'Productivity Master'}
             </p>
           </div>
-          <div className="no-print" style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+          <div className="no-print flex gap-2 flex-shrink-0">
             <a
               href="/api/export?format=year-csv"
-              style={{
-                padding: '10px 16px', borderRadius: 12, textDecoration: 'none',
-                border: '1px solid #e3e3e3', background: '#fff', color: '#555555',
-                fontSize: 14, fontWeight: 700,
-              }}
+              className="px-4 py-2.5 rounded-[12px] no-underline border border-[#e3e3e3] bg-white text-[#555555] text-[14px] font-bold"
             >
               Download CSV
             </a>
@@ -53,18 +49,18 @@ export default async function YearInReviewPage() {
         </div>
 
         {!summary || summary.totalCompletions === 0 ? (
-          <p style={{ fontSize: 15, color: '#888888', padding: '40px 0', textAlign: 'center' }}>
+          <p className="text-[15px] text-[#888888] py-10 text-center">
             No habit history to summarize yet. Come back after you&apos;ve logged some habits.
           </p>
         ) : (
           <>
-            <div style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
+            <div className="flex gap-2.5 mb-6">
               <Stat label="Completions" value={summary.totalCompletions.toLocaleString()} />
               <Stat label="Active days" value={summary.activeDays} />
               <Stat label="Completion" value={`${summary.overallCompletionRate}%`} />
             </div>
 
-            <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>
+            <div className="flex gap-2.5 mb-[28px]">
               <Stat label="Strongest day" value={bestWeekday(summary.weekday) ?? '—'} />
               <Stat label="Best time" value={String(partOfDayTop[0]).replace(/^\w/, (c) => c.toUpperCase())} />
               <Stat label="Habits tracked" value={summary.totalHabits} />
@@ -72,36 +68,36 @@ export default async function YearInReviewPage() {
 
             {/* Same definition as the dashboard Overview's "Best Streak" card
                 (lib/stats/habitStats.ts) — always matches that number exactly. */}
-            <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>
+            <div className="flex gap-2.5 mb-[28px]">
               <Stat label="Best Streak" value={summary.bestStreak} />
               <Stat label="Total Done" value={summary.lifetimeCompletions.toLocaleString()} />
             </div>
 
-            <h2 style={{ fontSize: 16, fontWeight: 700, margin: '0 0 12px' }}>By habit</h2>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13.5 }}>
+            <h2 className="text-lg font-bold m-0 mb-3">By habit</h2>
+            <table className="w-full border-collapse text-base">
               <thead>
-                <tr style={{ textAlign: 'left', color: '#888888', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  <th style={{ padding: '8px 6px' }}>Habit</th>
-                  <th style={{ padding: '8px 6px', textAlign: 'right' }}>Done</th>
-                  <th style={{ padding: '8px 6px', textAlign: 'right' }}>Rate</th>
-                  <th style={{ padding: '8px 6px', textAlign: 'right' }}>Best streak</th>
+                <tr className="text-left text-[#888888] text-xs uppercase tracking-[0.05em]">
+                  <th className="px-1.5 py-2">Habit</th>
+                  <th className="px-1.5 py-2 text-right">Done</th>
+                  <th className="px-1.5 py-2 text-right">Rate</th>
+                  <th className="px-1.5 py-2 text-right">Best streak</th>
                 </tr>
               </thead>
               <tbody>
                 {[...summary.habits].sort((a, b) => b.completions - a.completions).map((h, i) => (
-                  <tr key={i} style={{ borderTop: '1px solid #ececec' }}>
-                    <td style={{ padding: '10px 6px', fontWeight: 600 }}>
-                      {h.name} {h.isBad && <span style={{ color: '#888888', fontWeight: 400 }}>(avoid)</span>}
+                  <tr key={i} className="border-t border-t-[#ececec]">
+                    <td className="px-1.5 py-2.5 font-semibold">
+                      {h.name} {h.isBad && <span className="text-[#888888] font-normal">(avoid)</span>}
                     </td>
-                    <td style={{ padding: '10px 6px', textAlign: 'right' }}>{h.completions}</td>
-                    <td style={{ padding: '10px 6px', textAlign: 'right' }}>{h.completionRate}%</td>
-                    <td style={{ padding: '10px 6px', textAlign: 'right' }}>{h.longestStreak}</td>
+                    <td className="px-1.5 py-2.5 text-right">{h.completions}</td>
+                    <td className="px-1.5 py-2.5 text-right">{h.completionRate}%</td>
+                    <td className="px-1.5 py-2.5 text-right">{h.longestStreak}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
-            <p style={{ marginTop: 28, fontSize: 11, color: '#adadad', textAlign: 'center' }}>
+            <p className="mt-[28px] text-xs text-[#adadad] text-center">
               Generated by Productivity Master · Use “Save as PDF” or your browser’s print dialog.
             </p>
           </>

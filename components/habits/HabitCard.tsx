@@ -80,21 +80,10 @@ function MenuItem({ icon, label, onClick, danger = false }: { icon: React.ReactN
       onClick={onClick}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
+      className="flex items-center gap-2 w-full px-2.5 py-2 border-none rounded-sm cursor-pointer text-[13px] font-medium text-left transition-all duration-[120ms]"
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 8,
-        width: '100%',
-        padding: '8px 10px',
         background: hov ? (danger ? 'rgba(104, 104, 104,0.12)' : 'var(--bg-elevated)') : 'transparent',
-        border: 'none',
-        borderRadius: 8,
-        cursor: 'pointer',
         color: danger ? (hov ? 'var(--danger)' : '#8e8e8e') : 'var(--text-secondary)',
-        fontSize: 13,
-        fontWeight: 500,
-        textAlign: 'left',
-        transition: 'all 0.12s ease',
       }}
     >
       {icon}
@@ -139,111 +128,43 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
   const hasMenu = Boolean(onEdit || onArchive || onDelete);
 
   const cardContent = (
-    <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: 22, overflow: 'hidden' }}>
+    <div className="relative w-full h-full rounded-2xl overflow-hidden">
       {/* Background Image (100% Card Height) */}
       <img
         src={coverImage}
         alt={habit.name}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          zIndex: 0,
-          transition: 'transform 0.4s ease',
-        }}
-        className="habit-card-image"
+        className="habit-card-image absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-[400ms] ease-in-out"
       />
 
       {/* Dark gradient overlay for bottom text legibility */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to bottom, rgba(0, 0, 0,0.1) 0%, rgba(0, 0, 0,0.3) 40%, rgba(0, 0, 0,0.65) 70%, rgba(0, 0, 0,0.92) 100%)',
-          zIndex: 1,
-        }}
-      />
+      <div className="absolute inset-0 z-[1] bg-[linear-gradient(to_bottom,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.3)_40%,rgba(0,0,0,0.65)_70%,rgba(0,0,0,0.92)_100%)]" />
 
       {/* Content wrapper */}
-      <div
-        style={{
-          position: 'relative',
-          height: '100%',
-          zIndex: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: 20,
-          boxSizing: 'border-box',
-        }}
-      >
+      <div className="relative h-full z-[2] flex flex-col justify-between p-5 box-border">
         {/* Top Header Row */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <div className="flex items-center justify-between w-full">
           {/* Habit Icon (Glassmorphic) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div
-              style={{
-                width: 38,
-                height: 38,
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.2)',
-                backdropFilter: 'none',
-                WebkitBackdropFilter: 'none',
-                border: '1px solid rgba(255, 255, 255, 0.25)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: 'none',
-              }}
-            >
+          <div className="flex items-center gap-2">
+            <div className="w-[38px] h-[38px] rounded-full bg-[rgba(255,255,255,0.2)] border border-[rgba(255,255,255,0.25)] flex items-center justify-center shadow-none">
               <DynamicIcon name={habit.icon} size={18} color="#ffffff" />
             </div>
 
             {/* Category badge */}
             {habit.category && (
-              <div
-                style={{
-                  padding: '4px 10px',
-                  borderRadius: 'var(--r-pill)',
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  backdropFilter: 'none',
-                  WebkitBackdropFilter: 'none',
-                  border: '1px solid rgba(255, 255, 255, 0.25)',
-                  color: '#ffffff',
-                  fontSize: 10,
-                  fontWeight: 750,
-                  letterSpacing: '0.02em',
-                }}
-              >
+              <div className="px-2.5 py-1 rounded-full bg-[rgba(255,255,255,0.2)] border border-[rgba(255,255,255,0.25)] text-white text-[10px] font-[750] tracking-[0.02em]">
                 {habit.category.name}
               </div>
             )}
           </div>
 
           {/* Action Tools (Right) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div className="flex items-center gap-1.5">
             {/* Drag Handle */}
             {dragHandleProps && (
               <div
                 {...dragHandleProps}
                 onClick={(e) => e.stopPropagation()}
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: '50%',
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  backdropFilter: 'none',
-                  WebkitBackdropFilter: 'none',
-                  border: '1px solid rgba(255, 255, 255, 0.25)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'grab',
-                  color: '#ffffff',
-                  opacity: 0.8,
-                }}
+                className="w-8 h-8 rounded-full bg-[rgba(255,255,255,0.2)] border border-[rgba(255,255,255,0.25)] flex items-center justify-center cursor-grab text-white opacity-80"
               >
                 <GripVertical size={14} />
               </div>
@@ -251,7 +172,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
 
             {/* Options Menu */}
             {hasMenu && (
-              <div ref={menuRef} style={{ position: 'relative' }}>
+              <div ref={menuRef} className="relative">
                 <button
                   type="button"
                   aria-label="Options"
@@ -259,20 +180,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                     e.stopPropagation();
                     setMenuOpen((o) => !o);
                   }}
-                  style={{
-                    width: 32,
-                    height: 32,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: '50%',
-                    background: 'rgba(255, 255, 255, 0.2)',
-                    backdropFilter: 'none',
-                    WebkitBackdropFilter: 'none',
-                    border: '1px solid rgba(255, 255, 255, 0.25)',
-                    color: '#ffffff',
-                    cursor: 'pointer',
-                  }}
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-[rgba(255,255,255,0.2)] border border-[rgba(255,255,255,0.25)] text-white cursor-pointer"
                 >
                   <MoreHorizontal size={14} />
                 </button>
@@ -284,18 +192,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.94, y: -4 }}
                       transition={{ duration: 0.13 }}
-                      style={{
-                        position: 'absolute',
-                        right: 0,
-                        top: 'calc(100% + 6px)',
-                        background: 'var(--bg-elevated)',
-                        border: '1px solid var(--border-default)',
-                        borderRadius: 11,
-                        boxShadow: 'none',
-                        padding: 5,
-                        minWidth: 140,
-                        zIndex: 30,
-                      }}
+                      className="absolute right-0 top-[calc(100%+6px)] bg-bg-elevated border border-border-default rounded-[11px] shadow-none p-[5px] min-w-[140px] z-30"
                     >
                       {onEdit && (
                         <MenuItem
@@ -319,7 +216,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                       )}
                       {onDelete && (
                         <>
-                          <div style={{ height: 1, background: 'var(--border-subtle)', margin: '4px 2px' }} />
+                          <div className="h-px bg-border-subtle my-1 mx-0.5" />
                           <MenuItem
                             icon={<Trash2 size={13} />}
                             label="Delete"
@@ -340,23 +237,11 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
         </div>
 
         {/* Bottom Details Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div className="flex flex-col gap-3.5">
           <div>
             {/* Habit Title */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
-              <h3
-                style={{
-                  fontSize: 22,
-                  fontWeight: 800,
-                  color: '#ffffff',
-                  letterSpacing: '-0.025em',
-                  margin: 0,
-                  textShadow: '0 2px 4px rgba(0, 0, 0,0.5)',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <h3 className="text-[22px] font-extrabold text-white tracking-[-0.025em] m-0 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)] truncate">
                 {habit.name}
               </h3>
               {completed && (
@@ -364,68 +249,32 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
                   size={20}
                   color="#919191"
                   fill="white"
-                  style={{ flexShrink: 0, filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0,0.25))' }}
+                  className="flex-shrink-0 [filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.25))]"
                 />
               )}
               {isBad && (
-                <span
-                  style={{
-                    fontSize: 8.5,
-                    fontWeight: 800,
-                    padding: '1px 5px',
-                    borderRadius: 'var(--r-pill)',
-                    background: 'rgba(104, 104, 104,0.2)',
-                    border: '1px solid rgba(104, 104, 104,0.4)',
-                    color: '#8e8e8e',
-                    letterSpacing: '0.04em',
-                    textTransform: 'uppercase',
-                    flexShrink: 0,
-                  }}
-                >
+                <span className="text-[8.5px] font-extrabold px-[5px] py-px rounded-full bg-[rgba(104,104,104,0.2)] border border-[rgba(104,104,104,0.4)] text-[#8e8e8e] tracking-[0.04em] uppercase flex-shrink-0">
                   Avoid
                 </span>
               )}
             </div>
 
             {/* Description/Bio (White text) */}
-            <p
-              style={{
-                fontSize: 13.5,
-                color: 'rgba(255, 255, 255, 0.75)',
-                lineHeight: 1.4,
-                margin: 0,
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                height: 38,
-                textShadow: '0 1px 2px rgba(0, 0, 0,0.4)',
-              }}
-            >
+            <p className="text-base text-[rgba(255,255,255,0.75)] leading-[1.4] m-0 line-clamp-2 h-[38px] [text-shadow:0_1px_2px_rgba(0,0,0,0.4)]">
               {habit.description || (isBad ? 'Avoid this trigger to build healthy resilience.' : `Frequency: ${freqLabel(habit)}`)}
             </p>
           </div>
 
           {/* Stats Indicators (Streak & Rate) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div className="flex items-center gap-2.5">
             {/* Streak Pill */}
             <div
               title="Current streak"
+              className="flex items-center gap-[5px] px-2.5 py-1 rounded-full text-[12px] font-extrabold shadow-none"
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 5,
-                padding: '4px 10px',
-                borderRadius: 9999,
                 background: isBad ? 'rgba(239, 68, 68, 0.2)' : 'rgba(245, 158, 11, 0.22)',
-                backdropFilter: 'none',
-                WebkitBackdropFilter: 'none',
                 border: `1px solid ${isBad ? 'rgba(239, 68, 68, 0.4)' : 'rgba(245, 158, 11, 0.4)'}`,
-                fontSize: 12,
                 color: isBad ? '#fca5a5' : '#fbbf24',
-                fontWeight: 800,
-                boxShadow: 'none',
               }}
             >
               {isBad ? (
@@ -439,24 +288,10 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
             {/* Rate Pill */}
             <div
               title="Completion rate"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 5,
-                padding: '4px 10px',
-                borderRadius: 9999,
-                background: 'rgba(255, 255, 255, 0.18)',
-                backdropFilter: 'none',
-                WebkitBackdropFilter: 'none',
-                border: '1px solid rgba(255, 255, 255, 0.25)',
-                fontSize: 12,
-                color: '#ffffff',
-                fontWeight: 800,
-                boxShadow: 'none',
-              }}
+              className="flex items-center gap-[5px] px-2.5 py-1 rounded-full bg-[rgba(255,255,255,0.18)] border border-[rgba(255,255,255,0.25)] text-[12px] text-white font-extrabold shadow-none"
             >
               <Target size={13} color="#ffffff" />
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+              <span className="[font-family:'IBM_Plex_Mono',monospace]">
                 {habit.completionRate ?? 0}%
               </span>
             </div>
@@ -464,7 +299,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
             {/* Share Button */}
             {(streak > 0 || completed) && (
               <div className="ml-auto pl-2 border-l border-white/20">
-                <ShareButton 
+                <ShareButton
                   title={habit.name}
                   text={`I'm on a ${streak}-day streak for "${habit.name}" on Productivity Master!`}
                   type="twitter"
@@ -475,7 +310,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
           </div>
 
           {/* iOS Swipe to Complete Action Button */}
-          <div onClick={(e) => e.stopPropagation()} style={{ width: '100%' }}>
+          <div onClick={(e) => e.stopPropagation()} className="w-full">
             <SwipeToComplete
               completed={completed}
               onToggle={(val) => {
@@ -493,19 +328,9 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
     </div>
   );
 
-  const containerStyles = {
-    background: 'var(--bg-card)',
-    // Bezel effect
-    border: '6px solid var(--bg-card)',
-    borderRadius: 28,
-    boxShadow: 'none',
-    overflow: 'visible',
-    position: 'relative' as const,
-    height: 380, // slightly taller to comfortably host full-height imagery + action button
-    display: 'flex',
-    flexDirection: 'column' as const,
+  const containerClassName = 'bg-bg-card border-[6px] border-bg-card rounded-[28px] shadow-none overflow-visible relative h-[380px] flex flex-col transition-all duration-200';
+  const containerDynamicStyle = {
     opacity: completed ? 0.9 : 1,
-    transition: 'all 0.2s ease',
     cursor: onOpen ? 'pointer' : 'default',
   };
 
@@ -514,7 +339,8 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
       {onOpen ? (
         <motion.div
           onClick={() => onOpen(habit.id)}
-          style={containerStyles}
+          className={containerClassName}
+          style={containerDynamicStyle}
           whileHover={{
             y: -5,
             boxShadow: 'none',
@@ -525,7 +351,8 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
         </motion.div>
       ) : (
         <motion.div
-          style={containerStyles}
+          className={containerClassName}
+          style={containerDynamicStyle}
           whileHover={{
             y: -5,
             boxShadow: 'none',
