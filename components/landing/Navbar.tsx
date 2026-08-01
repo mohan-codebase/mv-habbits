@@ -33,61 +33,32 @@ export default function Navbar() {
   return (
     <>
       <nav
+        className="fixed inset-x-0 top-0 z-50 flex h-[60px] items-center justify-between px-[clamp(16px,4vw,48px)] border-b"
         style={{
-          position: 'fixed',
-          top: 0, left: 0, right: 0,
-          zIndex: 50,
-          height: 60,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 clamp(16px, 4vw, 48px)',
           background: scrolled ? 'var(--bg-glass-strong)' : 'var(--bg-glass)',
-          borderBottom: `1px solid ${scrolled ? 'var(--border-default)' : 'var(--border-subtle)'}`,
+          borderBottomColor: scrolled ? 'var(--border-default)' : 'var(--border-subtle)',
           transition: 'background 0.2s ease, border-color 0.2s ease',
         }}
       >
         {/* Logo */}
         <Link
           href="/"
-          style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}
+          className="inline-flex items-center gap-2 no-underline"
           onClick={() => setMenuOpen(false)}
         >
           <AppLogo width={28} height={28} />
-          <span style={{
-            fontSize: 15,
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            fontFamily: "'Outfit', sans-serif",
-            letterSpacing: '-0.02em',
-          }}>
+          <span className="text-[15px] font-bold tracking-[-0.02em] text-text-primary">
             Productivity Master
           </span>
         </Link>
 
         {/* Desktop nav links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 2 }} className="hf-desktop-nav">
+        <div className="hf-desktop-nav flex items-center gap-0.5">
           {NAV_LINKS.map(({ label, href }) => (
             <a
               key={label}
               href={href}
-              style={{
-                padding: '6px 12px',
-                borderRadius: 'var(--r-sm)',
-                fontSize: 13.5,
-                fontWeight: 500,
-                color: 'var(--text-secondary)',
-                textDecoration: 'none',
-                transition: 'color 0.15s ease, background 0.15s ease',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.color = 'var(--text-primary)';
-                e.currentTarget.style.background = 'var(--bg-tertiary)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.color = 'var(--text-secondary)';
-                e.currentTarget.style.background = 'transparent';
-              }}
+              className="rounded-sm px-3 py-1.5 text-[13.5px] font-medium text-text-secondary no-underline transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary"
             >
               {label}
             </a>
@@ -95,42 +66,17 @@ export default function Navbar() {
         </div>
 
         {/* Desktop CTA buttons */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }} className="hf-desktop-nav">
-          <Link href="/login" style={{ textDecoration: 'none' }}>
-            <button style={{
-              padding: '7px 14px',
-              borderRadius: 9999,
-              background: 'transparent',
-              color: 'var(--text-secondary)',
-              fontSize: 13.5,
-              fontWeight: 500,
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'color 0.15s ease',
-              fontFamily: 'inherit',
-            }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-primary)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-secondary)')}
-            >
+        <div className="hf-desktop-nav flex items-center gap-2">
+          <Link href="/login" className="no-underline">
+            <button className="cursor-pointer rounded-full border-none bg-transparent px-3.5 py-[7px] text-[13.5px] font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary [font-family:inherit]">
               Sign in
             </button>
           </Link>
-          <Link href="/signup" style={{ textDecoration: 'none' }}>
+          <Link href="/signup" className="no-underline">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              style={{
-                padding: '7px 16px',
-                borderRadius: 9999,
-                background: 'var(--accent-primary)',
-                color: 'var(--accent-on-primary)',
-                fontSize: 13.5,
-                fontWeight: 700,
-                border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                boxShadow: 'none',
-              }}
+              className="cursor-pointer rounded-full border-none bg-accent-primary px-4 py-[7px] text-[13.5px] font-bold text-accent-on-primary shadow-none [font-family:inherit]"
             >
               Get started
             </motion.button>
@@ -142,18 +88,7 @@ export default function Navbar() {
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen(o => !o)}
-          style={{
-            display: 'none', // shown via .hf-mobile-menu-btn
-            width: 36, height: 36,
-            borderRadius: 'var(--r-sm)',
-            background: 'var(--bg-tertiary)',
-            border: '1px solid var(--border-subtle)',
-            alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer',
-            color: 'var(--text-secondary)',
-            flexShrink: 0,
-          }}
-          className="hf-mobile-menu-btn"
+          className="hf-mobile-menu-btn hidden h-9 w-9 shrink-0 items-center justify-center rounded-sm border border-border-subtle bg-bg-tertiary text-text-secondary"
         >
           {menuOpen ? <X size={18} /> : <Menu size={18} />}
         </button>
@@ -167,17 +102,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            style={{
-              position: 'fixed',
-              top: 60, left: 0, right: 0, bottom: 0,
-              zIndex: 49,
-              background: 'var(--bg-glass-strong)',
-              display: 'flex',
-              flexDirection: 'column',
-              padding: '24px clamp(16px, 5vw, 32px)',
-              gap: 4,
-              overflowY: 'auto',
-            }}
+            className="fixed inset-x-0 bottom-0 top-[60px] z-[49] flex flex-col gap-1 overflow-y-auto bg-bg-glass-strong px-[clamp(16px,5vw,32px)] py-6"
           >
             {NAV_LINKS.map(({ label, href }, i) => (
               <motion.a
@@ -187,50 +112,21 @@ export default function Navbar() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05, duration: 0.25 }}
                 onClick={() => setMenuOpen(false)}
-                style={{
-                  padding: '14px 12px',
-                  borderRadius: 'var(--r-md)',
-                  fontSize: 18,
-                  fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  fontFamily: "'Outfit'",
-                  textDecoration: 'none',
-                  borderBottom: '1px solid var(--border-subtle)',
-                  transition: 'background 0.15s ease',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-tertiary)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                className="rounded-md border-b border-border-subtle px-3 py-3.5 text-[18px] font-semibold text-text-primary no-underline transition-colors duration-150 hover:bg-bg-tertiary font-['Outfit']"
               >
                 {label}
               </motion.a>
             ))}
 
             {/* Mobile CTA buttons */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 24 }}>
+            <div className="mt-6 flex flex-col gap-2.5">
               <Link href="/login" onClick={() => setMenuOpen(false)}>
-                <button style={{
-                  width: '100%', padding: '14px',
-                  borderRadius: 'var(--r-lg)',
-                  background: 'var(--bg-tertiary)',
-                  border: '1px solid var(--border-default)',
-                  color: 'var(--text-primary)',
-                  fontSize: 15, fontWeight: 600,
-                  cursor: 'pointer', fontFamily: 'inherit',
-                }}>
+                <button className="w-full cursor-pointer rounded-lg border border-border-default bg-bg-tertiary p-3.5 text-[15px] font-semibold text-text-primary [font-family:inherit]">
                   Sign in
                 </button>
               </Link>
               <Link href="/signup" onClick={() => setMenuOpen(false)}>
-                <button style={{
-                  width: '100%', padding: '14px',
-                  borderRadius: 'var(--r-lg)',
-                  background: 'var(--accent-primary)',
-                  color: 'var(--accent-on-primary)',
-                  border: 'none',
-                  fontSize: 15, fontWeight: 700,
-                  cursor: 'pointer', fontFamily: 'inherit',
-                  boxShadow: 'none',
-                }}>
+                <button className="w-full cursor-pointer rounded-lg border-none bg-accent-primary p-3.5 text-[15px] font-bold text-accent-on-primary shadow-none [font-family:inherit]">
                   Start for free
                 </button>
               </Link>
