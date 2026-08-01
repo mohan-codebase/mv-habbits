@@ -73,18 +73,15 @@ function getHabitCoverImage(habit: HabitWithEntry): string {
 }
 
 function MenuItem({ icon, label, onClick, danger = false }: { icon: React.ReactNode; label: string; onClick: () => void; danger?: boolean }) {
-  const [hov, setHov] = useState(false);
   return (
     <button
       type="button"
       onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      className="flex items-center gap-2 w-full px-2.5 py-2 border-none rounded-sm cursor-pointer text-[13px] font-medium text-left transition-all duration-[120ms]"
-      style={{
-        background: hov ? (danger ? 'rgba(104, 104, 104,0.12)' : 'var(--bg-elevated)') : 'transparent',
-        color: danger ? (hov ? 'var(--danger)' : '#8e8e8e') : 'var(--text-secondary)',
-      }}
+      className={`flex items-center gap-2 w-full px-2.5 py-2 border-none rounded-sm cursor-pointer text-[13px] font-medium text-left transition-all duration-[120ms] bg-transparent ${
+        danger
+          ? 'text-[#8e8e8e] hover:bg-[rgba(104,104,104,0.12)] hover:text-danger'
+          : 'text-text-secondary hover:bg-bg-elevated'
+      }`}
     >
       {icon}
       {label}
@@ -270,12 +267,11 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
             {/* Streak Pill */}
             <div
               title="Current streak"
-              className="flex items-center gap-[5px] px-2.5 py-1 rounded-full text-[12px] font-extrabold shadow-none"
-              style={{
-                background: isBad ? 'rgba(239, 68, 68, 0.2)' : 'rgba(245, 158, 11, 0.22)',
-                border: `1px solid ${isBad ? 'rgba(239, 68, 68, 0.4)' : 'rgba(245, 158, 11, 0.4)'}`,
-                color: isBad ? '#fca5a5' : '#fbbf24',
-              }}
+              className={`flex items-center gap-[5px] px-2.5 py-1 rounded-full border text-[12px] font-extrabold shadow-none ${
+                isBad
+                  ? 'bg-[rgba(239,68,68,0.2)] border-[rgba(239,68,68,0.4)] text-[#fca5a5]'
+                  : 'bg-[rgba(245,158,11,0.22)] border-[rgba(245,158,11,0.4)] text-[#fbbf24]'
+              }`}
             >
               {isBad ? (
                 <Shield size={13} color="#fca5a5" />
@@ -328,19 +324,16 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
     </div>
   );
 
-  const containerClassName = 'bg-bg-card border-[6px] border-bg-card rounded-[28px] shadow-none overflow-visible relative h-[380px] flex flex-col transition-all duration-200';
-  const containerDynamicStyle = {
-    opacity: completed ? 0.9 : 1,
-    cursor: onOpen ? 'pointer' : 'default',
-  };
+  const containerClassName = `bg-bg-card border-[6px] border-bg-card rounded-[28px] shadow-none overflow-visible relative h-[380px] flex flex-col transition-all duration-200 ${
+    completed ? 'opacity-90' : 'opacity-100'
+  } ${onOpen ? 'cursor-pointer' : 'cursor-default'}`;
 
   return (
-    <motion.div layout style={{ position: 'relative' }}>
+    <motion.div layout className="relative">
       {onOpen ? (
         <motion.div
           onClick={() => onOpen(habit.id)}
           className={containerClassName}
-          style={containerDynamicStyle}
           whileHover={{
             y: -5,
             boxShadow: 'none',
@@ -352,7 +345,6 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
       ) : (
         <motion.div
           className={containerClassName}
-          style={containerDynamicStyle}
           whileHover={{
             y: -5,
             boxShadow: 'none',
