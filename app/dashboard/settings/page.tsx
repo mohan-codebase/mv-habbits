@@ -46,41 +46,28 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="hf-page" style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: '24px 20px' }}>
-      <div style={{ minWidth: 0, marginBottom: 8 }}>
-        <h1 style={{ margin: 0, fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1, fontFamily: "'Outfit', sans-serif" }}>
+    <div className="hf-page flex flex-col gap-6 p-[24px_20px]">
+      <div className="mb-2 min-w-0">
+        <h1 className="m-0 text-[clamp(22px,3vw,30px)] font-extrabold leading-[1.1] tracking-[-0.02em] text-text-primary [font-family:'Outfit',sans-serif]">
           Settings
         </h1>
-        <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--text-muted)' }}>
+        <p className="mt-1 mb-0 text-[13px] text-text-muted">
           Manage your user profile, configurations, security preferences, and theme.
         </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 560 }}>
+      <div className="flex max-w-[560px] flex-col gap-4">
         {/* User Profile Card */}
         {user && (
-          <div
-            style={{
-              display: 'flex', alignItems: 'center', gap: 16,
-              padding: '18px 20px',
-              background: 'linear-gradient(155deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: 'var(--r-xl)',
-            }}
-          >
-            <div style={{
-              width: 50, height: 50, borderRadius: '50%',
-              background: 'linear-gradient(135deg, var(--accent-primary) 0%, #727272 100%)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 18, fontWeight: 800, color: '#fff', flexShrink: 0,
-            }}>
+          <div className="flex items-center gap-4 rounded-xl border border-border-subtle bg-[linear-gradient(155deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_100%)] p-[18px_20px]">
+            <div className="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--accent-primary)_0%,#727272_100%)] text-[18px] font-extrabold text-white">
               {initials}
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ margin: 0, fontSize: 16, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div className="min-w-0 flex-1">
+              <p className="m-0 truncate text-[16px] font-extrabold tracking-[-0.02em] text-text-primary">
                 {displayName}
               </p>
-              <p style={{ margin: '2px 0 0', fontSize: 12.5, color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <p className="mt-0.5 mb-0 truncate text-[12.5px] text-text-muted">
                 {user.email}
               </p>
             </div>
@@ -97,40 +84,20 @@ export default function SettingsPage() {
         <DataManagement user={user} />
 
         {/* Security / Devices Card */}
-        <div
-          style={{
-            display: 'flex', alignItems: 'flex-start', gap: 14,
-            padding: '16px 18px',
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: 'var(--r-xl)',
-          }}
-        >
-          <div style={{
-            width: 38, height: 38, borderRadius: 'var(--r-md)', flexShrink: 0,
-            background: 'var(--bg-tertiary)',
-            border: '1px solid var(--border-subtle)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: 'var(--text-primary)',
-          }}>
+        <div className="flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card p-[16px_18px]">
+          <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle bg-bg-tertiary text-text-primary">
             <Shield size={18} />
           </div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 3px' }}>
+          <div className="min-w-0 flex-1">
+            <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
               Devices & Sessions
             </p>
-            <p style={{ fontSize: 12.5, color: 'var(--text-muted)', margin: '0 0 12px', lineHeight: 1.5 }}>
+            <p className="m-0 mb-3 text-[12.5px] leading-[1.5] text-text-muted">
               View and revoke active sessions on other browsers or devices.
             </p>
             <button
               onClick={() => setDevicesOpen(true)}
-              style={{
-                padding: '7px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600,
-                background: 'var(--accent-primary)',
-                color: 'var(--accent-on-primary)',
-                border: 'none',
-                cursor: 'pointer', fontFamily: 'inherit',
-              }}
+              className="cursor-pointer rounded-lg border-none bg-accent-primary p-[7px_14px] text-[13px] font-semibold text-accent-on-primary [font-family:inherit]"
             >
               Manage sessions
             </button>
@@ -138,42 +105,21 @@ export default function SettingsPage() {
         </div>
 
         {/* Theme Settings Card */}
-        <div
-          style={{
-            display: 'flex', flexDirection: 'column', gap: 18,
-            padding: '20px',
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: 'var(--r-xl)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-            <div style={{
-              width: 38, height: 38, borderRadius: 'var(--r-md)', flexShrink: 0,
-              background: 'var(--bg-tertiary)',
-              border: '1px solid var(--border-subtle)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: 'var(--text-primary)',
-            }}>
+        <div className="flex flex-col gap-[18px] rounded-xl border border-border-subtle bg-bg-card p-5">
+          <div className="flex items-start gap-3.5">
+            <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle bg-bg-tertiary text-text-primary">
               {isDark ? <Moon size={18} /> : <Sun size={18} />}
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 3px' }}>
+            <div className="min-w-0 flex-1">
+              <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
                 Theme Settings
               </p>
-              <p style={{ fontSize: 12.5, color: 'var(--text-muted)', margin: '0 0 12px', lineHeight: 1.5 }}>
+              <p className="m-0 mb-3 text-[12.5px] leading-[1.5] text-text-muted">
                 Customize system theme and primary accent colors.
               </p>
               <button
                 onClick={toggle}
-                style={{
-                  padding: '7px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600,
-                  background: 'var(--bg-tertiary)',
-                  color: 'var(--text-secondary)',
-                  border: '1px solid var(--border-default)',
-                  cursor: 'pointer', fontFamily: 'inherit',
-                  transition: 'all 0.2s ease',
-                }}
+                className="cursor-pointer rounded-lg border border-border-default bg-bg-tertiary p-[7px_14px] text-[13px] font-semibold text-text-secondary transition-all duration-200 ease-in-out [font-family:inherit]"
               >
                 Switch to {isDark ? 'Light' : 'Dark'} Mode
               </button>
@@ -182,42 +128,20 @@ export default function SettingsPage() {
         </div>
 
         {/* Help & Support Card */}
-        <div
-          style={{
-            display: 'flex', alignItems: 'flex-start', gap: 14,
-            padding: '16px 18px',
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: 'var(--r-xl)',
-          }}
-        >
-          <div style={{
-            width: 38, height: 38, borderRadius: 'var(--r-md)', flexShrink: 0,
-            background: 'var(--bg-tertiary)',
-            border: '1px solid var(--border-subtle)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: 'var(--text-primary)',
-          }}>
+        <div className="flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card p-[16px_18px]">
+          <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle bg-bg-tertiary text-text-primary">
             <HelpCircle size={18} />
           </div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 3px' }}>
+          <div className="min-w-0 flex-1">
+            <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
               Help & Support
             </p>
-            <p style={{ fontSize: 12.5, color: 'var(--text-muted)', margin: '0 0 12px', lineHeight: 1.5 }}>
+            <p className="m-0 mb-3 text-[12.5px] leading-[1.5] text-text-muted">
               Need help or have suggestions? Reach out to our support team.
             </p>
             <a
               href="mailto:support@semmaflow.com?subject=Productivity Master Help"
-              style={{
-                display: 'inline-block',
-                padding: '7px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600,
-                background: 'var(--bg-tertiary)',
-                color: 'var(--text-secondary)',
-                border: '1px solid var(--border-default)',
-                textDecoration: 'none',
-                fontFamily: 'inherit',
-              }}
+              className="inline-block rounded-lg border border-border-default bg-bg-tertiary p-[7px_14px] text-[13px] font-semibold text-text-secondary no-underline [font-family:inherit]"
             >
               Contact Support
             </a>
@@ -225,41 +149,22 @@ export default function SettingsPage() {
         </div>
 
         {/* Sign Out Card */}
-        <div
-          style={{
-            display: 'flex', alignItems: 'flex-start', gap: 14,
-            padding: '16px 18px',
-            background: 'var(--bg-card)',
-            border: '1px solid rgba(255, 0, 0, 0.1)',
-            borderRadius: 'var(--r-xl)',
-          }}
-        >
-          <div style={{
-            width: 38, height: 38, borderRadius: 'var(--r-md)', flexShrink: 0,
-            background: 'rgba(255, 0, 0, 0.05)',
-            border: '1px solid rgba(255, 0, 0, 0.15)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: 'var(--danger)',
-          }}>
+        <div className="flex items-start gap-3.5 rounded-xl border border-[rgba(255,0,0,0.1)] bg-bg-card p-[16px_18px]">
+          <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-[rgba(255,0,0,0.15)] bg-[rgba(255,0,0,0.05)] text-danger">
             <LogOut size={18} />
           </div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 3px' }}>
+          <div className="min-w-0 flex-1">
+            <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
               Account Session
             </p>
-            <p style={{ fontSize: 12.5, color: 'var(--text-muted)', margin: '0 0 12px', lineHeight: 1.5 }}>
+            <p className="m-0 mb-3 text-[12.5px] leading-[1.5] text-text-muted">
               Sign out from this session. Active passcode and biometric configurations remain safe.
             </p>
             <button
               onClick={handleSignOut}
               disabled={signingOut}
-              style={{
-                padding: '7px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600,
-                background: 'var(--danger)',
-                color: 'var(--accent-on-primary)',
-                border: 'none',
-                cursor: signingOut ? 'wait' : 'pointer', fontFamily: 'inherit',
-              }}
+              style={{ cursor: signingOut ? 'wait' : 'pointer' }}
+              className="rounded-lg border-none bg-danger p-[7px_14px] text-[13px] font-semibold text-accent-on-primary [font-family:inherit]"
             >
               {signingOut ? 'Signing out...' : 'Sign out of account'}
             </button>
