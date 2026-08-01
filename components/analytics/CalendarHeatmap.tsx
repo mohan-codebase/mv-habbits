@@ -109,8 +109,7 @@ const CalendarHeatmap = memo(function CalendarHeatmap({ data, color }: CalendarH
             return (
               <div
                 key={wi}
-                className="w-4 text-xs [font-family:'IBM_Plex_Sans',sans-serif] whitespace-nowrap font-semibold"
-                style={{ color: label ? 'var(--text-secondary)' : 'transparent' }}
+                className={`w-4 text-xs [font-family:'IBM_Plex_Sans',sans-serif] whitespace-nowrap font-semibold ${label ? 'text-text-secondary' : 'text-transparent'}`}
               >
                 {label?.label ?? ''}
               </div>
@@ -123,8 +122,7 @@ const CalendarHeatmap = memo(function CalendarHeatmap({ data, color }: CalendarH
           <div key={dow} className="flex items-center gap-1">
             {/* Day label */}
             <div
-              className="w-8 text-xs [font-family:'IBM_Plex_Sans',sans-serif] text-right pr-1.5 flex-shrink-0 font-medium"
-              style={{ color: dow % 2 === 1 ? 'var(--text-muted)' : 'transparent' }}
+              className={`w-8 text-xs [font-family:'IBM_Plex_Sans',sans-serif] text-right pr-1.5 flex-shrink-0 font-medium ${dow % 2 === 1 ? 'text-text-muted' : 'text-transparent'}`}
             >
               {DAY_LABELS[dow]}
             </div>
@@ -142,11 +140,10 @@ const CalendarHeatmap = memo(function CalendarHeatmap({ data, color }: CalendarH
               return (
                 <div
                   key={wi}
-                  className={`hf-cal-cell w-4 h-4 rounded-[14px] flex-shrink-0 cursor-default ${cell.percentage > 0 ? 'hf-cal-cell-active' : ''}`}
+                  className={`hf-cal-cell w-4 h-4 rounded-[14px] flex-shrink-0 cursor-default border ${cell.percentage > 0 ? 'hf-cal-cell-active border-[color-mix(in_srgb,var(--text-primary)_10%,transparent)]' : 'border-border-subtle'}`}
                   title={`${cell.date}: ${cell.percentage}% complete`}
                   style={{
                     background: getColor(cell.percentage, baseColor),
-                    border: cell.percentage > 0 ? '1px solid color-mix(in srgb, var(--text-primary) 10%, transparent)' : '1px solid var(--border-subtle)',
                     animationDelay: `${(wi + dow) * 0.05}s`,
                   }}
                 />
@@ -161,10 +158,9 @@ const CalendarHeatmap = memo(function CalendarHeatmap({ data, color }: CalendarH
           {[0, 25, 50, 75, 100].map((pct) => (
             <div
               key={pct}
-              className="w-4 h-4 rounded-[14px]"
+              className={`w-4 h-4 rounded-[14px] border ${pct > 0 ? 'border-[color-mix(in_srgb,var(--text-primary)_10%,transparent)]' : 'border-border-subtle'}`}
               style={{
                 background: getColor(pct, baseColor),
-                border: pct > 0 ? '1px solid color-mix(in srgb, var(--text-primary) 10%, transparent)' : '1px solid var(--border-subtle)',
               }}
             />
           ))}

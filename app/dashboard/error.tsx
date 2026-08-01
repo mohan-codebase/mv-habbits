@@ -16,45 +16,14 @@ export default function DashboardError({
   }, [error]);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '60vh',
-        gap: 16,
-        padding: '32px',
-        textAlign: 'center',
-      }}
-    >
-      <div
-        style={{
-          width: 48,
-          height: 48,
-          borderRadius: '50%',
-          background: 'var(--danger-glow)',
-          border: '1px solid rgba(140, 140, 140,0.24)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 22,
-        }}
-      >
+    <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 p-8 text-center">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[rgba(140,140,140,0.24)] bg-[var(--danger-glow)] text-[22px]">
         <AlertTriangle size={22} color="var(--danger)" />
       </div>
-      <h2
-        style={{
-          margin: 0,
-          fontSize: 18,
-          fontWeight: 600,
-          color: 'var(--text-primary)',
-          fontFamily: "'Outfit', sans-serif",
-        }}
-      >
+      <h2 className="m-0 font-['Outfit',sans-serif] text-lg font-semibold text-text-primary">
         Something went wrong
       </h2>
-      <p style={{ margin: 0, fontSize: 14, color: 'var(--text-secondary)', maxWidth: 360 }}>
+      <p className="m-0 max-w-[360px] text-sm text-text-secondary">
         {error.message || 'An unexpected error occurred. Please try again.'}
       </p>
       <Button variant="primary" onClick={reset}>
