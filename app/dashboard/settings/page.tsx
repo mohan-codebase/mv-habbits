@@ -163,8 +163,7 @@ export default function SettingsPage() {
             <button
               onClick={handleSignOut}
               disabled={signingOut}
-              style={{ cursor: signingOut ? 'wait' : 'pointer' }}
-              className="rounded-lg border-none bg-danger p-[7px_14px] text-[13px] font-semibold text-accent-on-primary [font-family:inherit]"
+              className="rounded-lg border-none bg-danger p-[7px_14px] text-[13px] font-semibold text-accent-on-primary [font-family:inherit] cursor-pointer disabled:cursor-wait"
             >
               {signingOut ? 'Signing out...' : 'Sign out of account'}
             </button>
