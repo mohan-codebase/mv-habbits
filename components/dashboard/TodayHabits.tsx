@@ -430,7 +430,7 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
   const deleteHabitName = habits.find((h) => h.id === deleteTarget)?.name;
 
   return (
-    <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <section className="flex flex-col gap-4">
       {/* Onboarding wizard — auto-shows for first-time users */}
       {onboardingOpen && (
         <OnboardingWizard
@@ -440,74 +440,30 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
         />
       )}
       {/* Section header */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '8px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <h2
-            style={{
-              fontSize: '18px',
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              margin: 0,
-              fontFamily: "'Outfit', sans-serif",
-            }}
-          >
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2.5">
+          <h2 className="m-0 font-[Outfit,sans-serif] text-lg font-bold text-text-primary">
             Today&apos;s Habits
           </h2>
 
           {/* Count badge */}
           {!loading && (
-            <span
-              style={{
-                padding: '2px 10px',
-                borderRadius: 'var(--r-pill)',
-                background: 'var(--accent-glow)',
-                border: '1px solid color-mix(in srgb, var(--accent-primary) 25%, transparent)',
-                color: 'var(--accent-primary)',
-                fontSize: '12px',
-                fontWeight: 600,
-              }}
-            >
+            <span className="rounded-full border border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)] bg-[var(--accent-glow)] px-2.5 py-0.5 text-xs font-semibold text-accent-primary">
               {completedCount} / {goodHabits.length}
             </span>
           )}
           {!loading && badHabits.length > 0 && (
-            <span
-              style={{
-                padding: '2px 10px',
-                borderRadius: 'var(--r-pill)',
-                background: 'rgba(104, 104, 104,0.10)',
-                border: '1px solid rgba(104, 104, 104,0.25)',
-                color: '#8e8e8e',
-                fontSize: '12px',
-                fontWeight: 600,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 4,
-              }}
-            >
-              <Ban size={12} style={{ display: 'inline', marginRight: 2 }} /> {avoidedCount}/{badHabits.length} avoided
+            <span className="flex items-center gap-1 rounded-full border border-[rgba(104,104,104,0.25)] bg-[rgba(104,104,104,0.10)] px-2.5 py-0.5 text-xs font-semibold text-[#8e8e8e]">
+              <Ban size={12} className="mr-0.5 inline" /> {avoidedCount}/{badHabits.length} avoided
             </span>
           )}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="flex items-center gap-2">
           <LiveIndicator status={rtStatus} />
 
           <span
-            className="hidden sm:inline"
-            style={{
-              fontSize: '13px',
-              color: 'var(--text-secondary)',
-              whiteSpace: 'nowrap',
-            }}
+            className="hidden whitespace-nowrap text-[13px] text-text-secondary sm:inline"
           >
             {today}
           </span>
@@ -538,22 +494,14 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
 
       {/* Completion progress bar */}
       {!loading && habits.length > 0 && (
-        <div style={{
-          width: '100%',
-          height: 5,
-          background: 'var(--bg-tertiary)',
-          borderRadius: 'var(--r-pill)',
-          overflow: 'hidden',
-        }}>
+        <div className="h-[5px] w-full overflow-hidden rounded-full bg-bg-tertiary">
           <div
+            className="h-full rounded-full transition-[width,background] duration-500 ease-[ease]"
             style={{
-              height: '100%',
               width: `${habits.length > 0 ? Math.round((completedCount / habits.length) * 100) : 0}%`,
               background: completedCount === habits.length
                 ? 'linear-gradient(90deg, var(--accent-primary), var(--accent-light))'
                 : 'var(--accent-primary)',
-              borderRadius: 'var(--r-pill)',
-              transition: 'width 0.5s ease, background 0.3s ease',
               boxShadow: completedCount === habits.length ? '0 0 8px var(--accent-primary)' : 'none',
             }}
           />
@@ -562,11 +510,7 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
 
       {/* Habit list */}
       {!loading && habits.length === 0 ? (
-        <div style={{
-          background: 'var(--bg-glass)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 16,
-        }}>
+        <div className="rounded-[16px] border border-border-subtle bg-bg-glass">
           <EmptyState
             icon={<Zap size={34} color="var(--accent-primary)" />}
             title="No habits tracked today"
@@ -588,7 +532,7 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
           />
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="flex flex-col gap-2">
           <HabitList
             habits={showAllHabits ? habits : habits.slice(0, 2)}
             loading={loading}
@@ -604,7 +548,7 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
               onClick={() => setShowAllHabits(!showAllHabits)}
               fullWidth
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div className="flex items-center gap-1.5">
                 {showAllHabits ? 'Show less' : `Show all habits (${habits.length})`}
                 {showAllHabits ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </div>
@@ -640,17 +584,9 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
         size="md"
         closeOnOutsideClick={false}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div className="flex flex-col gap-4">
           <div>
-            <label
-              style={{
-                display: 'block',
-                fontSize: 13,
-                color: 'var(--text-secondary)',
-                marginBottom: 6,
-                fontWeight: 500,
-              }}
-            >
+            <label className="mb-1.5 block text-[13px] font-medium text-text-secondary">
               Date
             </label>
             <input
@@ -658,36 +594,17 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
               value={backfillDate}
               max={todayStr}
               onChange={(e) => setBackfillDate(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                background: 'var(--bg-tertiary)',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: 10,
-                color: 'var(--text-primary)',
-                fontSize: 14,
-                outline: 'none',
-                fontFamily: 'inherit',
-              }}
+              className="w-full rounded-[10px] border border-border-subtle bg-bg-tertiary px-3 py-2.5 text-sm font-[inherit] text-text-primary outline-none"
             />
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 8,
-              maxHeight: 360,
-              overflowY: 'auto',
-              paddingRight: 4,
-            }}
-          >
+          <div className="flex max-h-[360px] flex-col gap-2 overflow-y-auto pr-1">
             {backfillLoading ? (
-              <p style={{ color: 'var(--text-muted)', fontSize: 13, margin: '12px 0' }}>
+              <p className="my-3 text-[13px] text-text-muted">
                 Loading entries…
               </p>
             ) : backfillRows.length === 0 ? (
-              <p style={{ color: 'var(--text-muted)', fontSize: 13, margin: '12px 0' }}>
+              <p className="my-3 text-[13px] text-text-muted">
                 No habits to log.
               </p>
             ) : (
@@ -697,38 +614,17 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
                 return (
                   <div
                     key={row.habit_id}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 8,
-                      padding: '12px 14px',
-                      background: 'var(--bg-tertiary)',
-                      borderRadius: 10,
-                      border: '1px solid var(--border-subtle)',
-                    }}
+                    className="flex flex-col gap-2 rounded-[10px] border border-border-subtle bg-bg-tertiary p-[12px_14px]"
                   >
-                    <label
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 10,
-                        cursor: 'pointer',
-                        fontSize: 14,
-                        color: 'var(--text-primary)',
-                        fontWeight: 500,
-                      }}
-                    >
+                    <label className="flex cursor-pointer items-center gap-2.5 text-sm font-medium text-text-primary">
                       <input
                         type="checkbox"
                         checked={row.is_completed}
                         onChange={(e) =>
                           setBackfillRow(row.habit_id, { is_completed: e.target.checked })
                         }
-                        style={{
-                          width: 18,
-                          height: 18,
-                          accentColor: habit.color ?? 'var(--accent-primary)',
-                        }}
+                        className="h-[18px] w-[18px]"
+                        style={{ accentColor: habit.color ?? 'var(--accent-primary)' }}
                       />
                       {habit.name}
                     </label>
@@ -738,17 +634,7 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
                       maxLength={1000}
                       onChange={(e) => setBackfillRow(row.habit_id, { notes: e.target.value })}
                       placeholder="Notes (optional)"
-                      style={{
-                        width: '100%',
-                        padding: '8px 10px',
-                        background: 'var(--bg-secondary)',
-                        border: '1px solid var(--border-subtle)',
-                        borderRadius: 8,
-                        color: 'var(--text-secondary)',
-                        fontSize: 12.5,
-                        outline: 'none',
-                        fontFamily: 'inherit',
-                      }}
+                      className="w-full rounded-lg border border-border-subtle bg-bg-secondary px-2.5 py-2 text-[12.5px] font-[inherit] text-text-secondary outline-none"
                     />
                   </div>
                 );
@@ -756,7 +642,7 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
             )}
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+          <div className="flex justify-end gap-2.5">
             <Button variant="ghost" onClick={closeBackfill} disabled={backfillSaving}>
               Cancel
             </Button>
@@ -779,15 +665,15 @@ export default function TodayHabits({ habits: initialHabits, loading }: TodayHab
         title="Delete Habit"
         size="sm"
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
+        <div className="flex flex-col gap-4">
+          <p className="m-0 text-sm text-text-secondary">
             Are you sure you want to delete{' '}
-            <strong style={{ color: 'var(--text-primary)' }}>
+            <strong className="text-text-primary">
               {deleteHabitName}
             </strong>
             ? This will remove all its history and cannot be undone.
           </p>
-          <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+          <div className="flex justify-end gap-2.5">
             <Button variant="ghost" onClick={() => setDeleteTarget(null)}>
               Cancel
             </Button>
@@ -817,31 +703,13 @@ function LiveIndicator({ status }: { status: 'connecting' | 'live' | 'offline' }
   return (
     <span
       title={`Realtime: ${status}`}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 5,
-        padding: '2px 8px',
-        borderRadius: 'var(--r-pill)',
-        background: 'var(--bg-tertiary)',
-        border: '1px solid var(--border-default)',
-        fontSize: 10.5,
-        fontWeight: 600,
-        color: 'var(--text-muted)',
-        fontFamily: "'IBM Plex Mono', monospace",
-        letterSpacing: '0.04em',
-      }}
+      className="inline-flex items-center gap-[5px] rounded-full border border-border-default bg-bg-tertiary px-2 py-0.5 font-mono text-[10.5px] font-semibold tracking-[0.04em] text-text-muted"
     >
       <span
-        className={status === 'live' ? 'glow-pulse' : undefined}
+        className={`inline-block h-1.5 w-1.5 shrink-0 rounded-full ${status === 'live' ? 'glow-pulse' : ''}`}
         style={{
-          width: 6,
-          height: 6,
-          borderRadius: '50%',
           background: color,
           boxShadow: status === 'live' ? `0 0 6px ${color}` : 'none',
-          display: 'inline-block',
-          flexShrink: 0,
         }}
       />
       <span className="hidden sm:inline">{label}</span>
