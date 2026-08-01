@@ -34,86 +34,66 @@ export default function ShareModal({ isOpen, onClose, stats }: ShareModalProps) 
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Share Your Progress" size="md">
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: '10px 0' }}>
-        
+      <div className="flex flex-col gap-6 py-2.5">
+
         {/* The "Card" for Screenshotting */}
         <div
           id="share-card"
-          style={{
-            background: 'linear-gradient(135deg, #171717 0%, #282828 100%)',
-            borderRadius: 24,
-            padding: 32,
-            position: 'relative',
-            overflow: 'hidden',
-            border: '1px solid rgba(255, 255, 255,0.1)',
-            boxShadow: 'none',
-            color: 'white',
-          }}
+          className="relative overflow-hidden rounded-3xl border border-[rgba(255,255,255,0.1)] bg-[linear-gradient(135deg,#171717_0%,#282828_100%)] p-8 text-white shadow-none"
         >
           {/* Abstract background glows */}
-          <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, color-mix(in srgb, var(--accent-primary) 15%, transparent) 0%, transparent 70%)' }} />
-          <div style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: 150, height: 150, borderRadius: '50%', background: 'radial-gradient(circle, rgba(137, 137, 137,0.1) 0%, transparent 70%)' }} />
+          <div className="absolute -right-[10%] -top-[20%] h-[200px] w-[200px] rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--accent-primary)_15%,transparent)_0%,transparent_70%)]" />
+          <div className="absolute -bottom-[10%] -left-[5%] h-[150px] w-[150px] rounded-full bg-[radial-gradient(circle,rgba(137,137,137,0.1)_0%,transparent_70%)]" />
 
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32 }}>
-              <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--accent-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="relative z-[1]">
+            <div className="mb-8 flex items-center gap-2.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent-primary)]">
                 <Target size={18} color="black" />
               </div>
-              <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.03em', fontFamily: "'Outfit'" }}>Productivity Master</span>
+              <span className="font-[Outfit] text-lg font-extrabold tracking-[-0.03em]">Productivity Master</span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                <div style={{ width: 56, height: 56, borderRadius: 16, background: 'rgba(137, 137, 137,0.15)', border: '1px solid rgba(137, 137, 137,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, fontWeight: 900, color: '#b6b6b6' }}>
+            <div className="flex flex-col gap-5">
+              <div className="flex items-center gap-4">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[rgba(137,137,137,0.3)] bg-[rgba(137,137,137,0.15)] text-2xl font-black text-[#b6b6b6]">
                   {level}
                 </div>
                 <div>
-                  <p style={{ fontSize: 13, color: 'rgba(255, 255, 255,0.5)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Level & Rank</p>
-                  <p style={{ fontSize: 20, fontWeight: 700, fontFamily: "'Outfit'" }}>{rank} Optimizer</p>
+                  <p className="text-[13px] font-semibold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.5)]">Level & Rank</p>
+                  <p className="font-[Outfit] text-xl font-bold">{rank} Optimizer</p>
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                <div style={{ background: 'rgba(255, 255, 255,0.04)', padding: 16, borderRadius: 16, border: '1px solid rgba(255, 255, 255,0.06)' }}>
-                  <Flame size={16} color="#a6a6a6" style={{ marginBottom: 8 }} />
-                  <p style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Outfit'" }}>{stats.bestStreak}<span style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255, 255, 255,0.4)', marginLeft: 4 }}>days</span></p>
-                  <p style={{ fontSize: 11, color: 'rgba(255, 255, 255,0.5)', fontWeight: 500 }}>Top Streak</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.04)] p-4">
+                  <Flame size={16} color="#a6a6a6" className="mb-2" />
+                  <p className="font-[Outfit] text-2xl font-extrabold">{stats.bestStreak}<span className="ml-1 text-sm font-medium text-[rgba(255,255,255,0.4)]">days</span></p>
+                  <p className="text-[11px] font-medium text-[rgba(255,255,255,0.5)]">Top Streak</p>
                 </div>
-                <div style={{ background: 'rgba(255, 255, 255,0.04)', padding: 16, borderRadius: 16, border: '1px solid rgba(255, 255, 255,0.06)' }}>
-                  <Trophy size={16} color="var(--accent-primary)" style={{ marginBottom: 8 }} />
-                  <p style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Outfit'" }}>{stats.totalCompletions}</p>
-                  <p style={{ fontSize: 11, color: 'rgba(255, 255, 255,0.5)', fontWeight: 500 }}>Total Habits</p>
+                <div className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.04)] p-4">
+                  <Trophy size={16} color="var(--accent-primary)" className="mb-2" />
+                  <p className="font-[Outfit] text-2xl font-extrabold">{stats.totalCompletions}</p>
+                  <p className="text-[11px] font-medium text-[rgba(255,255,255,0.5)]">Total Habits</p>
                 </div>
               </div>
             </div>
 
-            <div style={{ marginTop: 32, paddingTop: 20, borderTop: '1px solid rgba(255, 255, 255,0.08)', textAlign: 'center' }}>
-              <p style={{ fontSize: 11, color: 'rgba(255, 255, 255,0.4)', fontWeight: 500 }}>Tracked at productivity-master.app</p>
+            <div className="mt-8 border-t border-[rgba(255,255,255,0.08)] pt-5 text-center">
+              <p className="text-[11px] font-medium text-[rgba(255,255,255,0.4)]">Tracked at productivity-master.app</p>
             </div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <p style={{ fontSize: 13, color: 'var(--text-secondary)', textAlign: 'center' }}>
+        <div className="flex flex-col gap-3">
+          <p className="text-center text-[13px] text-text-secondary">
             Snapshot your progress or copy the summary below.
           </p>
-          
-          <div
-            style={{
-              background: 'var(--bg-tertiary)',
-              padding: 14,
-              borderRadius: 12,
-              border: '1px solid var(--border-subtle)',
-              fontSize: 13,
-              color: 'var(--text-primary)',
-              lineHeight: 1.5,
-              position: 'relative',
-            }}
-          >
+
+          <div className="relative rounded-xl border border-border-subtle bg-bg-tertiary p-3.5 text-[13px] leading-[1.5] text-text-primary">
             {shareText}
           </div>
 
-          <div style={{ display: 'flex', gap: 10 }}>
+          <div className="flex gap-2.5">
             <Button
               variant="secondary"
               fullWidth
