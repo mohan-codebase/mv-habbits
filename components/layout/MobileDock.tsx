@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BarChart3, Plus, Settings, CheckCircle2 } from 'lucide-react';
+import { LayoutDashboard, BarChart3, Plus, Settings, Trophy } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAccentColor } from '@/components/ui/ThemeProvider';
 
@@ -17,7 +17,7 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
 
   const isOverview = pathname === '/dashboard';
   const isAnalytics = pathname?.startsWith('/dashboard/analytics');
-  const isHabits = pathname?.startsWith('/dashboard/habits');
+  const isAchievements = pathname?.startsWith('/dashboard/achievements');
   const isSettings = pathname?.startsWith('/dashboard/settings');
 
   const triggerAddHabit = (e: React.MouseEvent) => {
@@ -43,10 +43,10 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
       active: isAnalytics,
     },
     {
-      label: 'Habits',
-      href: '/dashboard/habits',
-      icon: CheckCircle2,
-      active: isHabits,
+      label: 'Badges',
+      href: '/dashboard/achievements',
+      icon: Trophy,
+      active: isAchievements,
     },
     {
       label: 'Settings',
@@ -58,10 +58,10 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
 
   return (
     <>
-      {/* Smooth bottom gradient overlay fade mask to prevent awkward card edge cutoffs */}
-      <div className="no-print fixed bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-transparent pointer-events-none z-40 lg:hidden" />
+      {/* Smooth bottom gradient overlay fade mask */}
+      <div className="no-print fixed bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-transparent pointer-events-none z-[209] lg:hidden" />
 
-      <div className="hf-mobile-nav no-print fixed bottom-4 left-3 right-3 z-50 flex justify-center pointer-events-none lg:hidden">
+      <div className="hf-mobile-nav no-print fixed bottom-4 left-3 right-3 z-[210] flex justify-center pointer-events-none lg:hidden">
         <motion.nav
           initial={{ y: 32, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

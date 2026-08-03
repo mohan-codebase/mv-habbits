@@ -1705,7 +1705,7 @@ export default function FitnessSummary({
 
   return (
     <div
-      className="relative min-h-[100dvh] overflow-x-hidden [font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif] bg-bg-primary"
+      className="relative min-h-[100dvh] overflow-x-clip [font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif] bg-bg-primary"
     >
       {/* Desktop Sidebar is rendered by layout.tsx */}
 
