@@ -19,6 +19,8 @@ import {
   BookOpen,
   X,
   FileText,
+  Lock,
+  Unlock,
 } from 'lucide-react';
 import Link from 'next/link';
 import { format, parseISO, isToday, isYesterday, startOfMonth } from 'date-fns';
@@ -49,6 +51,9 @@ function formatDateLabel(dateStr: string): string {
 
 export default function CentralizedNotesPage() {
   const { toast } = useToast();
+
+  const [isVaultUnlocked, setIsVaultUnlocked] = useState(false);
+  const [showVaultModal, setShowVaultModal] = useState(false);
 
   const [notes, setNotes] = useState<NoteItem[]>([]);
   const [habits, setHabits] = useState<SimpleHabit[]>([]);
@@ -268,16 +273,37 @@ export default function CentralizedNotesPage() {
           </p>
         </div>
 
-        <Button
-          onClick={openNewNoteModal}
-          className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold"
-        >
-          <Plus size={17} />
-          Add Note
-        </Button>
+        <div className="flex items-center gap-3">
+          {isVaultUnlocked ? (
+            <Button
+              variant="ghost"
+              onClick={() => setIsVaultUnlocked(false)}
+              className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-text-muted hover:text-text-primary"
+            >
+              <Lock size={16} />
+              Lock Vault
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              onClick={() => setShowVaultModal(true)}
+              className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-text-muted hover:text-text-primary"
+            >
+              <Unlock size={16} />
+              Unlock Vault
+            </Button>
+          )}
+          <Button
+            onClick={openNewNoteModal}
+            className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold"
+          >
+            <Plus size={17} />
+            Add Note
+          </Button>
+        </div>
       </div>
 
-      {/* Summary Cards */}
+          {/* Summary Cards */}
       <div className="mb-7 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
         <div className="flex items-center gap-4 rounded-2xl border border-border-default bg-bg-glass p-[16px_20px]">
           <div className="flex h-[44px] w-[44px] items-center justify-center rounded-xl bg-[rgba(59,130,246,0.12)] text-[#3B82F6]">
@@ -402,7 +428,7 @@ export default function CentralizedNotesPage() {
                   className="hf-note-card relative flex flex-col justify-between gap-4 rounded-[18px] border border-border-default bg-bg-card p-5 transition-[border-color,box-shadow] duration-150 ease-in-out"
                 >
                   {/* Top Bar: Habit Pill & Date */}
-                  <div>
+                  <div className="flex flex-1 flex-col">
                     <div className="mb-3 flex items-center justify-between gap-2.5">
                       <Link
                         href={`/dashboard/habits/${note.habit_id}`}
@@ -426,8 +452,18 @@ export default function CentralizedNotesPage() {
                     </div>
 
                     {/* Note Content */}
-                    <div className="whitespace-pre-wrap break-words text-[14px] leading-[1.6] text-text-primary">
-                      {note.notes}
+                    <div 
+                      className={`relative flex-1 ${!isVaultUnlocked ? 'flex cursor-pointer select-none' : 'whitespace-pre-wrap break-words text-[14px] leading-[1.6] text-text-primary'}`}
+                      onClick={() => !isVaultUnlocked && setShowVaultModal(true)}
+                    >
+                      {!isVaultUnlocked ? (
+                        <div className="flex w-full flex-1 flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border-default bg-[var(--surface-tint)] p-4 text-text-muted transition-colors hover:bg-[var(--surface-tint-mid)] hover:text-text-primary">
+                          <Lock size={16} />
+                          <span className="text-xs font-semibold">Note Locked. Click to view.</span>
+                        </div>
+                      ) : (
+                        note.notes
+                      )}
                     </div>
                   </div>
 
@@ -450,29 +486,41 @@ export default function CentralizedNotesPage() {
                     </div>
 
                     <div className="flex items-center gap-1.5">
-                      <button
-                        onClick={() => handleCopyNote(note.id, note.notes)}
-                        title="Copy note text"
-                        className={`flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 transition-[background,color] duration-150 hover:bg-[var(--surface-tint)] ${isCopied ? 'text-[#22C55E]' : 'text-text-muted'}`}
-                      >
-                        {isCopied ? <Check size={15} /> : <Copy size={15} />}
-                      </button>
+                      {isVaultUnlocked ? (
+                        <>
+                          <button
+                            onClick={() => handleCopyNote(note.id, note.notes)}
+                            title="Copy note text"
+                            className={`flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 transition-[background,color] duration-150 hover:bg-[var(--surface-tint)] ${isCopied ? 'text-[#22C55E]' : 'text-text-muted'}`}
+                          >
+                            {isCopied ? <Check size={15} /> : <Copy size={15} />}
+                          </button>
 
-                      <button
-                        onClick={() => openEditNoteModal(note)}
-                        title="Edit note"
-                        className="group flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 text-text-muted transition-[background,color] duration-150 hover:bg-[var(--surface-tint)] hover:text-text-primary"
-                      >
-                        <Edit3 size={15} />
-                      </button>
+                          <button
+                            onClick={() => openEditNoteModal(note)}
+                            title="Edit note"
+                            className="group flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 text-text-muted transition-[background,color] duration-150 hover:bg-[var(--surface-tint)] hover:text-text-primary"
+                          >
+                            <Edit3 size={15} />
+                          </button>
 
-                      <button
-                        onClick={() => setDeleteTarget(note)}
-                        title="Delete note"
-                        className="flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 text-text-muted transition-[background,color] duration-150 hover:bg-[rgba(239,68,68,0.12)] hover:text-[#EF4444]"
-                      >
-                        <Trash2 size={15} />
-                      </button>
+                          <button
+                            onClick={() => setDeleteTarget(note)}
+                            title="Delete note"
+                            className="flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 text-text-muted transition-[background,color] duration-150 hover:bg-[rgba(239,68,68,0.12)] hover:text-[#EF4444]"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={() => setShowVaultModal(true)}
+                          title="Unlock Vault"
+                          className="flex cursor-pointer items-center justify-center rounded-lg border-none bg-transparent p-1.5 text-text-muted transition-[background,color] duration-150 hover:bg-[var(--surface-tint)] hover:text-text-primary"
+                        >
+                          <Lock size={15} />
+                        </button>
+                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -481,6 +529,36 @@ export default function CentralizedNotesPage() {
           </AnimatePresence>
         </div>
       )}
+      {/* Vault Unlock Modal */}
+      <Modal isOpen={showVaultModal} onClose={() => setShowVaultModal(false)}>
+        <div className="p-1 text-center">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[rgba(168,85,247,0.12)] text-[#A855F7] shadow-[0_0_30px_rgba(168,85,247,0.2)]">
+            <Lock size={30} />
+          </div>
+          <h2 className="m-0 mb-2 text-[22px] font-extrabold text-text-primary [font-family:'Outfit']">
+            Unlock Vault
+          </h2>
+          <p className="m-0 mb-6 text-[14px] text-text-muted">
+            Your notes are secured. Unlock the vault to read and edit your personal reflections.
+          </p>
+
+          <div className="flex justify-center gap-3">
+            <Button variant="ghost" onClick={() => setShowVaultModal(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                setIsVaultUnlocked(true);
+                setShowVaultModal(false);
+              }}
+              className="bg-[#A855F7] text-white hover:bg-[#9333EA]"
+            >
+              <Unlock size={16} className="mr-2" />
+              Unlock Now
+            </Button>
+          </div>
+        </div>
+      </Modal>
 
       {/* Add / Edit Note Modal */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
