@@ -45,6 +45,25 @@ function DeltaPill({ value, positive }: { value: number; positive: boolean }) {
 export default function ProgressChart({ data, habitCount }: ProgressChartProps) {
   const accentHex = useAccentColor();
   const [range, setRange] = useState<Range>('30d');
+  const [mounted, setMounted] = React.useState(false);
+
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  React.useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      if (!entries || entries.length === 0) return;
+      const measuredWidth = entries[0].contentRect.width;
+      if (measuredWidth > 0) setWidth(measuredWidth);
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   // Window + stats
   const { window, prevWindow } = useMemo(() => {
@@ -83,6 +102,16 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
   }, [window, habitCount]);
 
   const onTrack = completionDelta >= 0 && completionPct >= 50;
+  const gradientId = `progressGradient-${(accentHex || 'default').replace(/[^a-zA-Z0-9]/g, '')}`;
+
+  function hexToRgba(hex: string, alpha: number): string {
+    if (!hex || !hex.startsWith('#')) return `rgba(139, 92, 246, ${alpha})`;
+    let c = hex.substring(1).replace('#', '');
+    if (c.length === 3) c = c.split('').map((x) => x + x).join('');
+    const num = parseInt(c, 16);
+    if (isNaN(num)) return `rgba(139, 92, 246, ${alpha})`;
+    return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
+  }
 
   return (
     <section className="rounded-[16px] border border-border-subtle bg-bg-card p-5 shadow-none">
@@ -143,12 +172,14 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
         />
       </div>
 
-      {/* Recharts Glowing Monotone Area Chart */}
-      <motion.div animate={{ opacity: [0.85, 1, 0.85] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} className="w-full">
-        <ResponsiveContainer width="100%" height={220}>
-          <AreaChart data={chartData} margin={{ top: 8, right: 5, left: -20, bottom: 0 }}>
+      {/* Recharts Area Chart with explicit width */}
+      <div ref={containerRef} className="w-full h-[220px] min-h-[220px] relative min-w-0 flex items-center justify-center overflow-hidden">
+        {!mounted ? (
+          <div className="w-full h-[220px] animate-pulse rounded-xl bg-[var(--bg-tertiary)]" />
+        ) : width > 0 ? (
+          <AreaChart width={width} height={220} data={chartData} margin={{ top: 8, right: 10, left: -20, bottom: 0 }}>
             <defs>
-              <linearGradient id="progressGradient" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={accentHex} stopOpacity={0.6} />
                 <stop offset="95%" stopColor={accentHex} stopOpacity={0.02} />
               </linearGradient>
@@ -196,8 +227,8 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
               stroke={accentHex}
               strokeWidth={3.5}
               strokeLinecap="round"
-              fill="url(#progressGradient)"
-              style={{ filter: `drop-shadow(0px 4px 8px color-mix(in srgb, ${accentHex} 50%, transparent))` }}
+              fill={`url(#${gradientId})`}
+              style={{ filter: `drop-shadow(0px 4px 8px ${hexToRgba(accentHex, 0.45)})` }}
               dot={false}
               activeDot={{ r: 7, fill: accentHex, stroke: 'var(--bg-primary)', strokeWidth: 3 }}
               isAnimationActive={true}
@@ -205,8 +236,10 @@ export default function ProgressChart({ data, habitCount }: ProgressChartProps) 
               animationEasing="ease-out"
             />
           </AreaChart>
-        </ResponsiveContainer>
-      </motion.div>
+        ) : (
+          <div className="w-full h-[220px] animate-pulse rounded-xl bg-[var(--bg-tertiary)]" />
+        )}
+      </div>
     </section>
   );
 }

@@ -42,6 +42,15 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Toolti
   );
 }
 
+function hexToRgba(hex: string, alpha: number): string {
+  if (!hex || !hex.startsWith('#')) return `rgba(139, 92, 246, ${alpha})`;
+  let clean = hex.substring(1).replace('#', '');
+  if (clean.length === 3) clean = clean.split('').map((x) => x + x).join('');
+  const num = parseInt(clean, 16);
+  if (isNaN(num)) return `rgba(139, 92, 246, ${alpha})`;
+  return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
+}
+
 /* Weekly report — 7-day completion trend as a smooth area chart.
    `color` prop accepts a hex string for per-habit charts; falls back to the
    live theme accent so accent-color changes are reflected immediately. */
@@ -118,7 +127,7 @@ const WeeklyReportChart = memo(function WeeklyReportChart({
               strokeWidth={3.5}
               strokeLinecap="round"
               fill={`url(#${gradientId})`}
-              style={{ filter: `drop-shadow(0px 4px 8px color-mix(in srgb, ${c} 50%, transparent))` }}
+              style={{ filter: `drop-shadow(0px 4px 8px ${hexToRgba(c, 0.45)})` }}
               dot={false}
               activeDot={{ r: 7, fill: c, stroke: 'var(--bg-primary)', strokeWidth: 3 }}
               isAnimationActive={true}

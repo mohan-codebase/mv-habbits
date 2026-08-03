@@ -200,49 +200,41 @@ export default function PushNotificationToggle({ compact = false }: Props) {
     <AnimatePresence mode="wait">
       <motion.div
         key={state}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.2 }}
-        className="flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card py-4 px-[18px] shadow-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.15 }}
+        className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-bg-tertiary/40"
       >
-        {/* Icon chip */}
-        <div
-          className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border ${c.toneClass} ${
-            state === 'subscribed'
-              ? 'border-border-accent bg-accent-glow-md'
-              : 'border-border-subtle bg-bg-tertiary'
-          }`}
-        >
-          {c.icon}
+        <div className="flex items-start sm:items-center gap-3.5 min-w-0">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary text-text-primary">
+            {c.icon}
+          </div>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <p className="m-0 text-sm font-bold text-text-primary">{c.title}</p>
+              {state === 'subscribed' && (
+                <span className="rounded-full bg-accent-primary/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent-primary border border-accent-primary/30">
+                  Active
+                </span>
+              )}
+            </div>
+            <p className="m-0 text-xs text-text-muted mt-0.5">{c.desc}</p>
+          </div>
         </div>
 
-        {/* Text + CTA */}
-        <div className="min-w-0 flex-1">
-          <div className="mb-[3px] flex items-center gap-2">
-            <p className="m-0 text-[14px] font-bold text-text-primary">
-              {c.title}
-            </p>
-            {state === 'subscribed' && (
-              <CheckCircle2 size={13} color="var(--accent-primary)" />
-            )}
-          </div>
-          <p className="m-0 mb-3 text-sm leading-[1.5] text-text-muted">
-            {c.desc}
-          </p>
-          {c.cta && c.ctaFn && (
-            <button
-              onClick={c.ctaFn}
-              className={`rounded-sm border px-3.5 py-[7px] text-[13px] font-semibold cursor-pointer [font-family:inherit] ${
-                state === 'subscribed'
-                  ? 'border-border-default bg-bg-tertiary text-text-secondary'
-                  : 'border-transparent bg-accent-primary text-accent-on-primary'
-              }`}
-            >
-              {c.cta}
-            </button>
-          )}
-        </div>
+        {c.cta && c.ctaFn && (
+          <button
+            onClick={c.ctaFn}
+            className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-bold transition-all shrink-0 ${
+              state === 'subscribed'
+                ? 'border border-border-default bg-bg-tertiary text-text-primary hover:border-danger hover:text-danger'
+                : 'bg-accent-primary text-accent-on-primary border-none shadow-sm'
+            }`}
+          >
+            {c.cta}
+          </button>
+        )}
       </motion.div>
     </AnimatePresence>
   );

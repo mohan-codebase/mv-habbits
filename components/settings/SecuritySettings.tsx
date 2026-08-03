@@ -219,280 +219,269 @@ export default function SecuritySettings() {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-3.5 rounded-xl border border-border-subtle bg-bg-card p-[16px_18px]">
-        <Loader2 size={18} className="animate-spin" color="var(--text-muted)" />
-        <span className="text-[13px] text-text-muted">Loading security settings...</span>
+      <div className="p-5 flex items-center gap-3.5 text-xs text-text-muted">
+        <Loader2 size={16} className="animate-spin text-accent-primary" />
+        <span>Loading security preferences...</span>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      {/* Security Status Card */}
-      <div className="relative flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card p-[16px_18px]">
-        <div
-          className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle ${hasPasscode ? 'bg-[var(--surface-tint)] text-accent-primary' : 'bg-[rgba(255,255,255,0.04)] text-text-muted'}`}
-        >
-          {hasPasscode ? <Lock size={18} /> : <Unlock size={18} />}
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
-            Habits Passcode Lock
-          </p>
-          <p className="m-0 mb-3 text-[12.5px] leading-[1.5] text-text-muted">
-            {hasPasscode
-              ? 'Protect habit logs with a passcode required on new sessions.'
-              : 'Secure your habit tracker entries from unauthorized device access.'}
-          </p>
-
-          <AnimatePresence mode="wait">
-            {!showSetForm && !showRemoveForm && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex flex-wrap gap-2"
-              >
-                {!hasPasscode ? (
-                  <button
-                    onClick={() => { setShowSetForm(true); setErrorMsg(null); }}
-                    className="cursor-pointer rounded-lg border-none bg-accent-primary p-[7px_14px] text-[13px] font-semibold text-accent-on-primary [font-family:inherit]"
-                  >
-                    Enable passcode
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => { setShowRemoveForm(true); setRemoveError(null); }}
-                    className="cursor-pointer rounded-lg border border-border-default bg-transparent p-[7px_14px] text-[13px] font-semibold text-danger [font-family:inherit]"
-                  >
-                    Remove passcode
-                  </button>
-                )}
-              </motion.div>
-            )}
-
-            {/* Set Passcode Form */}
-            {showSetForm && (
-              <motion.form
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                onSubmit={handleSavePasscode}
-                className="mt-1 flex w-full max-w-[320px] flex-col gap-3"
-              >
-                <div className="relative w-full">
-                  <input
-                    type={showPasscodeText ? 'text' : 'password'}
-                    placeholder="Enter new passcode"
-                    value={passcode}
-                    onChange={(e) => setPasscode(e.target.value)}
-                    required
-                    className="w-full rounded-[10px] border border-border-default bg-bg-tertiary p-[10px_42px_10px_12px] text-[14px] text-text-primary outline-none [font-family:inherit]"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPasscodeText(!showPasscodeText)}
-                    className="absolute top-1/2 right-3 flex -translate-y-1/2 items-center border-none bg-none p-1 text-text-muted cursor-pointer"
-                  >
-                    {showPasscodeText ? <EyeOff size={15} /> : <Eye size={15} />}
-                  </button>
-                </div>
-
-                <input
-                  type={showPasscodeText ? 'text' : 'password'}
-                  placeholder="Confirm new passcode"
-                  value={confirmPasscode}
-                  onChange={(e) => setConfirmPasscode(e.target.value)}
-                  required
-                  className="w-full rounded-[10px] border border-border-default bg-bg-tertiary p-[10px_12px] text-[14px] text-text-primary outline-none [font-family:inherit]"
-                />
-
-                {errorMsg && (
-                  <p className="m-0 text-xs font-semibold text-danger">{errorMsg}</p>
-                )}
-
-                <div className="flex gap-2">
-                  <button
-                    type="submit"
-                    disabled={savingPasscode}
-                    className="cursor-pointer rounded-lg border-none bg-text-primary p-[8px_14px] text-[13px] font-bold text-bg-primary [font-family:inherit] disabled:cursor-wait"
-                  >
-                    {savingPasscode ? 'Saving...' : 'Save Lock'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { setShowSetForm(false); setPasscode(''); setConfirmPasscode(''); }}
-                    className="cursor-pointer rounded-lg border border-border-default bg-transparent p-[8px_14px] text-[13px] font-semibold text-text-secondary [font-family:inherit]"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </motion.form>
-            )}
-
-            {/* Remove Passcode Form */}
-            {showRemoveForm && (
-              <motion.form
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                onSubmit={handleRemovePasscode}
-                className="mt-1 flex w-full max-w-[320px] flex-col gap-3"
-              >
-                <input
-                  type="password"
-                  placeholder="Enter current passcode to disable"
-                  value={removePasscode}
-                  onChange={(e) => setRemovePasscode(e.target.value)}
-                  required
-                  autoFocus
-                  className="w-full rounded-[10px] border border-border-default bg-bg-tertiary p-[10px_12px] text-[14px] text-text-primary outline-none [font-family:inherit]"
-                />
-
-                {removeError && (
-                  <p className="m-0 text-xs font-semibold text-danger">{removeError}</p>
-                )}
-
-                <div className="flex gap-2">
-                  <button
-                    type="submit"
-                    disabled={removingPasscode}
-                    className="cursor-pointer rounded-lg border-none bg-danger p-[8px_14px] text-[13px] font-bold text-accent-on-primary [font-family:inherit] disabled:cursor-wait"
-                  >
-                    {removingPasscode ? 'Removing...' : 'Confirm Disable'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { setShowRemoveForm(false); setRemovePasscode(''); }}
-                    className="cursor-pointer rounded-lg border border-border-default bg-transparent p-[8px_14px] text-[13px] font-semibold text-text-secondary [font-family:inherit]"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </motion.form>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Biometric setup card (visible only if passcode lock is active and biometrics are supported) */}
-      {hasPasscode && biometricSupported && (
-        <div className="flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card p-[16px_18px]">
-          <div
-            className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle ${hasBiometric ? 'bg-[var(--surface-tint)] text-accent-primary' : 'bg-[rgba(255,255,255,0.04)] text-text-muted'}`}
-          >
-            <Fingerprint size={18} />
+    <>
+      {/* Account Password Row */}
+      <div className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-bg-tertiary/40">
+        <div className="flex items-start sm:items-center gap-3.5 min-w-0">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary text-text-primary">
+            <KeyRound size={18} />
           </div>
-          <div className="min-w-0 flex-1">
-            <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
-              Face ID / Touch ID Unlock
-            </p>
-            <p className="m-0 mb-3 text-[12.5px] leading-[1.5] text-text-muted">
-              Use your device platform authenticator to quickly unlock the Habit Tracker without typing.
-            </p>
+          <div className="min-w-0">
+            <p className="m-0 text-sm font-bold text-text-primary">Account Password</p>
+            <p className="m-0 text-xs text-text-muted">Update your account login password.</p>
+          </div>
+        </div>
 
-            <button
-              disabled={biometricBusy}
-              onClick={hasBiometric ? handleDisableBiometric : handleEnrollBiometric}
-              className={`cursor-pointer rounded-lg p-[7px_14px] text-[13px] font-semibold [font-family:inherit] disabled:cursor-wait ${hasBiometric ? 'bg-transparent text-text-secondary border border-border-default' : 'bg-accent-primary text-accent-on-primary border-none'}`}
+        <AnimatePresence mode="wait">
+          {!showPasswordForm ? (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <button
+                onClick={() => { setShowPasswordForm(true); setPasswordError(null); }}
+                className="cursor-pointer rounded-full border border-border-default bg-bg-tertiary px-4 py-1.5 text-xs font-semibold text-text-primary transition-all hover:border-accent-primary hover:text-accent-primary shrink-0"
+              >
+                Change password
+              </button>
+            </motion.div>
+          ) : (
+            <motion.form
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              onSubmit={handleUpdatePassword}
+              className="mt-2 w-full flex flex-col gap-3"
             >
-              {biometricBusy
-                ? 'Processing...'
-                : hasBiometric
-                  ? 'Disable biometrics'
-                  : 'Enable biometrics'}
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Account Password Card */}
-      <div className="flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card p-[16px_18px]">
-        <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle bg-[rgba(255,255,255,0.04)] text-text-muted">
-          <KeyRound size={18} />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
-            Account Password
-          </p>
-          <p className="m-0 mb-3 text-[12.5px] leading-[1.5] text-text-muted">
-            Update your account login password.
-          </p>
-
-          <AnimatePresence mode="wait">
-            {!showPasswordForm ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <button
-                  onClick={() => { setShowPasswordForm(true); setPasswordError(null); }}
-                  className="cursor-pointer rounded-lg border-none bg-accent-primary p-[7px_14px] text-[13px] font-semibold text-accent-on-primary [font-family:inherit]"
-                >
-                  Change password
-                </button>
-              </motion.div>
-            ) : (
-              <motion.form
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                onSubmit={handleUpdatePassword}
-                className="flex w-full max-w-[320px] flex-col gap-3"
-              >
-                <div className="relative w-full">
-                  <input
-                    type={showNewPasswordText ? 'text' : 'password'}
-                    placeholder="Enter new password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                    className="w-full rounded-[10px] border border-border-default bg-bg-tertiary p-[10px_42px_10px_12px] text-[14px] text-text-primary outline-none [font-family:inherit]"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowNewPasswordText(!showNewPasswordText)}
-                    className="absolute top-1/2 right-3 flex -translate-y-1/2 items-center border-none bg-none p-1 text-text-muted cursor-pointer"
-                  >
-                    {showNewPasswordText ? <EyeOff size={15} /> : <Eye size={15} />}
-                  </button>
-                </div>
-
+              <div className="relative w-full">
                 <input
                   type={showNewPasswordText ? 'text' : 'password'}
-                  placeholder="Confirm new password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Enter new password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   required
-                  className="w-full rounded-[10px] border border-border-default bg-bg-tertiary p-[10px_12px] text-[14px] text-text-primary outline-none [font-family:inherit]"
+                  className="w-full rounded-xl border border-border-default bg-bg-tertiary px-3.5 py-2 text-sm text-text-primary outline-none focus:border-accent-primary"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPasswordText(!showNewPasswordText)}
+                  className="absolute top-1/2 right-3 -translate-y-1/2 border-none bg-none p-1 text-text-muted cursor-pointer"
+                >
+                  {showNewPasswordText ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
 
-                {passwordError && (
-                  <p className="m-0 text-xs font-semibold text-danger">{passwordError}</p>
-                )}
+              <input
+                type={showNewPasswordText ? 'text' : 'password'}
+                placeholder="Confirm new password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                className="w-full rounded-xl border border-border-default bg-bg-tertiary px-3.5 py-2 text-sm text-text-primary outline-none focus:border-accent-primary"
+              />
 
-                <div className="flex gap-2">
-                  <button
-                    type="submit"
-                    disabled={updatingPassword}
-                    className="cursor-pointer rounded-lg border-none bg-text-primary p-[8px_14px] text-[13px] font-bold text-bg-primary [font-family:inherit] disabled:cursor-wait"
-                  >
-                    {updatingPassword ? 'Updating...' : 'Update Password'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { setShowPasswordForm(false); setNewPassword(''); setConfirmPassword(''); }}
-                    className="cursor-pointer rounded-lg border border-border-default bg-transparent p-[8px_14px] text-[13px] font-semibold text-text-secondary [font-family:inherit]"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </motion.form>
-            )}
-          </AnimatePresence>
-        </div>
+              {passwordError && <p className="m-0 text-xs font-semibold text-danger">{passwordError}</p>}
+
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  disabled={updatingPassword}
+                  className="cursor-pointer rounded-full bg-accent-primary px-4 py-1.5 text-xs font-bold text-accent-on-primary border-none disabled:cursor-wait"
+                >
+                  {updatingPassword ? 'Updating...' : 'Update Password'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setShowPasswordForm(false); setNewPassword(''); setConfirmPassword(''); }}
+                  className="cursor-pointer rounded-full border border-border-default bg-transparent px-4 py-1.5 text-xs font-semibold text-text-secondary"
+                >
+                  Cancel
+                </button>
+              </div>
+            </motion.form>
+          )}
+        </AnimatePresence>
       </div>
-    </div>
+
+      {/* Passcode Lock Row */}
+      <div className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-bg-tertiary/40">
+        <div className="flex items-start sm:items-center gap-3.5 min-w-0">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary text-text-primary">
+            {hasPasscode ? <Lock size={18} className="text-accent-primary" /> : <Unlock size={18} />}
+          </div>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <p className="m-0 text-sm font-bold text-text-primary">Habits Passcode Lock</p>
+              <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${hasPasscode ? 'bg-accent-primary/15 text-accent-primary border border-accent-primary/30' : 'bg-bg-tertiary text-text-muted border border-border-subtle'}`}>
+                {hasPasscode ? 'Enabled' : 'Off'}
+              </span>
+            </div>
+            <p className="m-0 text-xs text-text-muted mt-0.5">
+              {hasPasscode
+                ? 'Habit logs are protected with a session passcode.'
+                : 'Require a passcode to view and edit habit entries.'}
+            </p>
+          </div>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {!showSetForm && !showRemoveForm && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              {!hasPasscode ? (
+                <button
+                  onClick={() => { setShowSetForm(true); setErrorMsg(null); }}
+                  className="cursor-pointer rounded-full bg-accent-primary px-4 py-1.5 text-xs font-bold text-accent-on-primary border-none shadow-sm"
+                >
+                  Enable passcode
+                </button>
+              ) : (
+                <button
+                  onClick={() => { setShowRemoveForm(true); setRemoveError(null); }}
+                  className="cursor-pointer rounded-full border border-danger/30 bg-danger/10 px-4 py-1.5 text-xs font-bold text-danger transition-all hover:bg-danger hover:text-white"
+                >
+                  Remove passcode
+                </button>
+              )}
+            </motion.div>
+          )}
+
+          {/* Set Passcode Form */}
+          {showSetForm && (
+            <motion.form
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              onSubmit={handleSavePasscode}
+              className="mt-2 w-full flex flex-col gap-3"
+            >
+              <div className="relative w-full">
+                <input
+                  type={showPasscodeText ? 'text' : 'password'}
+                  placeholder="Enter new passcode"
+                  value={passcode}
+                  onChange={(e) => setPasscode(e.target.value)}
+                  required
+                  className="w-full rounded-xl border border-border-default bg-bg-tertiary px-3.5 py-2 text-sm text-text-primary outline-none focus:border-accent-primary"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPasscodeText(!showPasscodeText)}
+                  className="absolute top-1/2 right-3 -translate-y-1/2 border-none bg-none p-1 text-text-muted cursor-pointer"
+                >
+                  {showPasscodeText ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
+
+              <input
+                type={showPasscodeText ? 'text' : 'password'}
+                placeholder="Confirm new passcode"
+                value={confirmPasscode}
+                onChange={(e) => setConfirmPasscode(e.target.value)}
+                required
+                className="w-full rounded-xl border border-border-default bg-bg-tertiary px-3.5 py-2 text-sm text-text-primary outline-none focus:border-accent-primary"
+              />
+
+              {errorMsg && <p className="m-0 text-xs font-semibold text-danger">{errorMsg}</p>}
+
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  disabled={savingPasscode}
+                  className="cursor-pointer rounded-full bg-accent-primary px-4 py-1.5 text-xs font-bold text-accent-on-primary border-none disabled:cursor-wait"
+                >
+                  {savingPasscode ? 'Saving...' : 'Save Lock'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setShowSetForm(false); setPasscode(''); setConfirmPasscode(''); }}
+                  className="cursor-pointer rounded-full border border-border-default bg-transparent px-4 py-1.5 text-xs font-semibold text-text-secondary"
+                >
+                  Cancel
+                </button>
+              </div>
+            </motion.form>
+          )}
+
+          {/* Remove Passcode Form */}
+          {showRemoveForm && (
+            <motion.form
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              onSubmit={handleRemovePasscode}
+              className="mt-2 w-full flex flex-col gap-3"
+            >
+              <input
+                type="password"
+                placeholder="Enter current passcode to disable"
+                value={removePasscode}
+                onChange={(e) => setRemovePasscode(e.target.value)}
+                required
+                autoFocus
+                className="w-full rounded-xl border border-border-default bg-bg-tertiary px-3.5 py-2 text-sm text-text-primary outline-none focus:border-danger"
+              />
+
+              {removeError && <p className="m-0 text-xs font-semibold text-danger">{removeError}</p>}
+
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  disabled={removingPasscode}
+                  className="cursor-pointer rounded-full bg-danger px-4 py-1.5 text-xs font-bold text-white border-none disabled:cursor-wait"
+                >
+                  {removingPasscode ? 'Removing...' : 'Confirm Disable'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setShowRemoveForm(false); setRemovePasscode(''); }}
+                  className="cursor-pointer rounded-full border border-border-default bg-transparent px-4 py-1.5 text-xs font-semibold text-text-secondary"
+                >
+                  Cancel
+                </button>
+              </div>
+            </motion.form>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Biometrics Row (visible if passcode lock is active & supported) */}
+      {hasPasscode && biometricSupported && (
+        <div className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-bg-tertiary/40">
+          <div className="flex items-start sm:items-center gap-3.5 min-w-0">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary text-text-primary">
+              <Fingerprint size={18} className={hasBiometric ? 'text-accent-primary' : ''} />
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <p className="m-0 text-sm font-bold text-text-primary">Biometric Unlock</p>
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${hasBiometric ? 'bg-accent-primary/15 text-accent-primary border border-accent-primary/30' : 'bg-bg-tertiary text-text-muted border border-border-subtle'}`}>
+                  {hasBiometric ? 'Enabled' : 'Off'}
+                </span>
+              </div>
+              <p className="m-0 text-xs text-text-muted mt-0.5">
+                Use Face ID or Touch ID to quickly authenticate.
+              </p>
+            </div>
+          </div>
+
+          <button
+            disabled={biometricBusy}
+            onClick={hasBiometric ? handleDisableBiometric : handleEnrollBiometric}
+            className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-bold transition-all shrink-0 disabled:cursor-wait ${hasBiometric ? 'border border-border-default bg-bg-tertiary text-text-primary hover:border-danger hover:text-danger' : 'bg-accent-primary text-accent-on-primary border-none'}`}
+          >
+            {biometricBusy
+              ? 'Processing...'
+              : hasBiometric
+                ? 'Disable biometrics'
+                : 'Enable biometrics'}
+          </button>
+        </div>
+      )}
+    </>
   );
 }

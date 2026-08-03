@@ -53,58 +53,56 @@ export default function DataManagement({ user }: { user: SupabaseUser | null }) 
   };
 
   return (
-    <div className="flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card py-4 px-[18px]">
-      <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle bg-bg-tertiary text-text-primary">
-        <Database size={18} />
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
-          Data Management
-        </p>
-        <p className="m-0 mb-3 text-sm leading-[1.5] text-text-muted">
-          Export all your data for backup or import an existing backup. Importing will overwrite conflicting records.
-        </p>
-
-        {error && (
-          <div className="mb-3 flex items-center gap-2 rounded-sm bg-[rgba(239,68,68,0.1)] px-3 py-2 text-[12px] font-semibold text-[var(--danger)]">
-            <AlertCircle size={14} />
-            <span>{error}</span>
-          </div>
-        )}
-
-        {success && (
-          <div className="mb-3 flex items-center gap-2 rounded-sm bg-[rgba(34,197,94,0.1)] px-3 py-2 text-[12px] font-semibold text-[#22c55e]">
-            <Database size={14} />
-            <span>{success}</span>
-          </div>
-        )}
-
-        <div className="flex flex-wrap gap-2.5">
-          <button
-            onClick={handleExport}
-            disabled={exporting || importing}
-            className="flex items-center gap-1.5 rounded-sm border border-border-default bg-bg-tertiary px-3.5 py-[7px] text-[13px] font-semibold text-text-secondary [font-family:inherit] cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <Download size={15} />
-            {exporting ? 'Exporting...' : 'Export Data'}
-          </button>
-
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={exporting || importing}
-            className="flex items-center gap-1.5 rounded-sm border border-border-default bg-bg-tertiary px-3.5 py-[7px] text-[13px] font-semibold text-text-secondary [font-family:inherit] cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <Upload size={15} />
-            {importing ? 'Importing...' : 'Import Data'}
-          </button>
-          <input
-            type="file"
-            accept=".json"
-            ref={fileInputRef}
-            onChange={handleImport}
-            className="hidden"
-          />
+    <div className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-bg-tertiary/40">
+      <div className="flex items-start sm:items-center gap-3.5 min-w-0">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary text-text-primary">
+          <Database size={18} />
         </div>
+        <div className="min-w-0">
+          <p className="m-0 text-sm font-bold text-text-primary">Data Backups & Export</p>
+          <p className="m-0 text-xs text-text-muted">Export your habit history or restore a JSON backup.</p>
+
+          {error && (
+            <div className="mt-2 flex items-center gap-2 rounded-lg bg-danger/10 px-3 py-1.5 text-xs font-semibold text-danger">
+              <AlertCircle size={14} />
+              <span>{error}</span>
+            </div>
+          )}
+
+          {success && (
+            <div className="mt-2 flex items-center gap-2 rounded-lg bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-400">
+              <Database size={14} />
+              <span>{success}</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
+        <button
+          onClick={handleExport}
+          disabled={exporting || importing}
+          className="flex items-center gap-1.5 rounded-full border border-border-default bg-bg-tertiary px-4 py-1.5 text-xs font-semibold text-text-primary transition-all hover:border-accent-primary hover:text-accent-primary cursor-pointer disabled:opacity-50"
+        >
+          <Download size={14} />
+          <span>{exporting ? 'Exporting...' : 'Export'}</span>
+        </button>
+
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          disabled={exporting || importing}
+          className="flex items-center gap-1.5 rounded-full border border-border-default bg-bg-tertiary px-4 py-1.5 text-xs font-semibold text-text-primary transition-all hover:border-accent-primary hover:text-accent-primary cursor-pointer disabled:opacity-50"
+        >
+          <Upload size={14} />
+          <span>{importing ? 'Importing...' : 'Import'}</span>
+        </button>
+        <input
+          type="file"
+          accept=".json"
+          ref={fileInputRef}
+          onChange={handleImport}
+          className="hidden"
+        />
       </div>
     </div>
   );

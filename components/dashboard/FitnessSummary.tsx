@@ -206,7 +206,7 @@ function HabitRow({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.22, delay: index * 0.03 }}
-      className="relative box-border flex w-full cursor-pointer flex-col gap-2.5 overflow-hidden rounded-[20px] p-[14px_16px] shadow-none transition-all duration-[220ms] ease-in-out"
+      className="relative box-border flex w-full cursor-pointer flex-col gap-2.5 overflow-hidden rounded-xl p-[14px_16px] shadow-none transition-all duration-[220ms] ease-in-out"
       style={{
         background: done
           ? (bad
@@ -278,7 +278,7 @@ function StatPill({ label, value, accent, color }: { label: string; value: strin
 
   return (
     <motion.div
-      className="relative overflow-hidden rounded-3xl p-[14px_20px] shadow-none [backdrop-filter:blur(10px)]"
+      className="relative overflow-hidden rounded-xl p-[14px_20px] shadow-none [backdrop-filter:blur(10px)]"
       style={{
         background: accent
           ? `linear-gradient(135deg, color-mix(in srgb, ${c} 18%, transparent) 0%, color-mix(in srgb, ${c} 6%, transparent) 100%), var(--bg-card)`
@@ -601,7 +601,7 @@ function HabitDetailSheet({
       {/* Floating card */}
       <div className="pointer-events-none fixed inset-0 z-[201] flex items-center justify-center p-4">
         <motion.div
-          className="hf-modal-panel pointer-events-auto relative w-full max-w-[490px] max-h-[90dvh] overflow-y-auto rounded-[28px] p-[26px_22px_34px] shadow-none [font-family:system-ui,-apple-system,sans-serif] bg-bg-card [backdrop-filter:none] [-webkit-backdrop-filter:none]"
+          className="hf-modal-panel pointer-events-auto relative w-full max-w-[490px] max-h-[90dvh] overflow-y-auto rounded-2xl p-[26px_22px_34px] shadow-none [font-family:system-ui,-apple-system,sans-serif] bg-bg-card [backdrop-filter:none] [-webkit-backdrop-filter:none]"
           initial={{ opacity: 0, scale: 0.94, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: 12 }}
@@ -1187,7 +1187,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
           exit={{ opacity: 0, scale: 0.95, y: 8 }}
           transition={{ type: 'spring', damping: 30, stiffness: 360 }}
           onClick={(e) => e.stopPropagation()}
-          className="pointer-events-auto w-full max-w-[480px] rounded-3xl p-[24px_16px_32px] [font-family:system-ui,-apple-system,sans-serif] shadow-[0_24px_64px_rgba(31,31,31,0.40),inset_0_1px_0_rgba(255,255,255,0.12)] bg-[var(--glass-bg-sheet)] max-h-[90dvh] overflow-y-auto"
+          className="pointer-events-auto w-full max-w-[480px] rounded-2xl p-[24px_16px_32px] [font-family:system-ui,-apple-system,sans-serif] shadow-[0_24px_64px_rgba(31,31,31,0.40),inset_0_1px_0_rgba(255,255,255,0.12)] bg-[var(--glass-bg-sheet)] max-h-[90dvh] overflow-y-auto"
         >
           {/* Header */}
           <div className="mt-0 mb-4 flex items-center justify-between">
@@ -1420,7 +1420,7 @@ function DashCard({
   title?: string; action?: React.ReactNode; children: React.ReactNode; style?: React.CSSProperties;
 }) {
   return (
-    <div className="min-w-0 rounded-[20px] border border-border-default bg-bg-card p-5" style={style}>
+    <div className="min-w-0 rounded-2xl border border-border-default bg-bg-card p-5" style={style}>
       {title && (
         <div className="mb-4 flex items-center justify-between gap-2.5">
           <h3 className="m-0 text-lg font-extrabold tracking-[-0.02em] text-text-primary">{title}</h3>
@@ -1719,7 +1719,7 @@ export default function FitnessSummary({
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
-            className="relative flex flex-wrap items-center justify-between gap-5 overflow-hidden rounded-3xl border border-border-default p-[24px_28px] shadow-[0_12px_32px_rgba(0,0,0,0.15)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent-primary)_12%,var(--bg-card))_0%,var(--bg-card)_100%)]"
+            className="relative flex flex-wrap items-center justify-between gap-5 overflow-hidden rounded-2xl border border-border-default p-[24px_28px] shadow-[0_12px_32px_rgba(0,0,0,0.15)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent-primary)_12%,var(--bg-card))_0%,var(--bg-card)_100%)]"
           >
             {/* Ambient background glow */}
             <div

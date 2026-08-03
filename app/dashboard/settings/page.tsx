@@ -7,8 +7,9 @@ import DevicesModal from '@/components/settings/DevicesModal';
 import DataManagement from '@/components/settings/DataManagement';
 import { createClient } from '@/lib/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
-import { useTheme } from '@/components/ui/ThemeProvider';
-import { Shield, Sun, Moon, HelpCircle, LogOut } from 'lucide-react';
+import { useTheme, useAccentColor } from '@/components/ui/ThemeProvider';
+import { Shield, Sun, Moon, HelpCircle, LogOut, Bell, Database, Smartphone } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function SettingsPage() {
   const [devicesOpen, setDevicesOpen] = useState(false);
@@ -17,6 +18,7 @@ export default function SettingsPage() {
 
   const supabase = useMemo(() => createClient(), []);
   const { theme, toggle } = useTheme();
+  const accentHex = useAccentColor();
   const isDark = theme === 'dark';
 
   useEffect(() => {
@@ -46,130 +48,190 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="hf-page flex flex-col gap-6 p-[24px_20px]">
-      <div className="mb-2 min-w-0">
-        <h1 className="m-0 text-[clamp(22px,3vw,30px)] font-extrabold leading-[1.1] tracking-[-0.02em] text-text-primary [font-family:'Outfit',sans-serif]">
+    <div className="hf-page max-w-[800px] mx-auto flex flex-col gap-8 p-4 sm:p-6 pb-32">
+      {/* Header */}
+      <div>
+        <h1 className="m-0 text-[clamp(24px,4vw,32px)] font-extrabold leading-tight tracking-tight text-text-primary [font-family:'Outfit',sans-serif]">
           Settings
         </h1>
-        <p className="mt-1 mb-0 text-[13px] text-text-muted">
-          Manage your user profile, configurations, security preferences, and theme.
+        <p className="mt-1 mb-0 text-sm text-text-muted">
+          Manage your account profile, security preferences, system theme, and data.
         </p>
       </div>
 
-      <div className="flex max-w-[560px] flex-col gap-4">
-        {/* User Profile Card */}
-        {user && (
-          <div className="flex items-center gap-4 rounded-xl border border-border-subtle bg-[linear-gradient(155deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.02)_100%)] p-[18px_20px]">
-            <div className="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--accent-primary)_0%,#727272_100%)] text-[18px] font-extrabold text-white">
+      {/* User Profile Banner Card */}
+      {user && (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="relative overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent-primary)_12%,var(--bg-card))_0%,var(--bg-card)_100%)] p-5 sm:p-6 shadow-lg shadow-black/20"
+        >
+          <div className="flex items-center gap-4 sm:gap-5">
+            {/* Avatar Circle with Theme Accent Glow */}
+            <div
+              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-xl font-black text-white shadow-lg relative"
+              style={{
+                background: `linear-gradient(135deg, ${accentHex} 0%, color-mix(in srgb, ${accentHex} 70%, #000) 100%)`,
+                boxShadow: `0 0 20px color-mix(in srgb, ${accentHex} 40%, transparent)`,
+              }}
+            >
               {initials}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="m-0 truncate text-[16px] font-extrabold tracking-[-0.02em] text-text-primary">
-                {displayName}
-              </p>
-              <p className="mt-0.5 mb-0 truncate text-[12.5px] text-text-muted">
+              <div className="flex items-center gap-2">
+                <p className="m-0 truncate text-lg font-extrabold tracking-tight text-text-primary">
+                  {displayName}
+                </p>
+                <span
+                  className="rounded-full px-2.5 py-0.5 text-[10.5px] font-bold uppercase tracking-wider"
+                  style={{
+                    background: `color-mix(in srgb, ${accentHex} 16%, transparent)`,
+                    color: accentHex,
+                    border: `1px solid color-mix(in srgb, ${accentHex} 30%, transparent)`,
+                  }}
+                >
+                  Active Account
+                </span>
+              </div>
+              <p className="mt-1 mb-0 truncate text-xs font-medium text-text-muted">
                 {user.email}
               </p>
             </div>
           </div>
-        )}
+        </motion.div>
+      )}
 
-        {/* Push Notifications Card */}
-        <PushNotificationToggle />
+      {/* Section 1: Security & Authentication */}
+      <div className="flex flex-col gap-3">
+        <h2 className="m-0 px-1 text-xs font-bold uppercase tracking-wider text-text-muted flex items-center gap-2">
+          <Shield size={14} style={{ color: accentHex }} />
+          <span>Security & Authentication</span>
+        </h2>
+        <div className="rounded-2xl border border-border-subtle bg-bg-card/90 backdrop-blur-md overflow-hidden divide-y divide-border-subtle/50 shadow-md">
+          {/* SecuritySettings handles Password, Passcode, Biometrics */}
+          <SecuritySettings />
 
-        {/* Passcode and Biometric Security Settings */}
-        <SecuritySettings />
-
-        {/* Data Management Card */}
-        <DataManagement user={user} />
-
-        {/* Security / Devices Card */}
-        <div className="flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card p-[16px_18px]">
-          <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle bg-bg-tertiary text-text-primary">
-            <Shield size={18} />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
-              Devices & Sessions
-            </p>
-            <p className="m-0 mb-3 text-[12.5px] leading-[1.5] text-text-muted">
-              View and revoke active sessions on other browsers or devices.
-            </p>
+          {/* Active Devices & Sessions Row */}
+          <div className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-bg-tertiary/40">
+            <div className="flex items-start sm:items-center gap-3.5 min-w-0">
+              <div
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                style={{
+                  background: `color-mix(in srgb, ${accentHex} 12%, transparent)`,
+                  color: accentHex,
+                }}
+              >
+                <Smartphone size={18} />
+              </div>
+              <div className="min-w-0">
+                <p className="m-0 text-sm font-bold text-text-primary">Devices & Active Sessions</p>
+                <p className="m-0 text-xs text-text-muted">View and manage sessions logged into your account.</p>
+              </div>
+            </div>
             <button
               onClick={() => setDevicesOpen(true)}
-              className="cursor-pointer rounded-lg border-none bg-accent-primary p-[7px_14px] text-[13px] font-semibold text-accent-on-primary [font-family:inherit]"
+              className="cursor-pointer rounded-full border border-border-default bg-bg-tertiary px-4 py-1.5 text-xs font-semibold text-text-primary transition-all hover:border-accent-primary hover:text-accent-primary self-start sm:self-auto shrink-0"
             >
               Manage sessions
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Theme Settings Card */}
-        <div className="flex flex-col gap-[18px] rounded-xl border border-border-subtle bg-bg-card p-5">
-          <div className="flex items-start gap-3.5">
-            <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle bg-bg-tertiary text-text-primary">
-              {isDark ? <Moon size={18} /> : <Sun size={18} />}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
-                Theme Settings
-              </p>
-              <p className="m-0 mb-3 text-[12.5px] leading-[1.5] text-text-muted">
-                Customize system theme and primary accent colors.
-              </p>
-              <button
-                onClick={toggle}
-                className="cursor-pointer rounded-lg border border-border-default bg-bg-tertiary p-[7px_14px] text-[13px] font-semibold text-text-secondary transition-all duration-200 ease-in-out [font-family:inherit]"
+      {/* Section 2: Preferences & Theme */}
+      <div className="flex flex-col gap-3">
+        <h2 className="m-0 px-1 text-xs font-bold uppercase tracking-wider text-text-muted flex items-center gap-2">
+          <Bell size={14} style={{ color: accentHex }} />
+          <span>Preferences & Appearance</span>
+        </h2>
+        <div className="rounded-2xl border border-border-subtle bg-bg-card/90 backdrop-blur-md overflow-hidden divide-y divide-border-subtle/50 shadow-md">
+          {/* Push Notifications Row */}
+          <PushNotificationToggle />
+
+          {/* Theme Switcher Row */}
+          <div className="p-4 sm:p-5 flex items-center justify-between gap-4 transition-colors hover:bg-bg-tertiary/40">
+            <div className="flex items-center gap-3.5 min-w-0">
+              <div
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                style={{
+                  background: `color-mix(in srgb, ${accentHex} 12%, transparent)`,
+                  color: accentHex,
+                }}
               >
-                Switch to {isDark ? 'Light' : 'Dark'} Mode
-              </button>
+                {isDark ? <Moon size={18} /> : <Sun size={18} />}
+              </div>
+              <div className="min-w-0">
+                <p className="m-0 text-sm font-bold text-text-primary">Interface Theme</p>
+                <p className="m-0 text-xs text-text-muted">Currently using {isDark ? 'Dark Mode' : 'Light Mode'}.</p>
+              </div>
             </div>
+            <button
+              onClick={toggle}
+              className="cursor-pointer rounded-full border border-border-default bg-bg-tertiary px-4 py-1.5 text-xs font-semibold text-text-primary transition-all hover:border-accent-primary hover:text-accent-primary shrink-0"
+            >
+              Switch to {isDark ? 'Light' : 'Dark'}
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Help & Support Card */}
-        <div className="flex items-start gap-3.5 rounded-xl border border-border-subtle bg-bg-card p-[16px_18px]">
-          <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-border-subtle bg-bg-tertiary text-text-primary">
-            <HelpCircle size={18} />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
-              Help & Support
-            </p>
-            <p className="m-0 mb-3 text-[12.5px] leading-[1.5] text-text-muted">
-              Need help or have suggestions? Reach out to our support team.
-            </p>
+      {/* Section 3: Data Management */}
+      <div className="flex flex-col gap-3">
+        <h2 className="m-0 px-1 text-xs font-bold uppercase tracking-wider text-text-muted flex items-center gap-2">
+          <Database size={14} style={{ color: accentHex }} />
+          <span>Data & Backups</span>
+        </h2>
+        <div className="rounded-2xl border border-border-subtle bg-bg-card/90 backdrop-blur-md overflow-hidden shadow-md">
+          <DataManagement user={user} />
+        </div>
+      </div>
+
+      {/* Section 4: Support & Session */}
+      <div className="flex flex-col gap-3">
+        <h2 className="m-0 px-1 text-xs font-bold uppercase tracking-wider text-text-muted flex items-center gap-2">
+          <HelpCircle size={14} style={{ color: accentHex }} />
+          <span>Account & Support</span>
+        </h2>
+        <div className="rounded-2xl border border-border-subtle bg-bg-card/90 backdrop-blur-md overflow-hidden divide-y divide-border-subtle/50 shadow-md">
+          {/* Help & Support */}
+          <div className="p-4 sm:p-5 flex items-center justify-between gap-4 transition-colors hover:bg-bg-tertiary/40">
+            <div className="flex items-center gap-3.5 min-w-0">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-bg-tertiary text-text-secondary">
+                <HelpCircle size={18} />
+              </div>
+              <div className="min-w-0">
+                <p className="m-0 text-sm font-bold text-text-primary">Help & Feedback</p>
+                <p className="m-0 text-xs text-text-muted">Questions or suggestions? Contact our team.</p>
+              </div>
+            </div>
             <a
               href="mailto:support@semmaflow.com?subject=Productivity Master Help"
-              className="inline-block rounded-lg border border-border-default bg-bg-tertiary p-[7px_14px] text-[13px] font-semibold text-text-secondary no-underline [font-family:inherit]"
+              className="inline-flex items-center gap-1 rounded-full border border-border-default bg-bg-tertiary px-4 py-1.5 text-xs font-semibold text-text-primary no-underline transition-all hover:border-accent-primary hover:text-accent-primary shrink-0"
             >
               Contact Support
             </a>
           </div>
-        </div>
 
-        {/* Sign Out Card */}
-        <div className="flex items-start gap-3.5 rounded-xl border border-[rgba(255,0,0,0.1)] bg-bg-card p-[16px_18px]">
-          <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-md border border-[rgba(255,0,0,0.15)] bg-[rgba(255,0,0,0.05)] text-danger">
-            <LogOut size={18} />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="m-0 mb-[3px] text-[14px] font-bold text-text-primary">
-              Account Session
-            </p>
-            <p className="m-0 mb-3 text-[12.5px] leading-[1.5] text-text-muted">
-              Sign out from this session. Active passcode and biometric configurations remain safe.
-            </p>
+          {/* Sign Out */}
+          <div className="p-4 sm:p-5 flex items-center justify-between gap-4 transition-colors hover:bg-danger/5">
+            <div className="flex items-center gap-3.5 min-w-0">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-danger/10 text-danger">
+                <LogOut size={18} />
+              </div>
+              <div className="min-w-0">
+                <p className="m-0 text-sm font-bold text-text-primary">Sign Out</p>
+                <p className="m-0 text-xs text-text-muted">Sign out of your account on this device.</p>
+              </div>
+            </div>
             <button
               onClick={handleSignOut}
               disabled={signingOut}
-              className="rounded-lg border-none bg-danger p-[7px_14px] text-[13px] font-semibold text-accent-on-primary [font-family:inherit] cursor-pointer disabled:cursor-wait"
+              className="cursor-pointer rounded-full border border-danger/30 bg-danger/10 px-4 py-1.5 text-xs font-bold text-danger transition-all hover:bg-danger hover:text-white shrink-0 disabled:cursor-wait"
             >
-              {signingOut ? 'Signing out...' : 'Sign out of account'}
+              {signingOut ? 'Signing out...' : 'Sign out'}
             </button>
           </div>
         </div>
-
       </div>
 
       <DevicesModal isOpen={devicesOpen} onClose={() => setDevicesOpen(false)} />

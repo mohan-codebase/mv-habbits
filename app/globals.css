@@ -82,6 +82,9 @@
   --radius-lg: 14px;
   --radius-xl: 18px;
   --radius-2xl: 22px;
+  --radius-3xl: 26px;
+  --radius-full: 9999px;
+  --radius: 12px;
 
   /* Shadows */
   --shadow-xs: var(--shadow-xs);
@@ -952,7 +955,7 @@ body::after {
 
   .hf-modal-panel {
     max-height: 94vh !important;
-    border-radius: 14px !important;
+    border-radius: 20px !important;
   }
 
   .hf-modal-panel>div:first-child {
@@ -969,10 +972,19 @@ body::after {
   }
 
   /* Recharts containers honor parent width */
-  .recharts-responsive-container,
-  .recharts-wrapper,
+  .recharts-responsive-container {
+    width: 100% !important;
+    min-height: 200px !important;
+  }
+
+  .recharts-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
   .recharts-surface {
     max-width: 100% !important;
+    overflow: visible !important;
   }
 
   /* Inputs/textareas avoid iOS zoom-on-focus — must be ≥16px */

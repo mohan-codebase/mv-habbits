@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, memo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import {
   AreaChart,
   Area,
@@ -9,7 +8,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
 } from 'recharts';
 import type { DailyTrend } from '@/types/analytics';
 import { format, parseISO } from 'date-fns';
@@ -31,6 +29,15 @@ const RANGES = [
 interface TooltipPayload {
   value: number;
   payload: DailyTrend;
+}
+
+function hexToRgba(hex: string, alpha: number): string {
+  if (!hex || !hex.startsWith('#')) return `rgba(139, 92, 246, ${alpha})`;
+  let c = hex.substring(1);
+  if (c.length === 3) c = c.split('').map((x) => x + x).join('');
+  const num = parseInt(c, 16);
+  if (isNaN(num)) return `rgba(139, 92, 246, ${alpha})`;
+  return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
 }
 
 function CustomTooltip({
@@ -62,6 +69,26 @@ function CustomTooltip({
 const CompletionChart = memo(function CompletionChart({ data, onRangeChange, currentRange = 30 }: CompletionChartProps) {
   const accentHex = useAccentColor();
   const [range, setRange] = useState(currentRange);
+  const [mounted, setMounted] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      if (!entries || entries.length === 0) return;
+      const measuredWidth = entries[0].contentRect.width;
+      if (measuredWidth > 0) {
+        setWidth(measuredWidth);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     setRange(currentRange);
@@ -84,10 +111,7 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
     }
   };
 
-  // Explicit tick set — always includes first + last (today) so the final data
-  // point is labelled with its date. Recharts' integer `interval` drops the
-  // last tick when N-1 isn't divisible by the step, which was why "today"
-  // was rendering past the last visible label.
+  // Explicit tick set
   const step = range <= 7 ? 1 : range <= 30 ? 7 : range <= 90 ? 14 : 30;
   const ticks = (() => {
     if (data.length === 0) return undefined;
@@ -98,8 +122,11 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
     return out;
   })();
 
+  const gradientId = `completionGradient-${(accentHex || 'default').replace(/[^a-zA-Z0-9]/g, '')}`;
+  const dropShadowColor = hexToRgba(accentHex, 0.45);
+
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full min-w-0">
       {/* Range selector */}
       <div className="flex gap-1.5 justify-end">
         {RANGES.map(({ label, days }) => {
@@ -121,16 +148,21 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
         })}
       </div>
 
-      {/* Chart */}
-      <motion.div
-        animate={{ opacity: [0.85, 1, 0.85] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        className="w-full"
+      {/* Chart container with ResizeObserver for exact width calculation */}
+      <div
+        ref={containerRef}
+        className="w-full h-[240px] min-h-[240px] relative min-w-0 flex items-center justify-center overflow-hidden"
       >
-        <ResponsiveContainer width="100%" height={240}>
-          <AreaChart data={data} margin={{ top: 8, right: 5, left: -20, bottom: 0 }}>
+        {!mounted ? (
+          <div className="w-full h-[240px] animate-pulse rounded-xl bg-[var(--bg-tertiary)]" />
+        ) : data.length === 0 ? (
+          <div className="flex h-[240px] w-full items-center justify-center rounded-xl border border-dashed border-[var(--border-subtle)] text-xs text-[var(--text-muted)]">
+            No trend data available for this range
+          </div>
+        ) : width > 0 ? (
+          <AreaChart width={width} height={240} data={data} margin={{ top: 8, right: 10, left: -20, bottom: 0 }}>
             <defs>
-              <linearGradient id="completionGradient" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={accentHex} stopOpacity={0.6} />
                 <stop offset="95%" stopColor={accentHex} stopOpacity={0.02} />
               </linearGradient>
@@ -159,19 +191,22 @@ const CompletionChart = memo(function CompletionChart({ data, onRangeChange, cur
               stroke={accentHex}
               strokeWidth={3.5}
               strokeLinecap="round"
-              fill="url(#completionGradient)"
-              style={{ filter: `drop-shadow(0px 4px 8px color-mix(in srgb, ${accentHex} 50%, transparent))` }}
+              fill={`url(#${gradientId})`}
+              style={{ filter: `drop-shadow(0px 4px 8px ${dropShadowColor})` }}
               dot={false}
               activeDot={{ r: 7, fill: accentHex, stroke: 'var(--bg-primary)', strokeWidth: 3 }}
               isAnimationActive={true}
-              animationDuration={1500}
+              animationDuration={1200}
               animationEasing="ease-out"
             />
           </AreaChart>
-        </ResponsiveContainer>
-      </motion.div>
+        ) : (
+          <div className="w-full h-[240px] animate-pulse rounded-xl bg-[var(--bg-tertiary)]" />
+        )}
+      </div>
     </div>
   );
 });
 
 export default CompletionChart;
+

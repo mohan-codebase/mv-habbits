@@ -3,8 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BarChart3, Plus, Settings } from 'lucide-react';
+import { LayoutDashboard, BarChart3, Plus, Settings, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAccentColor } from '@/components/ui/ThemeProvider';
 
 interface MobileDockProps {
   onAddHabit?: () => void;
@@ -12,10 +13,12 @@ interface MobileDockProps {
 
 export default function MobileDock({ onAddHabit }: MobileDockProps) {
   const pathname = usePathname();
+  const accentHex = useAccentColor();
 
   const isOverview = pathname === '/dashboard';
-  const isAnalytics = pathname === '/dashboard/analytics';
-  const isSettings = pathname === '/dashboard/settings';
+  const isAnalytics = pathname?.startsWith('/dashboard/analytics');
+  const isHabits = pathname?.startsWith('/dashboard/habits');
+  const isSettings = pathname?.startsWith('/dashboard/settings');
 
   const triggerAddHabit = (e: React.MouseEvent) => {
     if (onAddHabit) {
@@ -26,67 +29,128 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
     }
   };
 
+  const navItems = [
+    {
+      label: 'Home',
+      href: '/dashboard',
+      icon: LayoutDashboard,
+      active: isOverview,
+    },
+    {
+      label: 'Analytics',
+      href: '/dashboard/analytics',
+      icon: BarChart3,
+      active: isAnalytics,
+    },
+    {
+      label: 'Habits',
+      href: '/dashboard/habits',
+      icon: CheckCircle2,
+      active: isHabits,
+    },
+    {
+      label: 'Settings',
+      href: '/dashboard/settings',
+      icon: Settings,
+      active: isSettings,
+    },
+  ];
+
   return (
-    <div
-      className="hf-mobile-nav no-print fixed bottom-4 left-4 right-4 z-50 flex justify-center pointer-events-none sm:hidden"
-    >
-      <motion.nav
-        initial={{ y: 24, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 350, damping: 28 }}
-        className="pointer-events-auto w-full max-w-sm bg-[var(--bg-glass-strong)] backdrop-blur-xl border border-[var(--border-medium)] rounded-full px-3 py-2 flex items-center justify-between shadow-2xl shadow-purple-950/20"
-      >
-        {/* Home / Overview */}
-        <Link
-          href="/dashboard"
-          aria-label="Overview"
-          className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
-            isOverview
-              ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30'
-              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
-          }`}
-        >
-          <LayoutDashboard size={18} strokeWidth={isOverview ? 2.5 : 2} />
-          <span className="text-[10px]">Home</span>
-        </Link>
+    <>
+      {/* Smooth bottom gradient overlay fade mask to prevent awkward card edge cutoffs */}
+      <div className="no-print fixed bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-transparent pointer-events-none z-40 lg:hidden" />
 
-        {/* Analytics */}
-        <Link
-          href="/dashboard/analytics"
-          aria-label="Analytics"
-          className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
-            isAnalytics
-              ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30'
-              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
-          }`}
+      <div className="hf-mobile-nav no-print fixed bottom-4 left-3 right-3 z-50 flex justify-center pointer-events-none lg:hidden">
+        <motion.nav
+          initial={{ y: 32, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+          className="pointer-events-auto w-full max-w-md bg-[var(--bg-card)]/90 backdrop-blur-2xl border border-[var(--border-medium)] rounded-full px-2 py-1.5 flex items-center justify-between shadow-[0_16px_40px_rgba(0,0,0,0.5),0_0_24px_color-mix(in_srgb,var(--accent-primary)_15%,transparent)] relative"
         >
-          <BarChart3 size={18} strokeWidth={isAnalytics ? 2.5 : 2} />
-          <span className="text-[10px]">Analytics</span>
-        </Link>
+          {/* Left items: Home & Analytics */}
+          <div className="flex items-center gap-1 flex-1 justify-around">
+            {navItems.slice(0, 2).map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-label={item.label}
+                  className="relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer min-w-[60px]"
+                  style={{
+                    color: item.active ? accentHex : 'var(--text-muted)',
+                  }}
+                >
+                  {item.active && (
+                    <motion.div
+                      layoutId="mobile-dock-pill"
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        background: `color-mix(in srgb, ${accentHex} 16%, transparent)`,
+                        border: `1px solid color-mix(in srgb, ${accentHex} 32%, transparent)`,
+                      }}
+                      transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    />
+                  )}
+                  <Icon size={18} strokeWidth={item.active ? 2.4 : 1.8} className="relative z-10" />
+                  <span className="text-[10px] tracking-tight relative z-10 font-medium">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
 
-        {/* Quick Add Plus Button */}
-        <button
-          onClick={triggerAddHabit}
-          aria-label="Add Habit"
-          className="w-11 h-11 rounded-full bg-gradient-to-tr from-purple-500 via-indigo-500 to-purple-400 text-white flex items-center justify-center shadow-lg shadow-purple-600/40 border border-white/20 active:scale-90 transition-transform cursor-pointer -mt-1"
-        >
-          <Plus size={22} strokeWidth={2.8} />
-        </button>
+          {/* Center Plus CTA Button */}
+          <div className="px-1 flex-shrink-0">
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.06 }}
+              onClick={triggerAddHabit}
+              aria-label="Add Habit"
+              className="w-11 h-11 rounded-full text-white flex items-center justify-center border border-white/25 transition-all cursor-pointer relative z-10"
+              style={{
+                background: `linear-gradient(135deg, ${accentHex} 0%, color-mix(in srgb, ${accentHex} 80%, #000) 100%)`,
+                boxShadow: `0 0 20px color-mix(in srgb, ${accentHex} 50%, transparent), 0 4px 12px rgba(0,0,0,0.4)`,
+              }}
+            >
+              <Plus size={22} strokeWidth={2.8} />
+            </motion.button>
+          </div>
 
-        {/* Settings */}
-        <Link
-          href="/dashboard/settings"
-          aria-label="Settings"
-          className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
-            isSettings
-              ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30'
-              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
-          }`}
-        >
-          <Settings size={18} strokeWidth={isSettings ? 2.5 : 2} />
-          <span className="text-[10px]">Settings</span>
-        </Link>
-      </motion.nav>
-    </div>
+          {/* Right items: Habits & Settings */}
+          <div className="flex items-center gap-1 flex-1 justify-around">
+            {navItems.slice(2).map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-label={item.label}
+                  className="relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 cursor-pointer min-w-[60px]"
+                  style={{
+                    color: item.active ? accentHex : 'var(--text-muted)',
+                  }}
+                >
+                  {item.active && (
+                    <motion.div
+                      layoutId="mobile-dock-pill"
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        background: `color-mix(in srgb, ${accentHex} 16%, transparent)`,
+                        border: `1px solid color-mix(in srgb, ${accentHex} 32%, transparent)`,
+                      }}
+                      transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    />
+                  )}
+                  <Icon size={18} strokeWidth={item.active ? 2.4 : 1.8} className="relative z-10" />
+                  <span className="text-[10px] tracking-tight relative z-10 font-medium">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </motion.nav>
+      </div>
+    </>
   );
 }
+

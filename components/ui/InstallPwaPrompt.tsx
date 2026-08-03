@@ -1,18 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { Download, Share, SquarePlus, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Download, Share, SquarePlus, X, Sparkles } from 'lucide-react';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
 }
 
-/**
- * iPadOS 13+ reports a desktop Safari UA ("Macintosh"), so a plain
- * iPad|iPhone|iPod test misses every modern iPad. Touch points disambiguate:
- * real Macs report maxTouchPoints 0.
- */
 function detectIos(): boolean {
   if (typeof navigator === 'undefined') return false;
   const ua = navigator.userAgent;
@@ -26,7 +21,6 @@ export default function InstallPwaPrompt() {
   const [isStandalone, setIsStandalone] = useState(false);
   const [isIos, setIsIos] = useState(false);
   const [installed, setInstalled] = useState(false);
-  const bannerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const isStandaloneMatch =
@@ -39,8 +33,6 @@ export default function InstallPwaPrompt() {
 
     if (sessionStorage.getItem('pwa_prompt_dismissed')) return;
 
-    // Safari never fires beforeinstallprompt, so iOS has no event to wait on —
-    // surface the manual Add to Home Screen steps on a timer instead.
     const ios = detectIos();
     setIsIos(ios);
 
@@ -54,7 +46,6 @@ export default function InstallPwaPrompt() {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      // Delay showing so the page has time to load first
       promptTimer = setTimeout(() => setShowPrompt(true), 2000);
     };
 
@@ -96,99 +87,92 @@ export default function InstallPwaPrompt() {
 
   const visible = !isStandalone && showPrompt && !installed;
 
-  // The banner is fixed, so it would sit on top of the page header. Reserve
-  // exactly its height on <body> instead of guessing — the iOS copy wraps to
-  // two lines on narrow screens, so the height is not a constant.
-  useEffect(() => {
-    const el = bannerRef.current;
-    if (!visible || !el) return;
-
-    const apply = () => {
-      document.body.style.paddingTop = `${el.offsetHeight}px`;
-    };
-    apply();
-
-    const observer = new ResizeObserver(apply);
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-      document.body.style.paddingTop = '';
-    };
-  }, [visible]);
-
   if (!visible) return null;
 
   return (
-    /* Slim banner pinned to the top of the viewport. Body padding above keeps
-       it from overlapping page content. */
     <div
-      ref={bannerRef}
-      role="banner"
-      aria-label="Install app prompt"
-      className="fixed top-0 left-0 right-0 z-[200] flex items-center gap-3 px-4 py-2.5
-                 bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-700
-                 text-white text-xs
-                 animate-in slide-in-from-top-2 duration-300"
-      style={{ boxShadow: '0 2px 12px rgba(139,92,246,0.45)' }}
+      role="dialog"
+      aria-label="Install App"
+      className="fixed bottom-5 right-5 z-[200] w-[calc(100%-2.5rem)] sm:w-80 p-4 
+                 bg-slate-900/95 backdrop-blur-xl border border-purple-500/30 
+                 rounded-2xl shadow-2xl shadow-purple-950/50 text-white 
+                 animate-in fade-in slide-in-from-bottom-5 duration-300 transition-all"
     >
-      {/* Icon */}
-      <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/icons/icon-192.png"
-          alt=""
-          className="w-full h-full rounded-[6px] object-cover"
-          onError={(e) => {
-            (e.target as HTMLElement).style.display = 'none';
-          }}
-        />
+      {/* Header with App Logo, Title, and Close Button */}
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 p-0.5 shrink-0 shadow-lg shadow-purple-600/30">
+            <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/icons/icon-192.png"
+                alt="Productivity Master Logo"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5">
+              <h4 className="font-semibold text-sm text-white">Productivity Master</h4>
+              <span className="bg-purple-500/20 text-purple-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-purple-500/30 uppercase tracking-wider">
+                APP
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 mt-0.5">Fast & easy habit tracking</p>
+          </div>
+        </div>
+
+        <button
+          onClick={handleDismiss}
+          className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
+          aria-label="Close prompt"
+        >
+          <X className="w-4 h-4" />
+        </button>
       </div>
 
-      {isIos ? (
-        <>
-          {/* iOS: no install event exists — show the manual steps inline. */}
-          <div className="flex-1 min-w-0 flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
-            <span className="font-semibold">Install Productivity Master:</span>
-            <span className="inline-flex items-center gap-1 text-white/85">
-              tap
-              <Share className="w-3.5 h-3.5 shrink-0" aria-label="Share" />
-              then
-              <SquarePlus className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <span className="whitespace-nowrap">Add to Home Screen</span>
-            </span>
+      {/* Content Body */}
+      <div className="mt-3 pt-3 border-t border-slate-800/80">
+        {isIos ? (
+          <div className="text-xs text-slate-300 space-y-1.5">
+            <p className="font-medium text-purple-300 flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5" /> Install on iOS:
+            </p>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Tap <Share className="w-3 h-3 inline mx-0.5 text-purple-400" /> Share in Safari, then select <SquarePlus className="w-3 h-3 inline mx-0.5 text-purple-400" /> <span className="font-medium text-slate-200">Add to Home Screen</span>.
+            </p>
           </div>
-        </>
-      ) : (
-        <>
-          {/* Text */}
-          <div className="flex-1 min-w-0">
-            <span className="font-semibold truncate">Install Productivity Master</span>
-            <span className="text-white/70 ml-1.5 hidden sm:inline">for quick access</span>
+        ) : (
+          <div className="space-y-3">
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Install our web app for instant access, offline support, and full-screen productivity.
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleInstallClick}
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl
+                           bg-gradient-to-r from-purple-600 to-indigo-600 
+                           hover:from-purple-500 hover:to-indigo-500 
+                           text-white font-medium text-xs shadow-md shadow-purple-600/20
+                           active:scale-95 transition-all cursor-pointer"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Install App
+              </button>
+              <button
+                onClick={handleDismiss}
+                className="px-3 py-2 rounded-xl text-xs text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+              >
+                Not now
+              </button>
+            </div>
           </div>
-
-          {/* Install button */}
-          <button
-            onClick={handleInstallClick}
-            className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg
-                       bg-white text-purple-700 font-bold text-[11px]
-                       hover:bg-purple-50 active:scale-95 transition-all cursor-pointer"
-            aria-label="Install app"
-          >
-            <Download className="w-3.5 h-3.5" />
-            Install
-          </button>
-        </>
-      )}
-
-      {/* Dismiss */}
-      <button
-        onClick={handleDismiss}
-        className="shrink-0 p-1 text-white/70 hover:text-white transition-colors cursor-pointer"
-        aria-label="Close"
-      >
-        <X className="w-4 h-4" />
-      </button>
+        )}
+      </div>
     </div>
   );
 }
+
