@@ -66,86 +66,46 @@ export default function WeeklyOverview({ weekData }: { weekData: WeekDayData[] }
         </div>
       </div>
 
-      {/* Chart area with grid lines */}
+      {/* Rings area */}
       <motion.div
-        className="relative"
+        className="relative mt-2"
         animate={{ opacity: [0.85, 1, 0.85] }}
         transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
       >
-        {/* Horizontal grid lines */}
-        {GRID_LINES.map((line) => (
-          <div
-            key={line.pct}
-            className={`pointer-events-none absolute inset-x-0 h-px bg-border-subtle opacity-50 ${line.bottomClass}`}
-          />
-        ))}
-
-        <div className="hf-weekly-grid grid grid-cols-7 gap-1.5">
+        <div className="hf-weekly-grid flex justify-between gap-1.5">
           {weekData.map((day, i) => {
-            const color    = barColor(day.percentage);
-            const barH     = day.percentage === 0 ? 3 : Math.max(6, Math.round((day.percentage / 100) * CHART_H));
-            const isHov    = hov === i;
+            const pct = day.percentage;
+            const R = 19, CIRC = 2 * Math.PI * R;
+            const isSelected = day.isToday;
+            const dayNum = parseInt(day.date.split('-')[2], 10);
 
             return (
               <div
                 key={day.date}
-                className="relative flex cursor-default flex-col items-center gap-1"
-                onMouseEnter={() => setHov(i)}
-                onMouseLeave={() => setHov(null)}
+                className="flex cursor-default flex-col items-center gap-1.5"
               >
-                {/* Tooltip */}
-                {isHov && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 4, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    className="pointer-events-none absolute left-1/2 z-10 -translate-x-1/2 bottom-[calc(100%+8px)] whitespace-nowrap rounded-[10px] border border-border-default bg-bg-elevated p-[8px_12px]"
-                  >
-                    <p className="mb-0.5 text-[11px] text-text-muted">{fullDate(day.date)}</p>
-                    <p className="m-0 text-sm font-bold text-text-primary">{day.percentage}%</p>
-                  </motion.div>
-                )}
-
-                {/* Bar chart column */}
-                <div className="relative flex w-full h-[88px] flex-col items-center justify-end">
-                  {/* Percentage label above bar */}
-                  {day.percentage > 0 && (
-                    <span
-                      className={`absolute whitespace-nowrap font-mono text-[9px] font-bold tracking-[-0.01em] ${day.isToday ? 'text-accent-primary' : 'text-text-dimmed'}`}
-                      style={{ bottom: barH + 4 }}
-                    >
-                      {day.percentage}
-                    </span>
-                  )}
-                  <motion.div
-                    initial={{ height: 0 }}
-                    animate={{ height: barH }}
-                    transition={{ duration: 0.55, ease: 'easeOut', delay: i * 0.06 }}
-                    className={`w-[80%] min-h-[3px] rounded-[4px_4px_2px_2px] transition-[background,box-shadow] duration-200 ${
-                      day.isToday && day.percentage > 0
-                        ? 'shadow-[0_0_12px_color-mix(in_srgb,var(--accent-primary)_35%,transparent)] opacity-100'
-                        : isHov
-                          ? 'shadow-[0_0_8px_rgba(255,255,255,0.08)] opacity-100'
-                          : 'shadow-none opacity-80'
-                    }`}
-                    style={{
-                      background: day.isToday && day.percentage > 0
-                        ? `linear-gradient(180deg, var(--accent-light), var(--accent-primary))`
-                        : color,
-                    }}
-                  />
-                </div>
-
-                {/* Day label */}
-                <span
-                  className={`text-[10.5px] tracking-[0.02em] ${day.isToday ? 'font-bold text-accent-primary' : 'font-medium text-text-muted'}`}
-                >
+                <span className={`text-[11px] font-semibold ${isSelected ? 'text-accent-primary' : 'text-text-muted'}`}>
                   {dayLabel(day.date)}
                 </span>
-
-                {/* Today dot */}
-                {day.isToday && (
-                  <div className="-mt-0.5 h-1 w-1 rounded-full bg-[var(--accent-primary)]" />
-                )}
+                <div className="relative h-[42px] w-[42px]">
+                  <svg width="42" height="42" className="absolute inset-0">
+                    <circle cx="21" cy="21" r={R} fill="none" style={{ stroke: 'color-mix(in srgb, var(--accent-primary) 22%, transparent)' }} strokeWidth="2.5" />
+                    <circle cx="21" cy="21" r={R} fill="none" stroke="var(--accent-primary)"
+                      strokeWidth="2.5" strokeLinecap="round"
+                      strokeDasharray={CIRC}
+                      strokeDashoffset={CIRC * (1 - pct / 100)}
+                      transform="rotate(-90 21 21)"
+                      className="transition-[stroke-dashoffset] duration-[600ms] ease-linear"
+                    />
+                  </svg>
+                  <div
+                    className={`absolute inset-[5px] flex items-center justify-center rounded-full transition-[background] duration-[180ms] ease-linear ${isSelected ? 'bg-accent-primary' : 'bg-transparent'}`}
+                  >
+                    <span className={`text-[13px] ${isSelected ? 'font-bold text-[var(--accent-on-primary)]' : 'font-semibold text-text-primary'}`}>
+                      {dayNum}
+                    </span>
+                  </div>
+                </div>
               </div>
             );
           })}

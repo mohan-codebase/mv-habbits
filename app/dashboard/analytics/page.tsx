@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import CalendarHeatmap from '@/components/analytics/CalendarHeatmap';
+import DetailedMonthlyCalendar from '@/components/analytics/DetailedMonthlyCalendar';
 import CompletionChart from '@/components/analytics/CompletionChart';
 import type { HeatmapCell, DailyTrend } from '@/types/analytics';
 import { motion } from 'framer-motion';
@@ -60,6 +61,10 @@ export default function AnalyticsPage() {
           <h3 className="m-0 mb-4 text-base font-bold text-text-primary">Activity Heatmap (Last 12 Months)</h3>
           <CalendarHeatmap data={heatmap} />
         </div>
+      </motion.div>
+
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.05 }}>
+        <DetailedMonthlyCalendar />
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>

@@ -256,119 +256,121 @@ export default function CentralizedNotesPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-[1100px] p-[24px_16px_60px]">
+    <div className="mx-auto w-full max-w-[1100px] p-[16px_12px_90px] md:p-[24px_16px_60px]">
       {/* Header section */}
-      <div className="mb-7 flex flex-wrap items-center justify-between gap-4">
+      <div className="mb-5 md:mb-7 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="mb-1 flex items-center gap-2.5">
-            <div className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)] bg-accent-glow text-accent-primary">
-              <NotebookPen size={20} />
+          <div className="mb-1.5 md:mb-1 flex items-center gap-2 md:gap-2.5">
+            <div className="flex h-[34px] w-[34px] md:h-[38px] md:w-[38px] items-center justify-center rounded-xl border border-[color-mix(in_srgb,var(--accent-primary)_25%,transparent)] bg-accent-glow text-accent-primary">
+              <NotebookPen size={18} className="md:w-5 md:h-5" />
             </div>
-            <h1 className="m-0 text-[26px] font-extrabold tracking-[-0.02em] text-text-primary [font-family:'Outfit',sans-serif]">
+            <h1 className="m-0 text-[22px] md:text-[26px] font-extrabold tracking-[-0.02em] text-text-primary [font-family:'Outfit',sans-serif]">
               Centralized Habit Notes
             </h1>
           </div>
-          <p className="m-0 text-[14px] text-text-muted">
+          <p className="m-0 text-[13px] md:text-[14px] text-text-muted hidden sm:block">
             All thoughts, reflection logs, and progress notes recorded across your habits in one place.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex w-full md:w-auto items-center gap-2.5 md:gap-3">
           {isVaultUnlocked ? (
             <Button
               variant="ghost"
               onClick={() => setIsVaultUnlocked(false)}
-              className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-text-muted hover:text-text-primary"
+              className="flex-1 md:flex-none justify-center rounded-full px-4 py-2.5 md:py-2 text-[13px] md:text-sm text-text-muted hover:text-text-primary bg-bg-glass md:bg-transparent border border-border-default md:border-transparent"
+              icon={<Lock size={16} />}
             >
-              <Lock size={16} />
               Lock Vault
             </Button>
           ) : (
             <Button
               variant="ghost"
               onClick={() => setShowVaultModal(true)}
-              className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-text-muted hover:text-text-primary"
+              className="flex-1 md:flex-none justify-center rounded-full px-4 py-2.5 md:py-2 text-[13px] md:text-sm text-text-muted hover:text-text-primary bg-bg-glass md:bg-transparent border border-border-default md:border-transparent"
+              icon={<Unlock size={16} />}
             >
-              <Unlock size={16} />
               Unlock Vault
             </Button>
           )}
           <Button
             onClick={openNewNoteModal}
-            className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold"
+            className="flex-1 md:flex-none justify-center rounded-full px-5 py-2.5 text-[13px] md:text-sm"
+            icon={<Plus size={16} />}
           >
-            <Plus size={17} />
             Add Note
           </Button>
         </div>
       </div>
 
-          {/* Summary Cards */}
-      <div className="mb-7 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
-        <div className="flex items-center gap-4 rounded-2xl border border-border-default bg-bg-glass p-[16px_20px]">
-          <div className="flex h-[44px] w-[44px] items-center justify-center rounded-xl bg-[rgba(59,130,246,0.12)] text-[#3B82F6]">
-            <FileText size={22} />
+      {/* Summary Cards */}
+      <div className="mb-5 md:mb-7 flex snap-x snap-mandatory overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible md:pb-0 gap-3 md:gap-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center flex items-center gap-3 md:gap-4 rounded-2xl border border-border-default bg-bg-glass p-[12px_16px] md:p-[16px_20px]">
+          <div className="flex h-[40px] w-[40px] md:h-[44px] md:w-[44px] items-center justify-center rounded-xl bg-[rgba(59,130,246,0.12)] text-[#3B82F6]">
+            <FileText size={20} className="md:w-[22px] md:h-[22px]" />
           </div>
           <div>
-            <p className="m-0 text-2xl font-extrabold text-text-primary [font-family:'Outfit']">
+            <p className="m-0 text-[22px] md:text-2xl font-extrabold text-text-primary [font-family:'Outfit'] leading-none">
               {stats.totalNotes}
             </p>
-            <p className="m-0 mt-0.5 text-xs font-semibold text-text-muted">Total Notes Saved</p>
+            <p className="m-0 mt-1 text-[11px] md:text-xs font-semibold text-text-muted">Total Notes Saved</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 rounded-2xl border border-border-default bg-bg-glass p-[16px_20px]">
-          <div className="flex h-[44px] w-[44px] items-center justify-center rounded-xl bg-[rgba(168,85,247,0.12)] text-[#A855F7]">
-            <BookOpen size={22} />
+        <div className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center flex items-center gap-3 md:gap-4 rounded-2xl border border-border-default bg-bg-glass p-[12px_16px] md:p-[16px_20px]">
+          <div className="flex h-[40px] w-[40px] md:h-[44px] md:w-[44px] items-center justify-center rounded-xl bg-[rgba(168,85,247,0.12)] text-[#A855F7]">
+            <BookOpen size={20} className="md:w-[22px] md:h-[22px]" />
           </div>
           <div>
-            <p className="m-0 text-2xl font-extrabold text-text-primary [font-family:'Outfit']">
+            <p className="m-0 text-[22px] md:text-2xl font-extrabold text-text-primary [font-family:'Outfit'] leading-none">
               {stats.uniqueHabitIds}
             </p>
-            <p className="m-0 mt-0.5 text-xs font-semibold text-text-muted">Habits with Notes</p>
+            <p className="m-0 mt-1 text-[11px] md:text-xs font-semibold text-text-muted">Habits with Notes</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 rounded-2xl border border-border-default bg-bg-glass p-[16px_20px]">
-          <div className="flex h-[44px] w-[44px] items-center justify-center rounded-xl bg-[rgba(34,197,94,0.12)] text-[#22C55E]">
-            <Sparkles size={22} />
+        <div className="min-w-[75%] sm:min-w-[45%] md:min-w-0 snap-center flex items-center gap-3 md:gap-4 rounded-2xl border border-border-default bg-bg-glass p-[12px_16px] md:p-[16px_20px]">
+          <div className="flex h-[40px] w-[40px] md:h-[44px] md:w-[44px] items-center justify-center rounded-xl bg-[rgba(34,197,94,0.12)] text-[#22C55E]">
+            <Sparkles size={20} className="md:w-[22px] md:h-[22px]" />
           </div>
           <div>
-            <p className="m-0 text-2xl font-extrabold text-text-primary [font-family:'Outfit']">
+            <p className="m-0 text-[22px] md:text-2xl font-extrabold text-text-primary [font-family:'Outfit'] leading-none">
               {stats.notesThisMonth}
             </p>
-            <p className="m-0 mt-0.5 text-xs font-semibold text-text-muted">Added This Month</p>
+            <p className="m-0 mt-1 text-[11px] md:text-xs font-semibold text-text-muted">Added This Month</p>
           </div>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border-default bg-bg-glass p-[12px_16px]">
-        <div className="flex min-w-[240px] flex-1 items-center gap-2.5">
-          <Search size={18} color="var(--text-muted)" />
+      <div className="mb-5 md:mb-6 flex items-center justify-between rounded-2xl border border-border-default bg-bg-glass p-2 md:p-[12px_16px]">
+        <div className="flex flex-1 items-center gap-2 md:gap-2.5 pl-2 md:pl-0 pr-2">
+          <Search size={16} color="var(--text-muted)" className="md:w-[18px] md:h-[18px]" />
           <input
             type="text"
-            placeholder="Search notes by content, habit name, or date..."
+            placeholder="Search notes..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full border-none bg-transparent text-[14px] text-text-primary outline-none [font-family:inherit]"
+            className="w-full border-none bg-transparent text-[13px] md:text-[14px] text-text-primary outline-none [font-family:inherit]"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
               className="flex cursor-pointer items-center border-none bg-transparent p-0.5 text-text-muted"
             >
-              <X size={16} />
+              <X size={14} className="md:w-4 md:h-4" />
             </button>
           )}
         </div>
 
-        <div className="flex items-center gap-2.5">
-          <Filter size={16} color="var(--text-muted)" />
+        <div className="h-[24px] w-[1px] bg-border-subtle shrink-0 mx-1 md:hidden" />
+
+        <div className="flex items-center gap-1.5 md:gap-2.5 shrink-0 pl-1 md:pl-0">
+          <Filter size={14} color="var(--text-muted)" className="hidden md:block md:w-4 md:h-4" />
           <select
             value={selectedHabitId}
             onChange={(e) => setSelectedHabitId(e.target.value)}
-            className="cursor-pointer rounded-full border border-border-default bg-bg-card p-[6px_14px] text-[13px] font-semibold text-text-primary outline-none"
+            className="cursor-pointer rounded-full border-none md:border md:border-border-default bg-transparent md:bg-bg-card p-[4px_8px] md:p-[6px_14px] text-[12px] md:text-[13px] font-semibold text-text-primary outline-none max-w-[100px] md:max-w-none text-ellipsis"
           >
             <option value="ALL">All Habits</option>
             {habits.map((h) => (
@@ -542,19 +544,19 @@ export default function CentralizedNotesPage() {
             Your notes are secured. Unlock the vault to read and edit your personal reflections.
           </p>
 
-          <div className="flex justify-center gap-3">
-            <Button variant="ghost" onClick={() => setShowVaultModal(false)}>
-              Cancel
-            </Button>
+          <div className="flex justify-center gap-3 flex-row-reverse">
             <Button
               onClick={() => {
                 setIsVaultUnlocked(true);
                 setShowVaultModal(false);
               }}
               className="bg-[#A855F7] text-white hover:bg-[#9333EA]"
+              icon={<Unlock size={16} />}
             >
-              <Unlock size={16} className="mr-2" />
               Unlock Now
+            </Button>
+            <Button variant="ghost" onClick={() => setShowVaultModal(false)}>
+              Cancel
             </Button>
           </div>
         </div>
@@ -661,11 +663,12 @@ export default function CentralizedNotesPage() {
               Cancel
             </Button>
             <Button
+              variant="danger"
               onClick={handleDeleteNote}
               disabled={deleting}
-              className="bg-[#EF4444] text-white"
+              icon={deleting ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={16} />}
             >
-              {deleting ? 'Deleting...' : 'Delete Note'}
+              Delete Note
             </Button>
           </div>
         </div>

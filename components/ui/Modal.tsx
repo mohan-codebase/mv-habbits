@@ -121,7 +121,7 @@ export default function Modal({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           onClick={closeOnOutsideClick ? onClose : undefined}
-          className="hf-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          className="hf-modal-backdrop fixed inset-0 z-[300] flex items-center justify-center bg-black/60 p-4"
         >
           <motion.div
             key="modal-panel"

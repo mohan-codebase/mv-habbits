@@ -2,14 +2,14 @@
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useTransform, animate, PanInfo } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 
 interface SwipeToCompleteProps {
   completed: boolean;
   onToggle: (completed: boolean) => void;
   color?: string;
-  label?: string;
-  completedLabel?: string;
+  label?: React.ReactNode;
+  completedLabel?: React.ReactNode;
   disabled?: boolean;
   height?: number;
   icon?: React.ReactNode;
@@ -85,19 +85,12 @@ export default function SwipeToComplete({
     }
   };
 
-  const handleTap = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (disabled || isDragging) return;
-    onToggle(!completed);
-  };
-
   // Resolve icon color for thumb (for CSS vars, default to green)
   const iconColor = color.startsWith('#') || color.startsWith('rgb') ? color : '#22c55e';
 
   return (
     <div
       ref={containerRef}
-      onClick={handleTap}
       className={`relative flex w-full items-center justify-center overflow-hidden rounded-full select-none transition-[background,border,box-shadow] duration-[350ms] [-webkit-backdrop-filter:blur(20px)] [backdrop-filter:blur(20px)] ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} ${className ?? ''}`}
       style={{
         height,
@@ -127,7 +120,7 @@ export default function SwipeToComplete({
       {/* Shimmer text (uncompleted state) — uses CSS class for keyframes */}
       {!completed && (
         <motion.span
-          className="ios-shimmer-text"
+          className="pointer-events-none flex items-center justify-center gap-1 text-[15px] font-medium tracking-[0.02em] text-text-muted [font-family:-apple-system,BlinkMacSystemFont,'SF_Pro_Display',sans-serif]"
           style={{
             opacity: textOpacity,
             paddingLeft: thumbSize * 0.5,
@@ -144,8 +137,7 @@ export default function SwipeToComplete({
           animate={{ opacity: 1, scale: 1 }}
           className="pointer-events-none flex items-center justify-center gap-[7px] text-[15px] font-bold lowercase tracking-[-0.01em] text-white [font-family:-apple-system,BlinkMacSystemFont,'SF_Pro_Display',sans-serif]"
         >
-          <span>{completedLabel}</span>
-          <Check size={18} strokeWidth={3} />
+          {completedLabel}
         </motion.div>
       )}
 
@@ -169,11 +161,19 @@ export default function SwipeToComplete({
         whileTap={{ scale: 0.94 }}
       >
         {icon ?? (
-          <Check
-            size={Math.round(thumbSize * 0.52)}
-            style={{ color: iconColor }}
-            strokeWidth={3}
-          />
+          completed ? (
+            <Check
+              size={Math.round(thumbSize * 0.52)}
+              style={{ color: iconColor }}
+              strokeWidth={3}
+            />
+          ) : (
+            <X
+              size={Math.round(thumbSize * 0.52)}
+              style={{ color: iconColor }}
+              strokeWidth={3}
+            />
+          )
         )}
       </motion.div>
     </div>

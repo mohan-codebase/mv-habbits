@@ -21,25 +21,38 @@ export async function GET(req: NextRequest) {
     if (!user) return err('Unauthorized', 401);
 
     const sp = req.nextUrl.searchParams;
-    const months = Math.min(24, parseInt(sp.get('months') ?? '12', 10) || 12);
+    const yearStr = sp.get('year');
     const habitId = sp.get('habit_id');
 
     const { data: profile } = await supabase.from('profiles').select('timezone').eq('id', user.id).maybeSingle();
     const userTz = profile?.timezone || 'Asia/Kolkata';
 
     const today = new Date();
-    const startDate = new Date(today);
-    startDate.setMonth(startDate.getMonth() - months);
-    startDate.setDate(1);
+    let startDate: Date;
+    let endDate: Date;
+
+    if (yearStr) {
+      const year = parseInt(yearStr, 10);
+      startDate = new Date(year, 0, 1);
+      endDate = new Date(year, 11, 31);
+      // if it's the current year, don't cap it to today so we see the full calendar year empty spaces
+    } else {
+      const months = Math.min(60, parseInt(sp.get('months') ?? '12', 10) || 12);
+      startDate = new Date(today);
+      startDate.setMonth(startDate.getMonth() - months);
+      startDate.setDate(1);
+      endDate = today;
+    }
+
     const startStr = formatInTimeZone(startDate, userTz, 'yyyy-MM-dd');
-    const todayStr = formatInTimeZone(today, userTz, 'yyyy-MM-dd');
+    const endStr = formatInTimeZone(endDate, userTz, 'yyyy-MM-dd');
 
     let query = supabase
       .from('habit_entries')
       .select('entry_date, is_completed, habit_id')
       .eq('user_id', user.id)
       .gte('entry_date', startStr)
-      .lte('entry_date', todayStr);
+      .lte('entry_date', endStr);
 
     if (habitId) {
       query = query.eq('habit_id', habitId);
@@ -67,7 +80,7 @@ export async function GET(req: NextRequest) {
     // Build full date range
     const result = [];
     const cur = new Date(startDate);
-    while (cur <= today) {
+    while (cur <= endDate) {
       const dateStr = formatInTimeZone(cur, userTz, 'yyyy-MM-dd');
       const slot = byDate.get(dateStr);
       const activeCount = habitId

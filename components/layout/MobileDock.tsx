@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BarChart3, Plus, Settings, Trophy } from 'lucide-react';
+import { LayoutDashboard, BarChart3, Plus, Settings, NotebookPen } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAccentColor } from '@/components/ui/ThemeProvider';
 
@@ -17,7 +17,7 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
 
   const isOverview = pathname === '/dashboard';
   const isAnalytics = pathname?.startsWith('/dashboard/analytics');
-  const isAchievements = pathname?.startsWith('/dashboard/achievements');
+  const isNotes = pathname?.startsWith('/dashboard/notes');
   const isSettings = pathname?.startsWith('/dashboard/settings');
 
   const triggerAddHabit = (e: React.MouseEvent) => {
@@ -43,10 +43,10 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
       active: isAnalytics,
     },
     {
-      label: 'Badges',
-      href: '/dashboard/achievements',
-      icon: Trophy,
-      active: isAchievements,
+      label: 'Notes',
+      href: '/dashboard/notes',
+      icon: NotebookPen,
+      active: isNotes,
     },
     {
       label: 'Settings',

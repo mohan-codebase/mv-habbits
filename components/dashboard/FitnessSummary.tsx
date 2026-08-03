@@ -206,63 +206,51 @@ function HabitRow({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.22, delay: index * 0.03 }}
-      className="relative box-border flex w-full cursor-pointer flex-col gap-2.5 overflow-hidden rounded-xl p-[14px_16px] shadow-none transition-all duration-[220ms] ease-in-out"
-      style={{
-        background: done
-          ? (bad
-              ? 'rgba(248, 113, 113, 0.07)'
-              : `color-mix(in srgb, ${accentHex} 8%, var(--bg-card))`)
-          : 'var(--bg-card)',
-        border: `1px solid ${
-          done
-            ? (bad ? 'rgba(248, 113, 113, 0.3)' : `color-mix(in srgb, ${accentHex} 30%, transparent)`)
-            : 'var(--border-default)'
-        }`,
-      }}
+      className="relative flex w-full cursor-pointer flex-col transition-all duration-[220ms] ease-in-out"
       onClick={() => onOpen(habit.id)}
     >
-      {/* Top Row: Icon + Name + Streak */}
-      <div className="flex items-center gap-3">
-        {/* Icon Circle */}
-        <div
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all duration-200 ease-in-out"
-          style={{
-            background: done ? accentHex : accentLight,
-            color: done ? '#FFFFFF' : accentHex,
-          }}
-        >
-          <DynamicIcon name={icon} size={19} color={done ? '#FFFFFF' : accentHex} />
-        </div>
-
-        {/* Text */}
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-[7px]">
-            <p
-              className={`m-0 truncate text-[14.5px] font-bold tracking-[-0.01em] text-text-primary ${done && !bad ? 'line-through opacity-75' : 'no-underline opacity-100'}`}
-            >
-              {habit.name}
-            </p>
-            {streak > 0 && (
-              <span className="inline-flex shrink-0 items-center gap-[3px] rounded-full bg-[rgba(245,158,11,0.12)] border border-[rgba(245,158,11,0.28)] p-[2px_6px] text-[10.5px] font-[750] leading-none text-[#f59e0b]">
-                <Flame size={11} className="inline mr-px" />{streak}d
-              </span>
-            )}
-          </div>
-          <p className="m-0 mt-0.5 truncate text-[11.5px] font-medium text-text-muted">
-            {subtitle}
-          </p>
-        </div>
-      </div>
-
       {/* iOS Swipe Slider */}
-      <div onClick={(e) => e.stopPropagation()}>
+      <div>
         <SwipeToComplete
           completed={done}
           onToggle={(val) => onToggle(habit.id, !val)}
           color={accentHex}
-          label={bad ? 'slide to avoid' : 'slide to complete'}
-          completedLabel={bad ? 'avoided' : 'completed'}
-          height={44}
+          label={
+            <div className="flex items-center gap-2">
+              <DynamicIcon name={icon} size={16} />
+              <span>{bad ? `avoid ${habit.name.toLowerCase()}` : habit.name.toLowerCase()}</span>
+              {streak > 0 && (
+                <span
+                  className="inline-flex shrink-0 items-center gap-[3px] rounded-full p-[2px_6px] text-[10.5px] font-[750] leading-none"
+                  style={{
+                    background: `color-mix(in srgb, ${accentHex} 15%, transparent)`,
+                    border: `1px solid color-mix(in srgb, ${accentHex} 30%, transparent)`,
+                    color: accentHex,
+                  }}
+                >
+                  <Flame size={11} className="inline mr-px" />{streak}d
+                </span>
+              )}
+            </div>
+          }
+          completedLabel={
+            <div className="flex items-center gap-2">
+              <DynamicIcon name={icon} size={16} />
+              <span>{bad ? 'avoided' : 'completed'}</span>
+              {streak > 0 && (
+                <span
+                  className="inline-flex shrink-0 items-center gap-[3px] rounded-full p-[2px_6px] text-[10.5px] font-[750] leading-none text-white"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                  }}
+                >
+                  <Flame size={11} className="inline mr-px" />{streak}d
+                </span>
+              )}
+            </div>
+          }
+          height={52}
         />
       </div>
     </motion.div>
@@ -1932,7 +1920,7 @@ export default function FitnessSummary({
                     </button>
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-6">
                     {displayHabits.map((h, i) => (
                       <HabitRow key={h.id} habit={h} index={i} onToggle={handleToggle} onOpen={setSelectedId} />
                     ))}
@@ -2062,7 +2050,7 @@ export default function FitnessSummary({
                     </button>
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-2.5">
+                  <div className="flex flex-col gap-6">
                     {displayBadHabits.map((h, i) => (
                       <HabitRow key={h.id} habit={h} index={i} onToggle={handleToggle} onOpen={setSelectedId} bad />
                     ))}
