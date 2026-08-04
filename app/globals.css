@@ -204,7 +204,7 @@
   --drag-handle: color-mix(in srgb, var(--accent-primary) 30%, transparent);
   --divider: rgba(255, 255, 255, 0.07);
   --input-bg: rgba(255, 255, 255, 0.08);
-  --input-border: color-mix(in srgb, var(--accent-primary) 30%, rgba(255,255,255,0.12));
+  --input-border: color-mix(in srgb, var(--accent-primary) 30%, rgba(255, 255, 255, 0.12));
 
   /* ── Card tokens (formerly liquid glass) ── */
   --glass-bg: var(--bg-secondary);
@@ -381,6 +381,7 @@ body::after {
 /* Layered so per-heading `leading-*` / `tracking-*` / `font-*` utilities can
    still override these defaults. */
 @layer base {
+
   h1,
   h2,
   h3,
@@ -1204,7 +1205,7 @@ input:-webkit-autofill:active {
 
 /* Ambient Purple Mesh Background - dark mode only */
 body {
-  background-image: 
+  background-image:
     radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.12), transparent),
     radial-gradient(ellipse 60% 40% at 100% 100%, rgba(124, 58, 237, 0.08), transparent);
   background-attachment: fixed;
@@ -1264,19 +1265,23 @@ body {
     overflow-x: auto !important;
     padding-bottom: 2px !important;
   }
+
   .hf-kpi-card {
     padding: 10px 8px !important;
     border-radius: 12px !important;
     min-width: 0 !important;
   }
+
   .hf-kpi-card-title {
     font-size: 9.5px !important;
     letter-spacing: 0.02em !important;
     white-space: nowrap !important;
   }
+
   .hf-kpi-card-val {
     font-size: 17px !important;
   }
+
   .hf-kpi-card-sub {
     font-size: 10px !important;
     white-space: nowrap !important;
@@ -1324,7 +1329,7 @@ body {
   background: #FFFFFF !important;
   color: #1E1B4B !important;
   border: 1.5px solid rgba(139, 92, 246, 0.3) !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
 
 [data-theme="light"] .auth-input::placeholder,
@@ -1337,8 +1342,8 @@ body {
 
 /* Fix browser autofill styling across light and dark themes */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: var(--text-primary) !important;
@@ -1351,18 +1356,17 @@ input:-webkit-autofill:active {
   0% {
     background-position: 200% center;
   }
+
   100% {
     background-position: -200% center;
   }
 }
 
 .ios-shimmer-text {
-  background-image: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.25) 0%,
-    rgba(255, 255, 255, 0.95) 50%,
-    rgba(255, 255, 255, 0.25) 100%
-  );
+  background-image: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.95) 50%,
+      rgba(255, 255, 255, 0.25) 100%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1379,4 +1383,3 @@ input:-webkit-autofill:active {
   justify-content: center;
   gap: 4px;
 }
-

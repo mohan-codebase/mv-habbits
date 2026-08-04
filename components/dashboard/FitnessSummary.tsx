@@ -483,7 +483,7 @@ function HabitDetailSheet({
     if (ds > todayLocal) return;              // never the future
     const next = !currentlyCompleted;
     setSavingDay(ds);
-    
+
     // optimistic update keeping existing properties
     setEntries((prev) => {
       const existing = prev.find((e) => e.entry_date === ds);
@@ -823,22 +823,22 @@ function HabitDetailSheet({
                               title={interactive ? (cell.completed ? 'Tap to view details/unmark' : 'Tap to view details/mark done') : undefined}
                               className={`flex aspect-square w-full max-w-10 items-center justify-center rounded-full text-[11.5px] shadow-none transition-all duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)] [-webkit-tap-highlight-color:transparent] ${cell.isToday || isSelected || cell.completed ? 'font-[850]' : 'font-medium'} ${interactive ? 'cursor-pointer' : 'cursor-default'} ${isSaving ? 'opacity-50' : 'opacity-100'}`}
                               style={{
-                              background: bg,
-                              border: isSelected
-                                ? '2px solid #ffffff'
-                                : cell.isToday
-                                  ? `2px solid ${PURPLE_HEX}`
-                                  : '1px solid transparent',
-                              color: txtColor,
+                                background: bg,
+                                border: isSelected
+                                  ? '2px solid #ffffff'
+                                  : cell.isToday
+                                    ? `2px solid ${PURPLE_HEX}`
+                                    : '1px solid transparent',
+                                color: txtColor,
                               }}
                             >
                               <div className="relative flex h-full w-full flex-col items-center justify-center">
                                 <span>{cell.day}</span>
-                              {hasVideo && (
-                                <div
-                                  className="absolute bottom-[3px] h-1 w-1 rounded-full"
-                                  style={{ background: cell.completed ? '#fff' : PURPLE }}
-                                />
+                                {hasVideo && (
+                                  <div
+                                    className="absolute bottom-[3px] h-1 w-1 rounded-full"
+                                    style={{ background: cell.completed ? '#fff' : PURPLE }}
+                                  />
                                 )}
                               </div>
                             </motion.div>
@@ -1692,214 +1692,205 @@ export default function FitnessSummary({
 
 
   return (
-    <div
-      className="relative min-h-[100dvh] overflow-x-clip [font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif] bg-bg-primary"
-    >
-      {/* Desktop Sidebar is rendered by layout.tsx */}
-
-      {/* ───────────────── Main ───────────────── */}
+    <div className="relative min-h-[100dvh] overflow-x-clip [font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif] bg-bg-primary">
       <div>
-        <div
-          className="hf-dashboard-main-container mx-auto flex max-w-[1280px] flex-col p-[clamp(18px,2.5vw,32px)_clamp(16px,2.5vw,32px)_72px] gap-[clamp(16px,2vw,22px)]"
-        >
-          {/* ── Top Hero Greeting Banner ── */}
-          <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35 }}
-            className="relative flex flex-wrap items-center justify-between gap-5 overflow-hidden rounded-2xl border border-border-default p-[24px_28px] shadow-[0_12px_32px_rgba(0,0,0,0.15)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent-primary)_12%,var(--bg-card))_0%,var(--bg-card)_100%)]"
-          >
-            {/* Ambient background glow */}
-            <div
-              className="pointer-events-none absolute -top-[40%] -right-[10%] h-[300px] w-[300px] rounded-full blur-[30px] bg-[radial-gradient(circle,var(--accent-glow-lg)_0%,transparent_70%)]"
-            />
-
-            <div className="z-[1] min-w-0 flex-[1_1_300px]">
-              <div className="mb-3 flex flex-wrap items-center gap-2.5">
-                <span className="text-[13px] font-bold uppercase tracking-[0.06em] text-text-secondary">
-                  {dateStr}
-                </span>
-                <span className="h-1 w-1 rounded-full bg-[var(--border-medium)]" />
-                <span className="text-[13px] font-semibold text-text-secondary">
-                  <span className="font-bold text-[var(--accent-primary)]">{completedCount}</span>/{totalCount} Completed Today
-                </span>
-              </div>
-              <h1 className="m-0 text-[clamp(26px,4vw,34px)] font-extrabold leading-[1.1] tracking-[-0.02em] text-text-primary font-[Outfit]">
-                {greeting}, {displayName.split(' ')[0]}
-              </h1>
-              <p className="m-0 mt-2 text-[15px] font-medium text-text-secondary">
-                {todayPct === 100
-                  ? 'Amazing job! All habits completed for today.'
-                  : todayPct >= 50
-                  ? `Great progress! You're ${todayPct}% done with today's habits.`
-                  : 'Let\'s crush today\'s goals one habit at a time.'}
-              </p>
-            </div>
-
-            <div className="z-[1] flex items-center gap-3">
-              <button
-                className="hf-add-habit-btn inline-flex shrink-0 items-center gap-2 rounded-full border-none p-[12px_24px] text-sm font-bold [font-family:inherit] shadow-[0_8px_24px_color-mix(in_srgb,var(--accent-primary)_35%,transparent)] transition-[transform,box-shadow] duration-150 ease-linear cursor-pointer bg-accent-primary text-[var(--accent-on-primary)]"
-                onClick={() => setAddOpen(true)}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; }}
-              >
-                <Plus size={18} strokeWidth={2.6} />
-                <span className="hf-dash-btn-label">Add Habit</span>
-              </button>
-              <Link
-                className="hf-profile-link flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full border border-border-subtle bg-[var(--surface-tint)] text-text-primary transition-[background,transform] duration-150 ease-linear cursor-pointer"
-                href="/dashboard/settings"
-                aria-label="Open profile settings"
-                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; }}
-              >
-                <User size={20} color="var(--text-primary)" />
-              </Link>
-            </div>
-          </motion.div>
-
-          {/* ── 4 Top KPI Metric Cards ── */}
-          <div className="hf-kpi-grid">
-            {/* Card 1: Today's Completion */}
-            <motion.div
-              className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.05 }}
-              whileHover={{ y: -2 }}
-            >
-              <div className="flex items-center gap-1.5 text-text-muted">
-                <Target size={14} color="var(--accent-primary)" />
-                <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Today Progress</span>
-              </div>
-              <div className="flex flex-wrap items-baseline gap-1.5">
-                <div className="hf-kpi-card-val text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
-                  {todayPct}%
-                </div>
-                <p className="hf-kpi-card-sub m-0 text-[11.5px] font-medium text-text-muted">
-                  {completedCount}/{totalCount} done
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Card 2: Active Streak */}
-            <motion.div
-              className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}
-              whileHover={{ y: -2 }}
-            >
-              <div className="flex items-center gap-1.5 text-text-muted">
-                <Flame size={14} color="#FB923C" />
-                <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Best Streak</span>
-              </div>
-              <div className="flex min-w-0 items-baseline gap-1.5">
-                <div className="hf-kpi-card-val shrink-0 text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
-                  {stats?.bestStreak ?? 0}<span className="text-sm font-[650] text-text-muted">d</span>
-                </div>
-                <p className="hf-kpi-card-sub m-0 min-w-0 truncate text-[11.5px] font-medium text-text-muted">
-                  {stats?.bestStreakHabitName ? `in "${stats.bestStreakHabitName}"` : 'momentum'}
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Card 3: Consistency Score */}
-            <motion.div
-              className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.15 }}
-              whileHover={{ y: -2 }}
-            >
-              <div className="flex items-center gap-1.5 text-text-muted">
-                <TrendingUp size={14} color="#38BDF8" />
-                <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Consistency</span>
-              </div>
-              <div className="flex flex-wrap items-baseline gap-1.5">
-                <div className="hf-kpi-card-val text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
-                  {avgPct}%
-                </div>
-                <p className="hf-kpi-card-sub m-0 text-[11.5px] font-medium text-text-muted">
-                  7-day avg
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Card 4: Total Done */}
-            <motion.div
-              className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}
-              whileHover={{ y: -2 }}
-            >
-              <div className="flex items-center gap-1.5 text-text-muted">
-                <Trophy size={14} color="#A855F7" />
-                <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Total Done</span>
-              </div>
-              <div className="flex flex-wrap items-baseline gap-1.5">
-                <div className="hf-kpi-card-val text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
-                  {stats?.totalCompletions ?? 0}
-                </div>
-                <p className="hf-kpi-card-sub m-0 text-[11.5px] font-medium text-text-muted">
-                  lifetime
-                </p>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* ── 2-column widget grid ── */}
+        <div className="hf-dashboard-main-container mx-auto flex max-w-[1280px] flex-col p-[clamp(18px,2.5vw,32px)_clamp(16px,2.5vw,32px)_72px] gap-[clamp(16px,2vw,22px)]">
+          {/* ── 2-column widget grid starting at top ── */}
           <div className="hf-dashboard-grid">
             {/* LEFT COLUMN */}
             <div className="flex min-w-0 flex-col gap-[clamp(16px,2vw,22px)]">
+              {/* ── Top Hero Greeting Banner ── */}
+              <motion.div
+                initial={{ opacity: 0, y: -12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35 }}
+                className="relative flex w-full flex-wrap items-center justify-between gap-5 overflow-hidden rounded-2xl border border-border-default p-[24px_28px] shadow-[0_12px_32px_rgba(0,0,0,0.15)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--accent-primary)_12%,var(--bg-card))_0%,var(--bg-card)_100%)]"
+              >
+                {/* Ambient background glow */}
+                <div
+                  className="pointer-events-none absolute -top-[40%] -right-[10%] h-[300px] w-[300px] rounded-full blur-[30px] bg-[radial-gradient(circle,var(--accent-glow-lg)_0%,transparent_70%)]"
+                />
 
-          {/* ── Week day selector ── */}
-          <DashCard
-            title={isViewingToday ? '7-Day Overview' : new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
-            action={
-              !isViewingToday ? (
-                <button
-                  onClick={() => selectDate(todayString())}
-                  className="rounded-full border border-border-default bg-[var(--surface-tint)] p-[5px_14px] text-xs font-bold text-text-primary [font-family:inherit] cursor-pointer"
-                >
-                  Jump to today
-                </button>
-              ) : (
-                <span className="text-[13px] font-bold text-text-muted">{dateStr}</span>
-              )
-            }
-          >
-            <div className="hf-weekly-grid grid grid-cols-7 gap-1.5">
-              {weekDates.map(({ date, dayNum, dayLabel, isToday, pct }) => {
-                const R = 19, CIRC = 2 * Math.PI * R;
-                const isSelected = date === selectedDate;
-                return (
-                  <div
-                    key={date}
-                    onClick={() => selectDate(date)}
-                    className="flex cursor-pointer flex-col items-center gap-1.5"
-                  >
-                    <span className={`text-[11px] font-semibold ${isSelected ? 'text-accent-primary' : 'text-text-muted'}`}>
-                      {dayLabel}
+                <div className="z-[1] min-w-0 flex-[1_1_300px]">
+                  <div className="mb-3 flex flex-wrap items-center gap-2.5">
+                    <span className="text-[13px] font-bold uppercase tracking-[0.06em] text-text-secondary">
+                      {dateStr}
                     </span>
-                    <div className="relative h-[42px] w-[42px]">
-                      <svg width="42" height="42" className="absolute inset-0">
-                        <circle cx="21" cy="21" r={R} fill="none" style={{ stroke: `color-mix(in srgb, ${accentHex} 22%, transparent)` }} strokeWidth="2.5" />
-                        <circle cx="21" cy="21" r={R} fill="none" stroke={accentHex}
-                          strokeWidth="2.5" strokeLinecap="round"
-                          strokeDasharray={CIRC}
-                          strokeDashoffset={CIRC * (1 - (isToday ? todayPct : pct) / 100)}
-                          transform="rotate(-90 21 21)"
-                          className="transition-[stroke-dashoffset] duration-[600ms] ease-linear"
-                        />
-                      </svg>
-                      <div
-                        className={`absolute inset-[5px] flex items-center justify-center rounded-full transition-[background] duration-[180ms] ease-linear ${isSelected ? 'bg-accent-primary' : 'bg-transparent'}`}
-                      >
-                        <span className={`text-[13px] ${isSelected ? 'font-bold text-[var(--accent-on-primary)]' : 'font-semibold text-text-primary'}`}>
-                          {dayNum}
-                        </span>
-                      </div>
-                    </div>
+                    <span className="h-1 w-1 rounded-full bg-[var(--border-medium)]" />
+                    <span className="text-[13px] font-semibold text-text-secondary">
+                      <span className="font-bold text-[var(--accent-primary)]">{completedCount}</span>/{totalCount} Completed Today
+                    </span>
                   </div>
-                );
-              })}
-            </div>
-          </DashCard>
+                  <h1 className="m-0 text-[clamp(26px,4vw,34px)] font-extrabold leading-[1.1] tracking-[-0.02em] text-text-primary font-[Outfit]">
+                    {greeting}, {displayName.split(' ')[0]}
+                  </h1>
+                  <p className="m-0 mt-2 text-[15px] font-medium text-text-secondary">
+                    {todayPct === 100
+                      ? 'Amazing job! All habits completed for today.'
+                      : todayPct >= 50
+                        ? `Great progress! You're ${todayPct}% done with today's habits.`
+                        : 'Let\'s crush today\'s goals one habit at a time.'}
+                  </p>
+                </div>
 
+                <div className="z-[1] flex items-center gap-3">
+                  <button
+                    className="hf-add-habit-btn inline-flex shrink-0 items-center gap-2 rounded-full border-none p-[12px_24px] text-sm font-bold [font-family:inherit] shadow-[0_8px_24px_color-mix(in_srgb,var(--accent-primary)_35%,transparent)] transition-[transform,box-shadow] duration-150 ease-linear cursor-pointer bg-accent-primary text-[var(--accent-on-primary)]"
+                    onClick={() => setAddOpen(true)}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; }}
+                  >
+                    <Plus size={18} strokeWidth={2.6} />
+                    <span className="hf-dash-btn-label">Add Habit</span>
+                  </button>
+                  <Link
+                    className="hf-profile-link flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full border border-border-subtle bg-[var(--surface-tint)] text-text-primary transition-[background,transform] duration-150 ease-linear cursor-pointer"
+                    href="/dashboard/settings"
+                    aria-label="Open profile settings"
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; }}
+                  >
+                    <User size={20} color="var(--text-primary)" />
+                  </Link>
+                </div>
+              </motion.div>
+
+              {/* ── 4 Top KPI Metric Cards ── */}
+              <div className="hf-kpi-grid w-full">
+                {/* Card 1: Today's Completion */}
+                <motion.div
+                  className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
+                  initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.05 }}
+                  whileHover={{ y: -2 }}
+                >
+                  <div className="flex items-center gap-1.5 text-text-muted">
+                    <Target size={14} color="var(--accent-primary)" />
+                    <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Today Progress</span>
+                  </div>
+                  <div className="flex flex-wrap items-baseline gap-1.5">
+                    <div className="hf-kpi-card-val text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
+                      {todayPct}%
+                    </div>
+                    <p className="hf-kpi-card-sub m-0 text-[11.5px] font-medium text-text-muted">
+                      {completedCount}/{totalCount} done
+                    </p>
+                  </div>
+                </motion.div>
+
+                {/* Card 2: Active Streak */}
+                <motion.div
+                  className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
+                  initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}
+                  whileHover={{ y: -2 }}
+                >
+                  <div className="flex items-center gap-1.5 text-text-muted">
+                    <Flame size={14} color="#FB923C" />
+                    <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Best Streak</span>
+                  </div>
+                  <div className="flex min-w-0 items-baseline gap-1.5">
+                    <div className="hf-kpi-card-val shrink-0 text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
+                      {stats?.bestStreak ?? 0}<span className="text-sm font-[650] text-text-muted">d</span>
+                    </div>
+                    <p className="hf-kpi-card-sub m-0 min-w-0 truncate text-[11.5px] font-medium text-text-muted">
+                      {stats?.bestStreakHabitName ? `in "${stats.bestStreakHabitName}"` : 'momentum'}
+                    </p>
+                  </div>
+                </motion.div>
+
+                {/* Card 3: Consistency Score */}
+                <motion.div
+                  className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
+                  initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.15 }}
+                  whileHover={{ y: -2 }}
+                >
+                  <div className="flex items-center gap-1.5 text-text-muted">
+                    <TrendingUp size={14} color="#38BDF8" />
+                    <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Consistency</span>
+                  </div>
+                  <div className="flex flex-wrap items-baseline gap-1.5">
+                    <div className="hf-kpi-card-val text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
+                      {avgPct}%
+                    </div>
+                    <p className="hf-kpi-card-sub m-0 text-[11.5px] font-medium text-text-muted">
+                      7-day avg
+                    </p>
+                  </div>
+                </motion.div>
+
+                {/* Card 4: Total Done */}
+                <motion.div
+                  className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
+                  initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}
+                  whileHover={{ y: -2 }}
+                >
+                  <div className="flex items-center gap-1.5 text-text-muted">
+                    <Trophy size={14} color="#A855F7" />
+                    <span className="hf-kpi-card-title text-[11px] font-bold uppercase tracking-[0.05em]">Total Done</span>
+                  </div>
+                  <div className="flex flex-wrap items-baseline gap-1.5">
+                    <div className="hf-kpi-card-val text-[22px] font-[850] leading-none tracking-[-0.02em] text-text-primary">
+                      {stats?.totalCompletions ?? 0}
+                    </div>
+                    <p className="hf-kpi-card-sub m-0 text-[11.5px] font-medium text-text-muted">
+                      lifetime
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* ── Week day selector ── */}
+              <DashCard
+                title={isViewingToday ? '7-Day Overview' : new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+                action={
+                  !isViewingToday ? (
+                    <button
+                      onClick={() => selectDate(todayString())}
+                      className="rounded-full border border-border-default bg-[var(--surface-tint)] p-[5px_14px] text-xs font-bold text-text-primary [font-family:inherit] cursor-pointer"
+                    >
+                      Jump to today
+                    </button>
+                  ) : (
+                    <span className="text-[13px] font-bold text-text-muted">{dateStr}</span>
+                  )
+                }
+              >
+                <div className="hf-weekly-grid grid grid-cols-7 gap-1.5">
+                  {weekDates.map(({ date, dayNum, dayLabel, isToday, pct }) => {
+                    const R = 19, CIRC = 2 * Math.PI * R;
+                    const isSelected = date === selectedDate;
+                    return (
+                      <div
+                        key={date}
+                        onClick={() => selectDate(date)}
+                        className="flex cursor-pointer flex-col items-center gap-1.5"
+                      >
+                        <span className={`text-[11px] font-semibold ${isSelected ? 'text-accent-primary' : 'text-text-muted'}`}>
+                          {dayLabel}
+                        </span>
+                        <div className="relative h-[42px] w-[42px]">
+                          <svg width="42" height="42" className="absolute inset-0">
+                            <circle cx="21" cy="21" r={R} fill="none" style={{ stroke: `color-mix(in srgb, ${accentHex} 22%, transparent)` }} strokeWidth="2.5" />
+                            <circle cx="21" cy="21" r={R} fill="none" stroke={accentHex}
+                              strokeWidth="2.5" strokeLinecap="round"
+                              strokeDasharray={CIRC}
+                              strokeDashoffset={CIRC * (1 - (isToday ? todayPct : pct) / 100)}
+                              transform="rotate(-90 21 21)"
+                              className="transition-[stroke-dashoffset] duration-[600ms] ease-linear"
+                            />
+                          </svg>
+                          <div
+                            className={`absolute inset-[5px] flex items-center justify-center rounded-full transition-[background] duration-[180ms] ease-linear ${isSelected ? 'bg-accent-primary' : 'bg-transparent'}`}
+                          >
+                            <span className={`text-[13px] ${isSelected ? 'font-bold text-[var(--accent-on-primary)]' : 'font-semibold text-text-primary'}`}>
+                              {dayNum}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </DashCard>
 
               <DashCard
                 title={isViewingToday ? "Today's Habits" : new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
@@ -1950,11 +1941,11 @@ export default function FitnessSummary({
                     trendData.length > 0
                       ? trendData
                       : weekBars.map(({ date, pct }) => ({
-                          date,
-                          completed: Math.round((pct / 100) * totalCount),
-                          total: totalCount,
-                          percentage: pct,
-                        }))
+                        date,
+                        completed: Math.round((pct / 100) * totalCount),
+                        total: totalCount,
+                        percentage: pct,
+                      }))
                   }
                   currentRange={trendDays}
                   onRangeChange={(days) => setTrendDays(days)}
@@ -1964,6 +1955,7 @@ export default function FitnessSummary({
 
             {/* RIGHT COLUMN */}
             <div className="flex min-w-0 flex-col gap-[clamp(16px,2vw,22px)]">
+              {/* Consistency Score is now right at the TOP of the right column! */}
               <DashCard
                 title="Consistency Score"
                 action={avgPct > 0 ? <span className="text-[13px] font-bold text-text-primary">{avgPct}%</span> : null}
