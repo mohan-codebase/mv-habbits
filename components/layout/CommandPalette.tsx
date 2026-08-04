@@ -210,7 +210,7 @@ export default function CommandPalette({ isOpen, onClose }: Props) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             onClick={onClose}
-            className="fixed inset-0 bg-[rgba(0,0,0,0.6)] z-[100]"
+            className="fixed inset-0 bg-[rgba(0,0,0,0.6)] z-[300]"
           />
 
           {/* Palette */}
@@ -219,7 +219,7 @@ export default function CommandPalette({ isOpen, onClose }: Props) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -8 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="fixed top-[16vh] left-1/2 -translate-x-1/2 w-full max-w-[560px] px-4 z-[101]"
+            className="fixed top-[16vh] left-1/2 -translate-x-1/2 w-full max-w-[560px] px-4 z-[301]"
           >
             <div className="bg-bg-secondary border border-border-subtle rounded-2xl shadow-none overflow-hidden">
               {/* Search bar */}

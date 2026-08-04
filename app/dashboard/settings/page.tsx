@@ -5,10 +5,11 @@ import PushNotificationToggle from '@/components/settings/PushNotificationToggle
 import SecuritySettings from '@/components/settings/SecuritySettings';
 import DevicesModal from '@/components/settings/DevicesModal';
 import DataManagement from '@/components/settings/DataManagement';
+import PwaSettingsCard from '@/components/settings/PwaSettingsCard';
 import { createClient } from '@/lib/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { useTheme, useAccentColor } from '@/components/ui/ThemeProvider';
-import { Shield, Sun, Moon, HelpCircle, LogOut, Bell, Database, Smartphone } from 'lucide-react';
+import { Shield, Sun, Moon, HelpCircle, LogOut, Bell, Database, Smartphone, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function SettingsPage() {
@@ -100,6 +101,15 @@ export default function SettingsPage() {
           </div>
         </motion.div>
       )}
+
+      {/* Section: App & Installation */}
+      <div className="flex flex-col gap-3">
+        <h2 className="m-0 px-1 text-xs font-bold uppercase tracking-wider text-text-muted flex items-center gap-2">
+          <Download size={14} style={{ color: accentHex }} />
+          <span>App & Installation</span>
+        </h2>
+        <PwaSettingsCard />
+      </div>
 
       {/* Section 1: Security & Authentication */}
       <div className="flex flex-col gap-3">

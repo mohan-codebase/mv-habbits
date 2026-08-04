@@ -49,21 +49,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [darkAccent, setDarkAccentState] = useState('#8B5CF6');
 
   useEffect(() => {
-    // Sync React state to the theme the pre-paint script already applied,
-    // rather than re-deriving it. No applyTheme() call needed — the DOM is
-    // already correct, so this only catches the toggle's state up to it.
-    queueMicrotask(() => setThemeState(readAppliedTheme()));
-
-    // Read and sync custom accents from localStorage safely
-    try {
-      // Disabled to enforce #8B5CF6 everywhere
-      // const la = localStorage.getItem('productivity_master_light_accent');
-      // if (la) setLightAccentState(la);
-      // const da = localStorage.getItem('productivity_master_dark_accent');
-      // if (da) setDarkAccentState(da);
-    } catch (e) {
-      /* ignore */
-    }
+    const initial = readAppliedTheme();
+    applyTheme(initial);
+    setThemeState(initial);
 
     // Follow the OS appearance live. An actual OS change always wins and also
     // clears any manual pin — so the toggle overrides the theme until the next

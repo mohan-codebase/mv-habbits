@@ -1,91 +1,20 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Download, Share, SquarePlus, X, Sparkles } from 'lucide-react';
-
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
-}
-
-function detectIos(): boolean {
-  if (typeof navigator === 'undefined') return false;
-  const ua = navigator.userAgent;
-  if (/iPad|iPhone|iPod/.test(ua)) return true;
-  return /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
-}
+import { usePwa } from '@/components/ui/PwaContext';
 
 export default function InstallPwaPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [showPrompt, setShowPrompt] = useState(false);
-  const [isStandalone, setIsStandalone] = useState(false);
-  const [isIos, setIsIos] = useState(false);
-  const [installed, setInstalled] = useState(false);
+  const {
+    showFloatingPrompt,
+    dismissFloatingPrompt,
+    installApp,
+    isIos,
+    isStandalone,
+    isInstalled,
+    deferredPrompt,
+  } = usePwa();
 
-  useEffect(() => {
-    const isStandaloneMatch =
-      window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as unknown as { standalone?: boolean }).standalone === true ||
-      document.referrer.includes('android-app://');
-
-    setIsStandalone(Boolean(isStandaloneMatch));
-    if (isStandaloneMatch) return;
-
-    if (sessionStorage.getItem('pwa_prompt_dismissed')) return;
-
-    const ios = detectIos();
-    setIsIos(ios);
-
-    if (ios) {
-      const t = setTimeout(() => setShowPrompt(true), 2000);
-      return () => clearTimeout(t);
-    }
-
-    let promptTimer: ReturnType<typeof setTimeout>;
-
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-      promptTimer = setTimeout(() => setShowPrompt(true), 2000);
-    };
-
-    const handleAppInstalled = () => {
-      setInstalled(true);
-      setShowPrompt(false);
-      setDeferredPrompt(null);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
-
-    return () => {
-      clearTimeout(promptTimer);
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      window.removeEventListener('appinstalled', handleAppInstalled);
-    };
-  }, []);
-
-  const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
-    try {
-      await deferredPrompt.prompt();
-      const choiceResult = await deferredPrompt.userChoice;
-      if (choiceResult.outcome === 'accepted') {
-        setInstalled(true);
-        setShowPrompt(false);
-      }
-      setDeferredPrompt(null);
-    } catch (err) {
-      console.warn('[PWA] Install prompt error:', err);
-    }
-  };
-
-  const handleDismiss = () => {
-    setShowPrompt(false);
-    sessionStorage.setItem('pwa_prompt_dismissed', 'true');
-  };
-
-  const visible = !isStandalone && showPrompt && !installed;
+  const visible = !isStandalone && showFloatingPrompt && !isInstalled;
 
   if (!visible) return null;
 
@@ -93,14 +22,15 @@ export default function InstallPwaPrompt() {
     <div
       role="dialog"
       aria-label="Install App"
-      className="fixed bottom-5 right-5 z-[200] w-[calc(100%-2.5rem)] sm:w-80 p-4 
+      className="fixed bottom-[5.5rem] lg:bottom-6 left-4 right-4 sm:left-auto sm:right-6 z-[250] 
+                 w-auto sm:w-80 max-w-[calc(100%-2rem)] p-4 
                  bg-slate-900/95 backdrop-blur-xl border border-purple-500/30 
                  rounded-2xl shadow-2xl shadow-purple-950/50 text-white 
                  animate-in fade-in slide-in-from-bottom-5 duration-300 transition-all"
     >
       {/* Header with App Logo, Title, and Close Button */}
       <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 p-0.5 shrink-0 shadow-lg shadow-purple-600/30">
             <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -114,20 +44,20 @@ export default function InstallPwaPrompt() {
               />
             </div>
           </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <h4 className="font-semibold text-sm text-white">Productivity Master</h4>
-              <span className="bg-purple-500/20 text-purple-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-purple-500/30 uppercase tracking-wider">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h4 className="font-semibold text-sm text-white truncate">Productivity Master</h4>
+              <span className="bg-purple-500/20 text-purple-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-purple-500/30 uppercase tracking-wider shrink-0">
                 APP
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">Fast & easy habit tracking</p>
+            <p className="text-xs text-slate-400 mt-0.5 truncate">Fast & easy habit tracking</p>
           </div>
         </div>
 
         <button
-          onClick={handleDismiss}
-          className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
+          onClick={dismissFloatingPrompt}
+          className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
           aria-label="Close prompt"
         >
           <X className="w-4 h-4" />
@@ -150,21 +80,23 @@ export default function InstallPwaPrompt() {
             <p className="text-xs text-slate-300 leading-relaxed">
               Install our web app for instant access, offline support, and full-screen productivity.
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
               <button
-                onClick={handleInstallClick}
+                onClick={installApp}
+                disabled={!deferredPrompt}
                 className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl
                            bg-gradient-to-r from-purple-600 to-indigo-600 
                            hover:from-purple-500 hover:to-indigo-500 
+                           disabled:opacity-60 disabled:cursor-not-allowed
                            text-white font-medium text-xs shadow-md shadow-purple-600/20
-                           active:scale-95 transition-all cursor-pointer"
+                           active:scale-95 transition-all cursor-pointer min-w-[120px]"
               >
                 <Download className="w-3.5 h-3.5" />
                 Install App
               </button>
               <button
-                onClick={handleDismiss}
-                className="px-3 py-2 rounded-xl text-xs text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                onClick={dismissFloatingPrompt}
+                className="px-3 py-2 rounded-xl text-xs text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
               >
                 Not now
               </button>
@@ -175,4 +107,3 @@ export default function InstallPwaPrompt() {
     </div>
   );
 }
-

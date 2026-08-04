@@ -92,21 +92,14 @@ export default function RootLayout({
     >
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
-        <script
-          // Prevent flash of wrong theme — runs before paint.
-          dangerouslySetInnerHTML={{
-            // No favicon injection here any more — it used to append a 3.9 MB
-            // logo-dark.png as the icon on every page load. Next serves
-            // app/icon.png instead, and the gold key reads on either theme.
-            __html: `(function(){try{var t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;document.documentElement.style.setProperty('--accent-primary','#8B5CF6');}catch(e){}})();`,
-          }}
-        />
       </head>
       <body className="min-h-full">
         <Suspense fallback={<ProvidersFallback />}>
-          <AppProviders>{children}</AppProviders>
+          <AppProviders>
+            {children}
+            <InstallPwaPrompt />
+          </AppProviders>
         </Suspense>
-        <InstallPwaPrompt />
         <ServiceWorkerRegistrar />
         <SpeedInsights />
       </body>
