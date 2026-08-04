@@ -166,6 +166,7 @@ export default function SwipeToComplete({
               size={Math.round(thumbSize * 0.52)}
               style={{ color: iconColor }}
               strokeWidth={3}
+              className="relative -top-[1px] -translate-x-[1px]"
             />
           ) : (
             <X
