@@ -243,7 +243,7 @@ function SignupContent() {
             <button
               type="submit"
               disabled={loading}
-              className="auth-card-btn mt-1 w-full h-12 flex items-center justify-center gap-2 rounded-2xl text-white font-semibold text-xs sm:text-sm bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 hover:from-indigo-400 hover:to-purple-500 border border-white/20 shadow-[0_4px_20px_rgba(79,70,229,0.35)] hover:shadow-[0_6px_24px_rgba(79,70,229,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              className="auth-card-btn mt-1 w-full h-12 flex items-center justify-center gap-2 rounded-2xl text-white font-semibold text-xs sm:text-sm bg-[#8B5CF6] hover:bg-[#7C3AED] border border-white/20 shadow-[0_4px_20px_rgba(139,92,246,0.35)] hover:shadow-[0_6px_24px_rgba(139,92,246,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? (
                 <span className="flex items-center gap-2">

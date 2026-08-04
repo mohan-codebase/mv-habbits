@@ -21,7 +21,7 @@ export default function AuthLayout({ children, activeTab }: AuthLayoutProps) {
           opacity: [0.2, 0.4, 0.2],
         }}
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[36rem] sm:w-[48rem] h-[36rem] sm:h-[48rem] rounded-full bg-gradient-to-tr from-indigo-600/20 via-purple-600/20 to-pink-500/10 blur-[130px] pointer-events-none"
+        className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[36rem] sm:w-[48rem] h-[36rem] sm:h-[48rem] rounded-full bg-[#8B5CF6]/15 blur-[130px] pointer-events-none"
       />
       <motion.div
         animate={{
@@ -29,7 +29,7 @@ export default function AuthLayout({ children, activeTab }: AuthLayoutProps) {
           opacity: [0.15, 0.3, 0.15],
         }}
         transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-        className="absolute bottom-10 right-10 w-[24rem] sm:w-[32rem] h-[24rem] sm:h-[32rem] rounded-full bg-gradient-to-br from-blue-600/20 via-emerald-500/15 to-purple-600/20 blur-[120px] pointer-events-none"
+        className="absolute bottom-10 right-10 w-[24rem] sm:w-[32rem] h-[24rem] sm:h-[32rem] rounded-full bg-[#8B5CF6]/10 blur-[120px] pointer-events-none"
       />
 
       {/* Grid Pattern Background */}
@@ -47,7 +47,7 @@ export default function AuthLayout({ children, activeTab }: AuthLayoutProps) {
         >
           {/* Brand Header */}
           <Link href="/" className="inline-flex items-center gap-3 group w-fit mx-auto lg:mx-0">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 relative flex items-center justify-center p-2 rounded-2xl bg-gradient-to-tr from-white/15 to-white/5 border border-white/10 shadow-inner group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 relative flex items-center justify-center p-2 rounded-2xl bg-white/10 border border-white/10 shadow-inner group-hover:scale-105 transition-transform">
               <Image
                 src="/logo/key-gold-128.png"
                 alt="Productivity Master Logo"
@@ -72,7 +72,7 @@ export default function AuthLayout({ children, activeTab }: AuthLayoutProps) {
           <div className="space-y-2 lg:space-y-3 text-center lg:text-left">
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold font-['Outfit'] leading-[1.15] tracking-tight text-[var(--text-primary)]">
               Build daily habits that{' '}
-              <span className="bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+              <span className="text-[#C4B5FD]">
                 actually stick
               </span>
             </h1>
@@ -147,9 +147,9 @@ export default function AuthLayout({ children, activeTab }: AuthLayoutProps) {
                     <div
                       className={`w-6 sm:w-7 h-7 sm:h-8 rounded-lg flex items-center justify-center text-[10px] font-bold ${
                         i < 5
-                          ? 'bg-gradient-to-t from-indigo-600 to-indigo-500 text-white shadow-sm'
+                          ? 'bg-[#8B5CF6] text-white shadow-sm'
                           : i === 5
-                          ? 'bg-gradient-to-t from-emerald-600 to-emerald-500 text-white shadow-sm'
+                          ? 'bg-emerald-600 text-white shadow-sm'
                           : 'bg-white/10 text-slate-400 border border-white/10'
                       }`}
                     >
@@ -165,9 +165,9 @@ export default function AuthLayout({ children, activeTab }: AuthLayoutProps) {
           {/* Social Proof Footer Pill (Desktop) */}
           <div className="hidden lg:flex items-center gap-3 pt-1 text-slate-400 text-xs">
             <div className="flex -space-x-2 shrink-0 pl-0.5">
-              <div className="h-7 w-7 shrink-0 rounded-full ring-2 ring-[var(--bg-primary)] bg-gradient-to-tr from-indigo-500 to-purple-500 text-[10px] font-bold flex items-center justify-center text-white">AM</div>
-              <div className="h-7 w-7 shrink-0 rounded-full ring-2 ring-[var(--bg-primary)] bg-gradient-to-tr from-emerald-500 to-teal-500 text-[10px] font-bold flex items-center justify-center text-white">JS</div>
-              <div className="h-7 w-7 shrink-0 rounded-full ring-2 ring-[var(--bg-primary)] bg-gradient-to-tr from-pink-500 to-rose-500 text-[10px] font-bold flex items-center justify-center text-white">RK</div>
+              <div className="h-7 w-7 shrink-0 rounded-full ring-2 ring-[var(--bg-primary)] bg-[#8B5CF6] text-[10px] font-bold flex items-center justify-center text-white">AM</div>
+              <div className="h-7 w-7 shrink-0 rounded-full ring-2 ring-[var(--bg-primary)] bg-emerald-600 text-[10px] font-bold flex items-center justify-center text-white">JS</div>
+              <div className="h-7 w-7 shrink-0 rounded-full ring-2 ring-[var(--bg-primary)] bg-purple-600 text-[10px] font-bold flex items-center justify-center text-white">RK</div>
             </div>
             <span>Join <strong>15,000+</strong> high achievers building better habits daily.</span>
           </div>

@@ -46,7 +46,7 @@ function ForgotPasswordContent() {
           opacity: [0.3, 0.5, 0.3],
         }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[34rem] rounded-full bg-gradient-to-tr from-indigo-600/30 via-purple-600/20 to-pink-500/15 blur-[100px] pointer-events-none"
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[34rem] rounded-full bg-[#8B5CF6]/15 blur-[100px] pointer-events-none"
       />
       <motion.div
         animate={{
@@ -54,7 +54,7 @@ function ForgotPasswordContent() {
           opacity: [0.2, 0.35, 0.2],
         }}
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-        className="absolute bottom-10 right-10 w-[22rem] h-[22rem] rounded-full bg-gradient-to-br from-blue-600/20 via-teal-500/15 to-purple-600/20 blur-[90px] pointer-events-none"
+        className="absolute bottom-10 right-10 w-[22rem] h-[22rem] rounded-full bg-[#8B5CF6]/10 blur-[90px] pointer-events-none"
       />
 
       {/* Modern Grid Lines Overlay */}
@@ -69,7 +69,7 @@ function ForgotPasswordContent() {
       >
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center mb-5">
-          <div className="w-11 h-11 mb-2.5 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/30 border border-white/20">
+          <div className="w-11 h-11 mb-2.5 rounded-2xl bg-[#8B5CF6] flex items-center justify-center shadow-lg shadow-purple-600/30 border border-white/20">
             <Sparkles size={20} className="text-white" />
           </div>
           <h1 className="text-xl sm:text-2xl font-bold font-['Outfit'] tracking-tight text-white">
@@ -143,7 +143,7 @@ function ForgotPasswordContent() {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-1 w-full h-11 sm:h-12 flex items-center justify-center gap-2 rounded-xl text-white font-semibold text-xs sm:text-sm bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 hover:from-indigo-400 hover:to-purple-500 border border-white/20 shadow-[0_4px_20px_rgba(79,70,229,0.35)] hover:shadow-[0_6px_24px_rgba(79,70,229,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                className="mt-1 w-full h-11 sm:h-12 flex items-center justify-center gap-2 rounded-xl text-white font-semibold text-xs sm:text-sm bg-[#8B5CF6] hover:bg-[#7C3AED] border border-white/20 shadow-[0_4px_20px_rgba(139,92,246,0.35)] hover:shadow-[0_6px_24px_rgba(139,92,246,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">

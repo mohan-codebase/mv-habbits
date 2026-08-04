@@ -8,7 +8,7 @@ const EFFECTIVE_DATE = 'April 28, 2026';
 
 function PageHero({ badge, title, subtitle }: { badge: string; title: string; subtitle: React.ReactNode }) {
   return (
-    <div className="border-b border-border-subtle bg-[linear-gradient(to_bottom,var(--bg-secondary),var(--bg-primary))] [padding:clamp(80px,10vw,120px)_clamp(16px,5vw,64px)_clamp(36px,5vw,56px)] text-center">
+    <div className="border-b border-border-subtle bg-bg-secondary [padding:clamp(80px,10vw,120px)_clamp(16px,5vw,64px)_clamp(36px,5vw,56px)] text-center">
       <div className="max-w-[720px] mx-auto">
         <span className="inline-block text-xs font-semibold tracking-[0.14em] uppercase text-accent-primary [font-family:'IBM_Plex_Mono',monospace] px-3.5 py-[5px] rounded-[100px] border border-border-accent bg-accent-glow mb-5">{badge}</span>
         <h1 className="[font-size:clamp(28px,4vw,44px)] font-extrabold text-text-primary [font-family:'Outfit',sans-serif] tracking-[-0.03em] leading-[1.2] m-0 mb-3.5">{title}</h1>

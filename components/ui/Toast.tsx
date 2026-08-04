@@ -201,6 +201,19 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     setToasts((prev) => [...prev, { id, message, type, createdAt: Date.now() }]);
   }, []);
 
+  useEffect(() => {
+    const handleGlobalToast = (e: Event) => {
+      const customEvent = e as CustomEvent<{ message: string; type?: ToastType }>;
+      if (customEvent.detail?.message) {
+        toast(customEvent.detail.message, customEvent.detail.type);
+      }
+    };
+    window.addEventListener('productivity-master:toast', handleGlobalToast);
+    return () => {
+      window.removeEventListener('productivity-master:toast', handleGlobalToast);
+    };
+  }, [toast]);
+
   return (
     <ToastContext.Provider value={{ toast }}>
       {children}
@@ -221,7 +234,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ─── Hook ─────────────────────────────────────────────────────────────────────
+// ─── Hook & Helper ─────────────────────────────────────────────────────────────
 
 export function useToast(): ToastContextValue {
   const ctx = useContext(ToastContext);
@@ -230,3 +243,14 @@ export function useToast(): ToastContextValue {
   }
   return ctx;
 }
+
+export function showToast(message: string, type: ToastType = 'info') {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent('productivity-master:toast', {
+        detail: { message, type },
+      })
+    );
+  }
+}
+

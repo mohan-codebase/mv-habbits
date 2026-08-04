@@ -105,7 +105,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
     >
       {/* Top Accent Gradient Line when completed */}
       {completed && (
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-500 via-indigo-500 to-emerald-400" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#8B5CF6]" />
       )}
 
       {/* Single-Line Flex Container */}
@@ -249,7 +249,7 @@ const HabitCard = React.memo(({ habit, onToggle, onEdit, onArchive, onDelete, on
             aria-label={completed ? 'Mark incomplete' : 'Mark complete'}
             className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-90 ${
               completed
-                ? 'bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30 border border-purple-400/40'
+                ? 'bg-[#8B5CF6] text-white shadow-md shadow-purple-600/30 border border-purple-400/40'
                 : 'bg-white/[0.05] hover:bg-purple-500/20 text-slate-500 hover:text-purple-300 border border-white/15 hover:border-purple-500/50'
             }`}
           >

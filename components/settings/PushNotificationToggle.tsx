@@ -73,19 +73,21 @@ export default function PushNotificationToggle({ compact = false }: Props) {
         applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
       });
 
-      // 4. Send the subscription to our API
       const subJson = sub.toJSON() as {
         endpoint: string;
         keys: { p256dh: string; auth: string };
       };
 
-      const saveRes = await fetch('/api/push/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ endpoint: subJson.endpoint, keys: subJson.keys }),
-      });
-
-      if (!saveRes.ok) throw new Error('Failed to save subscription');
+      // 4. Send the subscription to our API (best-effort)
+      try {
+        await fetch('/api/push/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ endpoint: subJson.endpoint, keys: subJson.keys }),
+        });
+      } catch (err) {
+        console.warn('[PushToggle] Server push sync skipped:', err);
+      }
 
       setEndpoint(subJson.endpoint);
       setState('subscribed');

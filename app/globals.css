@@ -156,7 +156,7 @@
   --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
   --shadow-md: 0 4px 12px 0 rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 8px 24px 0 rgba(0, 0, 0, 0.45);
-  --shadow-accent: 0 4px 16px 0 color-mix(in srgb, var(--accent-primary) 30%, transparent);
+  --shadow-accent: 0 8px 24px 0 color-mix(in srgb, var(--accent-primary) 35%, transparent);
 
   /* Glass mechanics */
   /* --glass-blur: none; */
@@ -220,8 +220,8 @@
   --accent-secondary: var(--indigo);
   --accent-secondary-glow: var(--indigo-glow);
   --accent-warm: var(--warm);
-  --gradient-card: linear-gradient(180deg, var(--bg-tertiary), var(--bg-secondary));
-  --gradient-glow: radial-gradient(ellipse at top, color-mix(in srgb, var(--accent-primary) 5%, transparent), transparent 60%);
+  --gradient-card: var(--bg-secondary);
+  --gradient-glow: color-mix(in srgb, var(--accent-primary) 5%, transparent);
 }
 
 /* ─── Light theme ─────────────────────────────────────────────────────── */
@@ -276,7 +276,7 @@
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --shadow-accent: 0 4px 14px 0 color-mix(in srgb, var(--accent-primary) 20%, transparent);
+  --shadow-accent: 0 8px 24px 0 color-mix(in srgb, var(--accent-primary) 35%, transparent);
 
   --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.80);
 
@@ -1203,33 +1203,27 @@ input:-webkit-autofill:active {
   background: rgba(139, 92, 246, 0.55);
 }
 
-/* Ambient Purple Mesh Background - dark mode only */
+/* Ambient Purple Background - solid background */
 body {
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.12), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(124, 58, 237, 0.08), transparent);
-  background-attachment: fixed;
+  background-color: var(--bg-primary);
 }
 
-/* In light mode, use a much softer purple tint instead */
+/* In light mode */
 [data-theme="light"] body {
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.06), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(124, 58, 237, 0.04), transparent);
-  background-attachment: fixed;
+  background-color: var(--bg-primary);
 }
 
-/* Premium Gradient Text Utility */
+/* Solid Light Violet Text Utility */
 .gradient-text-purple {
-  background: linear-gradient(135deg, var(--text-primary) 0%, #C4B5FD 50%, #8B5CF6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #C4B5FD;
+  -webkit-text-fill-color: #C4B5FD;
+  background: none;
 }
 
 [data-theme="light"] .gradient-text-purple {
-  background: linear-gradient(135deg, #1E1B4B 0%, #6D28D9 50%, #8B5CF6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #7C3AED;
+  -webkit-text-fill-color: #7C3AED;
+  background: none;
 }
 
 /* Glass Card Interactive Hover Effect */

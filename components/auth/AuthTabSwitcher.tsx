@@ -16,7 +16,7 @@ export default function AuthTabSwitcher({ activeTab }: AuthTabSwitcherProps) {
         <div className="relative py-2.5 text-xs sm:text-sm font-semibold rounded-xl text-white text-center flex items-center justify-center cursor-default z-10">
           <motion.div
             layoutId="activeAuthTab"
-            className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 rounded-xl shadow-[0_0_20px_rgba(99,102,241,0.4)] border border-white/20"
+            className="absolute inset-0 bg-[#8B5CF6] rounded-xl shadow-[0_0_20px_rgba(139,92,246,0.4)] border border-white/20"
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           />
           <span className="relative z-10">Sign In</span>
@@ -35,7 +35,7 @@ export default function AuthTabSwitcher({ activeTab }: AuthTabSwitcherProps) {
         <div className="relative py-2.5 text-xs sm:text-sm font-semibold rounded-xl text-white text-center flex items-center justify-center cursor-default z-10">
           <motion.div
             layoutId="activeAuthTab"
-            className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 rounded-xl shadow-[0_0_20px_rgba(99,102,241,0.4)] border border-white/20"
+            className="absolute inset-0 bg-[#8B5CF6] rounded-xl shadow-[0_0_20px_rgba(139,92,246,0.4)] border border-white/20"
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           />
           <span className="relative z-10">Create Account</span>

@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Dumbbell, BarChart2, Trophy, Settings2 } from 'lucide-react';
+import { LayoutDashboard, Dumbbell, BarChart2, Trophy, Settings2, Sparkles } from 'lucide-react';
 
 const PAGES = [
   { label: 'Dashboard',    href: '/dashboard',              icon: LayoutDashboard, exact: true },
   { label: 'Habits',       href: '/dashboard/habits',       icon: Dumbbell,        exact: false },
+  { label: 'Quotes',       href: '/dashboard/quotes',       icon: Sparkles,        exact: false },
   { label: 'Analytics',    href: '/dashboard/analytics',    icon: BarChart2,       exact: false },
   { label: 'Achievements', href: '/dashboard/achievements', icon: Trophy,          exact: false },
   { label: 'Settings',     href: '/dashboard/settings',     icon: Settings2,       exact: false },

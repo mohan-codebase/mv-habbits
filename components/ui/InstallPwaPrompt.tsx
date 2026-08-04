@@ -31,7 +31,7 @@ export default function InstallPwaPrompt() {
       {/* Header with App Logo, Title, and Close Button */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 p-0.5 shrink-0 shadow-lg shadow-purple-600/30">
+          <div className="w-10 h-10 rounded-xl bg-[#8B5CF6] p-0.5 shrink-0 shadow-lg shadow-purple-600/30">
             <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -85,10 +85,9 @@ export default function InstallPwaPrompt() {
                 onClick={installApp}
                 disabled={!deferredPrompt}
                 className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl
-                           bg-gradient-to-r from-purple-600 to-indigo-600 
-                           hover:from-purple-500 hover:to-indigo-500 
+                           bg-[#8B5CF6] hover:bg-[#7C3AED] 
                            disabled:opacity-60 disabled:cursor-not-allowed
-                           text-white font-medium text-xs shadow-md shadow-purple-600/20
+                           text-white font-medium text-xs shadow-accent
                            active:scale-95 transition-all cursor-pointer min-w-[120px]"
               >
                 <Download className="w-3.5 h-3.5" />

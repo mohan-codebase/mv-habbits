@@ -206,7 +206,7 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
         )}
 
         {/* Top accent line */}
-        <div className="h-[3px] bg-[linear-gradient(90deg,var(--accent-primary),var(--cyan))]" />
+        <div className="h-[3px] bg-[var(--accent-primary)]" />
 
         <div className="p-[28px_28px_32px]">
           <StepDots current={step} total={STEPS} />

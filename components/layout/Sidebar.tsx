@@ -18,6 +18,7 @@ import {
   Users,
   Activity,
   NotebookPen,
+  Sparkles,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/lib/supabase/client';
@@ -39,7 +40,7 @@ function NavItem({
       onClick={onClick}
       className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm transition-all duration-150 no-underline ${
         active
-          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold shadow-md shadow-purple-600/30'
+          ? 'bg-[#8B5CF6] text-white font-bold shadow-accent'
           : 'text-slate-700 dark:text-slate-300 hover:bg-purple-500/10 hover:text-purple-600 dark:hover:text-purple-400 font-semibold'
       }`}
     >
@@ -63,7 +64,7 @@ function NavGroup({
     <div className="flex flex-col gap-0.5">
       <button
         onClick={onToggle}
-        className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold transition-opacity cursor-pointer text-left shadow-sm"
+        className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-bold transition-opacity cursor-pointer text-left shadow-sm"
       >
         <span className="flex-1">{label}</span>
         <motion.span
@@ -170,6 +171,7 @@ export default function Sidebar() {
   const isAnalyticsActive = pathname === '/dashboard/analytics';
   const isAchievementsActive = pathname === '/dashboard/achievements';
   const isYearActive = pathname === '/dashboard/year-in-review';
+  const isQuotesActive = pathname === '/dashboard/quotes';
   const isNetworkActive = pathname === '/dashboard/network';
   const isFeedActive = pathname === '/dashboard/feed';
   const isSettingsActive = pathname === '/dashboard/settings';
@@ -212,6 +214,7 @@ export default function Sidebar() {
           <p className="my-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">Habit Tracker</p>
           <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={(e) => { if (isOverviewActive) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }} />
           <NavItem icon={<NotebookPen size={17} />} label="Notes" active={isNotesActive} href="/dashboard/notes" />
+          <NavItem icon={<Sparkles size={17} />} label="Quotes" active={isQuotesActive} href="/dashboard/quotes" />
           <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" />
           <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" />
           <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" />
@@ -245,7 +248,7 @@ export default function Sidebar() {
               href="/dashboard/settings"
               className="flex items-center gap-2.5 w-full p-2.5 rounded-2xl mt-1.5 border border-[var(--border-default)] bg-[var(--bg-tertiary)] hover:bg-[var(--bg-elevated)] cursor-pointer text-left no-underline transition-all"
             >
-              <div className="w-9 h-9 rounded-full shrink-0 bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center text-xs font-extrabold shadow-sm">
+              <div className="w-9 h-9 rounded-full shrink-0 bg-[#8B5CF6] text-white flex items-center justify-center text-xs font-extrabold shadow-sm">
                 {initials}
               </div>
               <div className="flex-1 min-w-0">
@@ -304,6 +307,7 @@ export default function Sidebar() {
                 <p className="my-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500">Habit Tracker</p>
                 <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<NotebookPen size={17} />} label="Notes" active={isNotesActive} href="/dashboard/notes" onClick={() => setMobileOpen(false)} />
+                <NavItem icon={<Sparkles size={17} />} label="Quotes" active={isQuotesActive} href="/dashboard/quotes" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" onClick={() => setMobileOpen(false)} />
@@ -331,7 +335,7 @@ export default function Sidebar() {
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2.5 w-full p-2.5 rounded-2xl mt-1.5 border border-[var(--border-default)] bg-[var(--bg-tertiary)] hover:bg-[var(--bg-elevated)] cursor-pointer text-left no-underline transition-all"
                   >
-                    <div className="w-9 h-9 rounded-full shrink-0 bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center text-xs font-extrabold shadow-sm">
+                    <div className="w-9 h-9 rounded-full shrink-0 bg-[#8B5CF6] text-white flex items-center justify-center text-xs font-extrabold shadow-sm">
                       {initials}
                     </div>
                     <div className="flex-1 min-w-0">

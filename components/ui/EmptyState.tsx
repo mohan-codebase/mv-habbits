@@ -49,7 +49,7 @@ export default function EmptyState({
         {/* Outer glow ring */}
         <div
           className="pointer-events-none absolute -inset-2 rounded-full"
-          style={{ background: `radial-gradient(circle, ${accentColor}18 0%, transparent 70%)` }}
+          style={{ background: `${accentColor}18` }}
         />
 
         <motion.div

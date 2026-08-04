@@ -95,7 +95,7 @@ export default function SwipeToComplete({
       style={{
         height,
         background: completed
-          ? `linear-gradient(135deg, ${color} 0%, color-mix(in srgb, ${color} 72%, #000) 100%)`
+          ? color
           : 'var(--bg-elevated)',
         border: completed
           ? `1.5px solid rgba(255,255,255,0.28)`
@@ -112,7 +112,7 @@ export default function SwipeToComplete({
           className="pointer-events-none absolute inset-y-0 left-0 rounded-full"
           style={{
             width: fillWidth,
-            background: `linear-gradient(90deg, rgba(255,255,255,0.04) 0%, ${iconColor}66 100%)`,
+            background: `${iconColor}44`,
           }}
         />
       )}

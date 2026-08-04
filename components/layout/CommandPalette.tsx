@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, LayoutDashboard, CheckSquare, BarChart2, Trophy, Settings, Plus, X, Target, NotebookPen } from 'lucide-react';
+import { Search, LayoutDashboard, CheckSquare, BarChart2, Trophy, Settings, Plus, X, Target, NotebookPen, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 interface Command {
@@ -97,6 +97,14 @@ export default function CommandPalette({ isOpen, onClose }: Props) {
       icon: <NotebookPen size={16} />,
       action: () => navigate('/dashboard/notes'),
       keywords: ['notes', 'journal', 'log', 'entries'],
+    },
+    {
+      id: 'quotes',
+      label: 'Motivational Quotes',
+      description: 'View daily quotes & stored favorites',
+      icon: <Sparkles size={16} />,
+      action: () => navigate('/dashboard/quotes'),
+      keywords: ['quotes', 'motivation', 'inspiration', 'wisdom', 'daily', 'saved'],
     },
     {
       id: 'habits',

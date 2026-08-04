@@ -1,5 +1,6 @@
 import Sidebar from '@/components/layout/Sidebar';
 import MobileDock from '@/components/layout/MobileDock';
+import DailyQuoteModal from '@/components/quotes/DailyQuoteModal';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -9,7 +10,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {children}
       </div>
       <MobileDock />
+      <DailyQuoteModal />
     </div>
   );
 }
+
 

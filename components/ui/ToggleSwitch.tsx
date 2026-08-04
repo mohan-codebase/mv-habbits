@@ -39,15 +39,15 @@ export default function ToggleSwitch({
       <span
         className={`relative block h-8 w-[58px] rounded-full transition-all duration-300 ${
           checked
-            ? 'bg-[linear-gradient(135deg,rgba(85,85,85,0.55)_0%,rgba(114,114,114,0.35)_100%)] shadow-[0_0_0_1px_rgba(114,114,114,0.5),inset_0_1px_0_rgba(255,255,255,0.18),0_4px_16px_rgba(85,85,85,0.45)]'
-            : 'bg-[linear-gradient(135deg,rgba(188,188,188,0.45)_0%,rgba(218,218,218,0.30)_100%)] shadow-[0_0_0_1px_rgba(188,188,188,0.6),inset_0_1px_0_rgba(255,255,255,0.55),0_2px_8px_rgba(85,85,85,0.15)]'
+            ? 'bg-[#8B5CF6] shadow-[0_0_0_1px_rgba(139,92,246,0.5),0_4px_16px_rgba(139,92,246,0.45)]'
+            : 'bg-slate-700/60 shadow-[0_0_0_1px_rgba(188,188,188,0.3),0_2px_8px_rgba(0,0,0,0.15)]'
         }`}
       >
         <span
           className={`absolute top-1 flex h-6 w-6 items-center justify-center rounded-full transition-[left] duration-300 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] ${
             checked
-              ? 'bg-[linear-gradient(145deg,rgba(255,255,255,0.95)_0%,rgba(235,235,235,0.85)_100%)] shadow-[0_0_0_1px_rgba(255,255,255,0.25),0_2px_8px_rgba(85,85,85,0.5),inset_0_1px_0_rgba(255,255,255,0.9)]'
-              : 'bg-[linear-gradient(145deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.80)_100%)] shadow-[0_0_0_1px_rgba(188,188,188,0.4),0_2px_6px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,1)]'
+              ? 'bg-white shadow-[0_2px_8px_rgba(0,0,0,0.3)]'
+              : 'bg-white shadow-[0_2px_6px_rgba(0,0,0,0.2)]'
           }`}
           style={{ left: checked ? 30 : 4 }}
         >

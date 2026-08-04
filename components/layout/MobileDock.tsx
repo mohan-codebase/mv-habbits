@@ -58,8 +58,8 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
 
   return (
     <>
-      {/* Smooth bottom gradient overlay fade mask */}
-      <div className="no-print fixed bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/80 to-transparent pointer-events-none z-[209] lg:hidden" />
+      {/* Bottom overlay mask */}
+      <div className="no-print fixed bottom-0 left-0 right-0 h-28 bg-[var(--bg-primary)]/90 pointer-events-none z-[209] lg:hidden" />
 
       <div className="hf-mobile-nav no-print fixed bottom-4 left-3 right-3 z-[210] flex justify-center pointer-events-none lg:hidden">
         <motion.nav
@@ -109,7 +109,7 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
               aria-label="Add Habit"
               className="w-11 h-11 rounded-full text-white flex items-center justify-center border border-white/25 transition-all cursor-pointer relative z-10"
               style={{
-                background: `linear-gradient(135deg, ${accentHex} 0%, color-mix(in srgb, ${accentHex} 80%, #000) 100%)`,
+                background: accentHex,
                 boxShadow: `0 0 20px color-mix(in srgb, ${accentHex} 50%, transparent), 0 4px 12px rgba(0,0,0,0.4)`,
               }}
             >

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { Search, Plus, LayoutDashboard, Dumbbell, BarChart2, Trophy, Settings2, LogOut, X, ChevronDown, CalendarDays, Smile } from 'lucide-react';
+import { Search, Plus, LayoutDashboard, Dumbbell, BarChart2, Trophy, Settings2, LogOut, X, ChevronDown, CalendarDays, Smile, NotebookPen, Sparkles } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
@@ -12,11 +12,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AppLogo from '@/components/ui/AppLogo';
 
 const HABIT_SUB_NAV = [
-  { label: 'Overview',       tab: 'habits',       icon: LayoutDashboard },
-  { label: 'Analytics',      tab: 'analytics',    icon: BarChart2 },
-  { label: 'Achievements',   tab: 'achievements', icon: Trophy },
-  { label: 'Year in Review', tab: 'year-review',  icon: CalendarDays },
+  { label: 'Overview',       tab: 'habits',       href: '/dashboard',              icon: LayoutDashboard },
+  { label: 'Notes',          tab: 'notes',        href: '/dashboard/notes',        icon: NotebookPen },
+  { label: 'Quotes',         tab: 'quotes',       href: '/dashboard/quotes',       icon: Sparkles },
+  { label: 'Analytics',      tab: 'analytics',    href: '/dashboard/analytics',    icon: BarChart2 },
+  { label: 'Achievements',   tab: 'achievements', href: '/dashboard/achievements', icon: Trophy },
+  { label: 'Year in Review', tab: 'year-review',  href: '/dashboard/year-in-review', icon: CalendarDays },
 ];
+
 
 interface TopbarProps {
   activeTab?: string;
@@ -107,7 +110,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
               {user && (
                 <div className="bg-[var(--bg-tertiary)] border border-[var(--border-default)] rounded-2xl p-4 mb-5">
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 border border-white/20 flex items-center justify-center text-sm font-extrabold text-white">
+                    <div className="w-11 h-11 rounded-full bg-[#8B5CF6] border border-white/20 flex items-center justify-center text-sm font-extrabold text-white">
                       {initials}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -124,7 +127,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
                 <NotificationBell />
                 <button
                   onClick={handleAddHabit}
-                  className="flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-full border-0 bg-gradient-to-r from-purple-600 to-indigo-600 text-white cursor-pointer text-xs font-bold shadow-md shadow-purple-600/30 hover:from-purple-500 hover:to-indigo-500 transition-all active:scale-95"
+                  className="flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-full border-0 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white cursor-pointer text-xs font-bold shadow-accent transition-all active:scale-95"
                 >
                   <Plus size={18} />
                   Add Habit
@@ -134,15 +137,22 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
               {/* All nav pages */}
               <div className="flex flex-col gap-1 flex-1 overflow-y-auto">
                 <p className="my-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500">Habit Tracker</p>
-                {HABIT_SUB_NAV.map(({ label, tab, icon: Icon }) => {
-                  const active = activeTab === tab;
+                {HABIT_SUB_NAV.map(({ label, tab, href, icon: Icon }) => {
+                  const active = activeTab === tab || (pathname === href && !activeTab);
                   return (
                     <button
                       key={tab}
-                      onClick={() => { onTabChange?.(tab); setSidebarOpen(false); }}
+                      onClick={() => {
+                        if (onTabChange) {
+                          onTabChange(tab);
+                        } else if (href) {
+                          router.push(href);
+                        }
+                        setSidebarOpen(false);
+                      }}
                       className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-full cursor-pointer border-0 text-sm w-full text-left transition-all ${
                         active
-                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold shadow-sm'
+                          ? 'bg-[#8B5CF6] text-white font-bold shadow-sm'
                           : 'text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] hover:text-[var(--text-primary)] font-semibold'
                       }`}
                     >
@@ -193,12 +203,18 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
 
         {/* Center: All feature tabs (desktop only) */}
         <nav className="hidden lg:flex items-center gap-2 flex-1 mx-6">
-          {HABIT_SUB_NAV.map(({ label, tab, icon: Icon }) => {
-            const active = activeTab === tab;
+          {HABIT_SUB_NAV.map(({ label, tab, href, icon: Icon }) => {
+            const active = activeTab === tab || (pathname === href && !activeTab);
             return (
               <button
                 key={tab}
-                onClick={() => onTabChange?.(tab)}
+                onClick={() => {
+                  if (onTabChange) {
+                    onTabChange(tab);
+                  } else if (href) {
+                    router.push(href);
+                  }
+                }}
                 className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full cursor-pointer text-xs transition-all ${
                   active
                     ? 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/30 font-bold shadow-sm'
@@ -220,7 +236,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
             <NotificationBell />
             <button
               onClick={handleAddHabit}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-full border-0 bg-gradient-to-r from-purple-600 to-indigo-600 text-white cursor-pointer text-xs font-bold shadow-md shadow-purple-600/30 hover:from-purple-500 hover:to-indigo-500 transition-all active:scale-95"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-full border-0 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white cursor-pointer text-xs font-bold shadow-accent transition-all active:scale-95"
             >
               <Plus size={18} />
               Add Habit
@@ -234,7 +250,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
             {user && (
               <div
                 title={displayName}
-                className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 border border-white/20 flex items-center justify-center text-xs font-extrabold text-white cursor-pointer shadow-sm"
+                className="w-10 h-10 rounded-full bg-[#8B5CF6] border border-white/20 flex items-center justify-center text-xs font-extrabold text-white cursor-pointer shadow-sm"
               >
                 {initials}
               </div>
