@@ -161,7 +161,7 @@ function SignupContent() {
                 Full Name
               </label>
               <div className="relative flex items-center">
-                <User size={17} className="absolute left-3.5 z-10 text-slate-400 pointer-events-none" />
+                <User size={17} className="absolute left-4 z-10 text-slate-400 pointer-events-none" />
                 <input
                   type="text"
                   value={fullName}
@@ -170,7 +170,7 @@ function SignupContent() {
                   autoComplete="name"
                   required
                   style={{ paddingLeft: '48px', paddingRight: '16px' }}
-                  className="auth-input w-full h-12 bg-[var(--input-bg)] hover:bg-[var(--bg-tertiary)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-2xl text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                  className="auth-input w-full h-12 bg-[var(--input-bg)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-full text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
                 />
               </div>
             </div>
@@ -181,7 +181,7 @@ function SignupContent() {
                 Email Address
               </label>
               <div className="relative flex items-center">
-                <Mail size={17} className="absolute left-3.5 z-10 text-slate-400 pointer-events-none" />
+                <Mail size={17} className="absolute left-4 z-10 text-slate-400 pointer-events-none" />
                 <input
                   type="email"
                   value={email}
@@ -190,7 +190,7 @@ function SignupContent() {
                   autoComplete="email"
                   required
                   style={{ paddingLeft: '48px', paddingRight: '16px' }}
-                  className="auth-input w-full h-12 bg-[var(--input-bg)] hover:bg-[var(--bg-tertiary)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-2xl text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                  className="auth-input w-full h-12 bg-[var(--input-bg)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-full text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
                 />
               </div>
             </div>
@@ -201,7 +201,7 @@ function SignupContent() {
                 Password
               </label>
               <div className="relative flex items-center">
-                <Lock size={17} className="absolute left-3.5 z-10 text-slate-400 pointer-events-none" />
+                <Lock size={17} className="absolute left-4 z-10 text-slate-400 pointer-events-none" />
                 <input
                   type={showPw ? 'text' : 'password'}
                   value={password}
@@ -211,12 +211,12 @@ function SignupContent() {
                   required
                   minLength={8}
                   style={{ paddingLeft: '48px', paddingRight: '48px' }}
-                  className="auth-input-pw w-full h-12 bg-[var(--input-bg)] hover:bg-[var(--bg-tertiary)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-2xl text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+                  className="auth-input-pw w-full h-12 bg-[var(--input-bg)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-full text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPw(!showPw)}
-                  className="absolute right-3.5 z-10 p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+                  className="absolute right-4 z-10 p-1 text-[var(--text-muted)] transition-colors cursor-pointer"
                   aria-label={showPw ? 'Hide password' : 'Show password'}
                 >
                   {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -243,7 +243,7 @@ function SignupContent() {
             <button
               type="submit"
               disabled={loading}
-              className="auth-card-btn mt-1 w-full h-12 flex items-center justify-center gap-2 rounded-2xl text-white font-semibold text-xs sm:text-sm bg-[#8B5CF6] hover:bg-[#7C3AED] border border-white/20 shadow-[0_4px_20px_rgba(139,92,246,0.35)] hover:shadow-[0_6px_24px_rgba(139,92,246,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              className="auth-card-btn mt-1 w-full h-12 flex items-center justify-center gap-2 rounded-full text-white font-semibold text-xs sm:text-sm bg-[#8B5CF6] border border-white/20 active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? (
                 <span className="flex items-center gap-2">

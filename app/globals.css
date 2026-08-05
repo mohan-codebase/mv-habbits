@@ -1287,15 +1287,15 @@ body {
 
 /* ─── Auth Page Specific Overrides ────────────────────────────────────── */
 .auth-card-btn {
-  border-radius: 12px !important;
+  border-radius: 9999px !important;
 }
 
 .auth-tab-btn {
-  border-radius: 8px !important;
+  border-radius: 9999px !important;
 }
 
 .auth-social-btn {
-  border-radius: 10px !important;
+  border-radius: 9999px !important;
 }
 
 .auth-input {
@@ -1304,6 +1304,7 @@ body {
   color: var(--text-primary) !important;
   background: var(--input-bg) !important;
   border: 1.5px solid var(--input-border) !important;
+  border-radius: 9999px !important;
 }
 
 .auth-input-pw {
@@ -1312,6 +1313,7 @@ body {
   color: var(--text-primary) !important;
   background: var(--input-bg) !important;
   border: 1.5px solid var(--input-border) !important;
+  border-radius: 9999px !important;
 }
 
 /* Light mode: inputs get full contrast — solid white bg, visible border */
@@ -1323,7 +1325,8 @@ body {
   background: #FFFFFF !important;
   color: #1E1B4B !important;
   border: 1.5px solid rgba(139, 92, 246, 0.3) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: none !important;
+  border-radius: 9999px !important;
 }
 
 [data-theme="light"] .auth-input::placeholder,

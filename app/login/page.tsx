@@ -75,7 +75,7 @@ function LoginContent() {
       >
         {error && (
           <div
-            className="mb-4 p-3.5 rounded-2xl flex items-start gap-2.5 text-xs font-medium"
+            className="mb-4 p-3.5 rounded-full flex items-start gap-2.5 text-xs font-medium px-5"
             style={{
               background: error.includes('successfully')
                 ? 'rgba(16, 185, 129, 0.12)'
@@ -114,7 +114,7 @@ function LoginContent() {
             Email Address
           </label>
           <div className="relative flex items-center">
-            <Mail size={17} className="absolute left-3.5 z-10 text-[var(--text-muted)] pointer-events-none" />
+            <Mail size={17} className="absolute left-4 z-10 text-[var(--text-muted)] pointer-events-none" />
             <input
               type="email"
               value={email}
@@ -122,7 +122,7 @@ function LoginContent() {
               placeholder="you@example.com"
               autoComplete="email"
               required
-              className="w-full h-12 pl-11 pr-4 bg-[var(--input-bg)] hover:bg-[var(--bg-tertiary)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-2xl text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+              className="w-full h-12 pl-12 pr-5 bg-[var(--input-bg)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-full text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
             />
           </div>
         </div>
@@ -135,13 +135,13 @@ function LoginContent() {
             </label>
             <Link
               href="/forgot-password"
-              className="text-xs font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
+              className="text-xs font-medium text-indigo-400 transition-colors"
             >
               Forgot password?
             </Link>
           </div>
           <div className="relative flex items-center">
-            <Lock size={17} className="absolute left-3.5 z-10 text-[var(--text-muted)] pointer-events-none" />
+            <Lock size={17} className="absolute left-4 z-10 text-[var(--text-muted)] pointer-events-none" />
             <input
               type={showPw ? 'text' : 'password'}
               value={password}
@@ -149,12 +149,12 @@ function LoginContent() {
               placeholder="Enter your password"
               autoComplete="current-password"
               required
-              className="w-full h-12 pl-11 pr-11 bg-[var(--input-bg)] hover:bg-[var(--bg-tertiary)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-2xl text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
+              className="w-full h-12 pl-12 pr-12 bg-[var(--input-bg)] focus:bg-[var(--bg-tertiary)] border border-[var(--input-border)] focus:border-indigo-500/80 rounded-full text-[var(--text-primary)] text-xs sm:text-sm placeholder:text-[var(--text-muted)] outline-none focus:ring-4 focus:ring-indigo-500/20 transition-all"
             />
             <button
               type="button"
               onClick={() => setShowPw(!showPw)}
-              className="absolute right-3.5 z-10 p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+              className="absolute right-4 z-10 p-1 text-[var(--text-muted)] transition-colors cursor-pointer"
               aria-label={showPw ? 'Hide password' : 'Show password'}
             >
               {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -166,7 +166,7 @@ function LoginContent() {
         <button
           type="submit"
           disabled={loading}
-          className="mt-1 w-full h-12 flex items-center justify-center gap-2 rounded-2xl text-white font-semibold text-xs sm:text-sm bg-[#8B5CF6] hover:bg-[#7C3AED] border border-white/20 shadow-[0_4px_20px_rgba(139,92,246,0.35)] hover:shadow-[0_6px_24px_rgba(139,92,246,0.5)] active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+          className="mt-1 w-full h-12 flex items-center justify-center gap-2 rounded-full text-white font-semibold text-xs sm:text-sm bg-[#8B5CF6] border border-white/20 active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
         >
           {loading ? (
             <span className="flex items-center gap-2">
