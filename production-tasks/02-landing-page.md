@@ -206,7 +206,8 @@ Accordion, one client component. Minimum questions:
 4. Do you offer refunds? → link `/refunds`.
 5. Does it work offline? → be honest: check-ins require a connection today.
 6. Can I export my data? → yes, JSON / CSV / Excel / PDF.
-7. Who can see my habits? → private by default; sharing with friends/family is opt-in
+7. Who can see my habits? → only you. There is no sharing feature — habits are
+   private, enforced by RLS (do not promise friends/family sharing; it was removed)
    per habit.
 
 Use native `<details>`/`<summary>` styled with CSS rather than a JS accordion — it is

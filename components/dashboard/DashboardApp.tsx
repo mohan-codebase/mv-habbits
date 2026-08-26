@@ -1,10 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { CheckSquare, Compass, User, LogOut, Sun, Moon, Lock, Unlock, Eye, EyeOff, Shield, Globe } from 'lucide-react';
-import DevicesModal from '@/components/settings/DevicesModal';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Unlock, Eye, EyeOff } from 'lucide-react';
 import FitnessSummary from '@/components/dashboard/FitnessSummary';
 import type { OverviewStats as OverviewStatsType } from '@/types/analytics';
 import type { HabitWithEntry } from '@/types/habit';
@@ -22,6 +20,15 @@ interface DashboardAppProps {
   dayName: string;
   dateStr: string;
 }
+
+// Unlocking lasts for the life of the browser tab. sessionStorage (not
+// localStorage) is deliberate: closing the tab re-locks, which is the whole
+// point of a privacy lock.
+const UNLOCK_KEY = 'productivity_master_habits_unlocked';
+
+// 'checking' also covers the first paint — habits must never render before we
+// know whether this account is locked, or the lock is decorative.
+type LockState = 'checking' | 'locked' | 'unlocked';
 
 function FaceIdGlyph({ size = 68 }: { size?: number }) {
   return (
@@ -52,42 +59,27 @@ export default function DashboardApp({
   displayName,
   initials,
   email,
-  greeting,
-  heroLine,
-  heroPct,
-  dayName,
-  dateStr,
 }: DashboardAppProps) {
-  const router = useRouter();
-  const [activeApp, setActiveApp] = useState<'habits' | null>('habits');
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [devicesOpen, setDevicesOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [isDark, setIsDark] = useState(true);
+  const [lockState, setLockState] = useState<LockState>('checking');
 
-  // Passcode Lock States
-  const [showLockScreen, setShowLockScreen] = useState(false);
-  const [lockScreenMode, setLockScreenMode] = useState<'create' | 'unlock'>('unlock');
+  // Passcode lock state. Setup (create / reset / biometric enrollment) is owned
+  // by components/settings/SecuritySettings.tsx — this component only enforces.
   const [passcode, setPasscode] = useState('');
-  const [confirmPasscode, setConfirmPasscode] = useState('');
   const [passcodeError, setPasscodeError] = useState<string | null>(null);
   const [showPasscodeText, setShowPasscodeText] = useState(false);
-  // True while the server passcode lookup is in flight (used to gate the
-  // habits button so we never show "create" before the server answers).
-  const [passcodeChecking, setPasscodeChecking] = useState(false);
-  // Lock status from the server (never the code itself).
-  const [hasPasscode, setHasPasscode] = useState(false);
   const [hasBiometric, setHasBiometric] = useState(false);
   // Whether this device exposes a platform authenticator (Face ID / Touch ID).
   const [biometricSupported, setBiometricSupported] = useState(false);
-  // True while a WebAuthn ceremony (enroll / unlock) is running.
+  // True while a WebAuthn ceremony is running.
   const [biometricBusy, setBiometricBusy] = useState(false);
-  const habitsUnlockedRef = useRef(false);
+  // Set when the lock-status lookup itself failed (offline / server down).
+  const [statusUnavailable, setStatusUnavailable] = useState(false);
 
-  // Ask the server for lock status — { hasPasscode, hasBiometric } — and mirror
-  // it into state. The code itself never leaves the server; verification is
-  // done via POST /api/passcode/verify. `ok` is false when the server is
-  // unreachable so callers can avoid bypassing the lock while offline.
+  // Ask the server for lock status — { hasPasscode, hasBiometric }. The code
+  // itself never leaves the server; verification is done via
+  // POST /api/passcode/verify. `ok` is false when the server is unreachable so
+  // callers can avoid bypassing the lock while offline.
   type LockStatus = { ok: boolean; hasPasscode: boolean; hasBiometric: boolean };
   const fetchLockStatus = async (): Promise<LockStatus> => {
     try {
@@ -98,7 +90,6 @@ export default function DashboardApp({
           hasPasscode: Boolean(json.data.hasPasscode),
           hasBiometric: Boolean(json.data.hasBiometric),
         };
-        setHasPasscode(next.hasPasscode);
         setHasBiometric(next.hasBiometric);
         return { ok: true, ...next };
       }
@@ -113,10 +104,22 @@ export default function DashboardApp({
     .map((n) => n.charAt(0).toUpperCase() + n.slice(1))
     .join(' ');
 
+  const resolveLockState = async () => {
+    setStatusUnavailable(false);
+    const status = await fetchLockStatus();
+    if (!status.ok) {
+      // Fail closed. We cannot verify a passcode without the server, so
+      // treating "unknown" as "unlocked" would let anyone past the lock by
+      // pulling the network cable.
+      setStatusUnavailable(true);
+      setLockState('locked');
+      return;
+    }
+    setLockState(status.hasPasscode ? 'locked' : 'unlocked');
+  };
+
   useEffect(() => {
     setIsMounted(true);
-    const theme = localStorage.getItem('productivity_master_theme') || 'dark';
-    setIsDark(theme === 'dark');
 
     // One-time cleanup: older builds cached the raw passcode here.
     localStorage.removeItem('semma_flow_habits_passcode');
@@ -129,184 +132,43 @@ export default function DashboardApp({
         .catch(() => setBiometricSupported(false));
     }
 
-    // Fetch lock status quietly to populate states without showing the lock screen on mount.
-    habitsUnlockedRef.current = true;
-    fetchLockStatus();
+    if (sessionStorage.getItem(UNLOCK_KEY) === '1') {
+      setLockState('unlocked');
+      return;
+    }
+
+    resolveLockState();
   }, []);
 
-
-  const handleSelectApp = async (app: 'habits' | 'trip') => {
-    if (app === 'habits') {
-      // Always check the server so a fresh login/device asks to UNLOCK with
-      // the existing passcode rather than creating a new one.
-      setPasscodeChecking(true);
-      const status = await fetchLockStatus();
-      setPasscodeChecking(false);
-      if (!status.ok) {
-        alert('Could not reach the server. Check your connection and try again.');
-        return;
-      }
-      setPasscode('');
-      setPasscodeError(null);
-      if (status.hasPasscode) {
-        setLockScreenMode('unlock');
-        setShowLockScreen(true);
-      } else {
-        setLockScreenMode('create');
-        setShowLockScreen(true);
-      }
-    } else {
-      router.push('/trip');
-    }
+  const unlock = () => {
+    sessionStorage.setItem(UNLOCK_KEY, '1');
+    setPasscode('');
+    setPasscodeError(null);
+    setLockState('unlocked');
   };
 
   const handleVerifyPasscode = async () => {
-    if (lockScreenMode === 'create') {
-      if (!passcode.trim()) {
-        setPasscodeError('Passcode cannot be empty.');
-        return;
-      }
-      if (passcode !== confirmPasscode) {
-        setPasscodeError('Passcodes do not match.');
-        return;
-      }
-      // Persist to the server (stored as a salted hash) so the lock works
-      // across devices.
-      try {
-        const res = await fetch('/api/passcode', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ passcode }),
-        });
-        if (!res.ok) {
-          setPasscodeError('Could not save passcode. Please try again.');
-          return;
-        }
-      } catch {
-        setPasscodeError('Could not save passcode. Check your connection.');
-        return;
-      }
-      setHasPasscode(true);
-      habitsUnlockedRef.current = true;
-      localStorage.setItem('productivity_master_active_app', 'habits');
-      setActiveApp('habits');
-      setShowLockScreen(false);
-      setPasscode('');
-      setConfirmPasscode('');
-      setPasscodeError(null);
-      window.dispatchEvent(new Event('productivity-master:active-app-changed'));
-    } else {
-      // Verify against the server-side hash — the code is never stored locally.
-      try {
-        const res = await fetch('/api/passcode/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ passcode }),
-        });
-        const json = await res.json();
-        if (res.ok && json?.data?.verified) {
-          habitsUnlockedRef.current = true;
-          localStorage.setItem('productivity_master_active_app', 'habits');
-          setActiveApp('habits');
-          setShowLockScreen(false);
-          setPasscode('');
-          setPasscodeError(null);
-          window.dispatchEvent(new Event('productivity-master:active-app-changed'));
-        } else if (res.ok) {
-          setPasscodeError('Incorrect passcode. Please try again.');
-        } else {
-          setPasscodeError('Could not verify passcode. Please try again.');
-        }
-      } catch {
-        setPasscodeError('Could not verify passcode. Check your connection.');
-      }
-    }
-  };
-
-  const handleBackToHub = () => {
-    habitsUnlockedRef.current = false;
-    localStorage.removeItem('productivity_master_active_app');
-    setActiveApp(null);
-    setShowLockScreen(false);
-    window.dispatchEvent(new Event('productivity-master:active-app-changed'));
-  };
-
-  const handleResetPasscode = async () => {
-    if (!hasPasscode) {
-      alert('No passcode is currently set.');
+    if (!passcode.trim()) {
+      setPasscodeError('Enter your passcode.');
       return;
     }
-
-    const input = prompt('Enter your current passcode to confirm reset:');
-    if (input === null) return; // cancelled
-
+    // Verify against the server-side hash — the code is never stored locally.
     try {
-      // Confirm the current passcode server-side before removing anything.
-      const verifyRes = await fetch('/api/passcode/verify', {
+      const res = await fetch('/api/passcode/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ passcode: input }),
+        body: JSON.stringify({ passcode }),
       });
-      const verifyJson = await verifyRes.json();
-      if (!verifyRes.ok || !verifyJson?.data?.verified) {
-        alert('Incorrect passcode. Reset failed.');
-        return;
-      }
-
-      // Removes the passcode and any biometric credentials server-side.
-      const res = await fetch('/api/passcode', { method: 'DELETE' });
-      if (!res.ok) {
-        alert('Could not remove the lock. Please try again.');
-        return;
+      const json = await res.json();
+      if (res.ok && json?.data?.verified) {
+        unlock();
+      } else if (res.ok) {
+        setPasscodeError('Incorrect passcode. Please try again.');
+      } else {
+        setPasscodeError('Could not verify passcode. Please try again.');
       }
     } catch {
-      alert('Could not remove the lock. Check your connection.');
-      return;
-    }
-
-    habitsUnlockedRef.current = false;
-    localStorage.removeItem('productivity_master_active_app');
-    setHasPasscode(false);
-    setHasBiometric(false);
-    setActiveApp(null);
-    setShowLockScreen(false);
-    setMenuOpen(false);
-    window.dispatchEvent(new Event('productivity-master:active-app-changed'));
-    alert('Habit lock has been successfully removed.');
-  };
-
-  // Enroll this device's Face ID / Touch ID as a habit-lock unlock method.
-  const handleEnrollBiometric = async () => {
-    setBiometricBusy(true);
-    try {
-      const optRes = await fetch('/api/passcode/webauthn/register');
-      const optJson = await optRes.json();
-      if (!optRes.ok || !optJson?.data) {
-        alert(optJson?.error || 'Could not start biometric setup.');
-        return;
-      }
-      const { startRegistration } = await import('@simplewebauthn/browser');
-      const response = await startRegistration({ optionsJSON: optJson.data });
-      const verRes = await fetch('/api/passcode/webauthn/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ response }),
-      });
-      const verJson = await verRes.json();
-      if (verRes.ok && verJson?.data?.verified) {
-        setHasBiometric(true);
-        setMenuOpen(false);
-        alert('Face ID / Touch ID unlock is now enabled.');
-      } else {
-        alert(verJson?.error || 'Could not enable biometric unlock.');
-      }
-    } catch (e) {
-      // NotAllowedError = user dismissed the OS prompt; stay quiet.
-      if ((e as Error)?.name !== 'NotAllowedError') {
-        alert('Biometric setup was cancelled or is unavailable on this device.');
-      }
-    } finally {
-      setBiometricBusy(false);
+      setPasscodeError('Could not verify passcode. Check your connection.');
     }
   };
 
@@ -330,51 +192,18 @@ export default function DashboardApp({
       });
       const verJson = await verRes.json();
       if (verRes.ok && verJson?.data?.verified) {
-        habitsUnlockedRef.current = true;
-        localStorage.setItem('productivity_master_active_app', 'habits');
-        setActiveApp('habits');
-        setShowLockScreen(false);
-        setPasscode('');
-        setPasscodeError(null);
-        window.dispatchEvent(new Event('productivity-master:active-app-changed'));
+        unlock();
       } else {
         setPasscodeError('Face ID failed. Try your passcode.');
       }
     } catch (e) {
+      // NotAllowedError = user dismissed the OS prompt; stay quiet.
       if ((e as Error)?.name !== 'NotAllowedError') {
         setPasscodeError('Face ID failed. Try your passcode.');
       }
     } finally {
       setBiometricBusy(false);
     }
-  };
-
-  // Remove this account's biometric credentials (passcode stays).
-  const handleDisableBiometric = async () => {
-    if (!confirm('Disable Face ID / Touch ID unlock? Your passcode will still work.')) return;
-    setBiometricBusy(true);
-    try {
-      const res = await fetch('/api/passcode/webauthn/register', { method: 'DELETE' });
-      if (!res.ok) {
-        alert('Could not disable biometric unlock. Please try again.');
-        return;
-      }
-      setHasBiometric(false);
-      setMenuOpen(false);
-      alert('Biometric unlock disabled.');
-    } catch {
-      alert('Could not disable biometric unlock. Check your connection.');
-    } finally {
-      setBiometricBusy(false);
-    }
-  };
-
-  const toggleTheme = () => {
-    const next = isDark ? 'light' : 'dark';
-    setIsDark(!isDark);
-    localStorage.setItem('productivity_master_theme', next);
-    document.documentElement.dataset.theme = next;
-    document.documentElement.style.colorScheme = next;
   };
 
   const handleSignOut = async () => {
@@ -387,24 +216,14 @@ export default function DashboardApp({
     }
   };
 
-  if (!isMounted) return null;
-
-  if (activeApp === 'habits') {
-    return (
-      <FitnessSummary
-        stats={stats}
-        habits={habits}
-        weekData={weekData}
-        displayName={formattedName}
-        initials={initials}
-        email={email}
-        onBackToHub={handleBackToHub}
-      />
-    );
+  // Render a bare background rather than null so there is no flash of habit
+  // data before the lock decision is made.
+  if (!isMounted || lockState === 'checking') {
+    return <div className="min-h-[100dvh] bg-bg-primary" />;
   }
 
-  if (showLockScreen) {
-    const canUseFaceId = lockScreenMode === 'unlock' && hasBiometric && biometricSupported;
+  if (lockState === 'locked') {
+    const canUseFaceId = hasBiometric && biometricSupported && !statusUnavailable;
 
     return (
       <div className="flex min-h-[100dvh] items-center justify-center bg-bg-primary p-6 font-[system-ui,-apple-system,BlinkMacSystemFont,'Segoe_UI',sans-serif]">
@@ -421,130 +240,127 @@ export default function DashboardApp({
                 : 'w-[70px] h-[70px] rounded-full bg-[color-mix(in_srgb,var(--text-primary)_9%,transparent)] shadow-none'
             }`}
           >
-            {canUseFaceId ? <FaceIdGlyph size={70} /> : lockScreenMode === 'create' ? <Lock size={28} /> : <Unlock size={28} />}
+            {canUseFaceId ? <FaceIdGlyph size={70} /> : <Unlock size={28} />}
           </div>
 
           <h2 className="m-0 text-2xl font-[760] tracking-normal text-text-primary">
-            {lockScreenMode === 'create' ? 'Set Habit Passcode' : canUseFaceId ? 'Face ID' : 'Habits Locked'}
+            {canUseFaceId ? 'Face ID' : 'Habits Locked'}
           </h2>
           <p className="m-0 mb-6 mt-2 text-sm leading-[1.45] text-text-secondary">
-            {lockScreenMode === 'create'
-              ? 'Create a passcode to protect your habit tracking entries.'
+            {statusUnavailable
+              ? 'Could not reach the server to check your lock. Reconnect and try again.'
               : canUseFaceId
                 ? 'Use Face ID to unlock Habit Tracker.'
                 : 'Enter your passcode to unlock Habit Tracker.'}
           </p>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleVerifyPasscode();
-            }}
-            className="flex flex-col gap-4"
-          >
-            {canUseFaceId && (
-              <>
-                <button
-                  type="button"
-                  disabled={biometricBusy}
-                  onClick={handleBiometricUnlock}
-                  className={`flex w-full items-center justify-center gap-[9px] rounded-2xl border-none bg-text-primary py-3.5 text-[15px] font-[760] text-bg-primary shadow-[0_10px_24px_rgba(0,0,0,0.18)] transition-[transform,filter,opacity] duration-150 ease-[ease] disabled:cursor-wait ${
-                    biometricBusy ? 'cursor-wait opacity-[0.72]' : 'cursor-pointer opacity-100'
-                  }`}
-                >
-                  <FaceIdGlyph size={22} />
-                  {biometricBusy ? 'Looking for Face ID...' : 'Use Face ID'}
-                </button>
-                <div className="flex items-center gap-2.5">
-                  <span className="h-px flex-1 bg-border-subtle" />
-                  <span className="text-xs font-semibold text-text-muted">Passcode</span>
-                  <span className="h-px flex-1 bg-border-subtle" />
-                </div>
-              </>
-            )}
-            <div className="relative w-full">
-              <input
-                autoFocus
-                type={showPasscodeText ? 'text' : 'password'}
-                placeholder="Enter passcode"
-                value={passcode}
-                onChange={(e) => {
-                  setPasscode(e.target.value);
-                  setPasscodeError(null);
-                }}
-                className="box-border w-full rounded-2xl border border-[color-mix(in_srgb,var(--text-primary)_11%,transparent)] bg-[color-mix(in_srgb,var(--text-primary)_6%,transparent)] p-[13px_42px_13px_14px] text-center text-base font-semibold font-[inherit] text-text-primary outline-none transition-all duration-150 ease-[ease] focus:border-[color-mix(in_srgb,var(--text-primary)_26%,transparent)]"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPasscodeText(!showPasscodeText)}
-                className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center border-none bg-none p-1 text-text-muted cursor-pointer"
-              >
-                {showPasscodeText ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-
-            {lockScreenMode === 'create' && (
-              <input
-                type={showPasscodeText ? 'text' : 'password'}
-                placeholder="Confirm passcode"
-                value={confirmPasscode}
-                onChange={(e) => {
-                  setConfirmPasscode(e.target.value);
-                  setPasscodeError(null);
-                }}
-                className="box-border w-full rounded-2xl border border-[color-mix(in_srgb,var(--text-primary)_11%,transparent)] bg-[color-mix(in_srgb,var(--text-primary)_6%,transparent)] p-[13px_14px] text-center text-base font-semibold font-[inherit] text-text-primary outline-none transition-all duration-150 ease-[ease] focus:border-[color-mix(in_srgb,var(--text-primary)_26%,transparent)]"
-              />
-            )}
-
-            {passcodeError && (
-              <p className="m-0 text-[13px] font-semibold text-[#6a6a6a]">
-                {passcodeError}
-              </p>
-            )}
-
+          {statusUnavailable ? (
             <div className="mt-2 flex flex-col gap-2.5">
               <button
-                type="submit"
-                className={`w-full cursor-pointer rounded-2xl border-none py-[13px] text-[15px] font-[760] transition-all duration-150 ease-[ease] ${
-                  canUseFaceId
-                    ? 'bg-[color-mix(in_srgb,var(--text-primary)_8%,transparent)] text-text-primary'
-                    : 'bg-text-primary text-bg-primary'
-                }`}
+                type="button"
+                onClick={resolveLockState}
+                className="w-full cursor-pointer rounded-2xl border-none bg-text-primary py-[13px] text-[15px] font-[760] text-bg-primary transition-all duration-150 ease-[ease]"
               >
-                {lockScreenMode === 'create' ? 'Save and Unlock' : canUseFaceId ? 'Unlock with Passcode' : 'Unlock'}
+                Try again
               </button>
-
               <button
                 type="button"
-                onClick={() => {
-                  setShowLockScreen(false);
-                  setPasscode('');
-                  setConfirmPasscode('');
-                  setPasscodeError(null);
-                }}
+                onClick={handleSignOut}
                 className="w-full cursor-pointer rounded-2xl border border-[color-mix(in_srgb,var(--text-primary)_9%,transparent)] bg-transparent py-3 text-sm font-semibold text-text-secondary transition-all duration-150 ease-[ease]"
               >
-                Cancel
+                Sign out
               </button>
             </div>
-          </form>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleVerifyPasscode();
+              }}
+              className="flex flex-col gap-4"
+            >
+              {canUseFaceId && (
+                <>
+                  <button
+                    type="button"
+                    disabled={biometricBusy}
+                    onClick={handleBiometricUnlock}
+                    className={`flex w-full items-center justify-center gap-[9px] rounded-2xl border-none bg-text-primary py-3.5 text-[15px] font-[760] text-bg-primary shadow-[0_10px_24px_rgba(0,0,0,0.18)] transition-[transform,filter,opacity] duration-150 ease-[ease] disabled:cursor-wait ${
+                      biometricBusy ? 'cursor-wait opacity-[0.72]' : 'cursor-pointer opacity-100'
+                    }`}
+                  >
+                    <FaceIdGlyph size={22} />
+                    {biometricBusy ? 'Looking for Face ID...' : 'Use Face ID'}
+                  </button>
+                  <div className="flex items-center gap-2.5">
+                    <span className="h-px flex-1 bg-border-subtle" />
+                    <span className="text-xs font-semibold text-text-muted">Passcode</span>
+                    <span className="h-px flex-1 bg-border-subtle" />
+                  </div>
+                </>
+              )}
+              <div className="relative w-full">
+                <input
+                  autoFocus
+                  type={showPasscodeText ? 'text' : 'password'}
+                  placeholder="Enter passcode"
+                  value={passcode}
+                  onChange={(e) => {
+                    setPasscode(e.target.value);
+                    setPasscodeError(null);
+                  }}
+                  className="box-border w-full rounded-2xl border border-[color-mix(in_srgb,var(--text-primary)_11%,transparent)] bg-[color-mix(in_srgb,var(--text-primary)_6%,transparent)] p-[13px_42px_13px_14px] text-center text-base font-semibold font-[inherit] text-text-primary outline-none transition-all duration-150 ease-[ease] focus:border-[color-mix(in_srgb,var(--text-primary)_26%,transparent)]"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPasscodeText(!showPasscodeText)}
+                  className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center border-none bg-none p-1 text-text-muted cursor-pointer"
+                >
+                  {showPasscodeText ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+
+              {passcodeError && (
+                <p className="m-0 text-[13px] font-semibold text-[#6a6a6a]">
+                  {passcodeError}
+                </p>
+              )}
+
+              <div className="mt-2 flex flex-col gap-2.5">
+                <button
+                  type="submit"
+                  className={`w-full cursor-pointer rounded-2xl border-none py-[13px] text-[15px] font-[760] transition-all duration-150 ease-[ease] ${
+                    canUseFaceId
+                      ? 'bg-[color-mix(in_srgb,var(--text-primary)_8%,transparent)] text-text-primary'
+                      : 'bg-text-primary text-bg-primary'
+                  }`}
+                >
+                  {canUseFaceId ? 'Unlock with Passcode' : 'Unlock'}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="w-full cursor-pointer rounded-2xl border border-[color-mix(in_srgb,var(--text-primary)_9%,transparent)] bg-transparent py-3 text-sm font-semibold text-text-secondary transition-all duration-150 ease-[ease]"
+                >
+                  Sign out
+                </button>
+              </div>
+            </form>
+          )}
         </motion.div>
       </div>
     );
   }
 
-
   return (
-    <>
-      <FitnessSummary
-        stats={stats}
-        habits={habits}
-        weekData={weekData}
-        displayName={formattedName}
-        initials={initials}
-        email={email}
-      />
-      <DevicesModal isOpen={devicesOpen} onClose={() => setDevicesOpen(false)} />
-    </>
+    <FitnessSummary
+      stats={stats}
+      habits={habits}
+      weekData={weekData}
+      displayName={formattedName}
+      initials={initials}
+      email={email}
+    />
   );
 }

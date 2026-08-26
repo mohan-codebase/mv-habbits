@@ -84,14 +84,14 @@ app/
   auth/callback/        → Supabase OAuth callback
   dashboard/            → the product itself (RSC pages)
     page.tsx            → main dashboard, server-fetches habits + entries
-    analytics/ achievements/ notes/ quotes/ network/ feed/ year-in-review/ settings/
+    analytics/ achievements/ notes/ quotes/ year-in-review/ settings/
     habits/[id]/
   api/                  → 23 route handlers, all JSON, all auth-checked
 components/
   dashboard/FitnessSummary.tsx   → 2,137 lines. The real product UI. Handle with care.
   dashboard/DashboardApp.tsx     → wrapper: passcode lock + renders FitnessSummary
   landing/Navbar.tsx             → EXISTS, links to /#features /#how-it-works /#pricing /#faq
-  layout/  ui/  habits/  analytics/  settings/  social/  auth/  quotes/  onboarding/
+  layout/  ui/  analytics/  settings/  auth/  quotes/  onboarding/
 lib/
   supabase/{client,server,cached-server}.ts
   utils/{dates,api,url,export,import,pdf}.ts
@@ -231,7 +231,7 @@ Update this as work completes. `⬜ not started · 🟨 in progress · ✅ done 
 
 | Doc | Title | Status | Notes |
 |---|---|---|---|
-| 01 | Launch blockers | ⬜ | |
+| 01 | Launch blockers | 🟨 | All 🤖 agent tasks done. Blocked on human: apply migrations 029 + 030, upgrade Vercel to Pro, verify a reminder on a real device. |
 | 02 | Landing page | ⬜ | |
 | 03 | Pricing & gating | ⬜ | |
 | 04 | Payments | ⬜ | Provider decision required — see doc |
@@ -244,6 +244,34 @@ Update this as work completes. `⬜ not started · 🟨 in progress · ✅ done 
 | 11 | Testing & CI | ⬜ | |
 | 12 | SEO & onboarding | ⬜ | |
 | 13 | Go-live checklist | ⬜ | |
+
+---
+
+## 6b. Built but unreachable — do not delete, re-wire
+
+A dead-code sweep found that an earlier component-based dashboard
+(`TodayHabits` and its tree) was replaced by the monolithic
+`components/dashboard/FitnessSummary.tsx`, and ~23 files that only the old
+dashboard reached were removed. These survivors were **deliberately kept**: the
+code works, but nothing reaches it because its only caller was deleted. Each is
+a feature the app already paid for and silently stopped shipping.
+
+| What | Where | Needs |
+|---|---|---|
+| Onboarding wizard (419 lines, complete) | `components/onboarding/OnboardingWizard.tsx` | Re-mount in `FitnessSummary` for first-run users. **Doc `12` should wire this up, not rebuild it.** |
+| Realtime entry sync | `lib/hooks/useRealtimeEntries.ts` | Re-mount in `FitnessSummary` so multi-device updates work again |
+| AI habit coach | `app/api/coach/route.ts` (`@anthropic-ai/sdk`) | No UI calls it. **Doc `03` gates it as Premium (`FREE_AI_COACH: no`) — it must be reachable before it can be sold.** |
+| Habit reordering | `app/api/habits/reorder/route.ts` | No UI calls it. Drag-and-drop died with `HabitList`; `@hello-pangea/dnd` is still installed for it |
+
+**Removed outright:** the social feature (Network + Feed tabs, `components/social/`,
+`app/api/social/*`, and the `friends` / `families` / `family_members` /
+`feed_reactions` / `feed_comments` tables via migration `031`). It was a shell —
+no UI could create a connection or set `habits.visibility`, and `profiles_select`
+was never widened past `auth.uid() = id`, so the feed was empty by construction
+for every user. Doc `03` no longer prices it.
+
+> Removing any of these is a product decision, not cleanup. They are the reason
+> `@hello-pangea/dnd` and `@anthropic-ai/sdk` are still in `package.json`.
 
 ---
 

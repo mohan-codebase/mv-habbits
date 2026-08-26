@@ -58,7 +58,7 @@ and SQL triggers, so changing them later means changing two places.
 | `FREE_MAX_HABITS` | `5` |
 | `FREE_ANALYTICS_DAYS` | `30` |
 | `FREE_MAX_REMINDERS` | `1` |
-| `FREE_MAX_CONNECTIONS` | `3` |
+| ~~`FREE_MAX_CONNECTIONS`~~ | — (social feature removed; see migration `031`) |
 | `FREE_EXPORT_FORMATS` | `json` |
 | `FREE_AI_COACH` | `no` |
 | `FREE_VIDEO_ATTACHMENTS` | `no` |
@@ -79,7 +79,7 @@ and SQL triggers, so changing them later means changing two places.
 
 | Key | Value | Decision | Notes |
 |---|---|---|---|
-| `VERCEL_PLAN` | `TODO` | D5 | **`pro` required** for 5-minute crons. Hobby caps cron at once-daily, which breaks reminders entirely (doc 01 §B1). |
+| `VERCEL_PLAN` | `pro` | D5 | **`pro` required** for 5-minute crons. Hobby caps cron at once-daily, which breaks reminders entirely (doc 01 §B1). |
 | `SUPABASE_PLAN` | `TODO` | | `pro` recommended — PITR backups, no auto-pausing |
 | `SUPABASE_REGION` | `TODO` | | Cannot be changed later without a migration. Pick closest to your expected majority of users. |
 | `VERCEL_FUNCTION_REGION` | `TODO` | | Match SUPABASE_REGION or you add ~200ms to every query |
@@ -90,12 +90,12 @@ and SQL triggers, so changing them later means changing two places.
 
 | Key | Value | Decision | Notes |
 |---|---|---|---|
-| `DROP_ORPHANED_TABLES` | `TODO` | D6 | `yes` recommended — trip/expense tables are unused and contain hardcoded personal seed data (doc 01 §B5). ⚠️ Destructive. |
+| `DROP_ORPHANED_TABLES` | `yes` | D6 | `yes` recommended — trip/expense tables are unused and contain hardcoded personal seed data (doc 01 §B5). ⚠️ Destructive. |
 | `KEEP_GOALS_TABLE` | `yes` | | Referenced by visibility policies in migration 026 |
 | `KEEP_DAILY_MOODS_TABLE` | `yes` | | Tiny, plausible near-term feature |
-| `PASSCODE_LOCK_FEATURE` | `TODO` | | `disable` (recommended for launch) / `enable`. See doc 01 §B3. |
+| `PASSCODE_LOCK_FEATURE` | `enable` | | Doc 01 §B3 recommended `disable`, but the grep it asks for shows `SecuritySettings.tsx` already ships working setup UI — so the feature is reachable and only enforcement is dead. Wiring it up beats shipping a lock that lies. |
 | `APPLE_SIGN_IN` | `TODO` | | `keep` (needs $99/yr Apple account + JWT rotation every 6 months) / `remove` |
-| `CRON_STRATEGY` | `TODO` | | `vercel-pro` / `external`. See doc 01 §B1. |
+| `CRON_STRATEGY` | `vercel-pro` | | See doc 01 §B1. Requires the Vercel project to actually be upgraded to Pro before `*/5` takes effect. |
 
 ## 7. Launch
 

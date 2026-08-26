@@ -16,6 +16,10 @@ function initWebPush() {
   if (initialised) return;
   const pub = process.env.VAPID_PUBLIC_KEY;
   const priv = process.env.VAPID_PRIVATE_KEY;
+  // TODO(DECISIONS.md): SUPPORT_EMAIL is unset, so this fallback still names a
+  // domain this app is not served from. Push services use the VAPID subject to
+  // contact the sender about a misbehaving endpoint — set VAPID_SUBJECT in
+  // Vercel to a real mailto: you monitor, then delete this fallback.
   const subject = process.env.VAPID_SUBJECT ?? 'mailto:hello@productivity-master.app';
 
   if (!pub || !priv) {

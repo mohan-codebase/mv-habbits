@@ -10,6 +10,7 @@ import NotificationBell from '@/components/layout/NotificationBell';
 import ThemeToggle from '@/components/layout/ThemeToggle';
 import { motion, AnimatePresence } from 'framer-motion';
 import AppLogo from '@/components/ui/AppLogo';
+import CoinBadge from '@/components/ui/CoinBadge';
 
 const HABIT_SUB_NAV = [
   { label: 'Overview',       tab: 'habits',       href: '/dashboard',              icon: LayoutDashboard },
@@ -122,7 +123,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
               )}
 
               {/* Quick Actions */}
-              <div className="flex gap-2 mb-5">
+              <div className="flex gap-2 mb-3">
                 <ThemeToggle />
                 <NotificationBell />
                 <button
@@ -132,6 +133,11 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
                   <Plus size={18} />
                   Add Habit
                 </button>
+              </div>
+
+              {/* Coin Balance */}
+              <div className="mb-5">
+                <CoinBadge />
               </div>
 
               {/* All nav pages */}
@@ -232,6 +238,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
         <div className="flex items-center gap-3 shrink-0">
           {/* Desktop actions (ONLY visible on lg screens and larger!) */}
           <div className="hidden lg:flex items-center gap-2">
+            <CoinBadge compact />
             <ThemeToggle />
             <NotificationBell />
             <button

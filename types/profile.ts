@@ -8,6 +8,7 @@ export interface Profile {
   timezone: string | null;
   week_start_day: number | null;
   tier: Tier;
+  coins: number;
 }
 
 /**

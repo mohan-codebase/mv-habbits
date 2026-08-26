@@ -1,5 +1,8 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 
+// 'trips' and 'expenses' dropped in migration 030. The loop below only reads
+// keys listed here, so a pre-030 backup file that still carries them imports
+// cleanly — those keys are simply ignored rather than erroring.
 const IMPORT_TABLES = [
   'profiles',
   'categories',
@@ -8,9 +11,7 @@ const IMPORT_TABLES = [
   'achievements',
   'daily_moods',
   'todos',
-  'expenses',
-  'goals',
-  'trips'
+  'goals'
 ];
 
 export async function importUserData(supabase: SupabaseClient, userId: string, file: File): Promise<void> {

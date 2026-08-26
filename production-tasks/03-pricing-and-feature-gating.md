@@ -52,8 +52,8 @@ real marginal cost (**AI coach, push, storage**), not on crippling the core loop
 | Notes on entries | ✅ | ✅ |
 | Video attachments on entries | ❌ | ✅ |
 | Data export | **JSON only** | JSON, CSV, Excel, PDF report |
-| Social — friends & family feed | ✅ up to 3 connections | Unlimited |
-| Habit lock (passcode / Face ID) | ❌ | ✅ *(only if doc 01 §B3 Option B is done)* |
+| ~~Social — friends & family feed~~ | — | — | **Removed.** The feature was a non-functional shell (no UI could create a connection or set habit visibility); deleted in doc 01's cleanup along with migration `031`. Do not price it. |
+| Habit lock (passcode / Face ID) | ❌ | ✅ *(enforcement wired up in doc 01 §B3 — the feature now works)* |
 | Themes | ✅ Light & dark | ✅ + accent colors |
 | Support | Email, best effort | Email, priority |
 
@@ -334,9 +334,9 @@ export async function POST(req: NextRequest) {
 | `app/api/export/route.ts` | requested format must be in `limits.exportFormats` |
 | `app/api/analytics/heatmap/route.ts` | clamp range to `limits.analyticsHistoryDays` |
 | `app/api/analytics/trends/route.ts` | same clamp |
-| `app/api/analytics/patterns/route.ts` | `limits.patternAnalysis` |
+| ~~`app/api/analytics/patterns/route.ts`~~ | Route deleted — it had no caller. |
 | `app/api/entries/route.ts` (PATCH) | reject `video_path` when `!limits.videoAttachments` |
-| `app/api/social/*` | connection count vs `limits.maxConnections` |
+| ~~`app/api/social/*`~~ | Routes deleted — social feature removed. |
 | `app/dashboard/year-in-review/page.tsx` | server component — read tier, render upsell instead of content |
 
 > **Do not clamp analytics by silently returning less data with a 200.** Return the
@@ -372,7 +372,6 @@ Rules that matter more than the visual design:
 | Analytics history | Still stored, view clamped to 30 days. |
 | Reminders | All but one disabled; user picks which stays. |
 | Video attachments | Kept and viewable, no new uploads. |
-| Social connections over 3 | Kept, no new connections. |
 | Exports | JSON only. |
 
 Implement the "pick which 5" flow as a one-time modal on next login after downgrade.

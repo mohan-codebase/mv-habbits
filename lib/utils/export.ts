@@ -1,5 +1,8 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 
+// 'trips' and 'expenses' were removed here in migration 030 along with the
+// tables themselves. 'trips' never matched a real table anyway — the trip
+// planner's table was trip_trips — so exporting it only ever logged a warning.
 const EXPORT_TABLES = [
   'categories',
   'habits',
@@ -7,9 +10,7 @@ const EXPORT_TABLES = [
   'achievements',
   'daily_moods',
   'todos',
-  'expenses',
-  'goals',
-  'trips'
+  'goals'
 ];
 
 export async function exportUserData(supabase: SupabaseClient, userId: string) {

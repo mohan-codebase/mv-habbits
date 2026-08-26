@@ -15,8 +15,6 @@ import {
   Search,
   X,
   Menu,
-  Users,
-  Activity,
   NotebookPen,
   Sparkles,
 } from 'lucide-react';
@@ -27,6 +25,7 @@ import { useTheme } from '@/components/ui/ThemeProvider';
 import CommandPalette from '@/components/layout/CommandPalette';
 import DevicesModal from '@/components/settings/DevicesModal';
 import AppLogo from '@/components/ui/AppLogo';
+import CoinBadge from '@/components/ui/CoinBadge';
 
 // Sidebar nav row — filled when active, hover tint otherwise.
 function NavItem({
@@ -172,8 +171,6 @@ export default function Sidebar() {
   const isAchievementsActive = pathname === '/dashboard/achievements';
   const isYearActive = pathname === '/dashboard/year-in-review';
   const isQuotesActive = pathname === '/dashboard/quotes';
-  const isNetworkActive = pathname === '/dashboard/network';
-  const isFeedActive = pathname === '/dashboard/feed';
   const isSettingsActive = pathname === '/dashboard/settings';
 
   return (
@@ -210,6 +207,11 @@ export default function Sidebar() {
           <span className="text-[11px] font-bold text-slate-500">⌘K</span>
         </button>
 
+        {/* Coin Balance */}
+        <div className="mb-3">
+          <CoinBadge />
+        </div>
+
         <nav className="flex flex-col gap-1">
           <p className="my-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">Habit Tracker</p>
           <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={(e) => { if (isOverviewActive) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }} />
@@ -218,10 +220,6 @@ export default function Sidebar() {
           <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" />
           <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" />
           <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" />
-
-          <p className="mt-3.5 mb-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">Social</p>
-          <NavItem icon={<Users size={17} />} label="Network" active={isNetworkActive} href="/dashboard/network" />
-          <NavItem icon={<Activity size={17} />} label="Feed" active={isFeedActive} href="/dashboard/feed" />
 
           <p className="mt-3.5 mb-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">Settings</p>
           <NavItem icon={<Settings size={17} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" />
@@ -303,6 +301,11 @@ export default function Sidebar() {
                 <span className="text-[11px] font-bold text-slate-500">⌘K</span>
               </button>
 
+              {/* Coin Balance */}
+              <div className="mb-3">
+                <CoinBadge />
+              </div>
+
               <nav className="flex flex-col gap-1">
                 <p className="my-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500">Habit Tracker</p>
                 <NavItem icon={<LayoutDashboard size={17} />} label="Overview" active={isOverviewActive} href="/dashboard" onClick={() => setMobileOpen(false)} />
@@ -311,10 +314,6 @@ export default function Sidebar() {
                 <NavItem icon={<BarChart3 size={17} />} label="Analytics" active={isAnalyticsActive} href="/dashboard/analytics" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<Trophy size={17} />} label="Achievements" active={isAchievementsActive} href="/dashboard/achievements" onClick={() => setMobileOpen(false)} />
                 <NavItem icon={<CalendarCheck size={17} />} label="Year in Review" active={isYearActive} href="/dashboard/year-in-review" onClick={() => setMobileOpen(false)} />
-
-                <p className="mt-3.5 mb-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500">Social</p>
-                <NavItem icon={<Users size={17} />} label="Network" active={isNetworkActive} href="/dashboard/network" onClick={() => setMobileOpen(false)} />
-                <NavItem icon={<Activity size={17} />} label="Feed" active={isFeedActive} href="/dashboard/feed" onClick={() => setMobileOpen(false)} />
 
                 <p className="mt-3.5 mb-1.5 px-3 text-[10px] font-bold tracking-widest uppercase text-slate-500">Settings</p>
                 <NavItem icon={<Settings size={17} />} label="Settings" active={isSettingsActive} href="/dashboard/settings" onClick={() => setMobileOpen(false)} />

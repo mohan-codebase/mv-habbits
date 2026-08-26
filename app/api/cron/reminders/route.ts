@@ -2,18 +2,56 @@
 // Sends push notifications for habits whose reminder_time falls within the
 // current 5-minute window AND have not been completed today.
 //
-// Schedule: every 5 minutes via Vercel Cron (vercel.json) or any external cron.
+// Schedule: every 5 minutes via Vercel Cron (vercel.json). The ±2-minute window
+// below assumes that cadence — if the schedule slips to anything coarser, most
+// reminder times stop matching any window and silently never fire.
 // Auth: pass Authorization: Bearer <CRON_SECRET> header.
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { sendPushNotification } from '@/lib/webpush';
 
+// Vercel caps this anyway; declaring it keeps the budget below honest.
+export const maxDuration = 60;
+
+// PostgREST returns at most 1000 rows per request, so every unbounded read here
+// has to page or it silently truncates. `.in()` lists go into the query string,
+// so they have to be chunked or long user lists blow the URL length limit.
+const PAGE_SIZE = 1000;
+const IN_CHUNK = 200;
+const PUSH_CONCURRENCY = 10;
+// Leave headroom under maxDuration to flush cleanup and return a real response.
+const TIME_BUDGET_MS = 50_000;
+
 function ok<T>(data: T) {
   return NextResponse.json({ data });
 }
 function err(message: string, status = 400) {
   return NextResponse.json({ error: message }, { status });
+}
+
+function chunk<T>(items: T[], size: number): T[][] {
+  const out: T[][] = [];
+  for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
+  return out;
+}
+
+// Run `worker` over `items` with at most `limit` in flight. Push sends are
+// network-bound and independent, so serialising them was the main reason a
+// large user base could exceed the function's execution limit.
+async function mapWithConcurrency<T>(
+  items: T[],
+  limit: number,
+  worker: (item: T) => Promise<void>
+): Promise<void> {
+  let cursor = 0;
+  const runners = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (cursor < items.length) {
+      const item = items[cursor++];
+      await worker(item);
+    }
+  });
+  await Promise.all(runners);
 }
 
 // Use the service-role key so we can read all users' habits & subscriptions
@@ -77,7 +115,18 @@ function timeWindow(nowHHMM: string): string[] {
   return slots;
 }
 
+type HabitRow = {
+  id: string;
+  user_id: string;
+  name: string;
+  icon: string | null;
+  reminder_time: string | null;
+};
+
 export async function POST(req: NextRequest) {
+  const startedAt = Date.now();
+  const outOfTime = () => Date.now() - startedAt > TIME_BUDGET_MS;
+
   // ── Auth check ────────────────────────────────────────────────────────
   const cronSecret = process.env.CRON_SECRET;
   if (cronSecret) {
@@ -95,20 +144,37 @@ export async function POST(req: NextRequest) {
   }
 
   // ── Fetch all active habits that have a reminder_time ────────────────
-  const { data: habits, error: habitsErr } = await supabase
-    .from('habits')
-    .select('id, user_id, name, icon, reminder_time')
-    .eq('is_archived', false)
-    .not('reminder_time', 'is', null);
+  // Index-backed by idx_habits_reminder_active (migration 008), whose partial
+  // predicate matches these two filters exactly. Paged because PostgREST would
+  // otherwise stop at 1000 rows and drop every habit past that on the floor.
+  const habits: HabitRow[] = [];
+  for (let page = 0; ; page++) {
+    const from = page * PAGE_SIZE;
+    const { data, error: habitsErr } = await supabase
+      .from('habits')
+      .select('id, user_id, name, icon, reminder_time')
+      .eq('is_archived', false)
+      .not('reminder_time', 'is', null)
+      .order('id', { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
 
-  if (habitsErr) {
-    console.error('[cron/reminders] habits fetch error:', habitsErr);
-    return err('DB error fetching habits', 500);
+    if (habitsErr) {
+      console.error('[cron/reminders] habits fetch error:', habitsErr);
+      return err('DB error fetching habits', 500);
+    }
+    if (!data || data.length === 0) break;
+    habits.push(...(data as HabitRow[]));
+    if (data.length < PAGE_SIZE) break;
+    if (outOfTime()) {
+      console.error('[cron/reminders] time budget hit while paging habits');
+      break;
+    }
   }
-  if (!habits || habits.length === 0) return ok({ sent: 0 });
+
+  if (habits.length === 0) return ok({ sent: 0 });
 
   // ── Group habits by user_id ───────────────────────────────────────────
-  const byUser: Record<string, typeof habits> = {};
+  const byUser: Record<string, HabitRow[]> = {};
   for (const h of habits) {
     if (!byUser[h.user_id]) byUser[h.user_id] = [];
     byUser[h.user_id].push(h);
@@ -117,14 +183,15 @@ export async function POST(req: NextRequest) {
   const userIds = Object.keys(byUser);
 
   // ── Fetch user timezones from profiles ───────────────────────────────
-  const { data: profiles } = await supabase
-    .from('profiles')
-    .select('id, timezone')
-    .in('id', userIds);
-
   const tzMap: Record<string, string> = {};
-  for (const p of profiles ?? []) {
-    tzMap[p.id] = p.timezone ?? 'UTC';
+  for (const ids of chunk(userIds, IN_CHUNK)) {
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, timezone')
+      .in('id', ids);
+    for (const p of profiles ?? []) {
+      tzMap[p.id] = p.timezone ?? 'UTC';
+    }
   }
 
   // ── Fetch completions per user, scoped to that user's local calendar
@@ -132,38 +199,53 @@ export async function POST(req: NextRequest) {
   // which silently re-fired reminders for users whose local calendar had
   // already rolled to "tomorrow" relative to UTC.
   const localDates = Array.from(new Set(userIds.map((u) => currentDateInTZ(tzMap[u] ?? 'UTC'))));
-  const { data: entries } = await supabase
-    .from('habit_entries')
-    .select('habit_id, entry_date, user_id')
-    .eq('is_completed', true)
-    .in('entry_date', localDates)
-    .in('user_id', userIds);
-
   const doneByUserDate = new Map<string, Set<string>>();
-  for (const e of entries ?? []) {
-    const key = `${e.user_id}|${e.entry_date}`;
-    const set = doneByUserDate.get(key) ?? new Set<string>();
-    set.add(e.habit_id);
-    doneByUserDate.set(key, set);
+  for (const ids of chunk(userIds, IN_CHUNK)) {
+    const { data: entries } = await supabase
+      .from('habit_entries')
+      .select('habit_id, entry_date, user_id')
+      .eq('is_completed', true)
+      .in('entry_date', localDates)
+      .in('user_id', ids);
+
+    for (const e of entries ?? []) {
+      const key = `${e.user_id}|${e.entry_date}`;
+      const set = doneByUserDate.get(key) ?? new Set<string>();
+      set.add(e.habit_id);
+      doneByUserDate.set(key, set);
+    }
   }
 
   // ── Fetch all push subscriptions for these users ──────────────────────
-  const { data: subs } = await supabase
-    .from('push_subscriptions')
-    .select('user_id, endpoint, p256dh, auth_key')
-    .in('user_id', userIds);
+  type SubRow = { user_id: string; endpoint: string; p256dh: string; auth_key: string };
+  const subsByUser: Record<string, SubRow[]> = {};
+  for (const ids of chunk(userIds, IN_CHUNK)) {
+    const { data: subs } = await supabase
+      .from('push_subscriptions')
+      .select('user_id, endpoint, p256dh, auth_key')
+      .in('user_id', ids);
 
-  const subsByUser: Record<string, typeof subs> = {};
-  for (const s of subs ?? []) {
-    if (!subsByUser[s.user_id]) subsByUser[s.user_id] = [];
-    subsByUser[s.user_id]!.push(s);
+    for (const s of (subs ?? []) as SubRow[]) {
+      if (!subsByUser[s.user_id]) subsByUser[s.user_id] = [];
+      subsByUser[s.user_id].push(s);
+    }
   }
 
   // ── Send notifications ────────────────────────────────────────────────
   let sent = 0;
+  let usersProcessed = 0;
+  let truncated = false;
   const staleEndpoints: string[] = [];
 
   for (const userId of userIds) {
+    // Bail out cleanly rather than being killed mid-run — an unreported
+    // timeout looks identical to "nobody had a reminder due".
+    if (outOfTime()) {
+      truncated = true;
+      break;
+    }
+    usersProcessed++;
+
     const userSubs = subsByUser[userId] ?? [];
     if (userSubs.length === 0) continue;
 
@@ -185,7 +267,7 @@ export async function POST(req: NextRequest) {
         ? `Time to do: ${names[0]}!`
         : `Time for ${names.length} habits: ${names.slice(0, 2).join(', ')}${names.length > 2 ? '…' : ''}`;
 
-    for (const sub of userSubs) {
+    await mapWithConcurrency(userSubs, PUSH_CONCURRENCY, async (sub) => {
       try {
         await sendPushNotification(
           { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth_key } },
@@ -193,23 +275,36 @@ export async function POST(req: NextRequest) {
         );
         sent++;
       } catch (e: unknown) {
-        // 410 Gone = subscription expired; mark for cleanup
-        if ((e as { statusCode?: number }).statusCode === 410) {
+        // 404/410 = subscription is gone for good; mark for cleanup.
+        const status = (e as { statusCode?: number }).statusCode;
+        if (status === 410 || status === 404) {
           staleEndpoints.push(sub.endpoint);
         } else {
           console.error('[cron/reminders] push send error:', e);
         }
       }
-    }
+    });
   }
 
   // ── Cleanup stale subscriptions ───────────────────────────────────────
-  if (staleEndpoints.length > 0) {
+  for (const endpoints of chunk(staleEndpoints, IN_CHUNK)) {
     await supabase
       .from('push_subscriptions')
       .delete()
-      .in('endpoint', staleEndpoints);
+      .in('endpoint', endpoints);
   }
 
-  return ok({ sent, staleRemoved: staleEndpoints.length });
+  if (truncated) {
+    console.error(
+      `[cron/reminders] time budget exhausted after ${usersProcessed}/${userIds.length} users`
+    );
+  }
+
+  return ok({
+    sent,
+    staleRemoved: staleEndpoints.length,
+    usersProcessed,
+    usersTotal: userIds.length,
+    truncated,
+  });
 }

@@ -120,7 +120,7 @@ export default function CommandPalette({ isOpen, onClose }: Props) {
       description: 'Create a new habit',
       icon: <Plus size={16} />,
       action: () => {
-        // Signal TodayHabits to open form — it picks this up on mount / focus
+        // Signal FitnessSummary to open the add-habit form — it reads this on mount
         localStorage.setItem('productivity_master_open_form', '1');
         navigate('/dashboard');
       },

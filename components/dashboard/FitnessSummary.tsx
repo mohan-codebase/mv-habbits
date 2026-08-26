@@ -5,9 +5,8 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   User, Plus, LayoutDashboard, BarChart3, Trophy, Sparkles,
-  CalendarCheck, Compass, Settings, Flame, CheckCircle2, TrendingUp,
-  Target, Sun, Moon, ArrowLeft, Wallet, Receipt, MapPin, ExternalLink,
-  Luggage, Coins, ChevronDown, ChevronUp, Ban, Download,
+  CalendarCheck, Settings, Flame, CheckCircle2, TrendingUp,
+  Target, Sun, Moon, ArrowLeft, ChevronDown, ChevronUp, Ban, Download,
 } from 'lucide-react';
 import { DynamicIcon, HABIT_ICON_NAMES } from '@/lib/icons';
 import DevicesModal from '@/components/settings/DevicesModal';
@@ -23,6 +22,7 @@ import { createClient } from '@/lib/supabase/client';
 import type { HabitEntry } from '@/types/entry';
 import { useToast } from '@/components/ui/Toast';
 import SwipeToComplete from '@/components/ui/SwipeToComplete';
+import { COIN_PER_COMPLETION, COIN_UNCOMPLETE_PENALTY } from '@/lib/coins';
 
 interface FitnessSummaryProps {
   stats: OverviewStats | null;
@@ -31,7 +31,6 @@ interface FitnessSummaryProps {
   displayName?: string;
   initials?: string;
   email?: string;
-  onBackToHub?: () => void;
 }
 
 const PURPLE = 'var(--accent-primary)';
@@ -1515,9 +1514,9 @@ export default function FitnessSummary({
   weekData,
   displayName = 'User',
   initials = '?',
-  onBackToHub,
 }: FitnessSummaryProps) {
   const accentHex = useAccentColor();
+  const { toast } = useToast();
   const [localHabits, setLocalHabits] = useState<HabitWithEntry[]>(habits);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [addOpen, setAddOpen] = useState(false);
@@ -1528,7 +1527,6 @@ export default function FitnessSummary({
   const [dateEntries, setDateEntries] = useState<Record<string, boolean>>({});
   const [loadingDate, setLoadingDate] = useState(false);
   const [habitNavOpen, setHabitNavOpen] = useState(true);
-  const [tripNavOpen, setTripNavOpen] = useState(false);
   const [showAllGoodHabits, setShowAllGoodHabits] = useState(false);
   const [trendDays, setTrendDays] = useState<number>(30);
   const [trendData, setTrendData] = useState<DailyTrend[]>([]);
@@ -1549,6 +1547,17 @@ export default function FitnessSummary({
     fetchTrends();
     return () => { isMounted = false; };
   }, [trendDays]);
+
+  // The command palette's "New Habit" action cannot call into this component
+  // directly (it lives in the Topbar/Sidebar tree), so it leaves a flag and
+  // navigates here. Previously the only reader was TodayHabits, the dashboard
+  // this component replaced — so the command silently did nothing.
+  useEffect(() => {
+    if (localStorage.getItem('productivity_master_open_form') === '1') {
+      localStorage.removeItem('productivity_master_open_form');
+      setAddOpen(true);
+    }
+  }, []);
 
   // ── Theme (sidebar/topbar quick toggle) ──
   // Reflect the theme actually applied to <html>; re-sync after the profile
@@ -1673,6 +1682,14 @@ export default function FitnessSummary({
         const body = await res.json().catch(() => ({}));
         console.error('[handleToggle] API error', res.status, body);
         throw new Error(`Failed to save entry: ${res.status} ${JSON.stringify(body)}`);
+      }
+      // Show coin feedback
+      const json = await res.json().catch(() => ({}));
+      const awarded = json?.data?.coins_awarded ?? (!currentDone ? COIN_PER_COMPLETION : COIN_UNCOMPLETE_PENALTY);
+      if (awarded > 0) {
+        toast(`🪙 +${awarded} coin${awarded !== 1 ? 's' : ''}`, 'success');
+      } else if (awarded < 0) {
+        toast(`🪙 ${awarded} coin${Math.abs(awarded) !== 1 ? 's' : ''}`, 'info');
       }
     } catch (err) {
       console.error('[handleToggle] toggle failed, reverting:', err);

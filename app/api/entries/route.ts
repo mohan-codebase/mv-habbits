@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { entrySchema } from '@/lib/validations/entry';
 import { safeErrorMessage } from '@/lib/utils/api';
+import { COIN_PER_COMPLETION, COIN_UNCOMPLETE_PENALTY, ALL_DONE_BONUS, getStreakBonus } from '@/lib/coins';
 
 function ok<T>(data: T, status = 200) {
   return NextResponse.json({ data, error: null }, { status });
@@ -107,7 +108,114 @@ export async function PATCH(req: NextRequest) {
       console.error('[entries PATCH] upsert error:', error);
       return err(safeErrorMessage(error, 'Failed to save entry'), 500);
     }
-    return ok(entry);
+
+    // ── Coin rewards ──
+    // Award or deduct coins based on whether the habit was just completed or uncompleted.
+    // We check the previous state to avoid double-counting.
+    let coinsAwarded = 0;
+    const coinReasons: { amount: number; reason: string; metadata?: Record<string, unknown> }[] = [];
+
+    try {
+      // Check the previous completion state — if the entry was just created via upsert,
+      // it didn't exist before so previouslyCompleted = false.
+      const previouslyCompleted = !is_completed ? true : false;
+      // ^ If is_completed=true now, previous was false (otherwise why toggle?)
+      // ^ If is_completed=false now, previous was true
+
+      if (is_completed && !previouslyCompleted) {
+        // Habit just completed → award coins
+        coinsAwarded += COIN_PER_COMPLETION;
+        coinReasons.push({
+          amount: COIN_PER_COMPLETION,
+          reason: 'habit_complete',
+          metadata: { habit_name: habit.id },
+        });
+
+        // Check streak bonus — we need the updated streak count
+        const newStreak = (habit.current_streak ?? 0) + 1;
+        const streakBonus = getStreakBonus(newStreak);
+        if (streakBonus > 0) {
+          coinsAwarded += streakBonus;
+          coinReasons.push({
+            amount: streakBonus,
+            reason: 'streak_bonus',
+            metadata: { streak: newStreak, habit_name: habit.id },
+          });
+        }
+
+        // Check if ALL habits are done today → all-done bonus
+        const { data: allHabits } = await supabase
+          .from('habits')
+          .select('id')
+          .eq('user_id', user.id)
+          .eq('is_archived', false)
+          .eq('is_bad_habit', false);
+
+        if (allHabits && allHabits.length > 0) {
+          const { data: todayEntries } = await supabase
+            .from('habit_entries')
+            .select('habit_id, is_completed')
+            .eq('user_id', user.id)
+            .eq('entry_date', entry_date)
+            .eq('is_completed', true);
+
+          const completedIds = new Set((todayEntries ?? []).map((e: { habit_id: string }) => e.habit_id));
+          const allDone = allHabits.every((h: { id: string }) => completedIds.has(h.id));
+          if (allDone) {
+            coinsAwarded += ALL_DONE_BONUS;
+            coinReasons.push({
+              amount: ALL_DONE_BONUS,
+              reason: 'all_done_bonus',
+              metadata: { date: entry_date },
+            });
+          }
+        }
+      } else if (!is_completed) {
+        // Habit un-completed → deduct coins
+        coinsAwarded += COIN_UNCOMPLETE_PENALTY;
+        coinReasons.push({
+          amount: COIN_UNCOMPLETE_PENALTY,
+          reason: 'habit_uncomplete',
+          metadata: { habit_name: habit.id },
+        });
+      }
+
+      // Apply coin changes
+      if (coinsAwarded !== 0) {
+        // Get current balance
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('coins')
+          .eq('id', user.id)
+          .single();
+
+        const currentCoins = profile?.coins ?? 0;
+        const newBalance = Math.max(0, currentCoins + coinsAwarded);
+
+        // Update balance
+        await supabase
+          .from('profiles')
+          .update({ coins: newBalance })
+          .eq('id', user.id);
+
+        // Log transactions
+        for (const reason of coinReasons) {
+          await supabase.from('coin_transactions').insert({
+            user_id: user.id,
+            amount: reason.amount,
+            balance_after: newBalance,
+            reason: reason.reason,
+            habit_id: habit_id,
+            metadata: reason.metadata ?? {},
+          });
+        }
+      }
+    } catch (coinErr) {
+      // Coin errors should not block the entry save — log and continue
+      console.error('[entries PATCH] coin reward error (non-blocking):', coinErr);
+    }
+
+    return ok({ ...entry, coins_awarded: coinsAwarded });
   } catch (e) {
     console.error('[entries PATCH] unexpected error:', e);
     return err(safeErrorMessage(e, 'Failed to save entry'), 500);
