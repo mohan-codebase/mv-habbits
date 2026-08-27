@@ -23,7 +23,6 @@ import {
   toggleSaveQuote,
 } from '@/lib/quotes';
 import { showToast } from '@/components/ui/Toast';
-import Topbar from '@/components/layout/Topbar';
 
 type TabType = 'today' | 'saved' | 'history' | 'library';
 
@@ -128,8 +127,6 @@ export default function QuotesPageContent() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
-      <Topbar activeTab="quotes" />
-
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 lg:py-8">
         {/* Minimal Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">

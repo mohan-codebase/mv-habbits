@@ -57,11 +57,7 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
   ];
 
   return (
-    <>
-      {/* Bottom overlay mask */}
-      <div className="no-print fixed bottom-0 left-0 right-0 h-28 bg-[var(--bg-primary)]/90 pointer-events-none z-[209] lg:hidden" />
-
-      <div className="hf-mobile-nav no-print fixed bottom-4 left-3 right-3 z-[210] flex justify-center pointer-events-none lg:hidden">
+    <div className="hf-mobile-nav no-print fixed bottom-[calc(16px+env(safe-area-inset-bottom,0px))] left-3 right-3 z-[210] flex justify-center pointer-events-none lg:hidden">
         <motion.nav
           initial={{ y: 32, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -150,7 +146,6 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
           </div>
         </motion.nav>
       </div>
-    </>
   );
 }
 

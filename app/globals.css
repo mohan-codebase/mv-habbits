@@ -1253,32 +1253,7 @@ body {
 
 @media (max-width: 768px) {
   .hf-kpi-grid {
-    display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    gap: 6px !important;
-    overflow-x: auto !important;
-    padding-bottom: 2px !important;
-  }
-
-  .hf-kpi-card {
-    padding: 10px 8px !important;
-    border-radius: 12px !important;
-    min-width: 0 !important;
-  }
-
-  .hf-kpi-card-title {
-    font-size: 9.5px !important;
-    letter-spacing: 0.02em !important;
-    white-space: nowrap !important;
-  }
-
-  .hf-kpi-card-val {
-    font-size: 17px !important;
-  }
-
-  .hf-kpi-card-sub {
-    font-size: 10px !important;
-    white-space: nowrap !important;
+    display: none !important;
   }
 }
 
@@ -1316,12 +1291,11 @@ body {
   border-radius: 9999px !important;
 }
 
-/* Light mode: inputs get full contrast — solid white bg, visible border */
+/* Light mode: auth inputs get full contrast — solid white bg, visible border */
 [data-theme="light"] .auth-input,
 [data-theme="light"] .auth-input-pw,
-[data-theme="light"] input[type="email"],
-[data-theme="light"] input[type="password"],
-[data-theme="light"] input[type="text"] {
+[data-theme="light"] .auth-card input,
+[data-theme="light"] .hf-auth-shell input {
   background: #FFFFFF !important;
   color: #1E1B4B !important;
   border: 1.5px solid rgba(139, 92, 246, 0.3) !important;
@@ -1331,9 +1305,8 @@ body {
 
 [data-theme="light"] .auth-input::placeholder,
 [data-theme="light"] .auth-input-pw::placeholder,
-[data-theme="light"] input[type="email"]::placeholder,
-[data-theme="light"] input[type="password"]::placeholder,
-[data-theme="light"] input[type="text"]::placeholder {
+[data-theme="light"] .auth-card input::placeholder,
+[data-theme="light"] .hf-auth-shell input::placeholder {
   color: #9CA3AF !important;
 }
 

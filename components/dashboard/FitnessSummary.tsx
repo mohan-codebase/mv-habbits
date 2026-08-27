@@ -582,33 +582,30 @@ function HabitDetailSheet({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 z-[200] bg-[rgba(0,0,0,0.45)]"
+        className="fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm"
       />
 
       {/* Floating card */}
-      <div className="pointer-events-none fixed inset-0 z-[201] flex items-center justify-center p-4">
+      <div className="pointer-events-none fixed inset-0 z-[301] flex items-center justify-center p-3 sm:p-4">
         <motion.div
-          className="hf-modal-panel pointer-events-auto relative w-full max-w-[490px] max-h-[90dvh] overflow-y-auto rounded-2xl p-[26px_22px_34px] shadow-none [font-family:system-ui,-apple-system,sans-serif] bg-bg-card [backdrop-filter:none] [-webkit-backdrop-filter:none]"
-          initial={{ opacity: 0, scale: 0.94, y: 12 }}
+          className="hf-modal-panel pointer-events-auto relative w-full max-w-[460px] max-h-[88dvh] overflow-y-auto rounded-3xl p-5 sm:p-6 shadow-2xl [font-family:system-ui,-apple-system,sans-serif] bg-bg-card border border-border-default"
+          initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.94, y: 12 }}
+          exit={{ opacity: 0, scale: 0.95, y: 10 }}
           transition={{ type: 'spring', damping: 28, stiffness: 340 }}
           onClick={(e) => e.stopPropagation()}
-          style={{
-            border: `1px solid color-mix(in srgb, ${PURPLE} 35%, transparent)`,
-          }}
         >
           {/* Header */}
-          <div className="relative z-[1] mt-0 mb-[22px] flex items-center gap-3.5">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex h-[58px] w-[58px] shrink-0 items-center justify-center overflow-hidden rounded-xl shadow-none"
+          <div className="relative z-[1] mt-0 mb-4 flex items-center gap-3">
+            <div
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
               style={{
-                background: `linear-gradient(135deg, ${PURPLE} 0%, color-mix(in srgb, ${PURPLE} 75%, black) 100%)`,
+                background: PURPLE_LIGHT,
+                color: PURPLE,
               }}
             >
-              <DynamicIcon name={editMode ? editIcon : (habit.icon ?? 'circle-check')} size={28} color="#FFFFFF" />
-            </motion.div>
+              <DynamicIcon name={editMode ? editIcon : (habit.icon ?? 'circle-check')} size={22} color={PURPLE} />
+            </div>
             <div className="min-w-0 flex-1">
               {editMode ? (
                 <input
@@ -616,66 +613,27 @@ function HabitDetailSheet({
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
-                  className="box-border w-full rounded-xl p-[8px_14px] text-lg font-extrabold text-text-primary outline-none font-[Outfit] bg-[var(--input-bg)]"
-                  style={{
-                    border: `1.5px solid ${PURPLE}`,
-                    boxShadow: `0 0 12px color-mix(in srgb, ${PURPLE} 30%, transparent)`,
-                  }}
+                  className="box-border w-full rounded-xl p-[8px_14px] text-base font-bold text-text-primary outline-none font-[Outfit] bg-[var(--input-bg)] border border-[var(--input-border)]"
                 />
               ) : (
                 <>
-                  <h2 className="m-0 truncate text-[22px] font-[850] tracking-[-0.025em] text-text-primary font-[Outfit]">
+                  <h2 className="m-0 truncate text-lg font-bold tracking-tight text-text-primary font-[Outfit]">
                     {habit.name}
                   </h2>
-                  <p className="m-0 mt-[3px] truncate text-[13px] font-medium text-text-muted">
+                  <p className="m-0 mt-0.5 truncate text-xs font-medium text-text-muted">
                     {habit.description ?? (habit.frequency?.type === 'daily' ? 'Daily habit' : 'Habit')}
                   </p>
                 </>
               )}
             </div>
-            <div className="flex shrink-0 gap-2">
-              {!editMode && (
-                <>
-                  <motion.button
-                    whileHover={{ scale: 1.08 }}
-                    whileTap={{ scale: 0.92 }}
-                    onClick={() => generateHabitReport(habit, rate, monthDone, monthRate)}
-                    className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
-                    style={{
-                      background: PURPLE_LIGHT,
-                      border: `1px solid color-mix(in srgb, ${PURPLE} 25%, transparent)`,
-                    }}
-                    title="Download PDF Report"
-                  >
-                    <Download size={16} color={PURPLE} />
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.08 }}
-                    whileTap={{ scale: 0.92 }}
-                    onClick={() => { setEditName(habit.name); setEditIcon(habit.icon ?? 'circle-check'); setEditColor(habit.color || '#555555'); setEditNotes(habit.description ?? ''); setEditMode(true); }}
-                    className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
-                    style={{
-                      background: PURPLE_LIGHT,
-                      border: `1px solid color-mix(in srgb, ${PURPLE} 25%, transparent)`,
-                    }}
-                  >
-                    <DynamicIcon name="pencil" size={16} color={PURPLE} />
-                  </motion.button>
-                </>
-              )}
-              <motion.button
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.92 }}
+            <div className="flex shrink-0 items-center">
+              <button
+                type="button"
                 onClick={editMode ? () => setEditMode(false) : onClose}
-                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-lg font-bold shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
-                style={{
-                  background: PURPLE_MID,
-                  border: `1px solid color-mix(in srgb, ${PURPLE} 30%, transparent)`,
-                  color: PURPLE,
-                }}
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-border-default bg-bg-tertiary hover:bg-bg-elevated text-text-muted hover:text-text-primary transition-colors text-sm font-bold"
               >
-                ×
-              </motion.button>
+                ✕
+              </button>
             </div>
           </div>
 
@@ -725,12 +683,24 @@ function HabitDetailSheet({
             </div>
           )}
 
-          {/* Stat pills */}
-          <div className="mb-4 grid grid-cols-2 gap-2.5">
-            <StatPill label="Current Streak" value={`${habit.current_streak}d`} accent color={PURPLE} />
-            <StatPill label="Longest Streak" value={`${habit.longest_streak}d`} />
-            <StatPill label="30-day Rate" value={`${rate}%`} accent color={PURPLE} />
-            <StatPill label="Total Done" value={`${habit.total_completions}`} />
+          {/* Minimal Stat Strip */}
+          <div className="mb-4 grid grid-cols-4 gap-1.5 p-3 rounded-2xl bg-bg-tertiary border border-border-subtle">
+            <div className="text-center px-1">
+              <p className="m-0 text-[10px] font-bold uppercase tracking-wider text-text-muted">Streak</p>
+              <p className="m-0 text-base font-extrabold tabular-nums" style={{ color: PURPLE }}>{habit.current_streak}d</p>
+            </div>
+            <div className="text-center px-1 border-l border-border-subtle">
+              <p className="m-0 text-[10px] font-bold uppercase tracking-wider text-text-muted">Best</p>
+              <p className="m-0 text-base font-extrabold text-text-primary tabular-nums">{habit.longest_streak}d</p>
+            </div>
+            <div className="text-center px-1 border-l border-border-subtle">
+              <p className="m-0 text-[10px] font-bold uppercase tracking-wider text-text-muted">30d Rate</p>
+              <p className="m-0 text-base font-extrabold tabular-nums" style={{ color: PURPLE }}>{rate}%</p>
+            </div>
+            <div className="text-center px-1 border-l border-border-subtle">
+              <p className="m-0 text-[10px] font-bold uppercase tracking-wider text-text-muted">Total</p>
+              <p className="m-0 text-base font-extrabold text-text-primary tabular-nums">{habit.total_completions}</p>
+            </div>
           </div>
 
           {/* Weekly report — this habit, last 7 days */}
@@ -871,72 +841,63 @@ function HabitDetailSheet({
             })()}
           </div>
 
-          {/* Daily Log & Video Proof Card */}
-          <div className="mb-3.5 rounded-[20px] p-[18px_16px] bg-[var(--glass-bg)] shadow-[var(--glass-shadow-sm)]">
-            <div className="mb-3.5 flex items-center justify-between">
-              <h3 className="m-0 flex items-center gap-[7px] text-sm font-[750] text-text-primary">
-                <CalendarCheck size={17} color={PURPLE} />
-                Log: {activeLogDate === todayLocal ? 'Today' : activeLogDate}
-              </h3>
+          {/* Daily Log Card */}
+          <div className="mb-3.5 rounded-2xl p-4 bg-bg-tertiary border border-border-subtle">
+            <div className="mb-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <CalendarCheck size={16} color={PURPLE} />
+                <span className="text-xs font-bold text-text-primary">
+                  {activeLogDate === todayLocal ? 'Today' : activeLogDate}
+                </span>
+              </div>
 
-              {/* Custom Animated Pill Toggle Button */}
-              <motion.button
+              {/* Minimal Status Toggle */}
+              <button
                 type="button"
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.96 }}
                 disabled={savingDay === activeLogDate}
                 onClick={() => markDay(activeLogDate, activeEntry?.is_completed ?? false)}
-                className="inline-flex items-center gap-1.5 rounded-full p-[6px_14px] text-[12.5px] font-[750] shadow-none transition-all duration-[180ms] cursor-pointer"
-                style={{
-                  border: activeEntry?.is_completed
-                    ? `1px solid ${PURPLE}`
-                    : '1px solid var(--border-default)',
-                  background: activeEntry?.is_completed
-                    ? `color-mix(in srgb, ${PURPLE} 16%, var(--bg-card))`
-                    : 'var(--bg-tertiary)',
-                  color: activeEntry?.is_completed ? PURPLE : 'var(--text-muted)',
-                }}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                  activeEntry?.is_completed
+                    ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs'
+                    : 'bg-bg-card text-text-muted hover:text-text-primary border border-border-default hover:bg-bg-elevated'
+                }`}
               >
-                <CheckCircle2 size={15} color={activeEntry?.is_completed ? PURPLE : 'var(--text-muted)'} />
+                <CheckCircle2 size={13} className={activeEntry?.is_completed ? 'text-emerald-500' : 'text-text-muted'} />
                 <span>{activeEntry?.is_completed ? 'Completed' : 'Mark Done'}</span>
-              </motion.button>
+              </button>
             </div>
 
-            {/* Notes input */}
-            <div className="mb-3.5 flex flex-col gap-1.5">
-              <span className="text-[11px] font-[750] uppercase tracking-[0.07em] text-text-muted">
-                Entry Notes
-              </span>
-              <div
-                className="flex items-center gap-2 rounded-xl p-[4px_6px_4px_12px] transition-[border-color] duration-150 ease-linear bg-[var(--input-bg)] border border-[var(--input-border)]"
-              >
-                <input
-                  type="text"
-                  value={notesInput}
-                  onChange={(e) => setNotesInput(e.target.value)}
-                  placeholder="What did you achieve today?"
-                  className="flex-1 border-none bg-transparent text-[13px] text-text-primary outline-none [font-family:inherit]"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      void saveActiveNotes();
-                    }
-                  }}
-                />
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={saveActiveNotes}
-                  disabled={savingNotes || notesInput === (activeEntry?.notes ?? '')}
-                  className={`rounded-full border-none p-[7px_14px] text-xs font-bold transition-all duration-150 ease-linear ${notesInput === (activeEntry?.notes ?? '') ? 'text-text-muted cursor-default' : 'text-[var(--accent-on-primary)] cursor-pointer'}`}
-                  style={{
-                    background: notesInput === (activeEntry?.notes ?? '') ? 'var(--bg-tertiary)' : PURPLE,
-                  }}
-                >
-                  {savingNotes ? 'Saving…' : 'Save'}
-                </motion.button>
-              </div>
+            {/* Clean Note Input */}
+            <div className="flex items-center gap-2 rounded-xl bg-bg-card border border-border-default px-3 py-2 focus-within:border-[var(--accent-primary)] transition-all">
+              <input
+                type="text"
+                value={notesInput}
+                onChange={(e) => setNotesInput(e.target.value)}
+                placeholder="Add a daily reflection or note..."
+                className="flex-1 !border-0 !bg-transparent text-xs text-text-primary placeholder:text-text-muted outline-none [font-family:inherit] !shadow-none !rounded-none !min-h-0 p-0"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    void saveActiveNotes();
+                  }
+                }}
+              />
+              <AnimatePresence>
+                {notesInput.trim() !== (activeEntry?.notes ?? '').trim() && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.85 }}
+                    transition={{ duration: 0.15 }}
+                    type="button"
+                    onClick={saveActiveNotes}
+                    disabled={savingNotes}
+                    className="rounded-full px-3 py-1 text-[11px] font-bold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-hover)] cursor-pointer shadow-sm shrink-0 border-none"
+                  >
+                    {savingNotes ? 'Saving…' : 'Save'}
+                  </motion.button>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
@@ -967,6 +928,28 @@ function HabitDetailSheet({
               </p>
             </div>
           </div>
+
+          {/* Action Buttons: Edit & Download */}
+          {!editMode && (
+            <div className="mt-4 flex gap-2.5">
+              <button
+                type="button"
+                onClick={() => { setEditName(habit.name); setEditIcon(habit.icon ?? 'circle-check'); setEditColor(habit.color || '#555555'); setEditNotes(habit.description ?? ''); setEditMode(true); }}
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-2xl border border-border-default bg-bg-tertiary hover:bg-bg-elevated text-xs font-bold text-text-primary cursor-pointer transition-all active:scale-[0.98]"
+              >
+                <DynamicIcon name="pencil" size={14} color="currentColor" />
+                <span>Edit Habit</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => generateHabitReport(habit, rate, monthDone, monthRate)}
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-2xl border border-border-default bg-bg-tertiary hover:bg-bg-elevated text-xs font-bold text-text-primary cursor-pointer transition-all active:scale-[0.98]"
+              >
+                <Download size={14} />
+                <span>Download PDF</span>
+              </button>
+            </div>
+          )}
 
           {/* Delete */}
           {!confirmDelete ? (
@@ -1772,8 +1755,8 @@ export default function FitnessSummary({
                 </div>
               </motion.div>
 
-              {/* ── 4 Top KPI Metric Cards ── */}
-              <div className="hf-kpi-grid w-full">
+              {/* ── 4 Top KPI Metric Cards (Desktop Only) ── */}
+              <div className="hf-kpi-grid hidden md:grid w-full">
                 {/* Card 1: Today's Completion */}
                 <motion.div
                   className="hf-kpi-card flex flex-col gap-1.5 rounded-2xl border border-border-subtle bg-bg-card p-[14px_16px] transition-[transform,border-color] duration-150 ease-linear"
