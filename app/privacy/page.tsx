@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/landing/Navbar';
+import Footer from '@/components/landing/Footer';
 
 const EFFECTIVE_DATE = 'April 28, 2026';
 
@@ -157,6 +158,7 @@ export default function PrivacyPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </>
   );
 }

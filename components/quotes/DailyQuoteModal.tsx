@@ -148,7 +148,7 @@ export default function DailyQuoteModal({
             {/* Clean Quote Text */}
             <div className="my-3">
               <p className="text-lg font-normal leading-relaxed text-slate-100 tracking-tight">
-                "{todayQuote.quote}"
+                &ldquo;{todayQuote.quote}&rdquo;
               </p>
               <div className="mt-4 flex items-center justify-between text-xs">
                 <span className="font-semibold text-purple-300">— {todayQuote.author}</span>

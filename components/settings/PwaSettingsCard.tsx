@@ -205,7 +205,7 @@ export default function PwaSettingsCard() {
                       <Laptop className="w-4 h-4" /> Chrome / Edge / Desktop:
                     </p>
                     <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed m-0 pl-5">
-                      Click the three-dots menu (<span className="font-bold text-[var(--text-primary)]">⋮</span> or <span className="font-bold text-[var(--text-primary)]">…</span>) in the window title bar, then select <span className="font-semibold text-rose-500">"Uninstall Productivity Master…"</span>.
+                      Click the three-dots menu (<span className="font-bold text-[var(--text-primary)]">⋮</span> or <span className="font-bold text-[var(--text-primary)]">…</span>) in the window title bar, then select <span className="font-semibold text-rose-500">&ldquo;Uninstall Productivity Master&hellip;&rdquo;</span>.
                     </p>
                   </div>
 

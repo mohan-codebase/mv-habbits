@@ -268,7 +268,7 @@ export default function QuotesPageContent() {
                     </div>
 
                     <p className="text-sm font-normal leading-relaxed text-[var(--text-primary)] m-0">
-                      "{quote.quote}"
+                      &ldquo;{quote.quote}&rdquo;
                     </p>
                   </div>
 

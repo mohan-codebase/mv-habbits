@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Menu, X, Smile } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import AppLogo from '@/components/ui/AppLogo';
 
 const NAV_LINKS = [
@@ -28,6 +28,18 @@ export default function Navbar() {
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [menuOpen]);
 
   return (

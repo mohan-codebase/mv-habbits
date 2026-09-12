@@ -232,7 +232,7 @@ Update this as work completes. `⬜ not started · 🟨 in progress · ✅ done 
 | Doc | Title | Status | Notes |
 |---|---|---|---|
 | 01 | Launch blockers | 🟨 | All 🤖 agent tasks done. Blocked on human: apply migrations 029 + 030, upgrade Vercel to Pro, verify a reminder on a real device. |
-| 02 | Landing page | ⬜ | |
+| 02 | Landing page | ✅ | Server component marketing page, hero preview, navbar anchors, pricing toggle, native details FAQ, footer added to public pages. |
 | 03 | Pricing & gating | ⬜ | |
 | 04 | Payments | ⬜ | Provider decision required — see doc |
 | 05 | International readiness | ⬜ | |
