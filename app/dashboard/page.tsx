@@ -161,10 +161,10 @@ export default async function DashboardPage() {
         : heroPct >= 50
           ? `You're ${heroPct}% through today. Keep the streak alive.`
           : `${stats.todayTotal - (stats.todayCompleted ?? 0)} left today. One at a time.`;
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-  const dayName = new Date().toLocaleDateString(undefined, { weekday: 'long' });
-  const dateStr = new Date().toLocaleDateString(undefined, { month: 'long', day: 'numeric' });
+  const userHour = parseInt(formatInTimeZone(new Date(), userTz, 'H'), 10);
+  const greeting = userHour < 12 ? 'Good morning' : userHour < 17 ? 'Good afternoon' : 'Good evening';
+  const dayName = formatInTimeZone(new Date(), userTz, 'EEEE');
+  const dateStr = formatInTimeZone(new Date(), userTz, 'MMMM d');
 
   return (
     <DashboardApp

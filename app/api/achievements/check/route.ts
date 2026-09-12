@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { ACHIEVEMENT_DEFS } from '@/lib/constants';
 import type { AchievementType } from '@/types/achievement';
-import { toLocalDateString } from '@/lib/utils/dates';
-import { fromZonedTime } from 'date-fns-tz';
+import { formatInTimeZone, fromZonedTime } from 'date-fns-tz';
+import { safeErrorMessage } from '@/lib/utils/api';
 
 function ok<T>(data: T) {
   return NextResponse.json({ data, error: null });
@@ -25,8 +25,8 @@ export async function POST() {
       .eq('id', user.id)
       .maybeSingle();
     const userTz = profile?.timezone || 'Asia/Kolkata';
-
-    const today = toLocalDateString();
+    const toUserDateStr = (date: Date = new Date()) => formatInTimeZone(date, userTz, 'yyyy-MM-dd');
+    const today = toUserDateStr();
 
     // Get already-unlocked achievements
     const { data: existing } = await supabase
@@ -97,7 +97,7 @@ export async function POST() {
     // --------------------------------------------------
     const thirtyDaysAgoDate = new Date();
     thirtyDaysAgoDate.setDate(thirtyDaysAgoDate.getDate() - 30);
-    const thirtyDaysAgoStr = toLocalDateString(thirtyDaysAgoDate);
+    const thirtyDaysAgoStr = toUserDateStr(thirtyDaysAgoDate);
 
     const { data: recentEntriesData } = await supabase
       .from('habit_entries')
@@ -124,7 +124,7 @@ export async function POST() {
       for (let i = 0; i < 7; i++) {
         const d = new Date();
         d.setDate(d.getDate() - i);
-        const count = completedByDate.get(toLocalDateString(d))?.length ?? 0;
+        const count = completedByDate.get(toUserDateStr(d))?.length ?? 0;
         if (count < habitCount) { isPerfect = false; break; }
       }
       if (isPerfect) {
@@ -139,7 +139,7 @@ export async function POST() {
       for (let i = 0; i < 30; i++) {
         const d = new Date();
         d.setDate(d.getDate() - i);
-        const count = completedByDate.get(toLocalDateString(d))?.length ?? 0;
+        const count = completedByDate.get(toUserDateStr(d))?.length ?? 0;
         if (count < habitCount) { isPerfectMonth = false; break; }
       }
       if (isPerfectMonth) {
@@ -152,7 +152,7 @@ export async function POST() {
     if (!unlockedTypes.has('consistency_king')) {
       const consistencyStart = new Date();
       consistencyStart.setDate(consistencyStart.getDate() - 29);
-      const consistencyStr = toLocalDateString(consistencyStart);
+      const consistencyStr = toUserDateStr(consistencyStart);
       
       const consistencyEntries = recentEntries.filter(e => e.entry_date >= consistencyStr && e.entry_date <= today);
       const totalEntries = consistencyEntries.length;
@@ -174,7 +174,7 @@ export async function POST() {
 
       const catStart = new Date();
       catStart.setDate(catStart.getDate() - 29);
-      const catStr = toLocalDateString(catStart);
+      const catStr = toUserDateStr(catStart);
 
       for (const cat of categories ?? []) {
         const catHabits = (habits ?? []).filter(h => h.category_id === cat.id);
@@ -200,7 +200,7 @@ export async function POST() {
       for (let i = 0; i < 7; i++) {
         const d = new Date();
         d.setDate(d.getDate() - i);
-        const dateStr = toLocalDateString(d);
+        const dateStr = toUserDateStr(d);
         const noonUtcIso = fromZonedTime(`${dateStr} 12:00:00`, userTz).toISOString();
         
         const dayEntries = completedByDate.get(dateStr) ?? [];
@@ -231,11 +231,11 @@ export async function POST() {
 
           const dayBeforeStreak = new Date(streakStart);
           dayBeforeStreak.setDate(dayBeforeStreak.getDate() - 1);
-          const dayBeforeStr = toLocalDateString(dayBeforeStreak);
+          const dayBeforeStr = toUserDateStr(dayBeforeStreak);
 
           const gapStart = new Date(dayBeforeStreak);
           gapStart.setDate(gapStart.getDate() - 6);
-          const gapStartStr = toLocalDateString(gapStart);
+          const gapStartStr = toUserDateStr(gapStart);
 
           const habitEntries = (comebackEntries ?? []).filter(e => e.habit_id === habit.id);
           const gapCount = habitEntries.filter(e => e.entry_date >= gapStartStr && e.entry_date <= dayBeforeStr).length;
@@ -265,6 +265,6 @@ export async function POST() {
 
     return ok({ newlyUnlocked: newlyUnlockedDefs, count: newlyUnlocked.length });
   } catch (e) {
-    return err(String(e), 500);
+    return err(safeErrorMessage(e), 500);
   }
 }

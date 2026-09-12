@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { categorySchema } from '@/lib/validations/habit';
+import { safeErrorMessage } from '@/lib/utils/api';
 
 function ok<T>(data: T, status = 200) {
   return NextResponse.json({ data, error: null }, { status });
@@ -22,10 +23,10 @@ export async function GET() {
       .eq('user_id', user.id)
       .order('sort_order', { ascending: true });
 
-    if (error) return err(error.message, 500);
+    if (error) return err(safeErrorMessage(error, 'Failed to fetch categories'), 500);
     return ok(data ?? []);
   } catch (e) {
-    return err(String(e), 500);
+    return err(safeErrorMessage(e, 'Failed to fetch categories'), 500);
   }
 }
 
@@ -36,13 +37,13 @@ export async function POST(req: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return err('Unauthorized', 401);
 
-    const body = await req.json();
+    const body = await req.json().catch(() => null);
+    if (!body) return err('Invalid JSON body', 400);
+
     const parsed = categorySchema.safeParse(body);
     if (!parsed.success) {
-      return err(parsed.error.message, 422);
+      return err(parsed.error.issues[0]?.message || 'Invalid category payload', 422);
     }
-
-
 
     const { data: maxRow } = await supabase
       .from('categories')
@@ -58,10 +59,10 @@ export async function POST(req: NextRequest) {
       .select()
       .single();
 
-    if (error) return err(error.message, 500);
+    if (error) return err(safeErrorMessage(error, 'Failed to create category'), 500);
     return ok(data, 201);
   } catch (e) {
-    return err(String(e), 500);
+    return err(safeErrorMessage(e, 'Failed to create category'), 500);
   }
 }
 
@@ -81,9 +82,9 @@ export async function DELETE(req: NextRequest) {
       .eq('id', id)
       .eq('user_id', user.id);
 
-    if (error) return err(error.message, 500);
+    if (error) return err(safeErrorMessage(error, 'Failed to delete category'), 500);
     return ok({ id, deleted: true });
   } catch (e) {
-    return err(String(e), 500);
+    return err(safeErrorMessage(e, 'Failed to delete category'), 500);
   }
 }

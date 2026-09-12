@@ -630,6 +630,7 @@ function HabitDetailSheet({
               <button
                 type="button"
                 onClick={editMode ? () => setEditMode(false) : onClose}
+                aria-label={editMode ? 'Cancel edit' : 'Close habit details'}
                 className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-border-default bg-bg-tertiary hover:bg-bg-elevated text-text-muted hover:text-text-primary transition-colors text-sm font-bold"
               >
                 ✕
@@ -1169,7 +1170,7 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
                 {isBadHabit ? 'Check off days you successfully avoided it' : 'Build a streak that sticks'}
               </p>
             </div>
-            <button onClick={onClose} className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border-none text-xl font-bold bg-[var(--surface-tint-mid)] cursor-pointer text-[var(--accent-primary)]">×</button>
+            <button onClick={onClose} aria-label="Close add habit" className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full border-none text-xl font-bold bg-[var(--surface-tint-mid)] cursor-pointer text-[var(--accent-primary)]">×</button>
           </div>
 
           {/* Good / Bad toggle */}
@@ -1291,9 +1292,9 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
                   {perWeek}× per week
                 </p>
                 <div className="flex items-center gap-1.5">
-                  <button onClick={() => setPerWeek((n) => Math.max(1, n - 1))} className="flex h-9 w-9 items-center justify-center rounded-full border-none bg-[var(--surface-tint)] text-[22px] font-bold cursor-pointer text-[var(--accent-primary)]">−</button>
+                  <button onClick={() => setPerWeek((n) => Math.max(1, n - 1))} aria-label="Decrease per-week target" className="flex h-9 w-9 items-center justify-center rounded-full border-none bg-[var(--surface-tint)] text-[22px] font-bold cursor-pointer text-[var(--accent-primary)]">−</button>
                   <span className="w-7 text-center text-xl font-extrabold text-text-primary">{perWeek}</span>
-                  <button onClick={() => setPerWeek((n) => Math.min(7, n + 1))} className="flex h-9 w-9 items-center justify-center rounded-full border-none text-[22px] font-bold text-white cursor-pointer bg-[var(--accent-primary)]">+</button>
+                  <button onClick={() => setPerWeek((n) => Math.min(7, n + 1))} aria-label="Increase per-week target" className="flex h-9 w-9 items-center justify-center rounded-full border-none text-[22px] font-bold text-white cursor-pointer bg-[var(--accent-primary)]">+</button>
                 </div>
               </div>
             )}
@@ -1322,9 +1323,9 @@ function AddHabitSheet({ onSuccess, onClose, initialBad = false }: { onSuccess: 
               <div className="flex items-center justify-between pt-1">
                 <p className="m-0 text-sm font-semibold text-text-primary">{duration} minutes</p>
                 <div className="flex items-center gap-1.5">
-                  <button onClick={() => setDuration((n) => Math.max(5, n - 5))} className="flex h-9 w-9 items-center justify-center rounded-full border-none bg-[var(--surface-tint)] text-[22px] font-bold cursor-pointer text-[var(--accent-primary)]">−</button>
+                  <button onClick={() => setDuration((n) => Math.max(5, n - 5))} aria-label="Decrease duration" className="flex h-9 w-9 items-center justify-center rounded-full border-none bg-[var(--surface-tint)] text-[22px] font-bold cursor-pointer text-[var(--accent-primary)]">−</button>
                   <span className="w-10 text-center text-xl font-extrabold text-text-primary">{duration}</span>
-                  <button onClick={() => setDuration((n) => Math.min(240, n + 5))} className="flex h-9 w-9 items-center justify-center rounded-full border-none text-[22px] font-bold text-white cursor-pointer bg-[var(--accent-primary)]">+</button>
+                  <button onClick={() => setDuration((n) => Math.min(240, n + 5))} aria-label="Increase duration" className="flex h-9 w-9 items-center justify-center rounded-full border-none text-[22px] font-bold text-white cursor-pointer bg-[var(--accent-primary)]">+</button>
                 </div>
               </div>
             )}

@@ -15,7 +15,7 @@ import {
   ShieldCheck,
   Zap,
 } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import SocialAuth from '@/components/auth/SocialAuth';
 import AuthLayout from '@/components/auth/AuthLayout';
 import AuthTabSwitcher from '@/components/auth/AuthTabSwitcher';
@@ -29,6 +29,11 @@ function LoginContent() {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(searchParams.get('error') || '');
+  const [configured, setConfigured] = useState(true);
+
+  useEffect(() => {
+    setConfigured(isSupabaseConfigured());
+  }, []);
 
   useEffect(() => {
     const urlError = searchParams.get('error');
@@ -39,6 +44,15 @@ function LoginContent() {
     e.preventDefault();
     setLoading(true);
     setError('');
+
+    if (!isSupabaseConfigured()) {
+      setError(
+        'Supabase is not configured. Please create a .env.local file with your NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.'
+      );
+      setLoading(false);
+      return;
+    }
+
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
@@ -46,6 +60,14 @@ function LoginContent() {
       } else {
         router.push('/dashboard');
         router.refresh();
+      }
+    } catch (err: any) {
+      if (err?.message?.includes('Failed to fetch') || err?.name === 'TypeError') {
+        setError(
+          'Unable to reach Supabase. Please check your internet connection and verify that your NEXT_PUBLIC_SUPABASE_URL in .env.local is valid and reachable.'
+        );
+      } else {
+        setError(err?.message || 'An unexpected error occurred during login. Please try again.');
       }
     } finally {
       setLoading(false);
@@ -66,6 +88,19 @@ function LoginContent() {
           Enter your credentials to access your habit dashboard
         </p>
       </div>
+
+      {/* Missing Env Warning */}
+      {!configured && (
+        <div className="mb-4 p-3.5 rounded-2xl flex items-start gap-2.5 text-xs font-medium bg-amber-500/10 border border-amber-500/30 text-amber-300">
+          <AlertCircle size={16} className="mt-0.5 shrink-0 text-amber-400" />
+          <div className="flex flex-col gap-1 leading-relaxed">
+            <span className="font-semibold text-amber-200">Supabase Not Configured</span>
+            <span className="text-amber-300/90">
+              Create a <code className="bg-black/30 px-1 py-0.5 rounded text-white font-mono">.env.local</code> file in the project root with your <code className="bg-black/30 px-1 py-0.5 rounded text-white font-mono">NEXT_PUBLIC_SUPABASE_URL</code> and <code className="bg-black/30 px-1 py-0.5 rounded text-white font-mono">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>.
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Error / Success Alert */}
       <motion.div
@@ -191,7 +226,7 @@ function LoginContent() {
       </div>
 
       {/* Social OAuth Buttons */}
-      <SocialAuth loading={loading} setLoading={setLoading} />
+      <SocialAuth loading={loading} setLoading={setLoading} onError={setError} />
 
       {/* Security & Privacy Footer */}
       <div className="mt-5 pt-3.5 border-t border-[var(--border-default)] flex items-center justify-center gap-3 text-[var(--text-muted)] text-[11px] sm:text-xs">

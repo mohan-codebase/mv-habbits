@@ -55,14 +55,16 @@ export function useCoins(): UseCoinsResult {
   // Subscribe to realtime updates on profiles.coins
   useEffect(() => {
     const supabase = createClient();
-    let userId: string | null = null;
+    let activeChannel: ReturnType<typeof supabase.channel> | null = null;
+    let isCancelled = false;
 
     supabase.auth.getUser().then(({ data }) => {
-      userId = data.user?.id ?? null;
+      if (isCancelled) return;
+      const userId = data.user?.id ?? null;
       if (!userId) return;
 
-      const channel = supabase
-        .channel('coins-realtime')
+      activeChannel = supabase
+        .channel(`coins-realtime-${userId}`)
         .on(
           'postgres_changes',
           {
@@ -79,11 +81,14 @@ export function useCoins(): UseCoinsResult {
           }
         )
         .subscribe();
-
-      return () => {
-        supabase.removeChannel(channel);
-      };
     });
+
+    return () => {
+      isCancelled = true;
+      if (activeChannel) {
+        supabase.removeChannel(activeChannel);
+      }
+    };
   }, []);
 
   const refresh = useCallback(async () => {

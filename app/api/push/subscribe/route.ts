@@ -35,27 +35,30 @@ export async function POST(req: NextRequest) {
     const supabase = await createServerClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    if (user) {
-      const userAgent = req.headers.get('user-agent') ?? null;
-      const { error } = await supabase.from('push_subscriptions').upsert(
-        {
-          user_id: user.id,
-          endpoint,
-          p256dh: keys.p256dh,
-          auth_key: keys.auth,
-          user_agent: userAgent,
-        },
-        { onConflict: 'endpoint' }
-      );
-
-      if (error) {
-        console.warn('[push/subscribe] Could not save to DB table (table missing or RLS policy):', error.message);
-      }
+    if (!user) {
+      return err('Unauthorized', 401);
     }
+
+    const userAgent = req.headers.get('user-agent') ?? null;
+    const { error } = await supabase.from('push_subscriptions').upsert(
+      {
+        user_id: user.id,
+        endpoint,
+        p256dh: keys.p256dh,
+        auth_key: keys.auth,
+        user_agent: userAgent,
+      },
+      { onConflict: 'endpoint' }
+    );
+
+    if (error) {
+      console.warn('[push/subscribe] Could not save to DB table:', error.message);
+      return err('Failed to save subscription', 500);
+    }
+
+    return ok({ subscribed: true });
   } catch (e) {
     console.warn('[push/subscribe] Supabase client error:', e);
+    return err('Failed to save subscription', 500);
   }
-
-  // Always return success to client since browser push subscription is active
-  return ok({ subscribed: true });
 }

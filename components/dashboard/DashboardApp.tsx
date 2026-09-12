@@ -304,6 +304,7 @@ export default function DashboardApp({
                   autoFocus
                   type={showPasscodeText ? 'text' : 'password'}
                   placeholder="Enter passcode"
+                  aria-label="Passcode"
                   value={passcode}
                   onChange={(e) => {
                     setPasscode(e.target.value);
@@ -314,6 +315,7 @@ export default function DashboardApp({
                 <button
                   type="button"
                   onClick={() => setShowPasscodeText(!showPasscodeText)}
+                  aria-label={showPasscodeText ? 'Hide passcode' : 'Show passcode'}
                   className="absolute right-3 top-1/2 flex -translate-y-1/2 items-center border-none bg-none p-1 text-text-muted cursor-pointer"
                 >
                   {showPasscodeText ? <EyeOff size={16} /> : <Eye size={16} />}

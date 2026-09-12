@@ -80,6 +80,16 @@ export async function PATCH(req: NextRequest) {
       return err('Habit not found', 404);
     }
 
+    // Check existing completion state before upsert to avoid duplicate awards/penalties
+    const { data: existingEntry } = await supabase
+      .from('habit_entries')
+      .select('is_completed, completed_at')
+      .eq('habit_id', habit_id)
+      .eq('entry_date', entry_date)
+      .maybeSingle();
+
+    const previouslyCompleted = existingEntry?.is_completed ?? false;
+
     const now = new Date().toISOString();
     interface EntryPayload {
       habit_id: string; user_id: string; entry_date: string;
@@ -91,7 +101,7 @@ export async function PATCH(req: NextRequest) {
       user_id: user.id,
       entry_date,
       is_completed,
-      completed_at: is_completed ? now : null,
+      completed_at: is_completed ? (existingEntry?.completed_at ?? now) : null,
       updated_at: now,
     };
     if (value !== undefined) payload.value = value;
@@ -110,20 +120,13 @@ export async function PATCH(req: NextRequest) {
     }
 
     // ── Coin rewards ──
-    // Award or deduct coins based on whether the habit was just completed or uncompleted.
-    // We check the previous state to avoid double-counting.
+    // Award or deduct coins ONLY when the completion status actually transitions.
     let coinsAwarded = 0;
     const coinReasons: { amount: number; reason: string; metadata?: Record<string, unknown> }[] = [];
 
     try {
-      // Check the previous completion state — if the entry was just created via upsert,
-      // it didn't exist before so previouslyCompleted = false.
-      const previouslyCompleted = !is_completed ? true : false;
-      // ^ If is_completed=true now, previous was false (otherwise why toggle?)
-      // ^ If is_completed=false now, previous was true
-
       if (is_completed && !previouslyCompleted) {
-        // Habit just completed → award coins
+        // Habit transitioned to completed → award coins
         coinsAwarded += COIN_PER_COMPLETION;
         coinReasons.push({
           amount: COIN_PER_COMPLETION,
@@ -131,8 +134,13 @@ export async function PATCH(req: NextRequest) {
           metadata: { habit_name: habit.id },
         });
 
-        // Check streak bonus — we need the updated streak count
-        const newStreak = (habit.current_streak ?? 0) + 1;
+        // Check streak bonus using refreshed streak
+        const { data: updatedHabit } = await supabase
+          .from('habits')
+          .select('current_streak')
+          .eq('id', habit_id)
+          .single();
+        const newStreak = updatedHabit?.current_streak ?? ((habit.current_streak ?? 0) + 1);
         const streakBonus = getStreakBonus(newStreak);
         if (streakBonus > 0) {
           coinsAwarded += streakBonus;
@@ -170,8 +178,8 @@ export async function PATCH(req: NextRequest) {
             });
           }
         }
-      } else if (!is_completed) {
-        // Habit un-completed → deduct coins
+      } else if (!is_completed && previouslyCompleted) {
+        // Habit transitioned from completed to uncompleted → deduct coins
         coinsAwarded += COIN_UNCOMPLETE_PENALTY;
         coinReasons.push({
           amount: COIN_UNCOMPLETE_PENALTY,

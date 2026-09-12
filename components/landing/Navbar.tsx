@@ -78,19 +78,17 @@ export default function Navbar() {
 
         {/* Desktop CTA buttons */}
         <div className="hf-desktop-nav flex items-center gap-2">
-          <Link href="/login" className="no-underline">
-            <button className="cursor-pointer rounded-full border-none bg-transparent px-3.5 py-[7px] text-[13.5px] font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary [font-family:inherit]">
-              Sign in
-            </button>
+          <Link
+            href="/login"
+            className="cursor-pointer rounded-full border-none bg-transparent px-3.5 py-[7px] text-[13.5px] font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary no-underline [font-family:inherit]"
+          >
+            Sign in
           </Link>
-          <Link href="/signup" className="no-underline">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="cursor-pointer rounded-full border-none bg-accent-primary px-4 py-[7px] text-[13.5px] font-bold text-accent-on-primary shadow-none [font-family:inherit]"
-            >
-              Get started
-            </motion.button>
+          <Link
+            href="/signup"
+            className="cursor-pointer rounded-full border-none bg-accent-primary px-4 py-[7px] text-[13.5px] font-bold text-accent-on-primary shadow-none no-underline transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] [font-family:inherit]"
+          >
+            Get started
           </Link>
         </div>
 
@@ -131,15 +129,19 @@ export default function Navbar() {
 
             {/* Mobile CTA buttons */}
             <div className="mt-6 flex flex-col gap-2.5">
-              <Link href="/login" onClick={() => setMenuOpen(false)}>
-                <button className="w-full cursor-pointer rounded-lg border border-border-default bg-bg-tertiary p-3.5 text-[15px] font-semibold text-text-primary [font-family:inherit]">
-                  Sign in
-                </button>
+              <Link
+                href="/login"
+                onClick={() => setMenuOpen(false)}
+                className="w-full cursor-pointer rounded-lg border border-border-default bg-bg-tertiary p-3.5 text-center text-[15px] font-semibold text-text-primary no-underline [font-family:inherit]"
+              >
+                Sign in
               </Link>
-              <Link href="/signup" onClick={() => setMenuOpen(false)}>
-                <button className="w-full cursor-pointer rounded-lg border-none bg-accent-primary p-3.5 text-[15px] font-bold text-accent-on-primary shadow-none [font-family:inherit]">
-                  Start for free
-                </button>
+              <Link
+                href="/signup"
+                onClick={() => setMenuOpen(false)}
+                className="w-full cursor-pointer rounded-lg border-none bg-accent-primary p-3.5 text-center text-[15px] font-bold text-accent-on-primary shadow-none no-underline [font-family:inherit]"
+              >
+                Start for free
               </Link>
             </div>
           </motion.div>

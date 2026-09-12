@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { todayString } from '@/lib/utils/dates';
 import { buildCoachSummary } from '@/lib/coach/aggregate';
+import { safeErrorMessage } from '@/lib/utils/api';
 
 // CSV formula-injection guard: spreadsheets execute cells starting with
 // = + - @ \t \r as formulas. Prefixing with a leading single quote disables
@@ -108,6 +109,6 @@ export async function GET(req: NextRequest) {
     });
 
   } catch (e) {
-    return new NextResponse(String(e), { status: 500 });
+    return new NextResponse(safeErrorMessage(e, 'Failed to export data'), { status: 500 });
   }
 }

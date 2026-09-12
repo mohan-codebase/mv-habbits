@@ -135,7 +135,7 @@ export default function Modal({
             exit={{ opacity: 0, y: 20, scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 340, damping: 30 }}
             onClick={(e) => e.stopPropagation()}
-            className={`hf-modal-panel w-full max-h-[90vh] overflow-y-auto rounded-xl bg-[var(--glass-bg)] shadow-none outline-none ${sizeMap[size]}`}
+            className={`hf-modal-panel w-full max-h-[90dvh] overflow-y-auto rounded-xl bg-[var(--glass-bg)] shadow-none outline-none ${sizeMap[size]}`}
           >
             {/* Header */}
             {(title !== undefined) && (

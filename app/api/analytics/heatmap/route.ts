@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { isHabitActiveOnDate } from '@/lib/utils/dates';
 import { formatInTimeZone } from 'date-fns-tz';
+import { safeErrorMessage } from '@/lib/utils/api';
 
-function ok<T>(data: T, maxAge = 120) {
+function ok<T>(data: T) {
   return NextResponse.json(
     { data, error: null },
-    { headers: { 'Cache-Control': `public, s-maxage=${maxAge}, stale-while-revalidate=${maxAge * 5}` } }
+    { headers: { 'Cache-Control': 'private, no-cache, no-store, must-revalidate' } }
   );
 }
 function err(message: string, status = 400) {
@@ -97,6 +98,6 @@ export async function GET(req: NextRequest) {
 
     return ok(result);
   } catch (e) {
-    return err(String(e), 500);
+    return err(safeErrorMessage(e, 'Failed to load heatmap'), 500);
   }
 }

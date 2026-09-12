@@ -8,6 +8,7 @@
 // Auth: pass Authorization: Bearer <CRON_SECRET> header.
 
 import { NextRequest, NextResponse } from 'next/server';
+import { timingSafeEqual } from 'node:crypto';
 import { createClient } from '@supabase/supabase-js';
 import { sendPushNotification } from '@/lib/webpush';
 
@@ -129,11 +130,17 @@ export async function POST(req: NextRequest) {
 
   // ── Auth check ────────────────────────────────────────────────────────
   const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret) {
-    const auth = req.headers.get('authorization') ?? '';
-    if (auth !== `Bearer ${cronSecret}`) {
-      return err('Unauthorized', 401);
-    }
+  if (!cronSecret) {
+    console.error('[cron/reminders] CRON_SECRET is not configured on this server.');
+    return err('Unauthorized', 401);
+  }
+
+  const auth = req.headers.get('authorization') ?? '';
+  const expected = `Bearer ${cronSecret}`;
+  const authBuf = Buffer.from(auth);
+  const expBuf = Buffer.from(expected);
+  if (authBuf.length !== expBuf.length || !timingSafeEqual(authBuf, expBuf)) {
+    return err('Unauthorized', 401);
   }
 
   let supabase: ReturnType<typeof getAdminClient>;

@@ -32,7 +32,7 @@ const securityHeaders = [
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
 ];
 
-// Cache-Control for public assets and low-risk analytics responses.
+// Cache-Control for public assets.
 // Next.js owns /_next/static caching and warns when it is overridden.
 const cacheControlHeaders = [
   // Static public assets (images, fonts, etc.)
@@ -40,13 +40,6 @@ const cacheControlHeaders = [
     source: '/:path*.(png|jpg|jpeg|gif|webp|svg|ico|woff|woff2|ttf|eot)',
     headers: [
       { key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' },
-    ],
-  },
-  // API routes — short cache for analytics data, no cache for mutations
-  {
-    source: '/api/analytics/:path*',
-    headers: [
-      { key: 'Cache-Control', value: 'public, s-maxage=60, stale-while-revalidate=300' },
     ],
   },
 ];

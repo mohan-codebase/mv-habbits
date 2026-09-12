@@ -37,6 +37,7 @@ function NavItem({
     <Link
       href={href}
       onClick={onClick}
+      aria-current={active ? 'page' : undefined}
       className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-full text-sm transition-all duration-150 no-underline ${
         active
           ? 'bg-[#8B5CF6] text-white font-bold shadow-accent'
@@ -63,6 +64,7 @@ function NavGroup({
     <div className="flex flex-col gap-0.5">
       <button
         onClick={onToggle}
+        aria-expanded={expanded}
         className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-full bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-bold transition-opacity cursor-pointer text-left shadow-sm"
       >
         <span className="flex-1">{label}</span>
@@ -105,6 +107,7 @@ function SubNavItem({
     <Link
       href={href}
       onClick={onClick}
+      aria-current={active ? 'page' : undefined}
       className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-full text-xs transition-all duration-150 no-underline ${
         active
           ? 'bg-purple-500/15 text-purple-600 dark:text-purple-400 font-semibold'
@@ -180,6 +183,7 @@ export default function Sidebar() {
           onClick={() => setIsCollapsed(false)}
           className="hf-desktop-sidebar-toggle fixed top-5 left-5 z-[60] w-10 h-10 rounded-full bg-slate-900/90 border border-purple-500/20 text-white cursor-pointer items-center justify-center hidden hover:bg-slate-800 transition-colors shadow-lg"
           title="Show Sidebar"
+          aria-label="Show Sidebar"
         >
           <Menu size={20} />
         </button>
@@ -286,6 +290,7 @@ export default function Sidebar() {
                 </Link>
                 <button
                   onClick={() => setMobileOpen(false)}
+                  aria-label="Close menu"
                   className="w-8 h-8 rounded-full bg-[var(--bg-tertiary)] border-0 flex items-center justify-center cursor-pointer text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] transition-colors"
                 >
                   <X size={16} />

@@ -1,20 +1,29 @@
 'use client';
 
 import React from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { getSiteUrl } from '@/lib/utils/url';
 import { Provider } from '@supabase/supabase-js';
 
 interface SocialAuthProps {
   loading: boolean;
   setLoading: (loading: boolean) => void;
+  onError?: (error: string) => void;
 }
 
-export default function SocialAuth({ loading, setLoading }: SocialAuthProps) {
+export default function SocialAuth({ loading, setLoading, onError }: SocialAuthProps) {
   const supabase = createClient();
 
   const handleOAuth = async (provider: Provider) => {
     setLoading(true);
+    if (!isSupabaseConfigured()) {
+      onError?.(
+        'Supabase is not configured yet. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local.'
+      );
+      setLoading(false);
+      return;
+    }
+
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
@@ -29,8 +38,13 @@ export default function SocialAuth({ loading, setLoading }: SocialAuthProps) {
         },
       });
       if (error) throw error;
-    } catch (err) {
+    } catch (err: any) {
       console.error(`${provider} OAuth error:`, err);
+      onError?.(
+        err?.message?.includes('Failed to fetch')
+          ? 'Unable to connect to Supabase. Check your network or credentials.'
+          : err?.message || `Failed to sign in with ${provider}.`
+      );
       setLoading(false);
     }
   };

@@ -6,7 +6,7 @@ import { SITE_URL } from '@/lib/site';
 // env vars; this route can, so the sitemap URL now follows the deployment.
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [{ userAgent: '*', allow: '/', disallow: ['/dashboard/', '/api/'] }],
+    rules: [{ userAgent: '*', allow: '/', disallow: ['/dashboard', '/dashboard/', '/api/', '/auth/', '/reset-password'] }],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

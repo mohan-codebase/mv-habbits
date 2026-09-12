@@ -28,3 +28,50 @@ export function verifyPasscode(plain: string, stored: string | null | undefined)
   if (actual.length !== expected.length) return false;
   return timingSafeEqual(actual, expected);
 }
+
+// Failed verification attempt tracking: max 5 attempts within 15 minutes
+interface RateLimitRecord {
+  attempts: number;
+  lockedUntil: number;
+}
+
+const verifyAttempts = new Map<string, RateLimitRecord>();
+
+export function checkVerifyRateLimit(userId: string): { allowed: boolean; retryAfterSeconds?: number } {
+  const now = Date.now();
+  const record = verifyAttempts.get(userId);
+  if (!record) return { allowed: true };
+
+  if (record.lockedUntil > now) {
+    const retryAfterSeconds = Math.ceil((record.lockedUntil - now) / 1000);
+    return { allowed: false, retryAfterSeconds };
+  }
+
+  // Lock expired
+  if (record.lockedUntil > 0 && record.lockedUntil <= now) {
+    verifyAttempts.delete(userId);
+    return { allowed: true };
+  }
+
+  return { allowed: true };
+}
+
+export function recordVerifyFailure(userId: string): { locked: boolean; attemptsLeft: number } {
+  const now = Date.now();
+  const record = verifyAttempts.get(userId) ?? { attempts: 0, lockedUntil: 0 };
+  record.attempts += 1;
+
+  if (record.attempts >= 5) {
+    record.lockedUntil = now + 15 * 60 * 1000; // 15 minute lockout
+    verifyAttempts.set(userId, record);
+    return { locked: true, attemptsLeft: 0 };
+  }
+
+  verifyAttempts.set(userId, record);
+  return { locked: false, attemptsLeft: 5 - record.attempts };
+}
+
+export function clearVerifyRateLimit(userId: string): void {
+  verifyAttempts.delete(userId);
+}
+

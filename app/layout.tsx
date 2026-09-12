@@ -71,6 +71,7 @@ export const viewport: Viewport = {
   themeColor: "#8B5CF6",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 import { Suspense } from 'react';
