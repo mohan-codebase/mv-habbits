@@ -47,18 +47,18 @@ function Section({ id, title, content, items, footer }: {
 const TERMS_SECTIONS = [
   {
     id: 'acceptance', title: '1. Acceptance of Terms',
-    content: 'By accessing or using Productivity Master ("Service", "we", "our", "us"), you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree, you may not use the Service. We may update these Terms at any time; continued use constitutes acceptance of the updated Terms.',
+    content: 'By accessing or using MV Habits ("Service", "we", "our", "us"), you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree, you may not use the Service. We may update these Terms at any time; continued use constitutes acceptance of the updated Terms.',
   },
   {
     id: 'eligibility', title: '2. Eligibility',
-    content: 'You must be at least 13 years old to use Productivity Master. By using the Service, you represent that you meet this requirement. If you are under 18, you represent that you have your parent or guardian\'s permission.',
+    content: 'You must be at least 13 years old to use MV Habits. By using the Service, you represent that you meet this requirement. If you are under 18, you represent that you have your parent or guardian\'s permission.',
   },
   {
     id: 'account', title: '3. Account Registration',
     items: [
       { subtitle: 'Accuracy', text: 'You must provide accurate information when creating an account.' },
       { subtitle: 'Security', text: 'You are responsible for maintaining the confidentiality of your password and for all activity under your account.' },
-      { subtitle: 'Notification of breach', text: 'You must notify us immediately at support@productivity-master.app if you suspect unauthorised access to your account.' },
+      { subtitle: 'Notification of breach', text: 'You must notify us immediately at support@mv-habits.app if you suspect unauthorised access to your account.' },
       { subtitle: 'One account per person', text: 'You may not create multiple accounts to circumvent any limitations or restrictions.' },
     ],
   },
@@ -75,11 +75,11 @@ const TERMS_SECTIONS = [
   },
   {
     id: 'intellectual-property', title: '5. Intellectual Property',
-    content: 'The Service and its original content, features, and functionality are owned by Productivity Master and are protected by international copyright, trademark, and other intellectual property laws. You retain ownership of the data you input (your habits and entries). You grant us a limited, non-exclusive licence to store and process your data solely to provide the Service.',
+    content: 'The Service and its original content, features, and functionality are owned by MV Habits and are protected by international copyright, trademark, and other intellectual property laws. You retain ownership of the data you input (your habits and entries). You grant us a limited, non-exclusive licence to store and process your data solely to provide the Service.',
   },
   {
     id: 'subscription', title: '6. Subscriptions & Payments',
-    content: 'Productivity Master currently offers a free tier with all core features included. If we introduce paid plans in the future, the following will apply:',
+    content: 'MV Habits currently offers a free tier with all core features included. If we introduce paid plans in the future, the following will apply:',
     items: [
       { subtitle: 'Billing', text: 'Subscriptions are billed in advance on a monthly or annual basis. All fees are exclusive of applicable taxes.' },
       { subtitle: 'Cancellation', text: 'You may cancel your subscription at any time. Your access to paid features continues until the end of the current billing period.' },
@@ -110,7 +110,7 @@ const TERMS_SECTIONS = [
   {
     id: 'contact-terms', title: '12. Contact',
     content: 'For questions about these Terms:',
-    footer: 'legal@productivity-master.app',
+    footer: 'legal@mv-habits.app',
   },
 ];
 

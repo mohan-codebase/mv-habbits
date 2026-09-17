@@ -1,5 +1,5 @@
 -- ============================================================
--- Productivity Master — Initial Schema
+-- MV Habits — Initial Schema
 -- ============================================================
 
 -- Profiles (extends Supabase auth.users)

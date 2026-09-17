@@ -1,4 +1,4 @@
-# Productivity Master
+# MV Habits
 
 Premium habit tracker for routines, streaks, and self-growth. Built on Next.js 16 + Supabase + Tailwind v4.
 

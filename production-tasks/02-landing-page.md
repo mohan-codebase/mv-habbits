@@ -82,7 +82,7 @@ One place for the strings the rebrand will change:
  * new code should import from here rather than hardcoding, so the rename is a
  * one-file diff. Existing hardcoded occurrences are intentionally left alone.
  */
-export const PRODUCT_NAME = 'Productivity Master';
+export const PRODUCT_NAME = 'MV Habits';
 export const PRODUCT_TAGLINE = 'Build daily habits that actually stick';
 export const SUPPORT_EMAIL = '{{SUPPORT_EMAIL}}';
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
@@ -276,7 +276,7 @@ page-level metadata in `app/page.tsx`:
 
 ```ts
 export const metadata: Metadata = {
-  title: 'Productivity Master — Build daily habits that actually stick',
+  title: 'MV Habits — Build daily habits that actually stick',
   description: 'Track habits, keep streaks, and see the patterns behind your consistency. Free to start.',
   alternates: { canonical: '/' },
 };

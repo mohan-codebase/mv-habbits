@@ -278,7 +278,7 @@ export async function POST(req: NextRequest) {
       try {
         await sendPushNotification(
           { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth_key } },
-          { title: 'Productivity Master Reminder', body, url: '/dashboard', tag: 'productivity-master-reminder' }
+          { title: 'MV Habits Reminder', body, url: '/dashboard', tag: 'mv-habits-reminder' }
         );
         sent++;
       } catch (e: unknown) {

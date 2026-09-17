@@ -20,7 +20,7 @@ function initWebPush() {
   // domain this app is not served from. Push services use the VAPID subject to
   // contact the sender about a misbehaving endpoint — set VAPID_SUBJECT in
   // Vercel to a real mailto: you monitor, then delete this fallback.
-  const subject = process.env.VAPID_SUBJECT ?? 'mailto:hello@productivity-master.app';
+  const subject = process.env.VAPID_SUBJECT ?? 'mailto:hello@mv-habits.app';
 
   if (!pub || !priv) {
     // Gracefully degrade — push won't work, but nothing crashes

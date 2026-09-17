@@ -54,13 +54,13 @@ will index.
 
 | Route | Title pattern | Notes |
 |---|---|---|
-| `/` | `Productivity Master — Build daily habits that actually stick` | Primary landing keyword |
-| `/login` | `Sign in · Productivity Master` | `robots: { index: false }` |
-| `/signup` | `Create your free account · Productivity Master` | Index this — it converts |
-| `/privacy` | `Privacy Policy · Productivity Master` | |
-| `/terms` | `Terms of Service · Productivity Master` | |
-| `/refunds` | `Refund Policy · Productivity Master` | doc `06` |
-| `/cookies` | `Cookie Policy · Productivity Master` | doc `06` |
+| `/` | `MV Habits — Build daily habits that actually stick` | Primary landing keyword |
+| `/login` | `Sign in · MV Habits` | `robots: { index: false }` |
+| `/signup` | `Create your free account · MV Habits` | Index this — it converts |
+| `/privacy` | `Privacy Policy · MV Habits` | |
+| `/terms` | `Terms of Service · MV Habits` | |
+| `/refunds` | `Refund Policy · MV Habits` | doc `06` |
+| `/cookies` | `Cookie Policy · MV Habits` | doc `06` |
 
 Every one gets `alternates: { canonical: '/path' }`.
 
@@ -85,8 +85,8 @@ Add a title template to `app/layout.tsx` so child pages only supply their own se
 
 ```ts
 title: {
-  default: 'Productivity Master — Build daily habits that actually stick',
-  template: '%s · Productivity Master',
+  default: 'MV Habits — Build daily habits that actually stick',
+  template: '%s · MV Habits',
 },
 ```
 
@@ -117,7 +117,7 @@ Add JSON-LD to the landing page. It is what produces rich results.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
-  name: 'Productivity Master',
+  name: 'MV Habits',
   applicationCategory: 'LifestyleApplication',
   operatingSystem: 'Web, iOS, Android',
   description: 'Habit tracker for building daily routines, streaks, and consistency.',

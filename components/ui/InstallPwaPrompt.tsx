@@ -36,7 +36,7 @@ export default function InstallPwaPrompt() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/icons/icon-192.png"
-                alt="Productivity Master Logo"
+                alt="MV Habits Logo"
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = 'none';
@@ -46,7 +46,7 @@ export default function InstallPwaPrompt() {
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <h4 className="font-semibold text-sm text-white truncate">Productivity Master</h4>
+              <h4 className="font-semibold text-sm text-white truncate">MV Habits</h4>
               <span className="bg-purple-500/20 text-purple-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-purple-500/30 uppercase tracking-wider shrink-0">
                 APP
               </span>

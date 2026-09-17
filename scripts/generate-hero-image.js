@@ -43,7 +43,7 @@ const svg = `
   <circle cx="44" cy="22" r="6" fill="#f59e0b" opacity="0.85" />
   <circle cx="64" cy="22" r="6" fill="#10b981" opacity="0.85" />
 
-  <text x="${width / 2}" y="27" fill="#6b7280" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="500" text-anchor="middle">productivity-master.app/dashboard</text>
+  <text x="${width / 2}" y="27" fill="#6b7280" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="500" text-anchor="middle">mv-habits.app/dashboard</text>
 
   <!-- Sidebar -->
   <rect x="0" y="44" width="240" height="${height - 44}" fill="#11131a" />
@@ -52,7 +52,7 @@ const svg = `
   <!-- App Logo & Title -->
   <rect x="24" y="68" width="32" height="32" rx="8" fill="url(#accentGrad)" />
   <path d="M 40 76 L 35 84 L 40 84 L 38 92 L 45 83 L 40 83 Z" fill="#ffffff" />
-  <text x="66" y="89" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="700">Productivity Master</text>
+  <text x="66" y="89" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="700">MV Habits</text>
 
   <!-- Sidebar Links -->
   <rect x="16" y="128" width="208" height="36" rx="8" fill="#1f2333" />

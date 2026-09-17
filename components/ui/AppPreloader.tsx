@@ -96,7 +96,7 @@ export default function AppPreloader() {
               {/* Minimal Brand Title */}
               <div className="flex flex-col items-center">
                 <span className="text-sm font-extrabold tracking-tight text-[var(--text-primary)] font-sans">
-                  Productivity Master
+                  MV Habits
                 </span>
               </div>
 

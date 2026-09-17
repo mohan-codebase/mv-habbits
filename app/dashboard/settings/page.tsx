@@ -215,7 +215,7 @@ export default function SettingsPage() {
               </div>
             </div>
             <a
-              href="mailto:support@semmaflow.com?subject=Productivity Master Help"
+              href="mailto:support@semmaflow.com?subject=MV Habits Help"
               className="inline-flex items-center gap-1 rounded-full border border-border-default bg-bg-tertiary px-4 py-1.5 text-xs font-semibold text-text-primary no-underline transition-all hover:border-accent-primary hover:text-accent-primary shrink-0"
             >
               Contact Support

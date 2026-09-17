@@ -131,7 +131,7 @@ public/sw.js            → service worker: web push only, fetch handler is a de
 
 **The product name and logo are going to change after launch.** Therefore:
 
-- **Do not** rename the product anywhere. It stays "Productivity Master" for now.
+- **Do not** rename the product anywhere. It stays "MV Habits" for now.
 - **Do not** redesign, replace, or regenerate the logo. Leave `assets/logo/*`,
   `public/logo/*`, `public/icons/*`, `app/icon.png`, `app/apple-icon.png`,
   `app/opengraph-image.png` and `components/ui/AppLogo.tsx` exactly as they are.
@@ -142,7 +142,7 @@ public/sw.js            → service worker: web push only, fetch handler is a de
 
   ```ts
   // lib/brand.ts  ← create this in doc 02
-  export const PRODUCT_NAME = 'Productivity Master';
+  export const PRODUCT_NAME = 'MV Habits';
   export const SUPPORT_EMAIL = 'support@yourdomain.com';
   export const COMPANY_LEGAL_NAME = '…';   // fill before legal pages go live
   ```

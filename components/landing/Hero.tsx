@@ -59,7 +59,7 @@ export default function Hero() {
           <div className="overflow-hidden rounded-xl border border-border-subtle bg-bg-primary">
             <Image
               src="/marketing/hero-dashboard.png"
-              alt="Productivity Master dashboard preview showing daily habit streaks, monthly consistency, and habit check-in logs"
+              alt="MV Habits dashboard preview showing daily habit streaks, monthly consistency, and habit check-in logs"
               width={1200}
               height={750}
               priority

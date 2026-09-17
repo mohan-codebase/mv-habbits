@@ -6,7 +6,7 @@ import Footer from '@/components/landing/Footer';
 import { SUPPORT_EMAIL } from '@/lib/brand';
 
 export const metadata: Metadata = {
-  title: 'Refund Policy — Productivity Master',
+  title: 'Refund Policy — MV Habits',
   description: 'Learn about our 14-day money-back guarantee and refund policy.',
 };
 
@@ -80,7 +80,7 @@ const REFUND_SECTIONS = [
     id: 'overview',
     title: '1. 14-Day Money-Back Guarantee',
     content:
-      'We want you to be completely satisfied with Productivity Master. We offer an unconditional 14-day money-back guarantee on all initial subscription purchases (both monthly and annual plans).',
+      'We want you to be completely satisfied with MV Habits. We offer an unconditional 14-day money-back guarantee on all initial subscription purchases (both monthly and annual plans).',
   },
   {
     id: 'eligibility',

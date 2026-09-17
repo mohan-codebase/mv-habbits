@@ -1,5 +1,5 @@
 /**
- * Productivity Master Service Worker
+ * MV Habits Service Worker
  * Handles: Web Push notifications.
  *
  * NOTE: the `fetch` handler below is intentionally a no-op. Chrome requires a
@@ -12,7 +12,7 @@
  * and document requests are left entirely to the browser. Push remains.
  */
 
-const CACHE_NAME = 'productivity-master-v3';
+const CACHE_NAME = 'mv-habits-v3';
 
 // ── Install: activate immediately ─────────────────────────────────────────
 self.addEventListener('install', () => {
@@ -37,12 +37,12 @@ self.addEventListener('fetch', (event) => {
 // ── Push: show notification ───────────────────────────────────────────────
 self.addEventListener('push', (event) => {
   let data = {
-    title: 'Productivity Master',
+    title: 'MV Habits',
     body: "Time to check in on today's habits!",
     icon: '/icons/icon-192.png',
     badge: '/icons/icon-192.png',
     url: '/dashboard',
-    tag: 'productivity-master-reminder',
+    tag: 'mv-habits-reminder',
   };
 
   try {

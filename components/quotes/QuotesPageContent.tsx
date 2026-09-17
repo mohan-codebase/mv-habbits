@@ -57,9 +57,9 @@ export default function QuotesPageContent() {
       setSavedIds(getSavedQuoteIds());
       setHistory(getDailyQuoteHistory());
     };
-    window.addEventListener('productivity-master:quotes-updated', handleSync);
+    window.addEventListener('mv-habits:quotes-updated', handleSync);
     return () => {
-      window.removeEventListener('productivity-master:quotes-updated', handleSync);
+      window.removeEventListener('mv-habits:quotes-updated', handleSync);
     };
   }, []);
 
@@ -92,7 +92,7 @@ export default function QuotesPageContent() {
   };
 
   const handleOpenModal = () => {
-    window.dispatchEvent(new CustomEvent('productivity-master:open-daily-quote'));
+    window.dispatchEvent(new CustomEvent('mv-habits:open-daily-quote'));
   };
 
   const filteredQuotes = useMemo(() => {

@@ -208,9 +208,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         toast(customEvent.detail.message, customEvent.detail.type);
       }
     };
-    window.addEventListener('productivity-master:toast', handleGlobalToast);
+    window.addEventListener('mv-habits:toast', handleGlobalToast);
     return () => {
-      window.removeEventListener('productivity-master:toast', handleGlobalToast);
+      window.removeEventListener('mv-habits:toast', handleGlobalToast);
     };
   }, [toast]);
 
@@ -247,7 +247,7 @@ export function useToast(): ToastContextValue {
 export function showToast(message: string, type: ToastType = 'info') {
   if (typeof window !== 'undefined') {
     window.dispatchEvent(
-      new CustomEvent('productivity-master:toast', {
+      new CustomEvent('mv-habits:toast', {
         detail: { message, type },
       })
     );

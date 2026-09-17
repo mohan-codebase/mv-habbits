@@ -28,7 +28,7 @@ export default function PwaSettingsCard() {
         setInstallMessage('Prompt was cancelled or not accepted.');
       }
     } else {
-      setInstallMessage('To install: click your browser menu (⋮ or ⊕) and select "Install Productivity Master".');
+      setInstallMessage('To install: click your browser menu (⋮ or ⊕) and select "Install MV Habits".');
     }
   };
 
@@ -48,7 +48,7 @@ export default function PwaSettingsCard() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/icons/icon-192.png"
-                    alt="Productivity Master Logo"
+                    alt="MV Habits Logo"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = 'none';
@@ -59,7 +59,7 @@ export default function PwaSettingsCard() {
               <div className="min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="font-bold text-base sm:text-lg text-[var(--text-primary)] font-['Outfit'] tracking-tight m-0">
-                    Productivity Master
+                    MV Habits
                   </h3>
                   <span className="bg-[#8B5CF6]/15 text-[#C4B5FD] dark:text-[#C4B5FD] text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-[#8B5CF6]/30 uppercase tracking-wider shrink-0">
                     PWA
@@ -181,7 +181,7 @@ export default function PwaSettingsCard() {
                   </div>
                   <div>
                     <h3 className="m-0 text-base font-bold text-[var(--text-primary)] font-['Outfit']">Uninstall App</h3>
-                    <p className="m-0 text-xs text-[var(--text-muted)]">Productivity Master PWA</p>
+                    <p className="m-0 text-xs text-[var(--text-muted)]">MV Habits PWA</p>
                   </div>
                 </div>
                 <button
@@ -205,7 +205,7 @@ export default function PwaSettingsCard() {
                       <Laptop className="w-4 h-4" /> Chrome / Edge / Desktop:
                     </p>
                     <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed m-0 pl-5">
-                      Click the three-dots menu (<span className="font-bold text-[var(--text-primary)]">⋮</span> or <span className="font-bold text-[var(--text-primary)]">…</span>) in the window title bar, then select <span className="font-semibold text-rose-500">&ldquo;Uninstall Productivity Master&hellip;&rdquo;</span>.
+                      Click the three-dots menu (<span className="font-bold text-[var(--text-primary)]">⋮</span> or <span className="font-bold text-[var(--text-primary)]">…</span>) in the window title bar, then select <span className="font-semibold text-rose-500">&ldquo;Uninstall MV Habits&hellip;&rdquo;</span>.
                     </p>
                   </div>
 

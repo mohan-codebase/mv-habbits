@@ -25,7 +25,7 @@ export default function MobileDock({ onAddHabit }: MobileDockProps) {
       e.preventDefault();
       onAddHabit();
     } else if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('productivity-master:open-add'));
+      window.dispatchEvent(new CustomEvent('mv-habits:open-add'));
     }
   };
 

@@ -1537,8 +1537,8 @@ export default function FitnessSummary({
   // navigates here. Previously the only reader was TodayHabits, the dashboard
   // this component replaced — so the command silently did nothing.
   useEffect(() => {
-    if (localStorage.getItem('productivity_master_open_form') === '1') {
-      localStorage.removeItem('productivity_master_open_form');
+    if (localStorage.getItem('mv_habits_open_form') === '1') {
+      localStorage.removeItem('mv_habits_open_form');
       setAddOpen(true);
     }
   }, []);
@@ -1552,7 +1552,7 @@ export default function FitnessSummary({
   const toggleTheme = () => {
     const next = isDark ? 'light' : 'dark';
     setIsDark(!isDark);
-    localStorage.setItem('productivity_master_theme', next);
+    localStorage.setItem('mv_habits_theme', next);
     document.documentElement.dataset.theme = next;
     document.documentElement.style.colorScheme = next;
   };

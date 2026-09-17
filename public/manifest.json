@@ -1,7 +1,7 @@
 {
   "id": "/dashboard",
-  "name": "Productivity Master",
-  "short_name": "Productivity",
+  "name": "MV Habits",
+  "short_name": "MV Habits",
   "description": "Premium habit tracker for routines, streaks, and self-growth.",
   "start_url": "/dashboard",
   "scope": "/",

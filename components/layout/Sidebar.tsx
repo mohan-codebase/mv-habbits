@@ -196,7 +196,7 @@ export default function Sidebar() {
           <Link href="/dashboard" className="flex items-center gap-3 no-underline">
             <AppLogo width={32} height={32} />
             <div className="min-w-0">
-              <p className="m-0 text-base font-extrabold text-slate-900 dark:text-white tracking-tight font-sans">Productivity Master</p>
+              <p className="m-0 text-base font-extrabold text-slate-900 dark:text-white tracking-tight font-sans">MV Habits</p>
               <p className="m-0 mt-0.5 text-[11px] text-purple-500 dark:text-purple-400 font-semibold">by Mohan</p>
             </div>
           </Link>
@@ -284,7 +284,7 @@ export default function Sidebar() {
                 <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5 no-underline">
                   <AppLogo width={34} height={34} />
                   <div className="flex flex-col leading-tight">
-                    <span className="text-sm font-extrabold text-[var(--text-primary)] font-sans">Productivity Master</span>
+                    <span className="text-sm font-extrabold text-[var(--text-primary)] font-sans">MV Habits</span>
                     <span className="text-[10px] text-purple-400 font-semibold">by Mohan</span>
                   </div>
                 </Link>

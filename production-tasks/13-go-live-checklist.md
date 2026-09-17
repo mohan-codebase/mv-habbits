@@ -54,7 +54,7 @@ Long-lead items. Nothing here can be rushed on launch day.
 - [ ] Payment provider switched from sandbox to **production** keys, webhook URL pointing
       at the production domain
 - [ ] Cron jobs in `vercel.json` at the right schedules
-- [ ] `grep -rn "productivity-master.app\|vercel.app\|localhost" app components lib public`
+- [ ] `grep -rn "mv-habits.app\|vercel.app\|localhost" app components lib public`
       — no stale origins
 
 ### 3.3 Data

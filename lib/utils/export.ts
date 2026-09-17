@@ -45,7 +45,7 @@ export async function exportUserData(supabase: SupabaseClient, userId: string) {
   const link = document.createElement('a');
   link.href = url;
   const date = new Date().toISOString().split('T')[0];
-  link.download = `productivity_master_backup_${date}.json`;
+  link.download = `mv_habits_backup_${date}.json`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

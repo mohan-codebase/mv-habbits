@@ -121,7 +121,7 @@ export default function CommandPalette({ isOpen, onClose }: Props) {
       icon: <Plus size={16} />,
       action: () => {
         // Signal FitnessSummary to open the add-habit form — it reads this on mount
-        localStorage.setItem('productivity_master_open_form', '1');
+        localStorage.setItem('mv_habits_open_form', '1');
         navigate('/dashboard');
       },
       keywords: ['add', 'create', 'track'],

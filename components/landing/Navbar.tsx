@@ -59,7 +59,7 @@ export default function Navbar() {
         >
           <AppLogo width={28} height={28} />
           <span className="text-[15px] font-bold tracking-[-0.02em] text-text-primary">
-            Productivity Master
+            MV Habits
           </span>
         </Link>
 

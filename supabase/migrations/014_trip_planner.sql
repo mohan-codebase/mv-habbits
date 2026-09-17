@@ -1,5 +1,5 @@
 -- ============================================================
--- Trip Planner (merged into Productivity Master)
+-- Trip Planner (merged into MV Habits)
 -- User-scoped tables, prefixed `trip_` to avoid colliding with the existing
 -- expense tracker (public.expenses). Each row belongs to auth.uid().
 -- "Mohan" / "Charles" are the two payers *within* a user's trip, not auth users.
@@ -82,7 +82,7 @@ CREATE INDEX IF NOT EXISTS idx_trip_itinerary_user_day ON public.trip_itinerary 
 CREATE INDEX IF NOT EXISTS idx_trip_packing_user       ON public.trip_packing_items (user_id);
 CREATE INDEX IF NOT EXISTS idx_trip_documents_user     ON public.trip_documents (user_id);
 
--- ── Row Level Security: owner-only, like the rest of Productivity Master ──
+-- ── Row Level Security: owner-only, like the rest of MV Habits ──
 ALTER TABLE public.trip_trips         ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.trip_expenses      ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.trip_bookings      ENABLE ROW LEVEL SECURITY;

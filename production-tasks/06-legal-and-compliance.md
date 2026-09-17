@@ -106,7 +106,7 @@ and how to cancel (link to the billing portal).
 Audit what the app actually stores client-side before writing this. Known so far:
 
 - Supabase auth session cookies — **strictly necessary**, no consent needed
-- `localStorage`: `productivity_master_theme`, `productivity_master_active_app` — strictly
+- `localStorage`: `mv_habits_theme`, `mv_habits_active_app` — strictly
   necessary / preference
 - `@vercel/speed-insights` — currently loaded in `app/layout.tsx`
 - Whatever analytics doc `09` adds — **this is the one that may require consent**

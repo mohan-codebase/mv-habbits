@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Outfit, IBM_Plex_Mono } from 'next/font/google';
+import dynamic from 'next/dynamic';
 import "./globals.css";
 import AppProviders from "@/components/ui/AppProviders";
 import ServiceWorkerRegistrar from "@/components/ui/ServiceWorkerRegistrar";
-import InstallPwaPrompt from "@/components/ui/InstallPwaPrompt";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SITE_URL } from "@/lib/site";
+
+const InstallPwaPrompt = dynamic(() => import('@/components/ui/InstallPwaPrompt'));
 
 const inter = Inter({
   subsets: ['latin'],
@@ -15,6 +17,7 @@ const inter = Inter({
 
 const outfit = Outfit({
   subsets: ['latin'],
+  weight: ['400', '600', '700', '800'],
   variable: '--font-outfit',
   display: 'swap',
 });
@@ -28,7 +31,7 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Productivity Master — Build daily habits that actually stick",
+  title: "MV Habits — Build daily habits that actually stick",
   description: "Premium habit tracker for routines, streaks, and self-growth. Track, analyze, and stay consistent — beautifully.",
   manifest: "/manifest.json",
   // No `icons` block on purpose. Next's file convention picks up app/icon.png
@@ -38,21 +41,21 @@ export const metadata: Metadata = {
   // where it reads as a dark sticker on a light tab strip). app/icon.png is
   // transparent and sits correctly on either.
   openGraph: {
-    title: "Productivity Master",
+    title: "MV Habits",
     description: "Premium habit tracker for routines, streaks, and self-growth.",
     type: "website",
     url: SITE_URL,
-    siteName: "Productivity Master",
+    siteName: "MV Habits",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Productivity Master",
+    title: "MV Habits",
     description: "Premium habit tracker for routines, streaks, and self-growth.",
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Productivity Master",
+    title: "MV Habits",
     startupImage: ["/icons/icon-512.png"],
   },
   other: {

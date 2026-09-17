@@ -18,7 +18,7 @@
 
 | Key | Value | Notes |
 |---|---|---|
-| `PRODUCT_NAME` | `Productivity Master` | **Do not change.** Rebrand is planned post-launch. |
+| `PRODUCT_NAME` | `MV Habits` | **Do not change.** Rebrand is planned post-launch. |
 | `PRODUCT_TAGLINE` | `Build daily habits that actually stick` | From existing metadata |
 | `DOMAIN` | `TODO` | Production domain, no protocol. e.g. `example.com` |
 | `SITE_URL` | `TODO` | `https://` + DOMAIN |

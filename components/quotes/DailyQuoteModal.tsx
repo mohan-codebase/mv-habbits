@@ -52,9 +52,9 @@ export default function DailyQuoteModal({
       setInternalIsOpen(true);
     };
 
-    window.addEventListener('productivity-master:open-daily-quote', handleGlobalTrigger);
+    window.addEventListener('mv-habits:open-daily-quote', handleGlobalTrigger);
     return () => {
-      window.removeEventListener('productivity-master:open-daily-quote', handleGlobalTrigger);
+      window.removeEventListener('mv-habits:open-daily-quote', handleGlobalTrigger);
     };
   }, []);
 
@@ -64,9 +64,9 @@ export default function DailyQuoteModal({
         setSaved(isQuoteSaved(todayQuote.id));
       }
     };
-    window.addEventListener('productivity-master:quotes-updated', handleQuotesUpdated);
+    window.addEventListener('mv-habits:quotes-updated', handleQuotesUpdated);
     return () => {
-      window.removeEventListener('productivity-master:quotes-updated', handleQuotesUpdated);
+      window.removeEventListener('mv-habits:quotes-updated', handleQuotesUpdated);
     };
   }, [todayQuote]);
 

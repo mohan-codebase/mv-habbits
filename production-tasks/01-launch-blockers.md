@@ -425,17 +425,17 @@ Two files point at a domain that is not the production domain:
 
 `public/robots.txt`:
 ```
-Sitemap: https://productivity-master.app/sitemap.xml
+Sitemap: https://mv-habits.app/sitemap.xml
 ```
 
 `app/sitemap.ts`:
 ```ts
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://productivity-master.app';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mv-habits.app';
 ```
 
 And `app/layout.tsx` hardcodes a third:
 ```ts
-metadataBase: new URL("https://productivity-master-eight.vercel.app"),
+metadataBase: new URL("https://mv-habits-eight.vercel.app"),
 ```
 
 Three different origins. Search engines will index the wrong one and canonical tags
@@ -478,8 +478,8 @@ export default function robots(): MetadataRoute.Robots {
 ### Acceptance criteria
 
 - [ ] `https://{{DOMAIN}}/robots.txt` and `/sitemap.xml` both return the production origin.
-- [ ] No hardcoded `vercel.app` or `productivity-master.app` URL remains in the repo.
-      Verify: `grep -rn "productivity-master.app\|vercel.app" app components lib public`
+- [ ] No hardcoded `vercel.app` or `mv-habits.app` URL remains in the repo.
+      Verify: `grep -rn "mv-habits.app\|vercel.app" app components lib public`
 
 ---
 

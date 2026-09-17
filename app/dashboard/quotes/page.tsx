@@ -1,7 +1,7 @@
 import QuotesPageContent from '@/components/quotes/QuotesPageContent';
 
 export const metadata = {
-  title: 'Motivational Quotes — Productivity Master',
+  title: 'Motivational Quotes — MV Habits',
   description: 'Daily motivational quotes and stored favorites to keep you inspired every day.',
 };
 

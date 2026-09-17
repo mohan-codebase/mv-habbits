@@ -40,7 +40,7 @@ export default function AppLogo({
     <div className={`hf-app-logo relative shrink-0 ${className}`} style={{ width, height }}>
       <Image
         src={src}
-        alt="Productivity Master"
+        alt="MV Habits"
         fill
         className="object-contain"
         sizes={`${width}px`}

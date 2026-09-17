@@ -17,7 +17,7 @@ function weekStart(): string {
   return d.toISOString().slice(0, 10);
 }
 
-const SYSTEM_PROMPT = `You are the habit coach inside Productivity Master, a premium habit tracker.
+const SYSTEM_PROMPT = `You are the habit coach inside MV Habits, a premium habit tracker.
 You receive a compact JSON summary of one user's recent habit data (never raw entries).
 Write 2–4 short, specific, encouraging insights that help them improve.
 

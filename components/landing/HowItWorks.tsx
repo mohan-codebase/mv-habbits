@@ -35,7 +35,7 @@ export default function HowItWorks() {
             Simple Workflow
           </span>
           <h2 className="text-[clamp(26px,4vw,40px)] font-extrabold text-text-primary [font-family:'Outfit',sans-serif] tracking-[-0.03em] leading-[1.2] m-0 mb-3.5">
-            How Productivity Master works
+            How MV Habits works
           </h2>
           <p className="text-[15px] text-text-secondary leading-[1.65] m-0">
             A frictionless loop designed to keep your friction near zero so your momentum never dies.

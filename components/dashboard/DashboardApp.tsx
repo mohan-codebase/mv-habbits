@@ -24,7 +24,7 @@ interface DashboardAppProps {
 // Unlocking lasts for the life of the browser tab. sessionStorage (not
 // localStorage) is deliberate: closing the tab re-locks, which is the whole
 // point of a privacy lock.
-const UNLOCK_KEY = 'productivity_master_habits_unlocked';
+const UNLOCK_KEY = 'mv_habits_habits_unlocked';
 
 // 'checking' also covers the first paint — habits must never render before we
 // know whether this account is locked, or the lock is decorative.
@@ -123,7 +123,7 @@ export default function DashboardApp({
 
     // One-time cleanup: older builds cached the raw passcode here.
     localStorage.removeItem('semma_flow_habits_passcode');
-    localStorage.removeItem('productivity_master_active_app');
+    localStorage.removeItem('mv_habits_active_app');
 
     // Does this device have a platform authenticator (Face ID / Touch ID)?
     if (typeof window !== 'undefined' && window.PublicKeyCredential?.isUserVerifyingPlatformAuthenticatorAvailable) {

@@ -558,7 +558,7 @@ export function toggleSaveQuote(id: string): boolean {
   }
 
   localStorage.setItem(STORAGE_SAVED_IDS_KEY, JSON.stringify(updated));
-  window.dispatchEvent(new CustomEvent('productivity-master:quotes-updated'));
+  window.dispatchEvent(new CustomEvent('mv-habits:quotes-updated'));
   return isNowSaved;
 }
 

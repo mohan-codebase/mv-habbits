@@ -8,7 +8,7 @@ const FAQS = [
     a: 'Yes. Every database table enforces PostgreSQL Row Level Security (RLS), meaning no other user can access your habits, logs, or analytics. We do not sell data, display ads, or run third-party tracker scripts. You retain 100% ownership of your records.',
   },
   {
-    q: 'Can I use Productivity Master on my phone?',
+    q: 'Can I use MV Habits on my phone?',
     a: 'Yes. The application is built as a Progressive Web App (PWA). You can install it directly to your home screen on iOS (via Safari Share → Add to Home Screen) and Android (via Chrome install banner) for a fullscreen native-like experience.',
   },
   {

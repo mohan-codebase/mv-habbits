@@ -185,7 +185,7 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Welcome to Productivity Master"
+      aria-label="Welcome to MV Habits"
       className="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(0,0,0,0.65)] p-4"
     >
       <motion.div
@@ -229,7 +229,7 @@ export default function OnboardingWizard({ userName, onComplete, onDismiss }: On
                     Welcome{userName ? `, ${userName.split(' ')[0]}` : ''}!
                   </h2>
                   <p className="mx-auto mb-7 max-w-[360px] text-[14.5px] leading-[1.6] text-text-secondary">
-                    Productivity Master turns daily check-ins into unstoppable streaks. Let&apos;s create your very first habit — it takes about 60 seconds.
+                    MV Habits turns daily check-ins into unstoppable streaks. Let&apos;s create your very first habit — it takes about 60 seconds.
                   </p>
                   <button
                     onClick={() => go(1)}

@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
       return new NextResponse(csvData, {
         headers: {
           'Content-Type': 'text/csv; charset=utf-8',
-          'Content-Disposition': `attachment; filename="productivity-master-year-in-review-${todayString()}.csv"`,
+          'Content-Disposition': `attachment; filename="mv-habits-year-in-review-${todayString()}.csv"`,
         },
       });
     }
@@ -83,7 +83,7 @@ export async function GET(req: NextRequest) {
       return new NextResponse(csvData, {
         headers: {
           'Content-Type': 'text/csv; charset=utf-8',
-          'Content-Disposition': `attachment; filename="productivity-master-entries-${todayString()}.csv"`,
+          'Content-Disposition': `attachment; filename="mv-habits-entries-${todayString()}.csv"`,
         },
       });
     }
@@ -104,7 +104,7 @@ export async function GET(req: NextRequest) {
     return new NextResponse(JSON.stringify(exportData, null, 2), {
       headers: {
         'Content-Type': 'application/json',
-        'Content-Disposition': `attachment; filename="productivity-master-export-${todayString()}.json"`,
+        'Content-Disposition': `attachment; filename="mv-habits-export-${todayString()}.json"`,
       },
     });
 

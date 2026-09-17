@@ -35,7 +35,7 @@ export default function AuthLayout({ children, activeTab }: AuthLayoutProps) {
           <div className="w-10 h-10 sm:w-11 sm:h-11 relative flex items-center justify-center p-2 rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-default)]">
             <Image
               src="/logo/key-gold-128.png"
-              alt="Productivity Master Logo"
+              alt="MV Habits Logo"
               width={32}
               height={32}
               className="object-contain"
@@ -44,7 +44,7 @@ export default function AuthLayout({ children, activeTab }: AuthLayoutProps) {
           </div>
           <div className="flex flex-col">
             <span className="text-lg sm:text-xl font-bold font-['Outfit'] tracking-tight text-[var(--text-primary)] flex items-center gap-1.5">
-              Productivity Master
+              MV Habits
               <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-500 dark:text-indigo-400 border border-indigo-500/20">
                 Pro
               </span>

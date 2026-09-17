@@ -3,7 +3,7 @@ import { ACHIEVEMENT_DEFS } from '@/lib/constants';
 import AchievementGrid from '@/components/achievements/AchievementGrid';
 import { redirect } from 'next/navigation';
 
-export const metadata = { title: 'Achievements · Productivity Master' };
+export const metadata = { title: 'Achievements · MV Habits' };
 
 export default async function AchievementsPage() {
   const supabase = await createServerClient();

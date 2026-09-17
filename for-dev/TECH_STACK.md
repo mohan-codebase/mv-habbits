@@ -1,6 +1,6 @@
-# Technology Stack: Productivity Master
+# Technology Stack: MV Habits
 
-This document outlines the libraries, tools, and technologies powering the Productivity Master application.
+This document outlines the libraries, tools, and technologies powering the MV Habits application.
 
 ---
 

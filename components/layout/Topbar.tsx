@@ -40,7 +40,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
   }, [supabase]);
 
   const handleAddHabit = () => {
-    window.dispatchEvent(new Event('productivity-master:open-add'));
+    window.dispatchEvent(new Event('mv-habits:open-add'));
     onTabChange?.('habits');
   };
 
@@ -96,7 +96,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
                 <div className="flex items-center gap-2.5">
                   <AppLogo width={28} height={28} />
                   <span className="text-lg font-extrabold text-[var(--text-primary)] font-sans">
-                    Productivity Master
+                    MV Habits
                   </span>
                 </div>
                 <button
@@ -199,7 +199,7 @@ export default function Topbar({ activeTab = 'home', onTabChange }: TopbarProps)
           <AppLogo width={32} height={32} />
           <div className="flex flex-col leading-tight">
             <span className="text-lg font-extrabold text-slate-900 dark:text-white font-sans tracking-tight">
-              Productivity Master
+              MV Habits
             </span>
             <span className="text-xs text-purple-500 dark:text-purple-400 font-semibold">
               by Mohan

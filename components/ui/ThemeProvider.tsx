@@ -15,7 +15,7 @@ interface ThemeContextValue {
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
-const STORAGE_KEY = 'productivity_master_theme';
+const STORAGE_KEY = 'mv_habits_theme';
 
 function hexToRgbComponents(hex: string): string {
   const clean = hex.replace('#', '');
@@ -86,7 +86,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setLightAccent = useCallback((color: string) => {
     setLightAccentState(color);
     try {
-      window.localStorage.setItem('productivity_master_light_accent', color);
+      window.localStorage.setItem('mv_habits_light_accent', color);
     } catch {
       /* ignore */
     }
@@ -95,7 +95,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setDarkAccent = useCallback((color: string) => {
     setDarkAccentState(color);
     try {
-      window.localStorage.setItem('productivity_master_dark_accent', color);
+      window.localStorage.setItem('mv_habits_dark_accent', color);
     } catch {
       /* ignore */
     }

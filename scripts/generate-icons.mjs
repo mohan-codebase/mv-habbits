@@ -99,7 +99,7 @@ async function main() {
        </defs>
        <rect width="1200" height="630" fill="url(#g)"/>
        <text x="480" y="292" font-family="Helvetica, Arial, sans-serif"
-             font-size="58" font-weight="bold" fill="#FAFAFA">Productivity Master</text>
+             font-size="58" font-weight="bold" fill="#FAFAFA">MV Habits</text>
        <text x="483" y="344" font-family="Helvetica, Arial, sans-serif"
              font-size="27" fill="#A9A5C0">Build daily habits that actually stick</text>
        <rect x="483" y="382" width="86" height="4" rx="2" fill="#D4AF37"/>
